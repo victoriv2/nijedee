@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -217,8 +217,9 @@
       margin-top: auto;
     }
     @media (max-width: 850px) {
-      .artisans-layout-wrap { grid-template-columns: 1fr; }
-      .artisan-filter-card { position: static; }
+      .artisans-layout-wrap { grid-template-columns: minmax(0, 1fr); width: 100%; }
+      .artisan-filter-card { position: static; width: 100%; max-width: 100%; overflow: hidden; }
+      .artisan-grid-view { grid-template-columns: 1fr; width: 100%; }
     }
   </style>
 </head>
@@ -344,7 +345,7 @@
 
     <!-- Artisans Grid -->
     <main>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:20px;">
         <span style="font-size:0.9rem; color:var(--text-muted);" id="artisanResultsCount">Showing 10 verified artisans across 10 trades</span>
         <span style="font-size:0.82rem; color:var(--success); font-weight:600; display:flex; align-items:center; gap:5px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>

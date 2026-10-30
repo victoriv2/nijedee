@@ -343,11 +343,132 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   });
 })();
 
-/* ── Hero Interactive Full-View Lightbox Gallery ── */
-(function initHeroLightbox() {
+/* ── Hero Crossfade Carousel & Full-View Lightbox Gallery ── */
+(function initHeroShowcase() {
   const heroTrigger = document.querySelector('#heroPhotoSlider');
   const lightbox = document.querySelector('#tkImageLightbox');
-  if (!heroTrigger || !lightbox) return;
+  if (!heroTrigger) return;
+
+  const basePath = 'media/WhatsApp Unknown 2026-10-29 at 12.22.43 PM/';
+  const images = [
+    "WhatsApp Image 2026-10-28 at 8.11.27 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.27 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.28 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.28 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.28 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.29 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.29 PM (3).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.29 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.34 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.35 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.35 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.35 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.36 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.36 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.37 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.37 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.37 PM (3).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.37 PM (4).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.37 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.38 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.38 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.38 PM (3).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.38 PM (4).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.38 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.39 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.39 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.39 PM (3).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.39 PM (4).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.39 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.40 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.40 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.41 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.41 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.41 PM (3).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.41 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.42 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.42 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.42 PM (3).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.42 PM (4).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.42 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.43 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.43 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.43 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.44 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.44 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.44 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.45 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.45 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.45 PM (3).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.45 PM (4).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.45 PM.jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.46 PM (1).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.46 PM (2).jpeg",
+    "WhatsApp Image 2026-10-28 at 8.11.46 PM.jpeg"
+  ];
+
+  function getImageUrl(filename) {
+    return encodeURI(basePath + filename);
+  }
+
+  function preloadImage(url) {
+    const img = new Image();
+    img.src = url;
+  }
+
+  // Preload initial set of images
+  for (let i = 0; i < Math.min(8, images.length); i++) {
+    preloadImage(getImageUrl(images[i]));
+  }
+
+  /* ── 1. Hero Auto 3-Second Crossfade Slider ── */
+  const slides = heroTrigger.querySelectorAll('.tk-hero__slide');
+  let currentHeroIdx = 0;
+  let activeSlideIdx = 0;
+  let isLightboxOpen = false;
+  let heroTimer = null;
+
+  function advanceHeroSlide() {
+    if (isLightboxOpen || slides.length < 2) return;
+    const nextIdx = (currentHeroIdx + 1) % images.length;
+    currentHeroIdx = nextIdx;
+    const nextUrl = getImageUrl(images[currentHeroIdx]);
+
+    const incomingIdx = activeSlideIdx === 0 ? 1 : 0;
+    const incomingSlide = slides[incomingIdx];
+    const outgoingSlide = slides[activeSlideIdx];
+
+    incomingSlide.src = nextUrl;
+    incomingSlide.classList.add('active');
+    outgoingSlide.classList.remove('active');
+    activeSlideIdx = incomingIdx;
+
+    // Preload next image ahead
+    const aheadIdx = (currentHeroIdx + 1) % images.length;
+    preloadImage(getImageUrl(images[aheadIdx]));
+  }
+
+  function startHeroTimer() {
+    if (heroTimer) clearInterval(heroTimer);
+    heroTimer = setInterval(advanceHeroSlide, 3000); // exactly every 3 seconds
+  }
+
+  function pauseHeroTimer() {
+    if (heroTimer) {
+      clearInterval(heroTimer);
+      heroTimer = null;
+    }
+  }
+
+  startHeroTimer();
+
+  heroTrigger.addEventListener('mouseenter', pauseHeroTimer);
+  heroTrigger.addEventListener('mouseleave', () => {
+    if (!isLightboxOpen) startHeroTimer();
+  });
+
+  /* ── 2. Full-View Lightbox Gallery (Using ONLY WhatsApp Images) ── */
+  if (!lightbox) return;
 
   const mainImg = document.querySelector('#lightboxMainImg');
   const imgWrap = document.querySelector('#lightboxImgWrap');
@@ -357,97 +478,87 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   const backdrop = document.querySelector('#lightboxBackdrop');
   const thumbsContainer = document.querySelector('#lightboxThumbs');
 
-  const GALLERY = [
-    { src: 'assets/images/flyer-banner.jpeg', title: 'NIJEDEE PAINTS — Bringing Colors to Life', tag: 'Paints & Wall Finishes' },
-    { src: 'assets/images/flyer-services.jpeg', title: 'NIJEDEE 13 Service Categories — Complete Property Scope', tag: 'Full Maintenance' },
-    { src: 'assets/images/flyer-academy.jpeg', title: 'NIJEDEE Artisan Academy — Professional Training & Vetting', tag: 'Artisan Academy' },
-    { src: 'assets/images/work-painting-1.jpeg', title: 'Painting & Decorative Wall Finishes', tag: 'Painting Work' },
-    { src: 'assets/images/work-electrical-1.jpeg', title: 'Electrical Installations & DB Wiring', tag: 'Electrical Work' },
-    { src: 'assets/images/work-carpentry-1.jpeg', title: 'Carpentry, Doors & Custom Cabinetry', tag: 'Carpentry Work' },
-    { src: 'assets/images/work-ac-1.jpeg', title: 'Air Conditioning Installation & Servicing', tag: 'HVAC Work' },
-    { src: 'assets/images/work-solar-1.jpeg', title: 'Solar Inverter Systems & Backup Power', tag: 'Solar & Power' },
-    { src: 'assets/images/work-tiling-1.jpeg', title: 'Floor & Wall Tiling Installation', tag: 'Tiling Work' },
-    { src: 'assets/images/work-borehole-1.jpeg', title: 'Borehole Drilling & Water Treatment Systems', tag: 'Water Services' },
-    { src: 'assets/images/work-roofing-1.jpeg', title: 'Roofing Repair, Trusses & Waterproofing', tag: 'Roofing Work' },
-    { src: 'assets/images/work-cleaning-1.jpeg', title: 'Deep Cleaning & Post-Construction Cleanup', tag: 'Cleaning Work' },
-    { src: 'assets/images/work-generator-1.jpeg', title: 'Generator Diagnostics & Heavy Servicing', tag: 'Generator Work' },
-    { src: 'assets/images/work-plumbing-1.jpeg', title: 'Plumbing, Pressure Pumps & Leak Repairs', tag: 'Plumbing Work' },
-    { src: 'assets/images/prop-lekki-shortlet.jpeg', title: 'Luxury Serviced Shortlet — Lekki Phase 1', tag: 'Property Listing' },
-    { src: 'assets/images/prop-chevron-villa.jpeg', title: 'Contemporary 3-Bedroom Terrace — Chevron', tag: 'Property Listing' },
-    { src: 'assets/images/prop-badore-duplex.jpeg', title: 'Executive 4-Bedroom Duplex — Badore Ajah', tag: 'Property Listing' },
-    { src: 'assets/images/prop-sangotedo-flat.jpeg', title: 'Modern 2-Bedroom Apartment — Sangotedo', tag: 'Property Listing' },
-    { src: 'assets/images/prop-ajah-terrace.jpeg', title: 'Open-Plan Corporate Office Suite — Ajah', tag: 'Property Listing' }
-  ];
-
-  let currentIndex = 0;
-  let thumbElements = [];
+  let currentGalleryIdx = 0;
+  const thumbElements = [];
 
   // Populate Thumbnails under the "X"
-  thumbsContainer.innerHTML = '';
-  GALLERY.forEach((item, idx) => {
-    const thumb = document.createElement('button');
-    thumb.type = 'button';
-    thumb.className = 'tk-lightbox__thumb-item' + (idx === 0 ? ' is-active' : '');
-    thumb.setAttribute('aria-label', item.title);
-    thumb.innerHTML = `<img src="${item.src}" alt="${item.title}" loading="lazy">`;
-    thumb.addEventListener('click', (e) => {
-      e.stopPropagation();
-      goToSlide(idx);
+  if (thumbsContainer) {
+    thumbsContainer.innerHTML = '';
+    images.forEach((filename, idx) => {
+      const thumb = document.createElement('button');
+      thumb.type = 'button';
+      thumb.className = 'tk-lightbox__thumb-item' + (idx === 0 ? ' is-active' : '');
+      thumb.setAttribute('aria-label', `Showcase photo ${idx + 1}`);
+      thumb.innerHTML = `<img src="${getImageUrl(filename)}" alt="NIJEDEE Project ${idx + 1}" loading="lazy">`;
+      thumb.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToGallerySlide(idx);
+      });
+      thumbsContainer.appendChild(thumb);
+      thumbElements.push(thumb);
     });
-    thumbsContainer.appendChild(thumb);
-    thumbElements.push(thumb);
-  });
+  }
 
-  function goToSlide(idx) {
-    if (idx < 0) idx = GALLERY.length - 1;
-    if (idx >= GALLERY.length) idx = 0;
-    currentIndex = idx;
+  function goToGallerySlide(idx) {
+    if (idx < 0) idx = images.length - 1;
+    if (idx >= images.length) idx = 0;
+    currentGalleryIdx = idx;
 
-    const item = GALLERY[currentIndex];
-    
-    // Smooth transition
-    mainImg.style.opacity = '0';
-    mainImg.style.transform = 'scale(0.97)';
-    
-    setTimeout(() => {
-      mainImg.src = item.src;
-      mainImg.alt = item.title;
-      if (titleEl) titleEl.textContent = item.title;
-      if (counterEl) counterEl.textContent = `${currentIndex + 1} / ${GALLERY.length}`;
-      mainImg.style.opacity = '1';
-      mainImg.style.transform = 'scale(1)';
-    }, 120);
+    const targetUrl = getImageUrl(images[currentGalleryIdx]);
+
+    if (mainImg) {
+      mainImg.style.opacity = '0';
+      mainImg.style.transform = 'scale(0.97)';
+      setTimeout(() => {
+        mainImg.src = targetUrl;
+        mainImg.alt = `NIJEDEE Verified Project Showcase ${currentGalleryIdx + 1}`;
+        if (titleEl) titleEl.textContent = `NIJEDEE Verified Project Showcase #${currentGalleryIdx + 1}`;
+        if (counterEl) counterEl.textContent = `${currentGalleryIdx + 1} / ${images.length}`;
+        mainImg.style.opacity = '1';
+        mainImg.style.transform = 'scale(1)';
+      }, 120);
+    }
 
     // Update active thumbnail
     thumbElements.forEach((th, i) => {
-      if (i === currentIndex) {
+      if (i === currentGalleryIdx) {
         th.classList.add('is-active');
         th.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       } else {
         th.classList.remove('is-active');
       }
     });
+
+    // Also sync the hero slide behind the modal
+    if (slides.length >= 2) {
+      currentHeroIdx = currentGalleryIdx;
+      slides[activeSlideIdx].src = targetUrl;
+    }
   }
 
   function openLightbox(startIdx = 0) {
-    goToSlide(startIdx);
+    isLightboxOpen = true;
+    pauseHeroTimer();
+    goToGallerySlide(startIdx);
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 
   function closeLightbox() {
+    isLightboxOpen = false;
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    startHeroTimer();
   }
 
   // Open on clicking hero showcase
-  heroTrigger.addEventListener('click', () => openLightbox(0));
+  heroTrigger.addEventListener('click', () => openLightbox(currentHeroIdx));
   heroTrigger.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      openLightbox(0);
+      openLightbox(currentHeroIdx);
     }
   });
 
@@ -473,57 +584,59 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   });
 
   /* ── Swipe & Drag Gesture Support on Full Image (NO ARROWS) ── */
-  let startX = 0;
-  let startY = 0;
-  let isDragging = false;
-  const dragThreshold = 40; // minimum px movement to register swipe
+  if (imgWrap) {
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+    const dragThreshold = 40; // minimum px movement to register swipe
 
-  // Touch gestures for mobile
-  imgWrap.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 1) return;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  }, { passive: true });
+    // Touch gestures for mobile
+    imgWrap.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
 
-  imgWrap.addEventListener('touchend', (e) => {
-    if (e.changedTouches.length !== 1) return;
-    const diffX = e.changedTouches[0].clientX - startX;
-    const diffY = e.changedTouches[0].clientY - startY;
+    imgWrap.addEventListener('touchend', (e) => {
+      if (e.changedTouches.length !== 1) return;
+      const diffX = e.changedTouches[0].clientX - startX;
+      const diffY = e.changedTouches[0].clientY - startY;
 
-    // Only handle horizontal swipes
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > dragThreshold) {
-      if (diffX < 0) {
-        // Swiped left -> next image
-        goToSlide(currentIndex + 1);
-      } else {
-        // Swiped right -> prev image
-        goToSlide(currentIndex - 1);
+      // Only handle horizontal swipes
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > dragThreshold) {
+        if (diffX < 0) {
+          // Swiped left -> next image
+          goToGallerySlide(currentGalleryIdx + 1);
+        } else {
+          // Swiped right -> prev image
+          goToGallerySlide(currentGalleryIdx - 1);
+        }
       }
-    }
-  }, { passive: true });
+    }, { passive: true });
 
-  // Mouse drag gestures for desktop
-  imgWrap.addEventListener('mousedown', (e) => {
-    if (e.button !== 0) return; // only left click
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-  });
+    // Mouse drag gestures for desktop
+    imgWrap.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return; // only left click
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+    });
 
-  window.addEventListener('mouseup', (e) => {
-    if (!isDragging) return;
-    isDragging = false;
-    const diffX = e.clientX - startX;
-    const diffY = e.clientY - startY;
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diffX = e.clientX - startX;
+      const diffY = e.clientY - startY;
 
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > dragThreshold) {
-      if (diffX < 0) {
-        goToSlide(currentIndex + 1);
-      } else {
-        goToSlide(currentIndex - 1);
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > dragThreshold) {
+        if (diffX < 0) {
+          goToGallerySlide(currentGalleryIdx + 1);
+        } else {
+          goToGallerySlide(currentGalleryIdx - 1);
+        }
       }
-    }
-  });
+    });
+  }
 })();
 
 /* ============================================================
