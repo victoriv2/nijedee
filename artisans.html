@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Verified Artisan | NIJEDEE</title>
+  <meta name="description" content="Find and book background-checked, certified plumbers, electricians, painters, carpenters and AC technicians across Badore, Ajah, Sangotedo and Lekki.">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .artisan-directory-hero {
+      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
+      padding: 68px 0 54px;
+      color: #ffffff;
+      text-align: center;
+    }
+    .artisan-directory-hero h1 {
+      color: #ffffff;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      margin-bottom: 10px;
+    }
+    .artisan-directory-hero p {
+      color: rgba(255,255,255,0.85);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto 24px;
+    }
+    .artisan-search-box {
+      max-width: 540px;
+      margin: 0 auto;
+      display: flex;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .artisan-search-box input {
+      flex: 1;
+      border: none;
+      padding: 14px 18px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .artisan-search-box button {
+      background: var(--blue);
+      color: #ffffff;
+      padding: 0 24px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    .artisans-layout-wrap {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 32px;
+      padding: 48px 0 36px;
+    }
+    .artisan-filter-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 18px;
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+    }
+    .artisan-filter-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-filter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .cat-filter-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy);
+      cursor: pointer;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      text-align: left;
+      width: 100%;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .cat-filter-btn:hover {
+      background: #EBF3FE;
+      color: var(--blue);
+      border-color: #93C5FD;
+    }
+    .cat-filter-btn.active {
+      background: var(--blue) !important;
+      color: #ffffff !important;
+      border-color: var(--blue) !important;
+    }
+    .cat-count {
+      background: #EBF3FE;
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      display: inline-block;
+      line-height: 1.2;
+    }
+    .cat-filter-btn.active .cat-count {
+      background: rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
+    }
+    .artisan-grid-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+    }
+    .artisan-card-item {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .artisan-card-item:hover {
+      border-color: var(--blue);
+      box-shadow: var(--shadow-md);
+    }
+    .artisan-avatar-circle {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
+      color: #ffffff;
+      font-size: 1.6rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      border: 3px solid #EBF3FF;
+      overflow: hidden;
+    }
+    .artisan-avatar-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .artisan-name-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .artisan-trade-badge {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .artisan-verified-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #E8F5EE;
+      color: var(--success);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .artisan-rating-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .artisan-rating-row span.count {
+      color: var(--text-muted);
+      font-weight: 400;
+      font-size: 0.78rem;
+    }
+    .artisan-loc-row {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 18px;
+    }
+    .artisan-loc-row svg {
+      width: 14px;
+      height: 14px;
+      color: var(--blue);
+    }
+    .artisan-action-btns {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      margin-top: auto;
+    }
+    @media (max-width: 850px) {
+      .artisans-layout-wrap { grid-template-columns: 1fr; }
+      .artisan-filter-card { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <img src="assets/images/logo.png" alt="NIJEDEE Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+      </a>
+      <div class="navbar-nav">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="shop.html">Shop</a>
+        <a href="properties.html">Properties</a>
+        <a href="artisans.html" class="active">Artisans</a>
+        <a href="academy.html">Academy</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <a href="book.html" class="btn btn-primary btn-sm navbar-cta">Book a Service</a>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<nav class="mobile-nav" aria-label="Mobile navigation">
+  <button class="mobile-nav-close" aria-label="Close menu">&times;</button>
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="shop.html">Shop</a>
+  <a href="properties.html">Properties</a>
+  <a href="artisans.html">Artisans</a>
+  <a href="academy.html">Academy</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="book.html" class="btn btn-primary" style="margin-top:16px;text-align:center;justify-content:center;">Book a Service</a>
+</nav>
+<div class="mobile-nav-overlay"></div>
+
+<!-- HERO BANNER -->
+<section class="artisan-directory-hero">
+  <div class="container">
+    <span class="section-label" style="background:rgba(255,255,255,0.18); color:#ffffff; margin-bottom:12px;">Verified Artisan Network</span>
+    <h1>Find a Verified Artisan</h1>
+    <p>Skilled professionals. Background-checked. Identity-vetted. Transparent pricing with zero advance artisan fees.</p>
+    <div class="artisan-search-box">
+      <input type="text" id="artisanSearchInput" placeholder="Search by trade or location e.g. plumber, electrician, Ajah..." onkeyup="filterArtisans()">
+      <button onclick="filterArtisans()">Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN DIRECTORY -->
+<div class="container">
+  <div class="artisans-layout-wrap">
+    
+    <!-- Sidebar Trade Filter -->
+    <aside class="artisan-filter-card">
+      <h3>Artisan Trades</h3>
+      <div class="cat-filter-list">
+        <button class="cat-filter-btn active" onclick="setTradeFilter('all', this)">
+          <span>All Trades</span>
+          <span class="cat-count">10</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('plumber', this)">
+          <span>Plumbing</span>
+          <span class="cat-count">1</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('electrician', this)">
+          <span>Electrical</span>
+          <span class="cat-count">1</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('ac', this)">
+          <span>AC &amp; Refrigeration</span>
+          <span class="cat-count">1</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('painter', this)">
+          <span>Painting &amp; Screeding</span>
+          <span class="cat-count">1</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('carpenter', this)">
+          <span>Carpentry &amp; Joinery</span>
+          <span class="cat-count">1</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('tiler', this)">
+          <span>Tiling &amp; Flooring</span>
+          <span class="cat-count">1</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('pop', this)">
+          <span>POP &amp; Drywall</span>
+          <span class="cat-count">1</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('cleaner', this)">
+          <span>Cleaning &amp; Janitorial</span>
+          <span class="cat-count">1</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('cctv', this)">
+          <span>CCTV &amp; Security</span>
+          <span class="cat-count">1</span>
+        </button>
+        <button class="cat-filter-btn" onclick="setTradeFilter('solar', this)">
+          <span>Solar &amp; Inverter</span>
+          <span class="cat-count">1</span>
+        </button>
+      </div>
+
+      <div style="margin-top:32px; background:#F8FAFC; border:1px solid var(--border); border-radius:8px; padding:18px; text-align:center;">
+        <h4 style="font-size:0.95rem; margin-bottom:6px; color:var(--text-dark);">Are You a Skilled Artisan?</h4>
+        <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:14px;">Get verified, receive steady job requests, and grow with Nijedee.</p>
+        <a href="become-artisan.html" class="btn btn-outline btn-sm btn-full">Join as an Artisan</a>
+      </div>
+    </aside>
+
+    <!-- Artisans Grid -->
+    <main>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <span style="font-size:0.9rem; color:var(--text-muted);" id="artisanResultsCount">Showing 10 verified artisans across 10 trades</span>
+        <span style="font-size:0.82rem; color:var(--success); font-weight:600; display:flex; align-items:center; gap:5px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Identity &amp; Address Vetted
+        </span>
+      </div>
+
+      <div class="artisan-grid-view" id="artisansGrid">
+        
+        <!-- Artisan 1: Plumbing -->
+        <div class="artisan-card-item" data-trade="plumber" data-keywords="emmanuel olutife plumber plumbing leak pipe ajah badore">
+          <div class="artisan-avatar-circle">EO</div>
+          <h3 class="artisan-name-title">Emmanuel Olutife</h3>
+          <span class="artisan-trade-badge">Licensed Master Plumber</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.8 <span class="count">&bull; 40+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Badore &bull; Ajah Axis
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=plumbing" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+        <!-- Artisan 2: Electrical -->
+        <div class="artisan-card-item" data-trade="electrician" data-keywords="babatunde adekoya electrician electrical wiring board lekki ajah">
+          <div class="artisan-avatar-circle">BA</div>
+          <h3 class="artisan-name-title">Babatunde Adekoya</h3>
+          <span class="artisan-trade-badge">Senior Electrical Engineer</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.9 <span class="count">&bull; 50+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Lekki &bull; Ajah
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=electrical" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+        <!-- Artisan 3: AC & Refrigeration -->
+        <div class="artisan-card-item" data-trade="ac" data-keywords="samuel eze ac air conditioner gas refill refrigeration ajah lekki">
+          <div class="artisan-avatar-circle">SE</div>
+          <h3 class="artisan-name-title">Samuel Eze</h3>
+          <span class="artisan-trade-badge">HVAC &amp; AC Specialist</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.9 <span class="count">&bull; 45+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Ajah &bull; Badore Axis
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=ac" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+        <!-- Artisan 4: Painting & Screeding -->
+        <div class="artisan-card-item" data-trade="painter" data-keywords="tosin adeyemi painter painting screeder wall satin emulsion sangotedo">
+          <div class="artisan-avatar-circle">TA</div>
+          <h3 class="artisan-name-title">Tosin Adeyemi</h3>
+          <span class="artisan-trade-badge">Master Painter &amp; Screeder</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.8 <span class="count">&bull; 35+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Sangotedo &bull; Ajah
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=painting" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+        <!-- Artisan 5: Carpentry & Joinery -->
+        <div class="artisan-card-item" data-trade="carpenter" data-keywords="ibrahim musa carpenter carpentry furniture door wood cabinet badore">
+          <div class="artisan-avatar-circle">IM</div>
+          <h3 class="artisan-name-title">Ibrahim Musa</h3>
+          <span class="artisan-trade-badge">Custom Joiner &amp; Woodworker</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.8 <span class="count">&bull; 30+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Badore &bull; Sangotedo
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=carpentry" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+        <!-- Artisan 6: Tiling & Flooring -->
+        <div class="artisan-card-item" data-trade="tiler" data-keywords="friday akpan tiler tiling floor wall porcelain marble lekki">
+          <div class="artisan-avatar-circle">FA</div>
+          <h3 class="artisan-name-title">Friday Akpan</h3>
+          <span class="artisan-trade-badge">Porcelain &amp; Marble Tiler</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.8 <span class="count">&bull; 28+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Lekki Phase 2 &bull; Chevron
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=pop-tiling" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+        <!-- Artisan 7: POP & Drywall -->
+        <div class="artisan-card-item" data-trade="pop" data-keywords="chidi okonkwo pop plaster ceiling drywall lighting sangotedo ajah">
+          <div class="artisan-avatar-circle">CO</div>
+          <h3 class="artisan-name-title">Chidi Okonkwo</h3>
+          <span class="artisan-trade-badge">POP &amp; False Ceiling Specialist</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.9 <span class="count">&bull; 32+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Sangotedo &bull; Ajah
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=pop-tiling" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+        <!-- Artisan 8: Cleaning -->
+        <div class="artisan-card-item" data-trade="cleaner" data-keywords="grace amadi cleaner cleaning post-construction deep clean fumigation lekki ajah">
+          <div class="artisan-avatar-circle">GA</div>
+          <h3 class="artisan-name-title">Grace Amadi</h3>
+          <span class="artisan-trade-badge">Deep Clean &amp; Post-Construction Lead</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.9 <span class="count">&bull; 60+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Lekki &bull; Ajah &bull; Badore
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=cleaning" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+        <!-- Artisan 9: CCTV & Security -->
+        <div class="artisan-card-item" data-trade="cctv" data-keywords="victor udoh cctv security camera dvr nvr intercom access control ajah">
+          <div class="artisan-avatar-circle">VU</div>
+          <h3 class="artisan-name-title">Victor Udoh</h3>
+          <span class="artisan-trade-badge">CCTV &amp; Access Control Engineer</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.9 <span class="count">&bull; 40+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Ajah &bull; Lekki Corridor
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=cctv" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+        <!-- Artisan 10: Solar & Inverter -->
+        <div class="artisan-card-item" data-trade="solar" data-keywords="kolawole sanusi solar inverter battery panel charge controller badore lekki">
+          <div class="artisan-avatar-circle">KS</div>
+          <h3 class="artisan-name-title">Kolawole Sanusi</h3>
+          <span class="artisan-trade-badge">Certified Solar &amp; Inverter Tech</span>
+          <div class="artisan-verified-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified by NIJEDEE
+          </div>
+          <div class="artisan-rating-row">
+            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            4.9 <span class="count">&bull; 35+ Jobs Completed</span>
+          </div>
+          <div class="artisan-loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Badore &bull; Ajah &bull; Lekki
+          </div>
+          <div class="artisan-action-btns">
+            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
+            <a href="book.html?service=solar" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<!-- ===================== FOOTER ===================== -->
+<footer class="tk-footer">
+  <div class="tk-footer__band">
+    <div class="tk-container tk-footer__band-inner">
+      <h2>Stay Connected With NIJEDEE</h2>
+      <p class="tk-footer__band-copy">Subscribe for practical property maintenance tips, new product arrivals in the shop, and seasonal service updates.</p>
+      <form class="tk-footer__form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NIJEDEE updates!');">
+        <label class="tk-sr" for="tk-email">Email address</label>
+        <input id="tk-email" type="email" placeholder="Enter your email address" required>
+        <button type="submit" class="tk-btn tk-btn--primary">Join Newsletter</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="tk-footer__panel">
+    <div class="tk-footer__top">
+      <div class="tk-footer__brand">
+        <a href="index.html" aria-label="NIJEDEE Home">
+          <img src="assets/images/logo.png" alt="NIJEDEE Group Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+        </a>
+        <p class="tk-footer__tagline">NIJEDEE GROUP &middot; Property Maintenance, Repairs, Cleaning &amp; Marketplace. Registered in Nigeria (CAC RC 1403323).</p>
+        <p class="tk-footer__address">Coverage Corridor: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo, Lagos State.</p>
+        <p class="tk-footer__address" style="color:var(--tk-navy-light);font-weight:700;">
+          Phone/WhatsApp: 07085329909 &middot; 08167469581<br>
+          Website: NIJEDEE.com.ng
+        </p>
+        <div class="tk-footer__social">
+          <a href="https://wa.me/2347085329909" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+          <a href="tel:08167469581" aria-label="Phone">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+          <a href="contact.html" aria-label="Location">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <nav class="tk-footer__nav" aria-label="Footer links">
+        <div class="tk-footer__col">
+          <h3>NIJEDEE</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="become-artisan.html">Become an Artisan</a></li>
+            <li><a href="academy.html">Training Academy</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Customer</h3>
+          <ul>
+            <li><a href="book.html">Book a Service</a></li>
+            <li><a href="contact.html">Customer Dashboard</a></li>
+            <li><a href="contact.html">Track Bookings</a></li>
+            <li><a href="contact.html">Help &amp; Support</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Marketplace</h3>
+          <ul>
+            <li><a href="shop.html">NIJEDEE Shop</a></li>
+            <li><a href="artisans.html">Find an Artisan</a></li>
+            <li><a href="properties.html">Properties &amp; Shortlets</a></li>
+            <li><a href="properties.html#list-property">List Your Property</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="about.html">Terms &amp; Conditions</a></li>
+            <li><a href="about.html">Privacy Policy</a></li>
+            <li><a href="about.html">Artisan Terms</a></li>
+            <li><a href="about.html">Delivery Policy</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="tk-footer__bottom">
+      <p>&copy; 2026 NIJEDEE GROUP (RC 1403323). All rights reserved.</p>
+      <div class="tk-footer__legal-links">
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms</a>
+        <a href="contact.html">Service Areas</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setTradeFilter(trade, btn) {
+    document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.artisan-card-item');
+    let visibleCount = 0;
+    cards.forEach(card => {
+      if (trade === 'all' || card.dataset.trade === trade) {
+        card.style.display = 'flex';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    document.getElementById('artisanResultsCount').textContent = `Showing ${visibleCount} verified artisans`;
+  }
+
+  function filterArtisans() {
+    const query = document.getElementById('artisanSearchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.artisan-card-item');
+    let visibleCount = 0;
+    cards.forEach(card => {
+      const keywords = card.dataset.keywords.toLowerCase();
+      if (keywords.includes(query)) {
+        card.style.display = 'flex';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    document.getElementById('artisanResultsCount').textContent = `Showing ${visibleCount} verified artisans matching "${query}"`;
+  }
+</script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

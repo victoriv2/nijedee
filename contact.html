@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | NIJEDEE Property Maintenance &amp; Repairs</title>
+  <meta name="description" content="Reach NIJEDEE property maintenance team in Badore, Ajah, Sangotedo and Lekki. Call or WhatsApp 08167469581.">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .contact-hero-wrap {
+      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
+      padding: 68px 0 54px;
+      color: #ffffff;
+      text-align: center;
+    }
+    .contact-hero-wrap h1 {
+      color: #ffffff;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 10px;
+    }
+    .contact-hero-wrap p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact-main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 36px;
+      margin: 48px 0 70px;
+    }
+    .contact-channels-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      box-shadow: var(--shadow-sm);
+      height: fit-content;
+    }
+    .contact-channel-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 26px;
+    }
+    .channel-icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: #E3F0FF;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .channel-info h4 {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .channel-info a, .channel-info p {
+      font-size: 0.92rem;
+      color: var(--navy);
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .channel-info span {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+    .contact-form-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      box-shadow: var(--shadow-sm);
+    }
+    .area-badge-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .area-badge-chip {
+      background: #EDF2F7;
+      color: var(--navy);
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .interactive-map-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 30px rgba(7, 34, 79, 0.08);
+    }
+    .map-schematic {
+      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
+      border-radius: 12px;
+      padding: 40px 24px;
+      color: #ffffff;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-nodes-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 32px;
+      position: relative;
+      z-index: 2;
+    }
+    .map-node-item {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .map-node-item strong {
+      display: block;
+      font-size: 1.05rem;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+    .map-node-item span {
+      font-size: 0.8rem;
+      color: #93C5FD;
+    }
+    @media (max-width: 850px) {
+      .contact-main-grid { grid-template-columns: 1fr; }
+      .map-nodes-container { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <img src="assets/images/logo.png" alt="NIJEDEE Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+      </a>
+      <div class="navbar-nav">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="shop.html">Shop</a>
+        <a href="properties.html">Properties</a>
+        <a href="artisans.html">Artisans</a>
+        <a href="academy.html">Academy</a>
+        <a href="about.html">About</a>
+        <a href="contact.html" class="active">Contact</a>
+      </div>
+      <a href="book.html" class="btn btn-primary btn-sm navbar-cta">Book a Service</a>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<nav class="mobile-nav" aria-label="Mobile navigation">
+  <button class="mobile-nav-close" aria-label="Close menu">&times;</button>
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="shop.html">Shop</a>
+  <a href="properties.html">Properties</a>
+  <a href="artisans.html">Artisans</a>
+  <a href="academy.html">Academy</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="book.html" class="btn btn-primary" style="margin-top:16px;text-align:center;justify-content:center;">Book a Service</a>
+</nav>
+<div class="mobile-nav-overlay"></div>
+
+<!-- HERO BANNER -->
+<section class="contact-hero-wrap">
+  <div class="container">
+    <span class="section-label" style="background:rgba(255,255,255,0.18); color:#ffffff; margin-bottom:12px;">We Are Here For You</span>
+    <h1>Get in Touch with Nijedee</h1>
+    <p>Reach out to our customer support desk, request custom project quotes, or coordinate rapid on-site technician dispatch.</p>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<section class="section" style="background:#F9FBFC; padding-top:20px;">
+  <div class="container">
+    
+    <div class="contact-main-grid">
+      
+      <!-- Channels Column -->
+      <div class="contact-channels-card">
+        <h3 style="font-size:1.25rem; color:var(--text-dark); margin-bottom:6px;">Support Channels</h3>
+        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:28px;">Connect directly with our facility supervisors and dispatch coordinators.</p>
+
+        <!-- Phone / WhatsApp -->
+        <div class="contact-channel-item">
+          <div class="channel-icon-circle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .99h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="channel-info">
+            <h4>Phone &amp; Direct Call</h4>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <a href="tel:07085329909" style="font-weight:700;">07085329909</a>
+              <span style="color:var(--text-muted);">&bull;</span>
+              <a href="tel:08167469581" style="font-weight:700;">08167469581</a>
+            </div>
+            <span>Monday - Saturday, 7:30 AM - 7:00 PM</span>
+          </div>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="contact-channel-item">
+          <div class="channel-icon-circle" style="background:#E8F5EE; color:var(--success);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+          </div>
+          <div class="channel-info">
+            <h4>WhatsApp Instant Chat</h4>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <a href="https://wa.me/2347085329909" target="_blank" rel="noopener">07085329909</a>
+              <span style="color:var(--text-muted);">&bull;</span>
+              <a href="https://wa.me/2348167469581" target="_blank" rel="noopener">08167469581</a>
+            </div>
+            <span>Send photos of faulty items or repairs for instant quotation</span>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="contact-channel-item">
+          <div class="channel-icon-circle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="channel-info">
+            <h4>Email Support</h4>
+            <a href="mailto:info@nijedee.com.ng">info@nijedee.com.ng</a>
+            <span>Inquiries answered within 2 business hours</span>
+          </div>
+        </div>
+
+        <!-- Physical Office -->
+        <div class="contact-channel-item">
+          <div class="channel-icon-circle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="channel-info">
+            <h4>Head Office</h4>
+            <p style="color:var(--text-dark); font-weight:600;">1 Catholic Mission Street, Badore, Ajah, Lagos</p>
+            <span>Registration: RC 1403323</span>
+          </div>
+        </div>
+
+        <div style="padding-top:20px; border-top:1px solid var(--border); margin-top:20px;">
+          <h5 style="font-size:0.85rem; color:var(--text-dark); margin-bottom:8px;">Primary Service Areas:</h5>
+          <div class="area-badge-cloud">
+            <span class="area-badge-chip">Badore</span>
+            <span class="area-badge-chip">Ajah</span>
+            <span class="area-badge-chip">Sangotedo</span>
+            <span class="area-badge-chip">Lekki Phase 1</span>
+            <span class="area-badge-chip">Lekki Phase 2</span>
+            <span class="area-badge-chip">Chevron / Osapa</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Contact Form Box -->
+      <div class="contact-form-box">
+        <h3 style="font-size:1.35rem; color:var(--text-dark); margin-bottom:6px;">Send Us a Message</h3>
+        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:24px;">Fill out the form and our team will get back to you immediately.</p>
+
+        <form id="contactPageForm" onsubmit="handleContactSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cName">Your Full Name</label>
+              <input type="text" id="cName" placeholder="e.g. Engr. Kunle Bello" required>
+            </div>
+            <div class="form-group">
+              <label for="cPhone">Phone Number</label>
+              <input type="tel" id="cPhone" placeholder="08167469581" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cEmail">Email Address</label>
+              <input type="email" id="cEmail" placeholder="kunle@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="cArea">Your Neighborhood / Area</label>
+              <select id="cArea" required>
+                <option value="Badore">Badore, Ajah</option>
+                <option value="Ajah">Ajah Central</option>
+                <option value="Sangotedo">Sangotedo</option>
+                <option value="Lekki Phase 1">Lekki Phase 1</option>
+                <option value="Lekki Phase 2 / Chevron">Lekki Phase 2 / Chevron</option>
+                <option value="Other Lagos Location">Other Lagos Location</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cService">Service of Interest</label>
+            <select id="cService" required>
+              <option value="General Property Maintenance">General Property Maintenance</option>
+              <option value="Cleaning & Fumigation">Cleaning &amp; Fumigation</option>
+              <option value="Plumbing Repair / Installation">Plumbing Repair / Installation</option>
+              <option value="Electrical Repair / Wiring">Electrical Repair / Wiring</option>
+              <option value="Painting & Wall Screeding">Painting &amp; Wall Screeding</option>
+              <option value="Solar & Inverter Installation">Solar &amp; Inverter Installation</option>
+              <option value="Building Materials Purchase">Building Materials Purchase</option>
+              <option value="Shortlet / Rental Property">Shortlet / Rental Property</option>
+              <option value="Academy Enrollment">Academy Enrollment</option>
+              <option value="Security Consultation">Lions Gate Security Services</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cMsg">Your Message or Project Description</label>
+            <textarea id="cMsg" placeholder="Please describe what you need, your property size, or any specific challenges you're facing..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-full" style="margin-top:10px;">Send Message</button>
+        </form>
+
+        <div id="contactSuccessMsg" style="display:none; text-align:center; padding:32px 16px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; margin-top:20px;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5" style="margin:0 auto 10px; display:block;"><polyline points="20 6 9 17 4 12"/></svg>
+          <h4 style="color:#166534; margin-bottom:6px;">Message Received!</h4>
+          <p style="color:#15803D; font-size:0.9rem;">Thank you for contacting NIJEDEE. One of our property managers will call you back shortly.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Interactive Service Area Map Visualizer -->
+    <div class="interactive-map-card">
+      <div style="text-align:center; margin-bottom:24px;">
+        <span class="section-label">Service Corridor</span>
+        <h2 style="font-size:1.6rem; color:var(--text-dark); margin-bottom:8px;">Our Lagos Island Operational Coverage</h2>
+        <p style="color:var(--text-muted); font-size:0.95rem;">Rapid deployment artisan units stationed along the Lekki-Epe expressway corridor.</p>
+      </div>
+
+      <div class="map-schematic">
+        <h3 style="color:#ffffff; font-size:1.35rem; margin-bottom:8px;">Continuous Coverage from Lekki to Sangotedo</h3>
+        <p style="color:rgba(255,255,255,0.85); font-size:0.92rem; max-width:550px; margin:0 auto;">Average technician arrival time under 60 minutes for scheduled calls and under 2 hours for emergency callouts.</p>
+
+        <div class="map-nodes-container">
+          <div class="map-node-item">
+            <strong>Badore</strong>
+            <span>Head Office &amp; Mart</span>
+          </div>
+          <div class="map-node-item">
+            <strong>Ajah</strong>
+            <span>Central Dispatch Station</span>
+          </div>
+          <div class="map-node-item">
+            <strong>Sangotedo</strong>
+            <span>Monastery Rd &amp; Estates</span>
+          </div>
+          <div class="map-node-item">
+            <strong>Lekki</strong>
+            <span>Phase 1, 2 &amp; Chevron</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<!-- ===================== FOOTER ===================== -->
+<footer class="tk-footer">
+  <div class="tk-footer__band">
+    <div class="tk-container tk-footer__band-inner">
+      <h2>Stay Connected With NIJEDEE</h2>
+      <p class="tk-footer__band-copy">Subscribe for practical property maintenance tips, new product arrivals in the shop, and seasonal service updates.</p>
+      <form class="tk-footer__form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NIJEDEE updates!');">
+        <label class="tk-sr" for="tk-email">Email address</label>
+        <input id="tk-email" type="email" placeholder="Enter your email address" required>
+        <button type="submit" class="tk-btn tk-btn--primary">Join Newsletter</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="tk-footer__panel">
+    <div class="tk-footer__top">
+      <div class="tk-footer__brand">
+        <a href="index.html" aria-label="NIJEDEE Home">
+          <img src="assets/images/logo.png" alt="NIJEDEE Group Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+        </a>
+        <p class="tk-footer__tagline">NIJEDEE GROUP &middot; Property Maintenance, Repairs, Cleaning &amp; Marketplace. Registered in Nigeria (CAC RC 1403323).</p>
+        <p class="tk-footer__address">Coverage Corridor: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo, Lagos State.</p>
+        <p class="tk-footer__address" style="color:var(--tk-navy-light);font-weight:700;">
+          Phone/WhatsApp: 07085329909 &middot; 08167469581<br>
+          Website: NIJEDEE.com.ng
+        </p>
+        <div class="tk-footer__social">
+          <a href="https://wa.me/2347085329909" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+          <a href="tel:08167469581" aria-label="Phone">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+          <a href="contact.html" aria-label="Location">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <nav class="tk-footer__nav" aria-label="Footer links">
+        <div class="tk-footer__col">
+          <h3>NIJEDEE</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="become-artisan.html">Become an Artisan</a></li>
+            <li><a href="academy.html">Training Academy</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Customer</h3>
+          <ul>
+            <li><a href="book.html">Book a Service</a></li>
+            <li><a href="contact.html">Customer Dashboard</a></li>
+            <li><a href="contact.html">Track Bookings</a></li>
+            <li><a href="contact.html">Help &amp; Support</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Marketplace</h3>
+          <ul>
+            <li><a href="shop.html">NIJEDEE Shop</a></li>
+            <li><a href="artisans.html">Find an Artisan</a></li>
+            <li><a href="properties.html">Properties &amp; Shortlets</a></li>
+            <li><a href="properties.html#list-property">List Your Property</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="about.html">Terms &amp; Conditions</a></li>
+            <li><a href="about.html">Privacy Policy</a></li>
+            <li><a href="about.html">Artisan Terms</a></li>
+            <li><a href="about.html">Delivery Policy</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="tk-footer__bottom">
+      <p>&copy; 2026 NIJEDEE GROUP (RC 1403323). All rights reserved.</p>
+      <div class="tk-footer__legal-links">
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms</a>
+        <a href="contact.html">Service Areas</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function handleContactSubmit(e) {
+    e.preventDefault();
+    document.getElementById('contactPageForm').style.display = 'none';
+    document.getElementById('contactSuccessMsg').style.display = 'block';
+  }
+</script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

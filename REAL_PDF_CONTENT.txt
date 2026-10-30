@@ -1,0 +1,523 @@
+﻿NIJEDEE GROUP
+Platform Blueprint
+Property Maintenance,
+Marketplace & Facility
+Management
+A complete map of the NIJEDEE web platform \001 every
+module, user flow and business capability, prepared for
+developers building it and investors backing it.
+NIJEDEE.com.ng
+Lagos, Nigeria \001 Lekki \002 Ajah \002 Badore \002
+Sangotedo
+Prepared August 2026
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 2
+How This Document Works
+This blueprint documents the full NIJEDEE web platform \001 the site map, every
+customer-facing module, and the underlying business model. It is written for two
+audiences at once.
+FOR DEVELOPERS
+\003 Full site map & page inventory
+\003 Every module's data fields & user flows
+\003 Booking, shop, and artisan-network logic
+\003 Account, search & dashboard requirements
+FOR INVESTORS
+\003 The business model in one page
+\003 Revenue streams across 4 platform pillars
+\003 Market: Lagos property-services demand
+\003 Growth path from services to marketplace
+Contents
+01
+Executive Summary
+The business in one page
+02
+Platform Architecture
+The 4 pillars & site map
+03
+Module 1 \001 Home & Discovery
+Landing experience, value props
+04
+Module 2 \001 Services Catalogue
+13 service categories, full spec
+05
+Module 3 \001 Booking Engine
+End-to-end booking flow
+06
+Module 4 \001 NIJEDEE Shop
+E-commerce: materials & products
+07
+Module 5 \001 Properties
+Shortlets, rentals, sales, PM
+08
+Module 6 & 7 \001 Artisan Network
+Two-sided marketplace
+09
+Module 8 \001 Vocational Academy
+Training-to-workforce pipeline
+10
+Account, Search & Footer
+Cross-cutting platform features
+11
+Investor View \001 Business Model
+Revenue streams & market
+12
+Contact & Service Area
+Reach and coverage
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 3
+01 \001 Executive Summary
+NIJEDEE is a technology-driven property maintenance, repair, cleaning, facility management and
+property marketplace company serving homeowners, tenants, landlords, businesses and
+property managers across Lagos, with primary coverage in Lekki, Ajah, Badore and Sangotedo.
+From fixing a leaking pipe and servicing an AC unit, to deep cleaning, painting, buying building
+materials and managing an entire property, NIJEDEE brings property services into one platform
+\001 reducing the friction, risk and guesswork customers currently face when sourcing trustworthy
+artisans and materials.
+13
+Service Categories
+4
+Platform Pillars
+4+
+Lagos Zones Covered
+2-WK
+Academy Training
+Cycle
+The Opportunity
+Property problems in Lagos are stressful: finding a trustworthy artisan, getting a fair price,
+sourcing materials, and supervising repairs each currently require separate, unreliable
+channels. NIJEDEE consolidates these into one trusted platform \001 a strategy that mirrors
+successful home-services marketplaces globally, adapted to the realities and trust deficit of the
+Nigerian informal artisan economy.
+Four Pillars, One Platform
+Services
+On-demand booking of 13 categories of home and office repair, maintenance and
+cleaning work, delivered by verified professionals.
+Marketplace
+NIJEDEE Shop for building materials, paints, tools and property products \001 with
+cart, checkout and delivery tracking.
+Properties
+Shortlets, rentals, sales listings and full property management for landlords and
+property owners.
+People
+A two-sided artisan network plus the Vocational Skills Academy \001 training the
+next generation of verified professionals.
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 4
+02 \001 Platform Architecture
+Recommended top navigation (10 content areas condensed for usability):
+Home
+Services
+Book a
+Service
+Shop
+Properties
+Find an
+Artisan
+More \002
+Account
+Grouped under More \001
+: Become an Artisan \002 Training Academy \002 About Us \002 Contact \002 Help & Support. "Book a
+Service" is treated as the primary conversion button site-wide.
+Full Site Map
+#
+Section
+Core Contents
+1
+Home
+Hero, value props, service grid, how-it-works, CTA
+2
+Services
+13 category pages, each with full service list + booking CTA
+3
+Book a Service
+Multi-step booking form + confirmation flow
+4
+Shop
+Product catalogue, product page, cart, checkout, order tracking
+5
+Properties
+Shortlets, rentals, sales, owner submission, property management
+6
+Find an Artisan
+Artisan directory, profile pages, ratings & verification
+7
+Become an Artisan
+Artisan registration & application flow
+8
+Training Academy
+Vocational programme info + registration
+9
+About Us
+Mission, vision, ecosystem overview
+10
+Contact
+Support channels, service-area map, contact form
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 5
+03 \001 Module 1 \003 Home & Discovery
+The landing experience establishing trust and directing users to their next action.
+Hero Message
+\004Your Property. Our Responsibility.\005
+NIJEDEE is a technology-driven property maintenance, repair, cleaning, facility
+management and property marketplace company serving homeowners, tenants,
+landlords, businesses and property managers across Lagos.
+Primary buttons: Book a Service \002 Explore Services \002 Shop Building Materials
+Why Choose NIJEDEE \003 Value Propositions
+Trusted Professionals
+Connect with trained and verified
+artisans and service
+professionals.
+Convenient Home Service
+Book services and have the team
+come to your home, office or
+property.
+One Platform for
+Everything
+Maintenance, repairs, cleaning,
+painting, materials and artisans
+in one place.
+Transparent Pricing
+Clear service information and
+quotations before work begins.
+Quality Workmanship
+Professional delivery, customer
+satisfaction and proper job
+completion.
+How NIJEDEE Works \003 6-Step Flow
+1
+Choose a
+Service
+2
+Tell Us What You
+Need
+3
+Get a Quote
+4
+Book & Pay
+5
+Professional
+Service Delivery
+6
+Job Completion
+& Review
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 6
+04 \001 Module 2 \003 Services Catalogue
+13 categories power the core booking engine. Each has a dedicated page, service list,
+and \004Book [Service]\005 CTA.
+Category
+What's Included
+Plumbing
+Leak repairs \002 Blocked drains \002 Toilet & pipe repairs \002 Water tank & pump
+install \002 Bathroom/kitchen plumbing
+Electrical
+Fault diagnosis \002 Socket/switch/lighting install \002 Wiring \002 Generator
+connections \002 Distribution boards
+AC Installation &
+Maintenance
+Installation & servicing \002 Cleaning & gas refill \002 Leak detection \002 Compressor
+services \002 Preventive maintenance
+Painting &
+Decoration
+Interior/exterior painting \002 Wall prep & screeding \002 Texture finishing \002
+Commercial painting
+Cleaning Services
+Regular & deep cleaning \002 Move-in/move-out \002 Post-construction \002
+Office/kitchen/bathroom \002 Laundry & upholstery
+Fumigation & Pest
+Control
+General fumigation \002 Cockroach/bedbug/mosquito control \002 Pest inspection \002
+Preventive treatment
+Carpentry &
+Furniture
+Wardrobes & cabinets \002 Beds, TV consoles, shelves \002 Office furniture \002
+Custom furniture & repairs
+POP, Tiling & Interior
+POP ceiling \002 Wall screeding & panels \002 Floor/wall tiling \002 Interior decoration
+CCTV & Security
+Installation & maintenance \002 Camera replacement \002 Remote monitoring
+setup
+Solar & Inverter
+Solar/inverter installation \002 Battery installation \002 System maintenance &
+assessment
+Facility Management
+Routine inspections \002 Preventive maintenance \002 Vendor/artisan management
+\002 Property reporting
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 7
+05 \001 Module 3 \003 Booking Engine
+The core conversion flow. Developers should treat this as the platform's primary
+transactional path.
+Booking Form \003 Data Model
+Field Group
+Captured Data
+Customer Info
+Full name \002 Phone \002 WhatsApp \002 Email
+Property Info
+Type (Apartment/House/Office/Shop/Estate/Commercial/Other)
+Location
+Estate/Street \002 Area \002 Landmark
+Service Required
+Select from 13 categories
+Problem Description
+Free text \001 customer explains the issue
+Media Upload
+Photos/videos of the problem
+Scheduling
+Preferred date & time
+Confirmation Logic
+On submit, the customer sees: \004Your service request has been received. A NIJEDEE
+representative will contact you to confirm the details, pricing and appointment.\005
+This should be backed by automated confirmation via WhatsApp, SMS or email \001 the booking
+record then enters the operations queue for pricing/inspection and artisan assignment.
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 8
+06 \001 Module 4 \003 NIJEDEE Shop
+An e-commerce layer that monetises materials demand generated by the services
+business.
+Category
+What's Included
+Nijedee Paints
+Emulsion \002 Matt Emulsion \002 Higher Satin \002 Other paint products
+Building Materials
+Cement \002 Tiles \002 Plumbing/electrical materials \002 POP materials \002 Accessories
+Tools & Equipment
+Plumbing/electrical tools \002 Painting tools \002 Cleaning & construction
+equipment
+Property Products
+Cleaning products \002 Security products \002 Solar products \002 Home improvement
+Product Page \003 Required Fields
+Product name \002 Images \002 Price \002 Description \002 Available quantity \002 Specifications \002 Delivery
+information \001 with Add to Cart
+, Buy Now and WhatsApp to Order actions.
+Checkout Flow
+1
+Add to Cart
+2
+Delivery
+Address
+3
+Delivery Option
+4
+Payment
+Method
+5
+Review Order
+6
+Confirm
+7
+Track Order
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 9
+07 \001 Module 5 \003 Properties
+Find, rent, sell or manage properties \001 extending NIJEDEE from services into real estate.
+Category
+What's Included
+Shortlet Apartments
+Short-stay bookings for trips, holidays, events
+Properties for Rent
+Residential & commercial listings
+Properties for Sale
+Purchase listings
+Property Owners
+Submit properties for listing & management
+Property
+Management
+Inspections \002 Maintenance \002 Cleaning \002 Repairs \002 Tenant support \002 Routine
+checks
+Listing Data Model
+Photos \002 Location \002 Price \002 Number of bedrooms \002 Amenities \002 Availability \002 House rules \002
+Contact/booking button.
+Strategic note: Properties is the module that converts NIJEDEE from a maintenance company
+into a full property-services marketplace \001 the same customer who books a shortlet may
+become a Facility Management client, and every managed property is a recurring source of
+service bookings.
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 10
+08 \001 Modules 6 & 7 \003 Artisan Network
+A two-sided marketplace: customers find verified artisans; artisans find consistent work.
+FIND AN ARTISAN
+10 categories: Plumbers, Electricians, AC
+Techs, Painters,
+Carpenters, Tilers, POP Installers, Cleaners,
+CCTV Techs, Solar Techs
+Profile fields: Name, photo, skill, location,
+years of experience, services, verification
+status,
+ratings, reviews, completed jobs, price,
+availability
+BECOME AN ARTISAN
+Benefits: More jobs, profile building,
+reputation via reviews, business opportunities,
+training access
+Registration fields: Name, phone, WhatsApp,
+location, skill, experience, previous work,
+identification, references, work photos/videos
+Trust & Safety
+NIJEDEE verifies artisans before allowing them to operate on the platform. Customers can report
+problems, rate artisans and submit reviews after every completed job \001 the verification layer is
+the core trust differentiator versus informal, unverified artisan sourcing.
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 11
+09 \001 Module 8 \003 Vocational Skills
+Academy
+Empowering young minds with practical skills for employment, entrepreneurship and
+self-reliance.
+The NIJEDEE Vocational Skills & Entrepreneurship Academy provides practical training
+designed to help young people develop technical and entrepreneurial skills \001 and feeds
+directly into the artisan network, creating a homegrown pipeline of verified professionals.
+Training Areas
+\177
+Plumbing
+\177
+Electrical Installation & Maintenance
+\177
+House Painting & Finishing
+\177
+AC Installation & Maintenance
+\177
+AC Gas Filling
+\177
+Furniture Making
+\177
+Interior Installation
+\177
+Cleaning Services
+\177
+Marketing
+\177
+Sales
+\177
+Business Development
+Who Can Join
+Secondary school students \002 School leavers \002 Undergraduates \002 Young entrepreneurs \002 Anyone
+interested in practical skills.
+What Students Gain
+Practical training, hands-on experience and business knowledge to pursue employment, start a
+business, or work as independent professionals.
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 12
+10 \001 Account, Search & Footer
+Cross-cutting platform features that support every module above.
+Customer Dashboard
+\177
+View profile
+\177
+Book services
+\177
+Track bookings
+\177
+View booking history
+\177
+Track orders
+\177
+View invoices
+\177
+Save addresses
+\177
+Save favourite services
+\177
+Manage payments
+\177
+View property information
+\177
+Rate completed jobs
+\177
+Contact support
+Site Search
+Search Type
+Example Query
+Services
+\004AC servicing\005, \004plumber\005, \004deep cleaning\005
+Products
+\004Paint\005, \004cement\005, \004tiles\005, \004inverter\005
+Artisans
+\004Electrician near me\005
+Properties
+\0042 bedroom shortlet in Ajah\005
+Footer Structure
+Group
+Links
+NIJEDEE
+About Us \002 Our Services \002 Contact Us \002 Careers \002 Become an Artisan \002 Training
+Academy
+Customer
+Book a Service \002 My Account \002 My Bookings \002 My Orders \002 Help & Support
+Marketplace
+Shop \002 Find an Artisan \002 Properties \002 Shortlets \002 List Your Property
+Legal
+Terms & Conditions \002 Privacy Policy \002 Refund Policy \002 Cancellation Policy \002
+Artisan Terms \002 Delivery Policy
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 13
+11 \001 Investor View \003 Business Model
+How the platform's modules translate into revenue.
+Revenue Stream
+Mechanism
+Services (core)
+Commission or margin on 13 booked service categories, priced per job after
+inspection/quote.
+Shop (marketplace)
+Retail margin on building materials, Nijedee-branded paints, tools and
+property products.
+Properties
+Booking fees on shortlets, listing/agency fees on rentals & sales, recurring
+facility-management contracts.
+Artisan Network
+Lead-generation or subscription fees from verified artisans; premium
+placement in the directory.
+Academy
+Programme fees from the two-week vocational training cycle; graduates
+feed the artisan supply pipeline.
+Why This Model Compounds
+Each pillar reinforces the others. A services customer becomes a shop customer buying
+materials for the same job. A shortlet guest may become a long-term property client. A
+facility-management contract generates recurring service bookings. Every completed job trains
+the ratings data that makes the artisan network more trustworthy \001 and the Academy supplies
+the verified workforce that scales the whole system without relying purely on the existing
+informal artisan market.
+Market Context
+NIJEDEE currently serves Lekki, Ajah, Badore and Sangotedo, with other parts of Lagos served
+by arrangement \001 a dense, fast-growing corridor of new residential and commercial
+development where reliable, verified property services are in persistent short supply.
+NIJEDEE GROUP
+Platform Blueprint \001 Developer & Investor Edition
+NIJEDEE.com.ng  |  Property. Simplified.
+Page 14
+12 \001 Contact & Service Area
+Phone / WhatsApp
+07085329909
+Website
+NIJEDEE.com.ng
+Service Area
+Lekki \002 Ajah \002 Badore \002 Sangotedo \002 other Lagos areas by arrangement
+Quick Contact Actions
+WhatsApp Us
+Call NIJEDEE
+Book a Service
+NIJEDEE Group \003 Property. Simplified.
+This blueprint is a working document intended to align product, engineering and investment planning.

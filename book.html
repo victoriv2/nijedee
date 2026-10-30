@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Service | NIJEDEE Property Maintenance</title>
+  <meta name="description" content="Book verified property maintenance, cleaning, electrical, plumbing and artisan services in Lagos with instant confirmation.">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .booking-page-wrap {
+      padding: 60px 0 40px;
+      background: #F8FAFC;
+      min-height: 80vh;
+    }
+    .booking-stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 40px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .booking-stepper::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 12%;
+      right: 12%;
+      height: 2px;
+      background: var(--border);
+      z-index: 1;
+    }
+    .stepper-progress {
+      position: absolute;
+      top: 20px;
+      left: 12%;
+      height: 2px;
+      background: var(--blue);
+      z-index: 2;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 3;
+      cursor: default;
+    }
+    .step-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      transition: all 0.25s ease;
+    }
+    .step-item.active .step-circle {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.15);
+    }
+    .step-item.completed .step-circle {
+      border-color: var(--success);
+      background: var(--success);
+      color: #ffffff;
+    }
+    .step-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .step-item.active .step-title {
+      color: var(--navy);
+      font-weight: 700;
+    }
+    .booking-card-main {
+      max-width: 680px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow-sm);
+    }
+    .step-panel {
+      display: none;
+    }
+    .step-panel.active {
+      display: block;
+    }
+    .time-slots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .time-slot-btn {
+      padding: 14px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .time-slot-btn:hover {
+      border-color: var(--blue);
+      background: #F0F7FF;
+    }
+    .time-slot-btn.selected {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #ffffff;
+    }
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 28px;
+    }
+    .summary-table tr {
+      border-bottom: 1px solid #EDF2F7;
+    }
+    .summary-table td {
+      padding: 12px 6px;
+      font-size: 0.92rem;
+    }
+    .summary-table td:first-child {
+      color: var(--text-muted);
+      width: 38%;
+      font-weight: 500;
+    }
+    .summary-table td:last-child {
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+    .btn-step-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .confirmation-view {
+      display: none;
+      text-align: center;
+      padding: 30px 10px;
+    }
+    .confirmation-view.active {
+      display: block;
+    }
+    .success-badge-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #E8F5EE;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .booking-ref-box {
+      display: inline-block;
+      background: #EBF3FF;
+      border: 1px dashed var(--blue);
+      border-radius: 8px;
+      padding: 10px 24px;
+      margin: 18px 0 24px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--navy);
+      letter-spacing: 1px;
+    }
+    @media (max-width: 600px) {
+      .booking-card-main { padding: 24px 18px; }
+      .step-title { display: none; }
+      .time-slots-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <img src="assets/images/logo.png" alt="NIJEDEE Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+      </a>
+      <div class="navbar-nav">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="shop.html">Shop</a>
+        <a href="properties.html">Properties</a>
+        <a href="artisans.html">Artisans</a>
+        <a href="academy.html">Academy</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <a href="book.html" class="btn btn-primary btn-sm navbar-cta active">Book a Service</a>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<nav class="mobile-nav" aria-label="Mobile navigation">
+  <button class="mobile-nav-close" aria-label="Close menu">&times;</button>
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="shop.html">Shop</a>
+  <a href="properties.html">Properties</a>
+  <a href="artisans.html">Artisans</a>
+  <a href="academy.html">Academy</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="book.html" class="btn btn-primary" style="margin-top:16px;text-align:center;justify-content:center;">Book a Service</a>
+</nav>
+<div class="mobile-nav-overlay"></div>
+
+<!-- HEADER BANNER -->
+<section style="background:linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%); padding:54px 0 44px; color:#ffffff; text-align:center;">
+  <div class="container">
+    <h1 style="color:#ffffff; font-size:clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom:8px;">Book a Service</h1>
+    <p style="color:rgba(255,255,255,0.85); font-size:1.02rem;">Fill in the details below to schedule your verified artisan or property service.</p>
+  </div>
+</section>
+
+<!-- BOOKING WIZARD -->
+<div class="booking-page-wrap">
+  <div class="container">
+    
+    <!-- Stepper Navigation -->
+    <div class="booking-stepper">
+      <div class="stepper-progress" id="stepperProgress"></div>
+      
+      <div class="step-item active" id="step-ind-1">
+        <div class="step-circle">1</div>
+        <span class="step-title">Service &amp; Category</span>
+      </div>
+      <div class="step-item" id="step-ind-2">
+        <div class="step-circle">2</div>
+        <span class="step-title">Date &amp; Time</span>
+      </div>
+      <div class="step-item" id="step-ind-3">
+        <div class="step-circle">3</div>
+        <span class="step-title">Your Details</span>
+      </div>
+      <div class="step-item" id="step-ind-4">
+        <div class="step-circle">4</div>
+        <span class="step-title">Review &amp; Confirm</span>
+      </div>
+    </div>
+
+    <!-- Booking Card -->
+    <div class="booking-card-main">
+      <form id="bookingWizardForm" onsubmit="return false;">
+        
+        <!-- STEP 1: Service & Category -->
+        <div class="step-panel active" id="stepPanel1">
+          <h2 style="font-size:1.35rem; margin-bottom:6px; color:var(--text-dark);">Step 1: Service &amp; Category</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:24px;">Choose the primary service you require for your home or property.</p>
+
+          <div class="form-group">
+            <label for="bookService">Select Service Category</label>
+            <select id="bookService" required onchange="updateSubCategories()">
+              <option value="">-- Choose a Service --</option>
+              <option value="Cleaning & Fumigation" selected>Cleaning &amp; Fumigation</option>
+              <option value="Property Maintenance & Repairs">Property Maintenance &amp; Repairs</option>
+              <option value="Building Mart & Materials">Building Mart (Building Materials)</option>
+              <option value="Interior & Furniture Design">Interior &amp; Furniture Design</option>
+              <option value="Painting & Wall Screeding">Painting &amp; Wall Screeding</option>
+              <option value="To-Let & Shortlet Management">To-Let &amp; Shortlet Management</option>
+              <option value="Solar & Inverter Solutions">Solar &amp; Inverter Solutions</option>
+              <option value="Artisans Academy Training">Artisans Academy Training</option>
+              <option value="Lions Gate Security Services">Lions Gate Security Services</option>
+              <option value="Plumbing & Water Systems">Plumbing &amp; Water Systems</option>
+              <option value="Electrical Repairs & Wiring">Electrical Repairs &amp; Wiring</option>
+              <option value="Carpentry & Woodwork">Carpentry &amp; Woodwork</option>
+              <option value="General Handyman Repairs">General Handyman Repairs</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="bookCategory">Select Specific Sub-Category</label>
+            <select id="bookCategory" required>
+              <option value="House Deep Cleaning">House Deep Cleaning</option>
+              <option value="Post-Construction Cleaning">Post-Construction Cleaning</option>
+              <option value="Full Fumigation & Pest Elimination">Full Fumigation &amp; Pest Elimination</option>
+              <option value="Carpet & Rug Steam Wash">Carpet &amp; Rug Steam Wash</option>
+              <option value="Sofa & Furniture Detailing">Sofa &amp; Furniture Detailing</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="bookType">Property / Job Type</label>
+            <select id="bookType" required>
+              <option value="Studio / Self-contained">Studio / Self-contained</option>
+              <option value="1-Bedroom Apartment">1-Bedroom Apartment</option>
+              <option value="2-Bedroom Apartment" selected>2-Bedroom Apartment</option>
+              <option value="3-Bedroom Flat / Apartment">3-Bedroom Flat / Apartment</option>
+              <option value="4-Bedroom Duplex / Semi-detached">4-Bedroom Duplex / Semi-detached</option>
+              <option value="5-Bedroom Fully Detached Mansion">5-Bedroom Fully Detached Mansion</option>
+              <option value="Commercial Office / Store">Commercial Office / Store</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="bookUrgency">Service Urgency</label>
+            <select id="bookUrgency">
+              <option value="Standard Scheduled">Standard Scheduled Service</option>
+              <option value="Emergency Priority (Within 2 Hours)">Emergency Priority (Within 2 Hours)</option>
+              <option value="Weekend / Public Holiday">Weekend / Public Holiday</option>
+            </select>
+          </div>
+
+          <div class="btn-step-group">
+            <div></div>
+            <button type="button" class="btn btn-primary" onclick="goToStep(2)">Next Step &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Date & Time -->
+        <div class="step-panel" id="stepPanel2">
+          <h2 style="font-size:1.35rem; margin-bottom:6px; color:var(--text-dark);">Step 2: Date &amp; Time</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:24px;">Select when you want our verified technicians to arrive.</p>
+
+          <div class="form-group">
+            <label for="bookDate">Preferred Service Date</label>
+            <input type="date" id="bookDate" required>
+          </div>
+
+          <div class="form-group">
+            <label>Select Arrival Time Window</label>
+            <div class="time-slots-grid">
+              <div class="time-slot-btn selected" onclick="selectSlot(this, 'Morning (8:00 AM - 12:00 PM)')">
+                Morning<br><span style="font-size:0.78rem; font-weight:normal; opacity:0.8;">8:00 AM - 12:00 PM</span>
+              </div>
+              <div class="time-slot-btn" onclick="selectSlot(this, 'Afternoon (12:00 PM - 4:00 PM)')">
+                Afternoon<br><span style="font-size:0.78rem; font-weight:normal; opacity:0.8;">12:00 PM - 4:00 PM</span>
+              </div>
+              <div class="time-slot-btn" onclick="selectSlot(this, 'Evening (4:00 PM - 7:00 PM)')">
+                Evening<br><span style="font-size:0.78rem; font-weight:normal; opacity:0.8;">4:00 PM - 7:00 PM</span>
+              </div>
+            </div>
+            <input type="hidden" id="selectedTimeSlot" value="Morning (8:00 AM - 12:00 PM)">
+          </div>
+
+          <div class="form-group" style="margin-top:20px;">
+            <label for="accessNotes">Special Access Instructions (Optional)</label>
+            <textarea id="accessNotes" placeholder="e.g. Estate gate code required, second floor apartment, water source available in compound..."></textarea>
+          </div>
+
+          <div class="btn-step-group">
+            <button type="button" class="btn btn-outline" onclick="goToStep(1)">&larr; Back</button>
+            <button type="button" class="btn btn-primary" onclick="goToStep(3)">Next Step &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Your Details -->
+        <div class="step-panel" id="stepPanel3">
+          <h2 style="font-size:1.35rem; margin-bottom:6px; color:var(--text-dark);">Step 3: Your Contact &amp; Location</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:24px;">Where should our artisan report, and who should we contact upon arrival?</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clientName">Full Name</label>
+              <input type="text" id="clientName" placeholder="e.g. Chukwudi Adeleke" required>
+            </div>
+            <div class="form-group">
+              <label for="clientPhone">Phone Number (WhatsApp Preferred)</label>
+              <input type="tel" id="clientPhone" placeholder="08167469581" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clientEmail">Email Address</label>
+              <input type="email" id="clientEmail" placeholder="adeleke@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="clientArea">Service Area</label>
+              <select id="clientArea" required>
+                <option value="Badore">Badore, Ajah</option>
+                <option value="Ajah">Ajah Central</option>
+                <option value="Sangotedo">Sangotedo (Monastery Road / Shoprite axis)</option>
+                <option value="Lekki Phase 1">Lekki Phase 1</option>
+                <option value="Lekki Phase 2 / Chevron">Lekki Phase 2 / Chevron / Osapa</option>
+                <option value="Ikota / VGC">Ikota / Victoria Garden City</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="clientAddress">Full Street Address &amp; Estate Name</label>
+            <input type="text" id="clientAddress" placeholder="e.g. Flat 4B, Block 2, Palm View Estate, Badore Road, Ajah" required>
+          </div>
+
+          <div class="btn-step-group">
+            <button type="button" class="btn btn-outline" onclick="goToStep(2)">&larr; Back</button>
+            <button type="button" class="btn btn-primary" onclick="goToStep(4)">Review Booking &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Review & Confirm -->
+        <div class="step-panel" id="stepPanel4">
+          <h2 style="font-size:1.35rem; margin-bottom:6px; color:var(--text-dark);">Step 4: Review &amp; Confirm</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Please verify your service details before final submission.</p>
+
+          <table class="summary-table">
+            <tr><td>Service Category</td><td id="revCategory">-</td></tr>
+            <tr><td>Sub-Service</td><td id="revSubCategory">-</td></tr>
+            <tr><td>Property Size</td><td id="revType">-</td></tr>
+            <tr><td>Scheduled Date</td><td id="revDate">-</td></tr>
+            <tr><td>Arrival Window</td><td id="revTime">-</td></tr>
+            <tr><td>Client Name</td><td id="revName">-</td></tr>
+            <tr><td>Contact Phone</td><td id="revPhone">-</td></tr>
+            <tr><td>Service Location</td><td id="revAddress">-</td></tr>
+          </table>
+
+          <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:14px; margin-bottom:20px; font-size:0.88rem; color:#166534;">
+            <strong>Zero Advance Artisan Fee:</strong> Our verified professional will perform the inspection or scheduled service. Payment is released only after you approve the completed task.
+          </div>
+
+          <div class="btn-step-group">
+            <button type="button" class="btn btn-outline" onclick="goToStep(3)">&larr; Edit Details</button>
+            <button type="button" class="btn btn-primary" onclick="submitBooking()">Confirm &amp; Dispatch Artisan</button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- SUCCESS CONFIRMATION VIEW -->
+      <div class="confirmation-view" id="confirmationView">
+        <div class="success-badge-circle">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 style="font-size:1.6rem; margin-bottom:8px; color:var(--text-dark);">Booking Confirmed!</h2>
+        <p style="color:var(--text-muted); font-size:0.95rem;">Your service request has been registered in our central dispatch system.</p>
+        
+        <div>
+          <span style="font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; display:block; margin-top:14px;">Booking Reference Number</span>
+          <div class="booking-ref-box" id="finalRefNumber">NJD-2508-00123</div>
+        </div>
+
+        <div style="max-width:480px; margin:0 auto 28px; background:#F8FAFC; border:1px solid var(--border); border-radius:8px; padding:16px; text-align:left; font-size:0.9rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="color:var(--text-muted);">Assigned Unit:</span>
+            <span style="font-weight:700; color:var(--navy);">Lekki-Ajah Rapid Response</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="color:var(--text-muted);">Phone Notification:</span>
+            <span style="font-weight:600; color:var(--success);">SMS &amp; WhatsApp Sent</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-muted);">Dedicated Support:</span>
+            <span style="font-weight:600; color:var(--blue);">08167469581</span>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a href="index.html" class="btn btn-outline">Back to Home</a>
+          <a href="artisans.html" class="btn btn-primary">View Assigned Artisans</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<!-- ===================== FOOTER ===================== -->
+<footer class="tk-footer">
+  <div class="tk-footer__band">
+    <div class="tk-container tk-footer__band-inner">
+      <h2>Stay Connected With NIJEDEE</h2>
+      <p class="tk-footer__band-copy">Subscribe for practical property maintenance tips, new product arrivals in the shop, and seasonal service updates.</p>
+      <form class="tk-footer__form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NIJEDEE updates!');">
+        <label class="tk-sr" for="tk-email">Email address</label>
+        <input id="tk-email" type="email" placeholder="Enter your email address" required>
+        <button type="submit" class="tk-btn tk-btn--primary">Join Newsletter</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="tk-footer__panel">
+    <div class="tk-footer__top">
+      <div class="tk-footer__brand">
+        <a href="index.html" aria-label="NIJEDEE Home">
+          <img src="assets/images/logo.png" alt="NIJEDEE Group Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+        </a>
+        <p class="tk-footer__tagline">NIJEDEE GROUP &middot; Property Maintenance, Repairs, Cleaning &amp; Marketplace. Registered in Nigeria (CAC RC 1403323).</p>
+        <p class="tk-footer__address">Coverage Corridor: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo, Lagos State.</p>
+        <p class="tk-footer__address" style="color:var(--tk-navy-light);font-weight:700;">
+          Phone/WhatsApp: 07085329909 &middot; 08167469581<br>
+          Website: NIJEDEE.com.ng
+        </p>
+        <div class="tk-footer__social">
+          <a href="https://wa.me/2347085329909" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+          <a href="tel:08167469581" aria-label="Phone">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+          <a href="contact.html" aria-label="Location">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <nav class="tk-footer__nav" aria-label="Footer links">
+        <div class="tk-footer__col">
+          <h3>NIJEDEE</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="become-artisan.html">Become an Artisan</a></li>
+            <li><a href="academy.html">Training Academy</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Customer</h3>
+          <ul>
+            <li><a href="book.html">Book a Service</a></li>
+            <li><a href="contact.html">Customer Dashboard</a></li>
+            <li><a href="contact.html">Track Bookings</a></li>
+            <li><a href="contact.html">Help &amp; Support</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Marketplace</h3>
+          <ul>
+            <li><a href="shop.html">NIJEDEE Shop</a></li>
+            <li><a href="artisans.html">Find an Artisan</a></li>
+            <li><a href="properties.html">Properties &amp; Shortlets</a></li>
+            <li><a href="properties.html#list-property">List Your Property</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="about.html">Terms &amp; Conditions</a></li>
+            <li><a href="about.html">Privacy Policy</a></li>
+            <li><a href="about.html">Artisan Terms</a></li>
+            <li><a href="about.html">Delivery Policy</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="tk-footer__bottom">
+      <p>&copy; 2026 NIJEDEE GROUP (RC 1403323). All rights reserved.</p>
+      <div class="tk-footer__legal-links">
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms</a>
+        <a href="contact.html">Service Areas</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Set default date to tomorrow
+  const today = new Date();
+  today.setDate(today.getDate() + 1);
+  const dateInput = document.getElementById('bookDate');
+  if (dateInput) {
+    dateInput.value = today.toISOString().split('T')[0];
+    dateInput.min = new Date().toISOString().split('T')[0];
+  }
+
+  function selectSlot(btn, slotName) {
+    document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('selectedTimeSlot').value = slotName;
+  }
+
+  function updateSubCategories() {
+    const main = document.getElementById('bookService').value;
+    const sub = document.getElementById('bookCategory');
+    sub.innerHTML = '';
+    
+    const optionsMap = {
+      'Cleaning & Fumigation': ['House Deep Cleaning', 'Post-Construction Cleaning', 'Full Fumigation & Pest Elimination', 'Carpet & Rug Steam Wash', 'Sofa & Furniture Detailing'],
+      'Property Maintenance & Repairs': ['Annual Facility Contract', 'Roof Leak & Waterproofing', 'Wall Plastering & Masonry', 'Compound Drainage Cleaning'],
+      'Building Mart & Materials': ['Cement & Aggregate Supply', 'Vibrated Blocks Supply', 'PPR / PVC Plumbing Fittings', 'Safety Gear & Hardware'],
+      'Interior & Furniture Design': ['POP False Ceiling Design', 'Modern Kitchen Cabinets', 'Fitted Wardrobes', 'TV Wall Acoustic Panelling'],
+      'Painting & Wall Screeding': ['Screeding & Mirror Finish', 'Satin Washable Wall Painting', 'Exterior Texcote Finish', 'Epoxy Flooring'],
+      'Solar & Inverter Solutions': ['Complete Solar Inverter Setup', 'Lithium Battery Upgrade', 'Solar Water Pump Borehole', 'System Maintenance & Inspection'],
+      'Plumbing & Water Systems': ['Concealed Leak Repair', 'Water Tank & Stand Fitting', 'Borehole Submersible Pump', 'Bathroom Sanitary Fitting'],
+      'Electrical Repairs & Wiring': ['Distribution Board Fault Finding', 'Chandelier & Spotlight Mounting', 'Conduit Wiring', 'Generator Interlock Switch'],
+      'Carpentry & Woodwork': ['Security Door Hanging', 'Timber Roof Repair', 'Hardwood Flooring', 'Furniture Repair'],
+      'General Handyman Repairs': ['TV Wall Bracket Installation', 'Air Conditioner Servicing & Gas Refill', 'Aluminium Window Repair', 'Lockset & Handle Replacement']
+    };
+
+    const list = optionsMap[main] || ['General Consultation & Inspection', 'On-Site Diagnostic Survey'];
+    list.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item;
+      opt.textContent = item;
+      sub.appendChild(opt);
+    });
+  }
+
+  function goToStep(stepNum) {
+    // Validate current step inputs
+    if (stepNum > 1) {
+      const prevStep = document.getElementById('stepPanel' + (stepNum - 1));
+      const requiredInputs = prevStep.querySelectorAll('input[required], select[required]');
+      for (let input of requiredInputs) {
+        if (!input.value.trim()) {
+          input.focus();
+          input.style.borderColor = 'var(--error)';
+          return;
+        } else {
+          input.style.borderColor = 'var(--border)';
+        }
+      }
+    }
+
+    if (stepNum === 4) {
+      document.getElementById('revCategory').textContent = document.getElementById('bookService').value;
+      document.getElementById('revSubCategory').textContent = document.getElementById('bookCategory').value;
+      document.getElementById('revType').textContent = document.getElementById('bookType').value;
+      document.getElementById('revDate').textContent = document.getElementById('bookDate').value;
+      document.getElementById('revTime').textContent = document.getElementById('selectedTimeSlot').value;
+      document.getElementById('revName').textContent = document.getElementById('clientName').value;
+      document.getElementById('revPhone').textContent = document.getElementById('clientPhone').value;
+      document.getElementById('revAddress').textContent = document.getElementById('clientAddress').value + ' (' + document.getElementById('clientArea').value + ')';
+    }
+
+    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('stepPanel' + stepNum).classList.add('active');
+
+    for (let i = 1; i <= 4; i++) {
+      const ind = document.getElementById('step-ind-' + i);
+      ind.classList.remove('active', 'completed');
+      if (i < stepNum) ind.classList.add('completed');
+      if (i === stepNum) ind.classList.add('active');
+    }
+
+    const progressPct = ((stepNum - 1) / 3) * 76;
+    document.getElementById('stepperProgress').style.width = progressPct + '%';
+  }
+
+  function submitBooking() {
+    document.getElementById('bookingWizardForm').style.display = 'none';
+    const conf = document.getElementById('confirmationView');
+    conf.classList.add('active');
+
+    // Generate random reference matching mockup: NJD-2508-00123
+    const randomNum = Math.floor(10000 + Math.random() * 90000);
+    document.getElementById('finalRefNumber').textContent = 'NJD-2508-' + randomNum;
+    
+    // Complete stepper
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById('step-ind-' + i).classList.add('completed');
+    }
+    document.getElementById('stepperProgress').style.width = '76%';
+  }
+
+  // Pre-fill from query params if available
+  const urlParams = new URLSearchParams(window.location.search);
+  const svcParam = urlParams.get('service');
+  if (svcParam) {
+    const sel = document.getElementById('bookService');
+    for (let opt of sel.options) {
+      if (opt.value.toLowerCase().includes(svcParam)) {
+        sel.value = opt.value;
+        updateSubCategories();
+        break;
+      }
+    }
+  }
+</script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

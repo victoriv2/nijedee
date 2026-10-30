@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIJEDEE Shop | Nijedee Paints, Building Materials, Tools &amp; Property Supplies</title>
+  <meta name="description" content="Shop genuine Nijedee Paints (Emulsion, Matt, Higher Satin), building materials, cement, tiles, tools, and solar supplies with site delivery across Lekki, Ajah, Badore, Sangotedo.">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .shop-header-banner {
+      background: linear-gradient(135deg, var(--tk-navy) 0%, var(--tk-primary) 100%);
+      padding: 60px 0 50px;
+      color: var(--tk-white);
+      text-align: center;
+    }
+    .shop-header-banner h1 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+    .shop-header-banner p {
+      color: var(--tk-navy-lightest);
+      font-size: 1.05rem;
+      max-width: 650px;
+      margin: 0 auto 24px;
+    }
+    .shop-search-bar {
+      max-width: 540px;
+      margin: 0 auto;
+      display: flex;
+      background: var(--tk-white);
+      border-radius: var(--tk-radius);
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(7,34,79,0.15);
+      border: 1px solid var(--tk-navy-light);
+    }
+    .shop-search-bar input {
+      flex: 1;
+      border: none;
+      padding: 14px 18px;
+      font-size: 0.95rem;
+      outline: none;
+      color: var(--tk-text);
+    }
+    .shop-search-bar button {
+      background: var(--tk-primary);
+      color: var(--tk-white);
+      padding: 0 24px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
+    .shop-layout-container {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      padding: 48px 0 36px;
+    }
+    .category-sidebar {
+      background: var(--tk-white);
+      border: 1px solid var(--tk-neutral-100);
+      border-radius: var(--tk-radius);
+      padding: 24px 18px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+      box-shadow: 0 4px 16px rgba(7,34,79,0.05);
+    }
+    .category-sidebar h3 {
+      font-size: 1.05rem;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--tk-neutral-100);
+      color: var(--tk-navy);
+      font-weight: 700;
+    }
+    .cat-filter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .cat-filter-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: var(--tk-radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--tk-navy);
+      cursor: pointer;
+      background: var(--tk-white);
+      border: 1px solid var(--tk-neutral-100);
+      text-align: left;
+      width: 100%;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .cat-filter-btn:hover {
+      background: var(--tk-primary-lightest);
+      color: var(--tk-primary);
+      border-color: var(--tk-navy-light);
+    }
+    .cat-filter-btn.active {
+      background: var(--tk-primary) !important;
+      color: var(--tk-white) !important;
+      border-color: var(--tk-primary) !important;
+    }
+    .cat-count {
+      background: #EBF3FE;
+      color: var(--tk-primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      display: inline-block;
+      line-height: 1.2;
+    }
+    .cat-filter-btn.active .cat-count {
+      background: rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
+    }
+    .product-grid-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 24px;
+    }
+    .product-card-item {
+      background: var(--tk-white);
+      border: 1px solid var(--tk-neutral-100);
+      border-radius: var(--tk-radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 16px rgba(7,34,79,0.05);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .product-card-item:hover {
+      border-color: var(--tk-primary);
+      box-shadow: 0 10px 28px rgba(7,34,79,0.12);
+      transform: none !important;
+    }
+    .product-img-box {
+      height: 180px;
+      background: var(--tk-primary-lightest);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1px solid var(--tk-neutral-100);
+    }
+    .product-badge-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--tk-navy);
+      color: var(--tk-white);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--tk-radius-pill);
+      text-transform: uppercase;
+    }
+    .product-details-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .product-cat-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--tk-primary);
+      margin-bottom: 4px;
+    }
+    .product-title-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--tk-navy);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+    .product-desc-text {
+      font-size: 0.85rem;
+      color: var(--tk-offwhite-dark);
+      margin-bottom: 16px;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .product-price-val {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--tk-navy);
+      margin-bottom: 16px;
+    }
+    .product-actions-row {
+      display: flex;
+      gap: 8px;
+    }
+    @media (max-width: 900px) {
+      .shop-layout-container { grid-template-columns: 1fr; }
+      .category-sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="tk-header">
+  <div class="tk-header__inner">
+    <a class="tk-header__logo" href="index.html" aria-label="NIJEDEE Home">
+      <img src="assets/images/logo.png" alt="NIJEDEE Corporate Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+    </a>
+    <nav class="tk-header__nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="shop.html" class="is-current">Shop</a>
+      <a href="properties.html">Properties</a>
+      <a href="artisans.html">Artisans</a>
+      <a href="academy.html">Academy</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="tk-btn tk-btn--ghost tk-btn--sm" data-open-cart style="min-width:auto;padding-inline:12px;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span id="cartCountBadge" style="background:var(--tk-primary);color:var(--tk-white);border-radius:10px;padding:1px 6px;font-size:11px;font-weight:800;">0</span>
+      </button>
+      <a class="tk-btn tk-btn--primary tk-btn--sm" href="book.html">Book Service</a>
+    </div>
+    <button type="button" class="tk-header__burger" aria-label="Open menu" aria-expanded="false">
+      <svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M5 9h22M5 16h22M5 23h22"/>
+      </svg>
+    </button>
+  </div>
+  <div class="tk-header__drawer">
+    <button class="tk-drawer__close" aria-label="Close menu">&times;</button>
+    <nav class="tk-drawer__nav" aria-label="Mobile">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="shop.html" class="is-current">Shop</a>
+      <a href="properties.html">Properties</a>
+      <a href="artisans.html">Artisans</a>
+      <a href="academy.html">Academy</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="tk-btn tk-btn--primary" href="book.html" style="margin-top:24px;width:100%;">Book a Service</a>
+  </div>
+  <div class="tk-drawer-overlay"></div>
+</header>
+
+<!-- Banner -->
+<section class="shop-header-banner">
+  <div class="tk-container">
+    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--tk-navy-light);margin-bottom:8px;">
+      NIJEDEE MARKETPLACE &middot; MODULE 4
+    </div>
+    <h1>NIJEDEE Building Materials &amp; Paint Shop</h1>
+    <p>Authentic Nijedee Paints, certified building supplies, electrical/plumbing fittings, tools and solar hardware delivered directly to your site across Lagos.</p>
+    
+    <div class="shop-search-bar">
+      <input type="text" id="shopSearchInput" placeholder="Search paint, cement, tiles, pipes, inverter, tools..." onkeyup="filterShopProducts()">
+      <button type="button" onclick="filterShopProducts()">Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- Content -->
+<main style="background:var(--tk-page);">
+  <div class="tk-container">
+    <div class="shop-layout-container">
+      
+      <!-- Sidebar Categories (Exact Blueprint Spec) -->
+      <aside class="category-sidebar">
+        <h3>Product Categories</h3>
+        <div class="cat-filter-list">
+          <button class="cat-filter-btn active" onclick="setCategoryFilter('all', this)">
+            <span>All Products</span>
+            <span class="cat-count">12</span>
+          </button>
+          <button class="cat-filter-btn" onclick="setCategoryFilter('paints', this)">
+            <span>Nijedee Paints</span>
+            <span class="cat-count">3</span>
+          </button>
+          <button class="cat-filter-btn" onclick="setCategoryFilter('materials', this)">
+            <span>Building Materials</span>
+            <span class="cat-count">3</span>
+          </button>
+          <button class="cat-filter-btn" onclick="setCategoryFilter('tools', this)">
+            <span>Tools &amp; Equipment</span>
+            <span class="cat-count">3</span>
+          </button>
+          <button class="cat-filter-btn" onclick="setCategoryFilter('products', this)">
+            <span>Property &amp; Solar</span>
+            <span class="cat-count">3</span>
+          </button>
+        </div>
+
+        <div style="margin-top:28px;background:var(--tk-primary-lightest);border:1px solid var(--tk-navy-light);border-radius:var(--tk-radius-sm);padding:16px;">
+          <h4 style="font-size:0.9rem;font-weight:700;color:var(--tk-navy);margin-bottom:6px;">Need Bulk Site Delivery?</h4>
+          <p style="font-size:0.8rem;color:var(--tk-offwhite-dark);margin-bottom:12px;">We supply ongoing construction projects in Badore, Ajah, and Lekki with direct trade wholesale rates.</p>
+          <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE,%20I%20need%20a%20bulk%20materials%20quotation" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="width:100%;text-align:center;">WhatsApp Trade Desk</a>
+        </div>
+      </aside>
+
+      <!-- Products Grid -->
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <span style="font-size:0.9rem;color:var(--tk-offwhite-dark);" id="productsCountText">Showing 12 authentic products</span>
+          <span style="font-size:0.85rem;color:var(--tk-primary);font-weight:700;">Site Delivery: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo</span>
+        </div>
+
+        <div class="product-grid-view" id="productsGrid">
+
+          <!-- Product 1: Nijedee Emulsion Paint -->
+          <div class="product-card-item" data-category="paints" data-keywords="nijedee emulsion paint brilliant white 20l wall finishing">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Nijedee Original</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><path d="M19 11V4a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7"/><path d="M5 11h14v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-9z"/><path d="M9 11V6h6v5"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Nijedee Paints</span>
+              <h4 class="product-title-text">Nijedee Emulsion Paint 20L</h4>
+              <p class="product-desc-text">High-opacity interior wall paint. Excellent coverage, anti-fungal formulation, low odor. Available in Brilliant White and pastel architectural tints.</p>
+              <div class="product-price-val">&#8358;32,000</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Nijedee Emulsion Paint 20L', 32000)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=I%20want%20to%20order%20Nijedee%20Emulsion%20Paint%2020L%20(NGN%2032,000)" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;" title="Order via WhatsApp">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 2: Nijedee Matt Emulsion -->
+          <div class="product-card-item" data-category="paints" data-keywords="nijedee matt emulsion luxury smooth washable 20l">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Premium Matt</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><path d="M19 11V4a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7"/><path d="M5 11h14v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-9z"/><line x1="8" y1="15" x2="16" y2="15"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Nijedee Paints</span>
+              <h4 class="product-title-text">Nijedee Matt Emulsion 20L</h4>
+              <p class="product-desc-text">Ultra-smooth non-reflective luxury finish for executive living rooms, bedrooms and offices. Washable and stain-resistant.</p>
+              <div class="product-price-val">&#8358;42,500</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Nijedee Matt Emulsion 20L', 42500)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=I%20want%20to%20order%20Nijedee%20Matt%20Emulsion%2020L%20(NGN%2042,500)" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 3: Nijedee Higher Satin -->
+          <div class="product-card-item" data-category="paints" data-keywords="nijedee higher satin luxury washable sheen 20l">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Higher Satin</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Nijedee Paints</span>
+              <h4 class="product-title-text">Nijedee Higher Satin 20L</h4>
+              <p class="product-desc-text">Top-tier silky sheen washable paint with maximum scrub resistance. Ideal for high-traffic corridors, dining areas, and modern estates.</p>
+              <div class="product-price-val">&#8358;58,000</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Nijedee Higher Satin 20L', 58000)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=I%20want%20to%20order%20Nijedee%20Higher%20Satin%2020L%20(NGN%2058,000)" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 4: Dangote 3X 50kg Cement -->
+          <div class="product-card-item" data-category="materials" data-keywords="dangote cement 50kg 3x building materials site delivery">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Certified Material</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Building Materials</span>
+              <h4 class="product-title-text">Dangote 3X 42.5R Cement 50kg</h4>
+              <p class="product-desc-text">Genuine factory-direct Dangote 42.5R Portland cement for structural casting, plastering, screeding and block moulding. Bulk site drops available.</p>
+              <div class="product-price-val">&#8358;9,500 <span style="font-size:12px;font-weight:400;color:var(--tk-offwhite-dark);">/ bag</span></div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Dangote 3X Cement 50kg', 9500)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=I%20need%20Dangote%20Cement%2050kg%20delivered" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 5: Vitrified Porcelain Floor Tiles -->
+          <div class="product-card-item" data-category="materials" data-keywords="vitrified porcelain floor wall tiles 60x60 building materials">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Grade A</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Building Materials</span>
+              <h4 class="product-title-text">Porcelain Floor Tiles 60x60cm (Carton)</h4>
+              <p class="product-desc-text">High-density glazed vitrified tiles. Scratch-resistant, non-porous, marble-veined aesthetic suitable for living areas and commercial floors.</p>
+              <div class="product-price-val">&#8358;14,200 <span style="font-size:12px;font-weight:400;color:var(--tk-offwhite-dark);">/ carton (1.44m&sup2;)</span></div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Porcelain Floor Tiles 60x60cm', 14200)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=I%20need%20Porcelain%20Tiles%2060x60%20quotation" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 6: Plumbing PPR Pressure Pipes Pack -->
+          <div class="product-card-item" data-category="materials" data-keywords="plumbing ppr pressure pipes bundle fittings brass valves">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Plumbing Spec</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><path d="M4 14h6v6H4z"/><path d="M14 4h6v6h-6z"/><path d="M10 17h4v-7h-4"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Building Materials</span>
+              <h4 class="product-title-text">PPR High-Pressure Pipes (Bundle of 10)</h4>
+              <p class="product-desc-text">25mm &times; 4m PN20 hot and cold water pressure pipes. Heat-resistant, non-corrosive, guaranteed for 50 years lifespan in concealed plumbing.</p>
+              <div class="product-price-val">&#8358;28,500</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('PPR High-Pressure Pipes (Bundle 10)', 28500)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=Order%20PPR%20Pipes%20Bundle" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 7: Professional Plumbing Toolset -->
+          <div class="product-card-item" data-category="tools" data-keywords="plumbing tools pipe wrench pressure tester kit tools equipment">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Trade Grade</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Tools &amp; Equipment</span>
+              <h4 class="product-title-text">Master Plumber Toolkit &amp; Pressure Tester</h4>
+              <p class="product-desc-text">Includes heavy-duty pipe wrench set (10", 14", 18"), hydraulic pressure test pump up to 25 bar, PPR heat-fusion welding machine, and pipe cutters.</p>
+              <div class="product-price-val">&#8358;65,000</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Master Plumber Toolkit', 65000)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=Order%20Master%20Plumber%20Toolkit" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 8: Electrical Contractor Testing Kit -->
+          <div class="product-card-item" data-category="tools" data-keywords="electrical tools multimeter clamp meter conduit bender equipment">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Insulated 1000V</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Tools &amp; Equipment</span>
+              <h4 class="product-title-text">Digital Multimeter &amp; Insulation Tester</h4>
+              <p class="product-desc-text">Industrial True-RMS digital clamp meter, AC/DC voltage detector, 1000V VDE insulated screwdrivers and wire crimping tools.</p>
+              <div class="product-price-val">&#8358;48,000</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Digital Multimeter & Insulation Kit', 48000)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=Order%20Digital%20Multimeter%20Kit" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 9: Professional Painting Roller & Sprayer Set -->
+          <div class="product-card-item" data-category="tools" data-keywords="painting tools rollers telescopic pole airless spray kit">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Painter Pro</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><path d="M4 4h16v4H4z"/><path d="M12 8v12"/><path d="M9 20h6"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Tools &amp; Equipment</span>
+              <h4 class="product-title-text">Telescopic Painting Roller &amp; Tray Set</h4>
+              <p class="product-desc-text">Heavy-duty aluminum extendable pole (up to 3.6m), 9-inch microfiber lint-free roller sleeves, cutting-in angled brushes, and durable metal paint tray.</p>
+              <div class="product-price-val">&#8358;22,000</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Telescopic Painting Roller Set', 22000)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=Order%20Telescopic%20Painting%20Set" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 10: Pure Sine Wave Hybrid Inverter 5kVA -->
+          <div class="product-card-item" data-category="products" data-keywords="solar hybrid inverter 5kva 48v property products power">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Solar Tech</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="14" y1="12" x2="18" y2="12"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Property Products</span>
+              <h4 class="product-title-text">Hybrid Solar Inverter 5kVA / 48V</h4>
+              <p class="product-desc-text">Pure sine wave output with integrated 80A MPPT solar charge controller. Powers complete 3-4 bedroom duplex appliances including refrigerator, TVs, and fans.</p>
+              <div class="product-price-val">&#8358;420,000</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Hybrid Solar Inverter 5kVA', 420000)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=Order%20Hybrid%20Solar%20Inverter%205kVA" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 11: Deep Cycle Tubular Battery 220Ah -->
+          <div class="product-card-item" data-category="products" data-keywords="solar inverter battery tubular 220ah 12v deep cycle">
+            <div class="product-img-box">
+              <span class="product-badge-tag">High Endurance</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><rect x="2" y="6" width="20" height="14" rx="2"/><line x1="6" y1="2" x2="6" y2="6"/><line x1="18" y1="2" x2="18" y2="6"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Property Products</span>
+              <h4 class="product-title-text">Tall Tubular Inverter Battery 220Ah / 12V</h4>
+              <p class="product-desc-text">Heavy-duty deep cycle battery engineered for Nigerian power instability. 1500+ cycles at 80% DOD, low maintenance, 18-month replacement warranty.</p>
+              <div class="product-price-val">&#8358;245,000</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('Tall Tubular Battery 220Ah', 245000)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=Order%20Tall%20Tubular%20Battery%20220Ah" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 12: CCTV 4-Camera Security Kit -->
+          <div class="product-card-item" data-category="products" data-keywords="cctv security 4 camera night vision dvr kit property products">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Security Kit</span>
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--tk-primary)" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Property Products</span>
+              <h4 class="product-title-text">Complete CCTV 4-Camera HD Night-Vision Kit</h4>
+              <p class="product-desc-text">Includes 4 weather-proof infrared bullet cameras, 4-channel DVR with 1TB surveillance hard drive, power supply box, and remote smartphone monitoring app setup.</p>
+              <div class="product-price-val">&#8358;135,000</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('CCTV 4-Camera HD Kit', 135000)">Add to Cart</button>
+                <a href="https://wa.me/2347085329909?text=Order%20CCTV%204-Camera%20HD%20Kit" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Cart Slide-in Drawer -->
+<div class="cart-drawer">
+  <div class="cart-drawer__header">
+    <h3 style="font-size:1.1rem;color:var(--tk-navy);font-weight:700;">Your Materials Cart</h3>
+    <button type="button" class="cart-drawer__close" aria-label="Close cart" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--tk-neutral-400);">&times;</button>
+  </div>
+  <div class="cart-drawer__body" id="cartDrawerItems">
+    <div style="text-align:center;padding:40px 0;color:var(--tk-offwhite-dark);">Your cart is currently empty.</div>
+  </div>
+  <div class="cart-drawer__footer">
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px;font-weight:700;color:var(--tk-navy);">
+      <span>Subtotal:</span>
+      <span id="cartSubtotalAmount">&#8358;0</span>
+    </div>
+    <button type="button" class="tk-btn tk-btn--primary" style="width:100%;" onclick="openCheckoutModal()">Proceed to Delivery Checkout</button>
+  </div>
+</div>
+<div class="cart-overlay tk-drawer-overlay"></div>
+
+<!-- Checkout Modal (Blueprint 7-Step Flow) -->
+<div class="modal-backdrop" id="checkoutModal">
+  <div class="modal-box">
+    <button type="button" class="modal-close" data-modal-close>&times;</button>
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--tk-primary);margin-bottom:4px;">
+      NIJEDEE MARKETPLACE &middot; CHECKOUT
+    </div>
+    <h3 style="font-size:1.3rem;color:var(--tk-navy);font-weight:800;margin-bottom:8px;">Complete Site Delivery Order</h3>
+    <p style="font-size:0.88rem;color:var(--tk-offwhite-dark);margin-bottom:20px;">Provide delivery destination details for dispatch across Lekki, Ajah, Badore, and Sangotedo.</p>
+
+    <form onsubmit="handleCheckoutSubmit(event)">
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        <input type="text" class="form-control" id="orderCustName" required placeholder="e.g. Segun Adeyemi">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group">
+          <label class="form-label">Phone Number *</label>
+          <input type="tel" class="form-control" id="orderCustPhone" required placeholder="080XXXXXXXX">
+        </div>
+        <div class="form-group">
+          <label class="form-label">WhatsApp Number *</label>
+          <input type="tel" class="form-control" id="orderCustWhatsApp" required placeholder="080XXXXXXXX">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Site / Delivery Address *</label>
+        <input type="text" class="form-control" id="orderCustAddress" required placeholder="Estate name, Street, Landmark">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group">
+          <label class="form-label">Delivery Zone *</label>
+          <select class="form-control" id="orderCustZone" required>
+            <option value="Badore">Badore Axis</option>
+            <option value="Ajah">Ajah &middot; Ilaje &middot; Addo</option>
+            <option value="Sangotedo">Sangotedo &middot; Abijo</option>
+            <option value="Lekki">Lekki Phase 1 &middot; 2</option>
+            <option value="Other">Other Lagos Axis</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Preference *</label>
+          <select class="form-control" id="orderPaymentPref" required>
+            <option value="bank-transfer">Direct Bank Transfer</option>
+            <option value="cash-on-delivery">Payment on Site Inspection</option>
+          </select>
+        </div>
+      </div>
+      <div style="background:var(--tk-primary-lightest);padding:14px;border-radius:var(--tk-radius-sm);margin-bottom:20px;border:1px solid var(--tk-navy-light);">
+        <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:var(--tk-navy);">
+          <span>Order Total (Excl. delivery fee):</span>
+          <span id="modalOrderTotal">&#8358;0</span>
+        </div>
+        <p style="font-size:12px;color:var(--tk-offwhite-dark);margin-top:4px;">Delivery haulage fee is calculated based on site distance and materials weight.</p>
+      </div>
+      <button type="submit" class="tk-btn tk-btn--primary" style="width:100%;">Confirm &amp; Place Order</button>
+    </form>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="tk-footer">
+  <div class="tk-footer__panel" style="margin-inline:0;border-radius:0;">
+    <div class="tk-footer__top">
+      <div class="tk-footer__brand">
+        <a href="index.html" aria-label="NIJEDEE Home">
+          <img src="assets/images/logo.png" alt="NIJEDEE Group Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+        </a>
+        <p class="tk-footer__tagline">NIJEDEE GROUP &middot; Property Maintenance, Repairs, Cleaning &amp; Marketplace. Registered in Nigeria (CAC RC 1403323).</p>
+        <p class="tk-footer__address">Coverage Corridor: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo, Lagos State.</p>
+        <p class="tk-footer__address" style="color:var(--tk-navy-light);font-weight:700;">
+          Phone/WhatsApp: 07085329909 &middot; 08167469581<br>
+          Website: NIJEDEE.com.ng
+        </p>
+      </div>
+      <nav class="tk-footer__nav" aria-label="Footer links">
+        <div class="tk-footer__col">
+          <h3>NIJEDEE</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="become-artisan.html">Become an Artisan</a></li>
+            <li><a href="academy.html">Training Academy</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Customer</h3>
+          <ul>
+            <li><a href="book.html">Book a Service</a></li>
+            <li><a href="contact.html">Customer Dashboard</a></li>
+            <li><a href="contact.html">Track Bookings</a></li>
+            <li><a href="contact.html">Help &amp; Support</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Marketplace</h3>
+          <ul>
+            <li><a href="shop.html">NIJEDEE Shop</a></li>
+            <li><a href="artisans.html">Find an Artisan</a></li>
+            <li><a href="properties.html">Properties &amp; Shortlets</a></li>
+            <li><a href="properties.html#list-property">List Your Property</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="about.html">Terms &amp; Conditions</a></li>
+            <li><a href="about.html">Privacy Policy</a></li>
+            <li><a href="about.html">Artisan Terms</a></li>
+            <li><a href="about.html">Delivery Policy</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="tk-footer__bottom">
+      <p>&copy; 2026 NIJEDEE GROUP (RC 1403323). All rights reserved.</p>
+      <div class="tk-footer__legal-links">
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms</a>
+        <a href="contact.html">Service Areas</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+  let cart = [];
+
+  function addToCart(name, price) {
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ name, price, qty: 1 });
+    }
+    updateCartUI();
+    const drawer = document.querySelector('.cart-drawer');
+    const overlay = document.querySelector('.cart-overlay');
+    if (drawer) drawer.classList.add('open');
+    if (overlay) overlay.classList.add('open');
+  }
+
+  function updateCartUI() {
+    const countBadge = document.getElementById('cartCountBadge');
+    const itemsContainer = document.getElementById('cartDrawerItems');
+    const subtotalEl = document.getElementById('cartSubtotalAmount');
+    const modalTotal = document.getElementById('modalOrderTotal');
+
+    const totalQty = cart.reduce((acc, i) => acc + i.qty, 0);
+    const subtotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+
+    if (countBadge) countBadge.textContent = totalQty;
+    if (subtotalEl) subtotalEl.innerHTML = '&#8358;' + subtotal.toLocaleString();
+    if (modalTotal) modalTotal.innerHTML = '&#8358;' + subtotal.toLocaleString();
+
+    if (!itemsContainer) return;
+
+    if (cart.length === 0) {
+      itemsContainer.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--tk-offwhite-dark);">Your cart is currently empty.</div>';
+      return;
+    }
+
+    let html = '';
+    cart.forEach((item, index) => {
+      html += `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--tk-neutral-100);border-radius:var(--tk-radius-sm);background:var(--tk-page);">
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--tk-navy);">${item.name}</div>
+            <div style="font-size:12px;color:var(--tk-offwhite-dark);">&#8358;${item.price.toLocaleString()} &times; ${item.qty}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button type="button" style="padding:2px 8px;border:1px solid var(--tk-neutral-100);border-radius:4px;cursor:pointer;" onclick="changeQty(${index}, -1)">-</button>
+            <span style="font-weight:700;font-size:13px;">${item.qty}</span>
+            <button type="button" style="padding:2px 8px;border:1px solid var(--tk-neutral-100);border-radius:4px;cursor:pointer;" onclick="changeQty(${index}, 1)">+</button>
+          </div>
+        </div>
+      `;
+    });
+    itemsContainer.innerHTML = html;
+  }
+
+  function changeQty(index, delta) {
+    cart[index].qty += delta;
+    if (cart[index].qty <= 0) {
+      cart.splice(index, 1);
+    }
+    updateCartUI();
+  }
+
+  function openCheckoutModal() {
+    if (cart.length === 0) {
+      alert('Your cart is empty. Add products before proceeding.');
+      return;
+    }
+    const modal = document.getElementById('checkoutModal');
+    if (modal) modal.classList.add('open');
+  }
+
+  function handleCheckoutSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('orderCustName').value;
+    const phone = document.getElementById('orderCustPhone').value;
+    const address = document.getElementById('orderCustAddress').value;
+    const zone = document.getElementById('orderCustZone').value;
+    const subtotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+    const summary = cart.map(i => `${i.name} (x${i.qty})`).join(', ');
+
+    const msg = `Hello NIJEDEE, I placed a materials order:\nName: ${name}\nPhone: ${phone}\nAddress: ${address} (${zone})\nItems: ${summary}\nTotal: NGN ${subtotal.toLocaleString()}`;
+    const whatsappUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(msg)}`;
+
+    alert('Your order has been recorded! Click OK to forward directly to NIJEDEE dispatch on WhatsApp.');
+    window.open(whatsappUrl, '_blank');
+    cart = [];
+    updateCartUI();
+    document.getElementById('checkoutModal').classList.remove('open');
+  }
+
+  function setCategoryFilter(category, btn) {
+    document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.product-card-item');
+    let visibleCount = 0;
+    cards.forEach(card => {
+      if (category === 'all' || card.dataset.category === category) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    const countEl = document.getElementById('productsCountText');
+    if (countEl) countEl.textContent = `Showing ${visibleCount} authentic products`;
+  }
+
+  function filterShopProducts() {
+    const q = (document.getElementById('shopSearchInput').value || '').toLowerCase().trim();
+    const cards = document.querySelectorAll('.product-card-item');
+    let visibleCount = 0;
+    cards.forEach(card => {
+      const kw = (card.dataset.keywords || '') + ' ' + (card.innerText || '').toLowerCase();
+      if (!q || kw.includes(q)) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    const countEl = document.getElementById('productsCountText');
+    if (countEl) countEl.textContent = `Showing ${visibleCount} authentic products`;
+  }
+</script>
+</body>
+</html>

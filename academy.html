@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Training Academy | NIJEDEE Vocational Institute</title>
+  <meta name="description" content="Join Nijedee Vocational Training Academy in Lagos. Learn professional plumbing, electrical wiring, solar installation, painting and carpentry.">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .academy-hero {
+      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
+      padding: 72px 0 60px;
+      color: #ffffff;
+      text-align: center;
+    }
+    .academy-hero h1 {
+      color: #ffffff;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 12px;
+    }
+    .academy-hero p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.1rem;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .programs-grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+      margin: 48px 0 70px;
+    }
+    .program-card-single {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .program-card-single:hover {
+      border-color: var(--blue);
+      box-shadow: var(--shadow-md);
+    }
+    .program-header-color {
+      background: linear-gradient(135deg, #0A2D6E 0%, #1E88E5 100%);
+      padding: 24px 22px;
+      color: #ffffff;
+      position: relative;
+    }
+    .program-duration-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.18);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 8px;
+    }
+    .program-header-color h3 {
+      color: #ffffff;
+      font-size: 1.25rem;
+      line-height: 1.3;
+    }
+    .program-card-content {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .program-card-content p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .curriculum-list {
+      margin-bottom: 24px;
+    }
+    .curriculum-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      padding: 5px 0;
+    }
+    .curriculum-list li svg {
+      width: 15px;
+      height: 15px;
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+    .academy-pillars-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin: 40px 0 60px;
+    }
+    .pillar-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 22px;
+      text-align: center;
+    }
+    .pillar-icon-wrap {
+      width: 58px;
+      height: 58px;
+      border-radius: 12px;
+      background: #E3F0FF;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <img src="assets/images/logo.png" alt="NIJEDEE Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+      </a>
+      <div class="navbar-nav">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="shop.html">Shop</a>
+        <a href="properties.html">Properties</a>
+        <a href="artisans.html">Artisans</a>
+        <a href="academy.html" class="active">Academy</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <a href="book.html" class="btn btn-primary btn-sm navbar-cta">Book a Service</a>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<nav class="mobile-nav" aria-label="Mobile navigation">
+  <button class="mobile-nav-close" aria-label="Close menu">&times;</button>
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="shop.html">Shop</a>
+  <a href="properties.html">Properties</a>
+  <a href="artisans.html">Artisans</a>
+  <a href="academy.html">Academy</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="book.html" class="btn btn-primary" style="margin-top:16px;text-align:center;justify-content:center;">Book a Service</a>
+</nav>
+<div class="mobile-nav-overlay"></div>
+
+<!-- HERO BANNER -->
+<section class="academy-hero">
+  <div class="container">
+    <span class="section-label" style="background:rgba(255,255,255,0.18); color:#ffffff; margin-bottom:12px;">Vocational Excellence &bull; 2-Week Cycle</span>
+    <h1>Vocational Skills &amp; Entrepreneurship Academy</h1>
+    <p>Empowering young minds with practical skills for employment, entrepreneurship and self-reliance. Direct technical apprenticeships feeding into the NIJEDEE verified artisan network.</p>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<section class="section" style="background:#F9FBFC; padding-top:40px;">
+  <div class="container">
+    
+    <!-- Audience & Practical Scope from Blueprint -->
+    <div style="background:#ffffff; border:1px solid var(--border); border-radius:12px; padding:24px 28px; margin-bottom:32px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;">
+      <div>
+        <h4 style="font-size:1rem; margin-bottom:4px; color:var(--text-dark);">Who Can Join the Academy?</h4>
+        <p style="font-size:0.88rem; color:var(--text-muted); margin:0;">Secondary school students &bull; School leavers &bull; Undergraduates &bull; Young entrepreneurs &bull; Anyone interested in practical skills</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="display:inline-block; background:#E8F5EE; color:var(--success); font-size:0.8rem; font-weight:700; padding:6px 14px; border-radius:100px;">Next 2-Week Cohort Enrolling</span>
+      </div>
+    </div>
+
+    <!-- Pillars -->
+    <div class="academy-pillars-row">
+      <div class="pillar-box">
+        <div class="pillar-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h4 style="font-size:1.05rem; margin-bottom:6px; color:var(--text-dark);">Intensive Practical Training</h4>
+        <p style="font-size:0.86rem; color:var(--text-muted); line-height:1.6;">Work with genuine tools, materials, and live site mockups under the mentorship of licensed master craftsmen.</p>
+      </div>
+
+      <div class="pillar-box">
+        <div class="pillar-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <h4 style="font-size:1.05rem; margin-bottom:6px; color:var(--text-dark);">Business &amp; Sales Mastery</h4>
+        <p style="font-size:0.86rem; color:var(--text-muted); line-height:1.6;">Every technical student learns Marketing, Sales, and Business Development to start and grow a thriving independent enterprise.</p>
+      </div>
+
+      <div class="pillar-box">
+        <div class="pillar-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h4 style="font-size:1.05rem; margin-bottom:6px; color:var(--text-dark);">Artisan Network Pipeline</h4>
+        <p style="font-size:0.86rem; color:var(--text-muted); line-height:1.6;">Direct induction into the NIJEDEE verified artisan dispatch network upon graduation, unlocking immediate customer orders.</p>
+      </div>
+    </div>
+
+    <!-- Section Header -->
+    <div class="section-header center" style="margin-bottom:32px;">
+      <span class="section-label">11 Practical Training Areas</span>
+      <h2 class="section-title">Vocational &amp; Entrepreneurship Modules</h2>
+      <p class="section-subtitle">2-week intensive cycle combining hands-on technical trades with commercial enterprise training.</p>
+    </div>
+
+    <!-- Programmes Grid -->
+    <div class="programs-grid-container">
+      
+      <!-- Module 1: Plumbing -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Practical
+          </span>
+          <h3>Plumbing</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Master piping systems, leak detection, conduit line layout, water supply routing, booster pumps, and modern sanitary installation.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>PPR &amp; PVC Pipe Sizing, Threading and Fusion</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Overhead Tank Scaffolding &amp; Booster Pump Hookup</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Leak Diagnostics &amp; Pressure Testing Protocols</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Technical Trade</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('Plumbing')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 2: Electrical -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Practical
+          </span>
+          <h3>Electrical Installation &amp; Maintenance</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Domestic and commercial conduit wiring, distribution boards, load balancing, inverter hookup, and safety standards.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Conduit Circuit Wiring, Earthing &amp; Grounding</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Distribution Board Balancing &amp; Surge Protectors</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Inverter ATS Integration &amp; Safety Diagnostics</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Technical Trade</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('Electrical Installation & Maintenance')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 3: Painting & Finishing -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Practical
+          </span>
+          <h3>House Painting &amp; Finishing</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Surface screeding, high-grade emulsion, gloss, satin finishes, exterior textured coatings, and color chemistry.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>POP Screeding Putty Application &amp; Surface Leveling</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Nijedee Higher Satin &amp; Matt Emulsion Application</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Damp Proofing, Priming &amp; Anti-Fungal Treatment</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Technical Trade</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('House Painting & Finishing')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 4: AC Installation & Maintenance -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Practical
+          </span>
+          <h3>AC Installation &amp; Maintenance</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Split unit mounting, copper piping layout, brackets, inverter unit electronic troubleshooting, and chemical washing.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Split System Wall Mounting &amp; Core Drilling</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Copper Flaring, Insulation &amp; Drainage Pitch</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Hydro-Cleaning Coil Servicing &amp; PCB Testing</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Technical Trade</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('AC Installation & Maintenance')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 5: AC Gas Filling -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Practical
+          </span>
+          <h3>AC Gas Filling</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Specialized refrigerant mechanics, vacuum pumping, manifold gauge readings, and leak detection for R410A, R22, and R32 gases.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Refrigerant Types, Pressure Curves &amp; Safety Measures</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Deep Vacuum Dehydration &amp; Nitrogen Leak Testing</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Precision Weight &amp; Gauge Refrigerant Top-Up</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Specialized Skill</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('AC Gas Filling')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 6: Furniture Making -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Practical
+          </span>
+          <h3>Furniture Making</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Precision joinery, hardwood and board cutting, kitchen cabinetry, modern wardrobes, office workstations, and edge-banding.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>MDF, HDF &amp; Marine Board Cutting with Power Saws</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Modular Cabinet Construction &amp; Hydraulic Hinges</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom Wardrobes, Bedframes &amp; Edge Banding</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Technical Trade</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('Furniture Making')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 7: Interior Installation -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Practical
+          </span>
+          <h3>Interior Installation</h3>
+        </div>
+        <div class="program-card-content">
+          <p>POP suspended false ceilings, drywall partition frameworks, decorative molding, wall panels, and precision tiling alignment.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Plaster of Paris (POP) Frame Suspension &amp; Casting</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Drywall Partition Wall &amp; Acoustic Soundproofing</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Wall Cladding, 3D Panels &amp; Architectural Cornices</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Technical Trade</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('Interior Installation')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 8: Cleaning Services -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Practical
+          </span>
+          <h3>Cleaning Services</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Industrial machinery operations, post-construction debris cleanup, chemical dosing, carpet steam extraction, and janitorial management.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Rotary Floor Scrubber, Buffer &amp; Polisher Mastery</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>High-Pressure Steam Carpet &amp; Upholstery Extraction</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Post-Construction Paint Scrape &amp; Deep Degreasing</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Facility Management</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('Cleaning Services')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 9: Marketing -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Business
+          </span>
+          <h3>Marketing</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Local neighborhood marketing, social media acquisition for tradesmen, personal branding, creating portfolios, and digital presence.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Local Area &amp; Estate Community Marketing</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>WhatsApp Business &amp; Visual Work Portfolios</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Customer Referral Systems &amp; Retention Loops</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Business Track</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('Marketing')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 10: Sales -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Business
+          </span>
+          <h3>Sales</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Client negotiations, transparent job estimation, preparing professional quotations, overcoming objections, and closing contracts.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Bill of Quantities (BOQ) &amp; Labor Cost Estimation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Client Presentation &amp; Contract Negotiation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Cross-Selling Maintenance &amp; Upgrading Contracts</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Business Track</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('Sales')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 11: Business Development -->
+      <div class="program-card-single">
+        <div class="program-header-color">
+          <span class="program-duration-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            2-Week Cycle &bull; Entrepreneurship
+          </span>
+          <h3>Business Development</h3>
+        </div>
+        <div class="program-card-content">
+          <p>Registering an enterprise, cash flow management, hiring apprentices, scaling contracting businesses, and corporate pitching.</p>
+          <ul class="curriculum-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>CAC Registration &amp; Commercial Bank Setup</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Artisan Team Management &amp; Apprenticeship Scaling</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Securing B2B Corporate Facility Contracts</li>
+          </ul>
+          <div style="margin-top:auto; padding-top:16px; border-top:1px solid #EDF2F7; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Track</span>
+              <strong style="font-size:1.05rem; color:var(--navy);">Entrepreneurship</strong>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openEnrollModal('Business Development')">Enroll Now</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- What Students Gain Section from Blueprint -->
+    <div style="background:#ffffff; border:1px solid var(--border); border-radius:16px; padding:36px; margin:40px 0 32px;">
+      <h3 style="font-size:1.35rem; margin-bottom:12px; color:var(--text-dark);">What Students Gain from NIJEDEE Academy</h3>
+      <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.7; margin-bottom:20px;">
+        Practical training, hands-on experience and real business knowledge to pursue immediate employment, launch a business, or work as independent certified professionals. All qualified graduates feed directly into the NIJEDEE verified artisan dispatch network.
+      </p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+        <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:8px; padding:16px;">
+          <strong style="color:var(--blue); font-size:0.95rem; display:block; margin-bottom:4px;">1. Hands-On Mastery</strong>
+          <span style="font-size:0.83rem; color:var(--text-muted);">Real tool operation and live structural mockups on site.</span>
+        </div>
+        <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:8px; padding:16px;">
+          <strong style="color:var(--blue); font-size:0.95rem; display:block; margin-bottom:4px;">2. Business Readiness</strong>
+          <span style="font-size:0.83rem; color:var(--text-muted);">Sales, marketing, customer service, and job pricing acumen.</span>
+        </div>
+        <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:8px; padding:16px;">
+          <strong style="color:var(--blue); font-size:0.95rem; display:block; margin-bottom:4px;">3. Direct Pipeline</strong>
+          <span style="font-size:0.83rem; color:var(--text-muted);">Priority onboarding into NIJEDEE dispatch across Lagos.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Academy Registration CTA -->
+    <div style="background:linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%); border-radius:16px; padding:48px 32px; text-align:center; color:#fff; margin-top: 48px; margin-bottom: 28px; box-shadow: 0 10px 30px rgba(7, 34, 79, 0.1);">
+      <h2 style="color:#ffffff; margin-bottom:12px; font-size:clamp(1.5rem, 2.5vw, 2.1rem);">Next Cohort Begins on the 1st of Every Month</h2>
+      <p style="color:rgba(255,255,255,0.85); font-size:1.05rem; max-width:620px; margin:0 auto 28px;">Limited to 15 students per workshop to guarantee intensive one-on-one tool mastery and field apprenticeship.</p>
+      <button class="btn btn-secondary btn-lg" onclick="openEnrollModal('General Vocational Application')">Register for Upcoming Cohort</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ENROLLMENT MODAL -->
+<div class="modal-backdrop" id="enrollModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalCourseTitle">Enroll in Academy Programme</h3>
+      <button class="modal-close-x" onclick="closeEnrollModal()">&times;</button>
+    </div>
+    <div class="modal-content">
+      <form onsubmit="handleEnrollSubmit(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="enrName" placeholder="e.g. Samuel Obinna" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone Number (WhatsApp)</label>
+            <input type="tel" id="enrPhone" placeholder="08167469581" required>
+          </div>
+          <div class="form-group">
+            <label>Educational Background</label>
+            <select id="enrEdu" required>
+              <option value="SSCE / O-Level">SSCE / O-Level</option>
+              <option value="OND / NCE">OND / NCE</option>
+              <option value="HND / BSc">HND / BSc</option>
+              <option value="Self-Taught Technical">Self-Taught Technical</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Selected Programme</label>
+          <input type="text" id="enrProgram" readonly style="background:#F8FAFC;">
+        </div>
+        <div class="form-group">
+          <label>Preferred Class Schedule</label>
+          <select id="enrSchedule" required>
+            <option value="Weekday Morning (Monday - Thursday, 9am - 2pm)">Weekday Morning (Monday - Thursday, 9am - 2pm)</option>
+            <option value="Weekend Intensive (Saturdays 9am - 4pm)">Weekend Intensive (Saturdays 9am - 4pm)</option>
+          </select>
+        </div>
+        <div class="modal-footer" style="padding:0; margin-top:20px;">
+          <button type="button" class="btn btn-outline" onclick="closeEnrollModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<!-- ===================== FOOTER ===================== -->
+<footer class="tk-footer">
+  <div class="tk-footer__band">
+    <div class="tk-container tk-footer__band-inner">
+      <h2>Stay Connected With NIJEDEE</h2>
+      <p class="tk-footer__band-copy">Subscribe for practical property maintenance tips, new product arrivals in the shop, and seasonal service updates.</p>
+      <form class="tk-footer__form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NIJEDEE updates!');">
+        <label class="tk-sr" for="tk-email">Email address</label>
+        <input id="tk-email" type="email" placeholder="Enter your email address" required>
+        <button type="submit" class="tk-btn tk-btn--primary">Join Newsletter</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="tk-footer__panel">
+    <div class="tk-footer__top">
+      <div class="tk-footer__brand">
+        <a href="index.html" aria-label="NIJEDEE Home">
+          <img src="assets/images/logo.png" alt="NIJEDEE Group Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+        </a>
+        <p class="tk-footer__tagline">NIJEDEE GROUP &middot; Property Maintenance, Repairs, Cleaning &amp; Marketplace. Registered in Nigeria (CAC RC 1403323).</p>
+        <p class="tk-footer__address">Coverage Corridor: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo, Lagos State.</p>
+        <p class="tk-footer__address" style="color:var(--tk-navy-light);font-weight:700;">
+          Phone/WhatsApp: 07085329909 &middot; 08167469581<br>
+          Website: NIJEDEE.com.ng
+        </p>
+        <div class="tk-footer__social">
+          <a href="https://wa.me/2347085329909" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+          <a href="tel:08167469581" aria-label="Phone">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+          <a href="contact.html" aria-label="Location">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <nav class="tk-footer__nav" aria-label="Footer links">
+        <div class="tk-footer__col">
+          <h3>NIJEDEE</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="become-artisan.html">Become an Artisan</a></li>
+            <li><a href="academy.html">Training Academy</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Customer</h3>
+          <ul>
+            <li><a href="book.html">Book a Service</a></li>
+            <li><a href="contact.html">Customer Dashboard</a></li>
+            <li><a href="contact.html">Track Bookings</a></li>
+            <li><a href="contact.html">Help &amp; Support</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Marketplace</h3>
+          <ul>
+            <li><a href="shop.html">NIJEDEE Shop</a></li>
+            <li><a href="artisans.html">Find an Artisan</a></li>
+            <li><a href="properties.html">Properties &amp; Shortlets</a></li>
+            <li><a href="properties.html#list-property">List Your Property</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="about.html">Terms &amp; Conditions</a></li>
+            <li><a href="about.html">Privacy Policy</a></li>
+            <li><a href="about.html">Artisan Terms</a></li>
+            <li><a href="about.html">Delivery Policy</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="tk-footer__bottom">
+      <p>&copy; 2026 NIJEDEE GROUP (RC 1403323). All rights reserved.</p>
+      <div class="tk-footer__legal-links">
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms</a>
+        <a href="contact.html">Service Areas</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function openEnrollModal(courseName) {
+    document.getElementById('enrProgram').value = courseName;
+    document.getElementById('modalCourseTitle').textContent = 'Enroll: ' + courseName;
+    document.getElementById('enrollModal').classList.add('open');
+  }
+
+  function closeEnrollModal() {
+    document.getElementById('enrollModal').classList.remove('open');
+  }
+
+  function handleEnrollSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('enrName').value;
+    const phone = document.getElementById('enrPhone').value;
+    const prog = document.getElementById('enrProgram').value;
+    alert(`Application Received!\n\nThank you, ${name}. Our Academy Admissions Officer will contact you on WhatsApp (${phone}) with payment details and your workshop orientation guide for ${prog}.`);
+    closeEnrollModal();
+  }
+</script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

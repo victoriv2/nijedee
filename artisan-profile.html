@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artisan Profile - Emmanuel Olutife | NIJEDEE Verified Plumber</title>
+  <meta name="description" content="View verified artisan profile for Emmanuel Olutife (Plumbing & Pipe Works Specialist) on NIJEDEE. Verified NIN, trade tested, servicing Lekki, Ajah, Badore, Sangotedo.">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .profile-hero {
+      background: linear-gradient(135deg, var(--tk-navy) 0%, var(--tk-primary) 100%);
+      padding: 48px 0 40px;
+      color: var(--tk-white);
+    }
+    .profile-card {
+      background: var(--tk-white);
+      border: 1px solid var(--tk-neutral-100);
+      border-radius: var(--tk-radius);
+      padding: 32px;
+      box-shadow: 0 4px 16px rgba(7,34,79,0.06);
+    }
+    .profile-avatar-lg {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--tk-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--tk-white);
+      border: 4px solid var(--tk-white);
+      box-shadow: 0 4px 14px rgba(7,34,79,0.15);
+      flex-shrink: 0;
+    }
+    .profile-header {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .profile-meta h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--tk-navy);
+      margin-bottom: 4px;
+    }
+    .profile-trade {
+      font-size: 16px;
+      color: var(--tk-primary);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .profile-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .profile-tag {
+      padding: 4px 12px;
+      border-radius: var(--tk-radius-pill);
+      background: var(--tk-primary-lightest);
+      border: 1px solid var(--tk-navy-light);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--tk-primary);
+    }
+    .stat-boxes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 28px 0;
+    }
+    .stat-box {
+      background: var(--tk-page);
+      border: 1px solid var(--tk-neutral-100);
+      border-radius: var(--tk-radius-sm);
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-box .num {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--tk-navy);
+    }
+    .stat-box .lbl {
+      font-size: 12px;
+      color: var(--tk-offwhite-dark);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 32px;
+      padding: 40px 0 36px;
+    }
+    .hire-card {
+      background: var(--tk-white);
+      border: 1.5px solid var(--tk-navy-light);
+      border-radius: var(--tk-radius);
+      padding: 24px;
+      position: sticky;
+      top: 100px;
+      box-shadow: 0 8px 24px rgba(7,34,79,0.08);
+    }
+    .avail-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--tk-green-lightest);
+      color: var(--tk-green);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: var(--tk-radius-pill);
+      margin-bottom: 16px;
+    }
+    .avail-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--tk-green);
+    }
+    .job-history-item {
+      padding: 14px 18px;
+      background: var(--tk-page);
+      border: 1px solid var(--tk-neutral-100);
+      border-radius: var(--tk-radius-sm);
+      margin-bottom: 12px;
+    }
+    .job-history-item h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--tk-navy);
+      margin-bottom: 4px;
+    }
+    .job-history-item p {
+      font-size: 13px;
+      color: var(--tk-offwhite-dark);
+      margin: 0;
+    }
+    @media (max-width: 768px) {
+      .profile-header { flex-direction: column; }
+      .profile-layout { grid-template-columns: 1fr; }
+      .hire-card { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="tk-header">
+  <div class="tk-header__inner">
+    <a class="tk-header__logo" href="index.html" aria-label="NIJEDEE Home">
+      <img src="assets/images/logo.png" alt="NIJEDEE Corporate Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+    </a>
+    <nav class="tk-header__nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="shop.html">Shop</a>
+      <a href="properties.html">Properties</a>
+      <a href="artisans.html" class="is-current">Artisans</a>
+      <a href="academy.html">Academy</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="tk-btn tk-btn--primary tk-btn--sm" href="book.html">Book a Service</a>
+    <button type="button" class="tk-header__burger" aria-label="Open menu" aria-expanded="false">
+      <svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M5 9h22M5 16h22M5 23h22"/>
+      </svg>
+    </button>
+  </div>
+  <div class="tk-header__drawer">
+    <button class="tk-drawer__close" aria-label="Close menu">&times;</button>
+    <nav class="tk-drawer__nav" aria-label="Mobile">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="shop.html">Shop</a>
+      <a href="properties.html">Properties</a>
+      <a href="artisans.html" class="is-current">Artisans</a>
+      <a href="academy.html">Academy</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="tk-btn tk-btn--primary" href="book.html" style="margin-top:24px;width:100%;">Book a Service</a>
+  </div>
+  <div class="tk-drawer-overlay"></div>
+</header>
+
+<div class="profile-hero">
+  <div class="tk-container">
+    <div style="font-size:13px;display:flex;gap:8px;align-items:center;color:var(--tk-navy-lightest);">
+      <a href="index.html" style="color:var(--tk-white);">Home</a> &gt;
+      <a href="artisans.html" style="color:var(--tk-white);">Artisans</a> &gt;
+      <span>Emmanuel Olutife</span>
+    </div>
+  </div>
+</div>
+
+<main style="background:var(--tk-page);">
+  <div class="tk-container">
+    <div class="profile-layout">
+      <!-- Left Column: Artisan Details & Authentic Verification Seal -->
+      <div>
+        <div class="profile-card" style="margin-bottom: 24px;">
+          <div class="profile-header">
+            <div class="profile-avatar-lg">EO</div>
+            <div class="profile-meta">
+              <div style="display:inline-flex;align-items:center;gap:6px;background:var(--tk-primary-lightest);border:1px solid var(--tk-navy-light);border-radius:var(--tk-radius-pill);padding:4px 12px;font-size:12px;font-weight:700;color:var(--tk-primary);margin-bottom:8px;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                NIJEDEE Verified Artisan &middot; NIN &amp; Trade Tested
+              </div>
+              <h1>Emmanuel Olutife</h1>
+              <div class="profile-trade">Plumbing &amp; Water Systems Specialist</div>
+              <div class="profile-tags">
+                <span class="profile-tag">Badore</span>
+                <span class="profile-tag">Ajah</span>
+                <span class="profile-tag">Sangotedo</span>
+                <span class="profile-tag">Lekki</span>
+                <span class="profile-tag">8+ Years Experience</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-boxes">
+            <div class="stat-box">
+              <div class="num">8+</div>
+              <div class="lbl">Years Experience</div>
+            </div>
+            <div class="stat-box">
+              <div class="num">100%</div>
+              <div class="lbl">Vetted &amp; Insured</div>
+            </div>
+            <div class="stat-box">
+              <div class="num">On-Time</div>
+              <div class="lbl">Arrival Record</div>
+            </div>
+          </div>
+
+          <h3 style="font-size:1.15rem;font-weight:700;color:var(--tk-navy);margin-bottom:12px;">Specialized Skills &amp; Scope</h3>
+          <ul style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:10px;margin-bottom:24px;">
+            <li style="font-size:14px;color:var(--tk-offwhite-dark);display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" fill="none" stroke="var(--tk-primary)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Pipe leak detection &amp; pressure repairs
+            </li>
+            <li style="font-size:14px;color:var(--tk-offwhite-dark);display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" fill="none" stroke="var(--tk-primary)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Blocked drain clearing &amp; unclogging
+            </li>
+            <li style="font-size:14px;color:var(--tk-offwhite-dark);display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" fill="none" stroke="var(--tk-primary)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Water storage tank &amp; pumping machine installation
+            </li>
+            <li style="font-size:14px;color:var(--tk-offwhite-dark);display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" fill="none" stroke="var(--tk-primary)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Bathroom &amp; kitchen sanitary ware installations
+            </li>
+            <li style="font-size:14px;color:var(--tk-offwhite-dark);display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" fill="none" stroke="var(--tk-primary)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Water treatment &amp; filtration plumbing lines
+            </li>
+            <li style="font-size:14px;color:var(--tk-offwhite-dark);display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" fill="none" stroke="var(--tk-primary)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Commercial facility routine plumbing checks
+            </li>
+          </ul>
+
+          <h3 style="font-size:1.15rem;font-weight:700;color:var(--tk-navy);margin-bottom:12px;">Verified Completed Work Categories</h3>
+          <div class="job-history-item">
+            <h4>Residential Water Tank &amp; Automatic Pumping Setup &mdash; Badore, Lagos</h4>
+            <p>Complete installation of dual 1000L tanks, float switch sensor, and high-pressure brass non-return valves.</p>
+          </div>
+          <div class="job-history-item">
+            <h4>Full Concealed Bathroom Plumbing &amp; Shower Mixer Setup &mdash; Ajah Axis</h4>
+            <p>PPR pipe fusion welding, leak pressure test at 10 bar, sanitary fittings, and concealed waste traps.</p>
+          </div>
+          <div class="job-history-item">
+            <h4>Emergency Burst Main Supply Pipe Remediation &mdash; Sangotedo Corridor</h4>
+            <p>Rapid leak diagnosis, pipe excavation, reinforced coupling installation, and supply restoration within 3 hours.</p>
+          </div>
+        </div>
+
+        <!-- Verification & Quality Seal (Blueprint Trust Architecture) -->
+        <div class="profile-card" style="margin-bottom:24px;border-left:4px solid var(--tk-primary);">
+          <h3 style="font-size:1.15rem;font-weight:700;color:var(--tk-navy);margin-bottom:8px;">NIJEDEE Artisan Verification Standard</h3>
+          <p style="font-size:0.9rem;color:var(--tk-offwhite-dark);margin-bottom:16px;">To protect homeowners and businesses from unverified informal contractors, every artisan on the NIJEDEE platform completes a 4-tier verification protocol:</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;">
+            <div style="background:var(--tk-page);padding:12px;border-radius:var(--tk-radius-sm);font-size:13px;border:1px solid var(--tk-neutral-100);">
+              <strong style="color:var(--tk-navy);display:block;margin-bottom:4px;">1. Identity Check</strong>
+              Government-verified NIN, photo identity and physical residential address confirmation.
+            </div>
+            <div style="background:var(--tk-page);padding:12px;border-radius:var(--tk-radius-sm);font-size:13px;border:1px solid var(--tk-neutral-100);">
+              <strong style="color:var(--tk-navy);display:block;margin-bottom:4px;">2. Practical Trade Test</strong>
+              Hands-on competency assessment conducted at the NIJEDEE Vocational Academy workshop.
+            </div>
+            <div style="background:var(--tk-page);padding:12px;border-radius:var(--tk-radius-sm);font-size:13px;border:1px solid var(--tk-neutral-100);">
+              <strong style="color:var(--tk-navy);display:block;margin-bottom:4px;">3. Guarantor Sign-Off</strong>
+              Verified references and professional guarantor documentation on file.
+            </div>
+            <div style="background:var(--tk-page);padding:12px;border-radius:var(--tk-radius-sm);font-size:13px;border:1px solid var(--tk-neutral-100);">
+              <strong style="color:var(--tk-navy);display:block;margin-bottom:4px;">4. Corporate Warranty</strong>
+              Backed by NIJEDEE Property Maintenance Ltd (RC 1403323) workmanship warranty.
+            </div>
+          </div>
+        </div>
+
+        <!-- Post-Job Rating Submission Box (Real System per Blueprint) -->
+        <div class="profile-card">
+          <h3 style="font-size:1.15rem;font-weight:700;color:var(--tk-navy);margin-bottom:6px;">Have You Completed a Job With Emmanuel?</h3>
+          <p style="font-size:0.9rem;color:var(--tk-offwhite-dark);margin-bottom:18px;">Ratings on NIJEDEE are strictly submitted by verified clients using their service booking reference code. Enter your booking code below to leave your rating and feedback.</p>
+          <form onsubmit="event.preventDefault(); alert('Thank you. Your booking reference is being verified against our operations record.');" style="display:flex;gap:12px;flex-wrap:wrap;">
+            <input type="text" class="form-control" placeholder="Booking Ref (e.g. NJD-2508-XXXXX)" style="max-width:240px;" required>
+            <button type="submit" class="tk-btn tk-btn--outline tk-btn--sm">Verify &amp; Rate</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right Column: Booking Card Sticky -->
+      <div>
+        <div class="hire-card">
+          <div class="avail-badge">
+            <span class="avail-dot"></span> Available for Booking
+          </div>
+          <h3>Book Emmanuel Olutife</h3>
+          <p style="font-size:13px;color:var(--tk-offwhite-dark);margin-bottom:16px;">Primary dispatch coverage across Badore, Ajah, Sangotedo, and Lekki Phase 1 &amp; 2.</p>
+          <div style="background:var(--tk-primary-lightest);padding:14px;border-radius:var(--tk-radius-sm);border:1px solid var(--tk-navy-light);margin-bottom:20px;">
+            <div style="font-size:12px;color:var(--tk-offwhite-dark);font-weight:600;">Pricing Policy</div>
+            <div style="font-size:14px;font-weight:700;color:var(--tk-navy);">Fixed quote provided after on-site or virtual inspection</div>
+            <div style="font-size:11px;color:var(--tk-offwhite-dark);margin-top:4px;">No hidden charges &middot; Clear itemized breakdown</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="book.html?artisan=Emmanuel+Olutife&trade=Plumbing" class="tk-btn tk-btn--primary" style="width:100%;text-align:center;">Book This Artisan</a>
+            <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE,%20I%20would%20like%20to%20enquire%20about%20booking%20Emmanuel%20Olutife%20(Plumber)" target="_blank" rel="noopener" class="tk-btn tk-btn--outline" style="width:100%;text-align:center;">WhatsApp Enquiries</a>
+          </div>
+          <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--tk-neutral-100);font-size:12px;color:var(--tk-offwhite-dark);line-height:1.5;">
+            <strong>Need urgent help?</strong><br>
+            Call NIJEDEE Dispatch Desk at <a href="tel:08167469581" style="color:var(--tk-primary);font-weight:700;">08167469581</a> or <a href="tel:07085329909" style="color:var(--tk-primary);font-weight:700;">07085329909</a>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="tk-footer">
+  <div class="tk-footer__panel" style="margin-inline:0;border-radius:0;">
+    <div class="tk-footer__top">
+      <div class="tk-footer__brand">
+        <a href="index.html" aria-label="NIJEDEE Home">
+          <img src="assets/images/logo.png" alt="NIJEDEE Group Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+        </a>
+        <p class="tk-footer__tagline">NIJEDEE GROUP &middot; Property Maintenance, Repairs, Cleaning &amp; Marketplace. Registered in Nigeria (CAC RC 1403323).</p>
+        <p class="tk-footer__address">Coverage Corridor: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo, Lagos State.</p>
+        <p class="tk-footer__address" style="color:var(--tk-navy-light);font-weight:700;">
+          Phone/WhatsApp: 07085329909 &middot; 08167469581<br>
+          Website: NIJEDEE.com.ng
+        </p>
+      </div>
+      <nav class="tk-footer__nav" aria-label="Footer links">
+        <div class="tk-footer__col">
+          <h3>NIJEDEE</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="become-artisan.html">Become an Artisan</a></li>
+            <li><a href="academy.html">Training Academy</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Customer</h3>
+          <ul>
+            <li><a href="book.html">Book a Service</a></li>
+            <li><a href="contact.html">Customer Dashboard</a></li>
+            <li><a href="contact.html">Track Bookings</a></li>
+            <li><a href="contact.html">Help &amp; Support</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Marketplace</h3>
+          <ul>
+            <li><a href="shop.html">NIJEDEE Shop</a></li>
+            <li><a href="artisans.html">Find an Artisan</a></li>
+            <li><a href="properties.html">Properties &amp; Shortlets</a></li>
+            <li><a href="properties.html#list-property">List Your Property</a></li>
+          </ul>
+        </div>
+        <div class="tk-footer__col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="about.html">Terms &amp; Conditions</a></li>
+            <li><a href="about.html">Privacy Policy</a></li>
+            <li><a href="about.html">Artisan Terms</a></li>
+            <li><a href="about.html">Delivery Policy</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="tk-footer__bottom">
+      <p>&copy; 2026 NIJEDEE GROUP (RC 1403323). All rights reserved.</p>
+      <div class="tk-footer__legal-links">
+        <a href="about.html">Privacy Policy</a>
+        <a href="about.html">Terms</a>
+        <a href="contact.html">Service Areas</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
