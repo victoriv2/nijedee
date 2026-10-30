@@ -1261,6 +1261,7 @@ body.drawer-open {
 }
 .tk-footer__form input {
   flex: 1;
+  min-width: 0;
   height: 48px;
   padding-inline: 18px;
   border-radius: var(--tk-radius);
@@ -1269,6 +1270,9 @@ body.drawer-open {
   font-size: var(--tk-body);
   color: var(--tk-text);
   outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
 }
 .tk-footer__form input:focus {
   border-color: var(--tk-accent);
@@ -2512,14 +2516,40 @@ textarea.form-control {
   }
 
   .tk-footer__form {
-    flex-direction: column !important;
-    gap: 10px !important;
+    flex-direction: row !important;
+    gap: 8px !important;
     margin-top: 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
   }
 
-  .tk-footer__form input,
+  .tk-footer__form input {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: 48px !important;
+    padding-inline: 14px !important;
+    font-size: 0.9rem !important;
+    border-radius: var(--tk-radius) !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    box-sizing: border-box !important;
+  }
+
   .tk-footer__form .tk-btn {
-    width: 100% !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: auto !important;
+    height: 48px !important;
+    padding-inline: 16px !important;
+    font-size: 0.86rem !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    border-radius: var(--tk-radius) !important;
+    box-sizing: border-box !important;
   }
 
   .tk-footer__panel {
