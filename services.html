@@ -172,46 +172,48 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="container">
-    <div class="navbar-inner">
-      <a href="index.html" class="navbar-logo">
-        <img src="assets/images/logo.png" alt="NIJEDEE Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
-      </a>
-      <div class="navbar-nav">
-        <a href="index.html">Home</a>
-        <a href="services.html" class="active">Services</a>
-        <a href="shop.html">Shop</a>
-        <a href="properties.html">Properties</a>
-        <a href="artisans.html">Artisans</a>
-        <a href="academy.html">Academy</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </div>
-      <div class="navbar-actions">
-        <a href="book.html" class="btn btn-primary btn-sm navbar-cta">Book a Service</a>
-        <button class="hamburger" aria-label="Menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+<!-- ===================== HEADER ===================== -->
+<header class="tk-header">
+  <div class="tk-header__inner">
+    <a class="tk-header__logo" href="index.html" aria-label="NIJEDEE Home">
+      <img src="assets/images/logo.png" alt="NIJEDEE Corporate Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+    </a>
+    <nav class="tk-header__nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="services.html" class="is-current">Services</a>
+      <a href="shop.html">Shop</a>
+      <a href="properties.html">Properties</a>
+      <a href="artisans.html">Artisans</a>
+      <a href="academy.html">Academy</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="tk-header__actions">
+      <a class="tk-btn tk-btn--primary tk-btn--sm" href="book.html">Book a Service</a>
+      <button type="button" class="tk-header__burger" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M5 9h22M5 16h22M5 23h22"/>
+        </svg>
+      </button>
     </div>
   </div>
-</nav>
-
-<nav class="mobile-nav" aria-label="Mobile navigation">
-  <button class="mobile-nav-close" aria-label="Close menu">&times;</button>
-  <a href="index.html">Home</a>
-  <a href="services.html">Services</a>
-  <a href="shop.html">Shop</a>
-  <a href="properties.html">Properties</a>
-  <a href="artisans.html">Artisans</a>
-  <a href="academy.html">Academy</a>
-  <a href="about.html">About</a>
-  <a href="contact.html">Contact</a>
-  <a href="book.html" class="btn btn-primary" style="margin-top:16px;text-align:center;justify-content:center;">Book a Service</a>
-</nav>
-<div class="mobile-nav-overlay"></div>
+  <!-- Mobile Drawer -->
+  <div class="tk-header__drawer">
+    <button class="tk-drawer__close" aria-label="Close menu">&times;</button>
+    <nav class="tk-drawer__nav" aria-label="Mobile">
+      <a href="index.html">Home</a>
+      <a href="services.html" class="is-current">Services</a>
+      <a href="shop.html">Shop</a>
+      <a href="properties.html">Properties</a>
+      <a href="artisans.html">Artisans</a>
+      <a href="academy.html">Academy</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="tk-btn tk-btn--primary" href="book.html" style="margin-top:24px;width:100%;justify-content:center;">Book a Service</a>
+  </div>
+  <div class="tk-drawer-overlay"></div>
+</header>
 
 <!-- PAGE BANNER -->
 <section class="page-banner">
