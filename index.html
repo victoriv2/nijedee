@@ -10,6 +10,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* ── Match header sizing to all other pages ── */
+    .tk-header__logo img {
+      height: 48px;
+      max-height: 48px;
+      max-width: 160px;
+      width: auto;
+      object-fit: contain;
+    }
+  </style>
 </head>
 <body>
 
@@ -17,7 +27,7 @@
 <header class="tk-header">
   <div class="tk-header__inner">
     <a class="tk-header__logo" href="index.html" aria-label="NIJEDEE Home">
-      <img src="assets/images/logo.png" alt="NIJEDEE Corporate Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+      <img src="assets/images/logo.png" alt="NIJEDEE Corporate Logo" style="height:48px; max-height:48px; max-width:160px; width:auto; object-fit:contain;">
     </a>
     <nav class="tk-header__nav" aria-label="Primary navigation">
       <a href="index.html" class="is-current">Home</a>
@@ -431,7 +441,7 @@
     <div class="tk-footer__top">
       <div class="tk-footer__brand">
         <a href="index.html" aria-label="NIJEDEE Home">
-          <img src="assets/images/logo.png" alt="NIJEDEE Group Logo" style="height:48px; max-height:48px; width:auto; object-fit:contain;">
+          <img src="assets/images/logo.png" alt="NIJEDEE Group Logo" style="height:48px; max-height:48px; max-width:160px; width:auto; object-fit:contain;">
         </a>
         <p class="tk-footer__tagline">NIJEDEE GROUP &middot; Property Maintenance, Repairs, Cleaning &amp; Marketplace. Registered in Nigeria (CAC RC 1403323).</p>
         <p class="tk-footer__address">Coverage Corridor: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo, Lagos State.</p>

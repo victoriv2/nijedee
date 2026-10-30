@@ -339,7 +339,9 @@ ul, ol {
 }
 .tk-header__logo img,
 .navbar-logo img {
-  height: 52px;
+  height: 48px;
+  max-height: 48px;
+  max-width: 160px;
   width: auto;
   object-fit: contain;
 }
