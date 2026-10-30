@@ -12,156 +12,249 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
     .properties-hero {
-      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
-      padding: 72px 0 60px;
+      background: linear-gradient(135deg, #07224F 0%, #0B5ED7 100%);
+      padding: 76px 0 64px;
       color: #ffffff;
       text-align: center;
+    }
+    .prop-module-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
     }
     .properties-hero h1 {
       color: #ffffff;
       font-size: clamp(2rem, 4vw, 3rem);
-      margin-bottom: 12px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 14px;
     }
     .properties-hero p {
-      color: rgba(255, 255, 255, 0.85);
+      color: rgba(255, 255, 255, 0.9);
       font-size: 1.1rem;
-      max-width: 620px;
-      margin: 0 auto;
+      max-width: 680px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
     }
-    .prop-filter-bar {
+    .prop-hero-actions {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin: 40px 0 32px;
+      gap: 14px;
       flex-wrap: wrap;
     }
-    .prop-tab-btn {
-      padding: 10px 24px;
-      border-radius: 50px;
-      border: 1.5px solid var(--border);
-      background: #ffffff;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--text-dark);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .prop-tab-btn:hover, .prop-tab-btn.active {
-      background: var(--blue);
-      border-color: var(--blue);
-      color: #ffffff;
-    }
-    .prop-grid-container {
+
+    /* 5 Categories Grid */
+    .prop-categories-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 28px;
-      margin-bottom: 60px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 56px;
     }
-    .prop-card-single {
+    .prop-cat-card {
       background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--shadow-sm);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-    .prop-card-single:hover {
-      border-color: var(--blue);
-      box-shadow: var(--shadow-md);
-    }
-    .prop-card-media {
-      height: 220px;
-      background: linear-gradient(135deg, #0A2D6E, #1E88E5);
-      position: relative;
-      overflow: hidden;
-    }
-    .prop-card-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .prop-status-tag {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      background: var(--navy);
-      color: #ffffff;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 50px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .prop-card-body {
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .prop-loc-text {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-    .prop-loc-text svg {
-      width: 15px;
-      height: 15px;
-      color: var(--blue);
-    }
-    .prop-card-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 12px;
-    }
-    .prop-amenities-row {
-      display: flex;
-      gap: 16px;
-      padding: 10px 0;
-      border-top: 1px solid #EDF2F7;
-      border-bottom: 1px solid #EDF2F7;
-      margin-bottom: 16px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .prop-price-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: auto;
-    }
-    .prop-rate-text {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--navy);
-    }
-    .prop-rate-text span {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text-muted);
-    }
-    .owner-cta-banner {
-      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
+      border: 1px solid var(--tk-neutral-100);
       border-radius: 16px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 16px rgba(7, 34, 79, 0.04);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+    .prop-cat-card:hover {
+      border-color: var(--tk-primary);
+      box-shadow: 0 8px 28px rgba(11, 94, 215, 0.1);
+    }
+    .prop-cat-card--featured {
+      background: linear-gradient(180deg, #F0F6FF 0%, #FFFFFF 100%);
+      border: 2px solid var(--tk-primary);
+    }
+    .prop-cat-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: #EBF3FE;
+      color: var(--tk-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .prop-cat-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--tk-navy);
+      margin-bottom: 10px;
+    }
+    .prop-cat-desc {
+      font-size: 0.92rem;
+      color: var(--tk-offwhite-dark);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .prop-cat-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--tk-neutral-700);
+    }
+    .prop-cat-features li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .prop-cat-features svg {
+      width: 16px;
+      height: 16px;
+      color: #10B981;
+      flex-shrink: 0;
+    }
+    .prop-cat-card .tk-btn {
+      margin-top: auto;
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Management Pillars Section */
+    .prop-mgmt-section {
+      background: #ffffff;
+      border: 1px solid var(--tk-neutral-100);
+      border-radius: 20px;
+      padding: 48px 40px;
+      margin-bottom: 56px;
+      box-shadow: 0 4px 20px rgba(7, 34, 79, 0.05);
+    }
+    .prop-mgmt-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 40px;
+    }
+    .prop-mgmt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .prop-mgmt-item {
+      padding: 24px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+    }
+    .prop-mgmt-item h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--tk-navy);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .prop-mgmt-item h4 svg {
+      color: var(--tk-primary);
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .prop-mgmt-item p {
+      font-size: 0.88rem;
+      color: var(--tk-offwhite-dark);
+      line-height: 1.55;
+    }
+
+    /* Request Form Section */
+    .prop-request-section {
+      background: linear-gradient(135deg, #07224F 0%, #0A47A5 100%);
+      border-radius: 20px;
       padding: 56px 40px;
       color: #ffffff;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 36px;
-      align-items: center;
-      margin-top: 48px;
-      margin-bottom: 28px;
-      box-shadow: 0 10px 30px rgba(7, 34, 79, 0.1);
+      margin-bottom: 56px;
+      box-shadow: 0 12px 36px rgba(7, 34, 79, 0.15);
     }
-    @media (max-width: 768px) {
-      .owner-cta-banner { grid-template-columns: 1fr; text-align: center; padding: 36px 20px; }
-      .owner-cta-banner div:last-child { justify-content: center; }
+    .prop-request-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .prop-request-info h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .prop-request-info p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .prop-request-zones {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .prop-zone-tag {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .prop-form-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 32px;
+      color: var(--tk-navy);
+    }
+    .prop-form-card label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--tk-navy);
+    }
+    .prop-form-card input,
+    .prop-form-card select,
+    .prop-form-card textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      color: var(--tk-black);
+      background: #FFFFFF;
+      margin-bottom: 16px;
+      transition: border-color 0.2s ease;
+      box-sizing: border-box;
+    }
+    .prop-form-card input:focus,
+    .prop-form-card select:focus,
+    .prop-form-card textarea:focus {
+      outline: none;
+      border-color: var(--tk-primary);
+    }
+
+    @media (max-width: 850px) {
+      .prop-request-grid { grid-template-columns: 1fr; gap: 32px; }
+      .prop-mgmt-section, .prop-request-section { padding: 32px 20px; }
+      .properties-hero { padding: 48px 16px; }
     }
   </style>
 </head>
@@ -214,171 +307,327 @@
 <!-- HERO -->
 <section class="properties-hero">
   <div class="container">
-    <span class="section-label" style="background:rgba(255,255,255,0.18); color:#ffffff; margin-bottom:12px;">Nijedee Real Estate &amp; Shortlets</span>
-    <h1>To-Let, Shortlets &amp; Commercial Properties</h1>
-    <p>Serving Badore, Ajah, Sangotedo, and Lekki. Carefully vetted listings, 24/7 security, continuous power, and dedicated facility support.</p>
+    <span class="prop-module-pill">Module 05 &middot; Properties &amp; Facility Care</span>
+    <h1>Find, Rent, Sell or Manage Properties</h1>
+    <p>Extending NIJEDEE from services into real estate. Connecting verified property owners, tenants, and shortlet guests with integrated maintenance across Lekki, Ajah, Badore, and Sangotedo.</p>
+    <div class="prop-hero-actions">
+      <a href="#property-inquiry" class="tk-btn tk-btn--primary">Request a Property</a>
+      <button type="button" class="tk-btn tk-btn--outline" onclick="openPropertyModal()" style="color:#ffffff;border-color:rgba(255,255,255,0.6);">List Your Property</button>
+      <a href="#facility-management" class="tk-btn tk-btn--ghost" style="color:#ffffff;">Property Management</a>
+    </div>
   </div>
 </section>
 
 <!-- MAIN CONTENT -->
-<section class="section" style="background:#F9FBFC; padding-top:20px;">
+<section class="section" style="background:#F9FBFC; padding: 60px 0;">
   <div class="container">
     
-    <!-- Filter Tabs -->
-    <div class="prop-filter-bar">
-      <button class="prop-tab-btn active" onclick="filterProps('all', this)">All Listings</button>
-      <button class="prop-tab-btn" onclick="filterProps('shortlet', this)">Serviced Shortlets</button>
-      <button class="prop-tab-btn" onclick="filterProps('rental', this)">Annual Rentals</button>
-      <button class="prop-tab-btn" onclick="filterProps('sales', this)">Property Sales</button>
-      <button class="prop-tab-btn" onclick="filterProps('commercial', this)">Commercial Space</button>
+    <!-- Section Heading -->
+    <div style="text-align:center; max-width:680px; margin: 0 auto 48px;">
+      <span class="section-label" style="background:#EBF3FE; color:var(--tk-primary); margin-bottom:12px;">Core Capabilities</span>
+      <h2 style="font-size:clamp(1.75rem, 3vw, 2.25rem); color:var(--tk-navy); margin-bottom:12px; font-weight:800;">Five Pillars of NIJEDEE Properties</h2>
+      <p style="color:var(--tk-offwhite-dark); font-size:1rem; line-height:1.6;">From short-stay apartments to long-term commercial leases and full-service facility management, every property on our platform is backed by our verified artisan network.</p>
     </div>
 
-    <!-- Properties Grid -->
-    <div class="prop-grid-container" id="propertyListingsGrid">
+    <!-- 5 Categories Grid (From Page 9 Blueprint) -->
+    <div class="prop-categories-grid">
       
-      <!-- Card 1: Serviced Apartment Shortlet -->
-      <div class="prop-card-single" data-type="shortlet">
-        <div class="prop-card-media">
-          <span class="prop-status-tag">Shortlet</span>
-          <img src="assets/images/prop-badore-duplex.jpeg" alt="Serviced Apartment Badore">
+      <!-- Category 1: Shortlet Apartments -->
+      <div class="prop-cat-card">
+        <div class="prop-cat-icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-loc-text">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Badore, Ajah Axis
-          </div>
-          <h3 class="prop-card-title">Executive 2-Bedroom Serviced Apartment</h3>
-          <div class="prop-amenities-row">
-            <span>2 Beds</span> &bull; <span>2 Baths</span> &bull; <span>24/7 Solar Light</span> &bull; <span>WiFi</span>
-          </div>
-          <div class="prop-price-row">
-            <div class="prop-rate-text">&#8358;180,000 <span>/ night</span></div>
-            <a href="book.html?service=shortlet" class="btn btn-primary btn-sm">Reserve Now</a>
-          </div>
-        </div>
+        <h3 class="prop-cat-title">Shortlet Apartments</h3>
+        <p class="prop-cat-desc">Short-stay bookings for business trips, family holidays, relocations, and weekend getaways in secure environments.</p>
+        <ul class="prop-cat-features">
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Trips, holidays &amp; event stays
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Pre-cleaned &amp; inspected before check-in
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            24/7 on-call maintenance support
+          </li>
+        </ul>
+        <a href="#property-inquiry" class="tk-btn tk-btn--outline" onclick="selectInquiryType('Shortlet Apartments')">Inquire for Shortlets</a>
       </div>
 
-      <!-- Card 2: 2 Bedroom Rental Ajah -->
-      <div class="prop-card-single" data-type="rental">
-        <div class="prop-card-media">
-          <span class="prop-status-tag">For Rent</span>
-          <img src="assets/images/prop-chevron-villa.jpeg" alt="2 Bedroom Flat Ajah">
+      <!-- Category 2: Properties for Rent -->
+      <div class="prop-cat-card">
+        <div class="prop-cat-icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-loc-text">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Ajah Central, Lagos
-          </div>
-          <h3 class="prop-card-title">Modern 2-Bedroom Flat in Gated Estate</h3>
-          <div class="prop-amenities-row">
-            <span>2 Beds</span> &bull; <span>2 Baths</span> &bull; <span>Prepaid Meter</span> &bull; <span>Treated Water</span>
-          </div>
-          <div class="prop-price-row">
-            <div class="prop-rate-text">&#8358;1,900,000 <span>/ year</span></div>
-            <a href="contact.html?inquiry=rent-ajah" class="btn btn-primary btn-sm">Inquire Lease</a>
-          </div>
-        </div>
+        <h3 class="prop-cat-title">Properties for Rent</h3>
+        <p class="prop-cat-desc">Residential apartments, family houses, and commercial office spaces across Lekki, Ajah, Badore, and Sangotedo.</p>
+        <ul class="prop-cat-features">
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Residential &amp; commercial listings
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Pre-tenancy inspection &amp; repair check
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Vetted landlord &amp; lease agreements
+          </li>
+        </ul>
+        <a href="#property-inquiry" class="tk-btn tk-btn--outline" onclick="selectInquiryType('Properties for Rent')">Inquire for Rentals</a>
       </div>
 
-      <!-- Card 3: Duplex (3BR) Lekki -->
-      <div class="prop-card-single" data-type="rental">
-        <div class="prop-card-media">
-          <span class="prop-status-tag">For Rent</span>
-          <img src="assets/images/prop-ajah-terrace.jpeg" alt="3BR Duplex Lekki">
+      <!-- Category 3: Properties for Sale -->
+      <div class="prop-cat-card">
+        <div class="prop-cat-icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-loc-text">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Lekki Phase 2 / Chevron Drive
-          </div>
-          <h3 class="prop-card-title">Contemporary 3-Bedroom Terrace Duplex</h3>
-          <div class="prop-amenities-row">
-            <span>3 Beds</span> &bull; <span>4 Baths</span> &bull; <span>Fitted Kitchen</span> &bull; <span>CCTV</span>
-          </div>
-          <div class="prop-price-row">
-            <div class="prop-rate-text">&#8358;3,500,000 <span>/ year</span></div>
-            <a href="contact.html?inquiry=rent-lekki" class="btn btn-primary btn-sm">Inquire Lease</a>
-          </div>
-        </div>
+        <h3 class="prop-cat-title">Properties for Sale</h3>
+        <p class="prop-cat-desc">Carefully vetted purchase listings with verified title documents, structural integrity reviews, and clear ownership records.</p>
+        <ul class="prop-cat-features">
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Residential &amp; commercial purchases
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Title documentation review
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Physical site inspections with engineers
+          </li>
+        </ul>
+        <a href="#property-inquiry" class="tk-btn tk-btn--outline" onclick="selectInquiryType('Properties for Sale')">Inquire for Purchases</a>
       </div>
 
-      <!-- Card 4: Sales Sangotedo -->
-      <div class="prop-card-single" data-type="sales">
-        <div class="prop-card-media">
-          <span class="prop-status-tag" style="background:#0F766E;">For Sale</span>
-          <img src="assets/images/prop-lekki-shortlet.jpeg" alt="4BR Semi Detached Sangotedo">
+      <!-- Category 4: Property Owners -->
+      <div class="prop-cat-card prop-cat-card--featured" id="submit-property">
+        <div class="prop-cat-icon" style="background:#0B5ED7; color:#ffffff;">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-loc-text">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Monastery Road, Sangotedo
-          </div>
-          <h3 class="prop-card-title">Brand New 4-Bedroom Semi-Detached + BQ</h3>
-          <div class="prop-amenities-row">
-            <span>Governor's Consent</span> &bull; <span>Stamp Duty</span> &bull; <span>Dedicated Compound</span>
-          </div>
-          <div class="prop-price-row">
-            <div class="prop-rate-text">&#8358;85,000,000 <span>outright</span></div>
-            <a href="contact.html?inquiry=buy-sangotedo" class="btn btn-primary btn-sm">Book Inspection</a>
-          </div>
-        </div>
+        <h3 class="prop-cat-title">For Property Owners</h3>
+        <p class="prop-cat-desc">Submit your properties for verified listing, trustworthy tenant acquisition, and professional asset management.</p>
+        <ul class="prop-cat-features">
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Vetted tenant matching &amp; background checks
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Prompt rental collection &amp; disbursement
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Continuous physical preservation of your asset
+          </li>
+        </ul>
+        <button type="button" class="tk-btn tk-btn--primary" onclick="openPropertyModal()">Submit Property</button>
       </div>
 
-      <!-- Card 5: Waterfront 1BR Shortlet -->
-      <div class="prop-card-single" data-type="shortlet">
-        <div class="prop-card-media">
-          <span class="prop-status-tag">Shortlet</span>
-          <img src="assets/images/prop-sangotedo-flat.jpeg" alt="Waterfront Studio Lekki">
+      <!-- Category 5: Facility Management -->
+      <div class="prop-cat-card" id="facility-management">
+        <div class="prop-cat-icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-loc-text">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Lekki Phase 1 Waterfront
-          </div>
-          <h3 class="prop-card-title">Luxury Studio Suite with Marina View</h3>
-          <div class="prop-amenities-row">
-            <span>1 King Bed</span> &bull; <span>Netflix / Smart TV</span> &bull; <span>24hr Light</span>
-          </div>
-          <div class="prop-price-row">
-            <div class="prop-rate-text">&#8358;95,000 <span>/ night</span></div>
-            <a href="book.html?service=shortlet" class="btn btn-primary btn-sm">Reserve Now</a>
-          </div>
-        </div>
+        <h3 class="prop-cat-title">Facility &amp; Property Management</h3>
+        <p class="prop-cat-desc">Complete end-to-end maintenance contracts for residential blocks, commercial plazas, estates, and absentee landlord properties.</p>
+        <ul class="prop-cat-features">
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Scheduled routine inspections
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Preventive &amp; corrective maintenance
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Vendor, artisan &amp; tenant coordination
+          </li>
+        </ul>
+        <a href="book.html?service=facility-management" class="tk-btn tk-btn--outline">Book Facility Management</a>
       </div>
 
-      <!-- Card 6: Commercial Office Space -->
-      <div class="prop-card-single" data-type="commercial">
-        <div class="prop-card-media">
-          <span class="prop-status-tag" style="background:#6366F1;">Commercial</span>
-          <img src="assets/images/work-cleaning-1.jpeg" alt="Commercial Office Ajah">
-        </div>
-        <div class="prop-card-body">
-          <div class="prop-loc-text">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Ajah Jubilee Bridge Expressway Plaza
-          </div>
-          <h3 class="prop-card-title">120sqm Open-Plan Corporate Office Suite</h3>
-          <div class="prop-amenities-row">
-            <span>Elevator</span> &bull; <span>Dedicated Generator</span> &bull; <span>Ample Parking</span>
-          </div>
-          <div class="prop-price-row">
-            <div class="prop-rate-text">&#8358;4,200,000 <span>/ year</span></div>
-            <a href="contact.html?inquiry=commercial-ajah" class="btn btn-primary btn-sm">Inquire Lease</a>
-          </div>
-        </div>
+    </div>
+
+    <!-- Management Scope Breakdown (Directly from Page 9 Blueprint Table) -->
+    <div class="prop-mgmt-section">
+      <div class="prop-mgmt-header">
+        <span class="section-label" style="background:#EBF3FE; color:var(--tk-primary); margin-bottom:10px;">Blueprint Scope</span>
+        <h3 style="font-size:1.85rem; color:var(--tk-navy); font-weight:800; margin-bottom:10px;">What Property Management Includes</h3>
+        <p style="color:var(--tk-offwhite-dark); font-size:0.95rem; line-height:1.6;">Our facility management contracts cover the full lifecycle of property upkeep, ensuring your property value continues to appreciate without operational headaches.</p>
       </div>
 
+      <div class="prop-mgmt-grid">
+        <div class="prop-mgmt-item">
+          <h4>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Routine Inspections
+          </h4>
+          <p>Scheduled structural, electrical, plumbing, and roof checks to catch issues before they turn into costly damages.</p>
+        </div>
+
+        <div class="prop-mgmt-item">
+          <h4>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            Preventive Maintenance
+          </h4>
+          <p>Proactive servicing of air conditioning, water pumps, generators, borehole systems, and drainage lines.</p>
+        </div>
+
+        <div class="prop-mgmt-item">
+          <h4>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Cleaning &amp; Fumigation
+          </h4>
+          <p>Deep cleaning for tenancy transitions, ongoing common-area hygiene, post-construction cleanup, and quarterly pest control.</p>
+        </div>
+
+        <div class="prop-mgmt-item">
+          <h4>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Prompt Repairs
+          </h4>
+          <p>On-demand dispatch of verified plumbers, electricians, carpenters, and painters at pre-approved transparent labor rates.</p>
+        </div>
+
+        <div class="prop-mgmt-item">
+          <h4>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Tenant Support
+          </h4>
+          <p>A single dedicated communication channel for tenants to report maintenance issues, resolved with minimum turnaround time.</p>
+        </div>
+
+        <div class="prop-mgmt-item">
+          <h4>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Property Reporting
+          </h4>
+          <p>Detailed periodic physical condition reports and expense summaries delivered straight to the landlord's dashboard or WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Property Inquiry & Matching Concierge (Data Model from Blueprint Page 9) -->
+    <div class="prop-request-section" id="property-inquiry">
+      <div class="prop-request-grid">
+        <div class="prop-request-info">
+          <span class="section-label" style="background:rgba(255,255,255,0.15); color:#ffffff; margin-bottom:14px;">Direct Matching</span>
+          <h2>Looking for a Property in Lagos?</h2>
+          <p>Tell us exactly what you need. Because we maintain and manage properties directly across our primary coverage zones, our local team will match you with genuine, verified inventory that fits your criteria.</p>
+          
+          <div style="margin-bottom:20px; font-weight:700; font-size:0.95rem; color:#ffffff;">Primary Coverage Corridor:</div>
+          <div class="prop-request-zones">
+            <span class="prop-zone-tag">Lekki Phase 1 &amp; 2</span>
+            <span class="prop-zone-tag">Ajah Central</span>
+            <span class="prop-zone-tag">Badore Axis</span>
+            <span class="prop-zone-tag">Sangotedo</span>
+            <span class="prop-zone-tag">Other Lagos by arrangement</span>
+          </div>
+
+          <div style="margin-top:32px; padding:18px 20px; background:rgba(255,255,255,0.08); border-radius:12px; border:1px solid rgba(255,255,255,0.2);">
+            <div style="font-weight:700; font-size:0.95rem; margin-bottom:6px;">Need urgent shortlet booking?</div>
+            <p style="font-size:0.88rem; margin:0; color:rgba(255,255,255,0.85);">Message our booking desk on WhatsApp at <strong style="color:#ffffff;">07085329909</strong> for immediate availability.</p>
+          </div>
+        </div>
+
+        <!-- Form built strictly on Blueprint Page 9 Data Model: Location, Bedrooms, Amenities, Contact -->
+        <div class="prop-form-card">
+          <h3 style="font-size:1.35rem; font-weight:800; color:var(--tk-navy); margin-bottom:6px;">Submit Property Request</h3>
+          <p style="font-size:0.86rem; color:var(--tk-offwhite-dark); margin-bottom:20px;">We verify inventory directly before scheduling physical viewings.</p>
+
+          <form onsubmit="handleInquirySubmit(event)">
+            <div>
+              <label for="inqCategory">Property Category *</label>
+              <select id="inqCategory" required>
+                <option value="Shortlet Apartments">Shortlet Apartment (Short Stay)</option>
+                <option value="Properties for Rent">Property for Rent (Annual Lease)</option>
+                <option value="Properties for Sale">Property for Sale (Purchase)</option>
+                <option value="Commercial Space">Commercial / Office Space</option>
+              </select>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+              <div>
+                <label for="inqLocation">Preferred Location *</label>
+                <select id="inqLocation" required>
+                  <option value="Badore">Badore, Ajah</option>
+                  <option value="Ajah">Ajah Central</option>
+                  <option value="Sangotedo">Sangotedo</option>
+                  <option value="Lekki Phase 1">Lekki Phase 1</option>
+                  <option value="Lekki Phase 2 / Chevron">Lekki Phase 2 / Chevron</option>
+                  <option value="Other Lagos">Other Lagos Axis</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="inqBedrooms">Bedrooms / Size *</label>
+                <select id="inqBedrooms" required>
+                  <option value="Studio / 1-Bed">Studio / 1-Bedroom</option>
+                  <option value="2-Bedrooms">2-Bedrooms</option>
+                  <option value="3-Bedrooms">3-Bedrooms</option>
+                  <option value="4+ Bedrooms / Duplex">4+ Bedrooms / Duplex</option>
+                  <option value="Open Office / Store">Commercial / Store</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="inqName">Your Full Name *</label>
+              <input type="text" id="inqName" placeholder="e.g. Victor Okafor" required>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+              <div>
+                <label for="inqPhone">Phone / WhatsApp Number *</label>
+                <input type="tel" id="inqPhone" placeholder="07085329909" required>
+              </div>
+              <div>
+                <label for="inqTiming">Target Move-in / Dates</label>
+                <input type="text" id="inqTiming" placeholder="e.g. Next weekend / Dec 15">
+              </div>
+            </div>
+
+            <div>
+              <label for="inqNotes">Specific Requirements / Budget</label>
+              <textarea id="inqNotes" rows="3" placeholder="e.g. Gated estate preferred, 24-hr power, elevator access..."></textarea>
+            </div>
+
+            <button type="submit" class="tk-btn tk-btn--primary" style="width:100%; justify-content:center; padding:14px; font-weight:700;">Submit Property Request</button>
+          </form>
+        </div>
+      </div>
     </div>
 
     <!-- OWNER SUBMISSION CTA BANNER -->
-    <div class="owner-cta-banner">
+    <div style="background: linear-gradient(135deg, #07224F 0%, #1565C0 100%); border-radius: 16px; padding: 48px 40px; color: #ffffff; display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; align-items: center; box-shadow: 0 10px 30px rgba(7, 34, 79, 0.1);">
       <div>
         <span class="section-label" style="background:rgba(255,255,255,0.18); color:#ffffff; margin-bottom:12px;">For Property Owners &amp; Landlords</span>
-        <h2 style="color:#ffffff; font-size:1.8rem; margin-bottom:12px;">List Your Property with Nijedee</h2>
-        <p style="color:rgba(255,255,255,0.85); font-size:1rem; line-height:1.6;">Earn higher rental returns with complete peace of mind. We screen vetted tenants, maintain the physical assets with in-house artisans, and remit rental yields promptly.</p>
+        <h2 style="color:#ffffff; font-size:1.85rem; font-weight:800; margin-bottom:12px;">List or Entrust Your Property to NIJEDEE</h2>
+        <p style="color:rgba(255,255,255,0.85); font-size:0.98rem; line-height:1.6; margin:0;">Protect your rental yield and structural value. We screen vetted tenants, maintain the property with in-house artisans, and remit rental returns promptly.</p>
       </div>
       <div style="display:flex; justify-content:flex-end; align-items:center;">
-        <button class="btn btn-secondary btn-lg" onclick="openPropertyModal()">Submit Property Details</button>
+        <button type="button" class="tk-btn tk-btn--primary" onclick="openPropertyModal()" style="background:#ffffff; color:var(--tk-navy); border:none; padding:14px 28px; font-weight:700;">Submit Property Details</button>
       </div>
     </div>
 
@@ -529,18 +778,31 @@
 </footer>
 
 <script>
-  function filterProps(type, btn) {
-    document.querySelectorAll('.prop-tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    const cards = document.querySelectorAll('.prop-card-single');
-    cards.forEach(card => {
-      if (type === 'all' || card.dataset.type === type) {
-        card.style.display = 'flex';
-      } else {
-        card.style.display = 'none';
+  function selectInquiryType(category) {
+    const sel = document.getElementById('inqCategory');
+    if (sel) {
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === category || sel.options[i].text.includes(category)) {
+          sel.selectedIndex = i;
+          break;
+        }
       }
-    });
+    }
+  }
+
+  function handleInquirySubmit(e) {
+    e.preventDefault();
+    const category = document.getElementById('inqCategory').value;
+    const location = document.getElementById('inqLocation').value;
+    const bedrooms = document.getElementById('inqBedrooms').value;
+    const name = document.getElementById('inqName').value;
+    const phone = document.getElementById('inqPhone').value;
+    const timing = document.getElementById('inqTiming').value;
+    const notes = document.getElementById('inqNotes').value;
+
+    const msg = `Hello NIJEDEE, I would like to inquire about a property:\n\n• Category: ${category}\n• Location: ${location}\n• Size/Bedrooms: ${bedrooms}\n• Name: ${name}\n• Phone: ${phone}\n• Target Date: ${timing || 'Flexible'}\n• Details: ${notes || 'Standard inquiry'}`;
+    const waUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
   }
 
   function openPropertyModal() {
@@ -555,7 +817,13 @@
     e.preventDefault();
     const name = document.getElementById('propOwnerName').value;
     const phone = document.getElementById('propOwnerPhone').value;
-    alert(`Thank you, ${name}!\n\nYour property has been received. Our asset management officer will contact you at ${phone} within 24 hours to schedule an inspection.`);
+    const type = document.getElementById('propOwnerType').value;
+    const location = document.getElementById('propOwnerLocation').value;
+    const desc = document.getElementById('propOwnerDesc').value;
+
+    const msg = `Hello NIJEDEE, I want to submit my property for listing/management:\n\n• Owner: ${name}\n• Phone: ${phone}\n• Category: ${type}\n• Location: ${location}\n• Description: ${desc}`;
+    const waUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
     closePropertyModal();
   }
 </script>
