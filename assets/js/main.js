@@ -10,18 +10,18 @@
 const qs  = (sel, ctx = document) => ctx.querySelector(sel);
 const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-/* ── Smart Sticky Header (Hide on Scroll Down, Reveal on Scroll Up) ── */
+/* ── Smart Fixed Header (Hide on Scroll Down, Reveal on Scroll Up Anywhere) ── */
 (function initHeader() {
   const header = qs('.tk-header') || qs('.navbar');
   if (!header) return;
 
-  let lastScrollY = window.scrollY || document.documentElement.scrollTop;
+  let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+  let scrollUpAccum = 0;
+  let scrollDownAccum = 0;
   let ticking = false;
-  const threshold = 6;  // Minimum scroll difference to trigger transition
-  const minScroll = 80; // Only hide after scrolling past 80px
 
   const updateHeader = () => {
-    const currentScrollY = Math.max(0, window.scrollY || document.documentElement.scrollTop);
+    const currentScrollY = Math.max(0, window.pageYOffset || document.documentElement.scrollTop);
     const isDrawerOpen = document.body.classList.contains('drawer-open') || 
                          document.documentElement.classList.contains('drawer-open');
 
@@ -33,11 +33,13 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
       return;
     }
 
-    // At the very top: always fully visible and remove scrolled shadow
-    if (currentScrollY <= 15) {
+    // At the very top (first 20px): always fully visible, remove scrolled shadow
+    if (currentScrollY <= 20) {
       header.classList.remove('header-hidden');
       header.classList.add('header-visible');
       header.classList.remove('scrolled');
+      scrollUpAccum = 0;
+      scrollDownAccum = 0;
       lastScrollY = currentScrollY;
       ticking = false;
       return;
@@ -45,17 +47,24 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
     header.classList.add('scrolled');
 
-    const diff = currentScrollY - lastScrollY;
+    const delta = currentScrollY - lastScrollY;
 
-    // Scrolling down: hide header
-    if (diff > threshold && currentScrollY > minScroll) {
-      header.classList.add('header-hidden');
-      header.classList.remove('header-visible');
-    }
-    // Scrolling up: show header immediately
-    else if (diff < -threshold) {
-      header.classList.remove('header-hidden');
-      header.classList.add('header-visible');
+    if (delta < 0) {
+      // SCROLLING UP: reveal immediately from ANY scroll position (including bottom of page)
+      scrollUpAccum += Math.abs(delta);
+      scrollDownAccum = 0;
+      if (scrollUpAccum >= 4 || currentScrollY <= 120) {
+        header.classList.remove('header-hidden');
+        header.classList.add('header-visible');
+      }
+    } else if (delta > 0) {
+      // SCROLLING DOWN: hide when moving downward past top threshold
+      scrollDownAccum += delta;
+      scrollUpAccum = 0;
+      if (currentScrollY > 80 && scrollDownAccum >= 10) {
+        header.classList.add('header-hidden');
+        header.classList.remove('header-visible');
+      }
     }
 
     lastScrollY = currentScrollY;
@@ -334,107 +343,187 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   });
 })();
 
-/* ── Hero Crossfade Photo Carousel (WhatsApp Media Showcase) ── */
-(function initHeroCarousel() {
-  const container = document.querySelector('#heroPhotoSlider');
-  if (!container) return;
+/* ── Hero Interactive Full-View Lightbox Gallery ── */
+(function initHeroLightbox() {
+  const heroTrigger = document.querySelector('#heroPhotoSlider');
+  const lightbox = document.querySelector('#tkImageLightbox');
+  if (!heroTrigger || !lightbox) return;
 
-  const slides = container.querySelectorAll('.tk-hero__slide');
-  if (slides.length < 2) return;
+  const mainImg = document.querySelector('#lightboxMainImg');
+  const imgWrap = document.querySelector('#lightboxImgWrap');
+  const titleEl = document.querySelector('#lightboxTitle');
+  const counterEl = document.querySelector('#lightboxCounter');
+  const closeBtn = document.querySelector('#lightboxCloseBtn');
+  const backdrop = document.querySelector('#lightboxBackdrop');
+  const thumbsContainer = document.querySelector('#lightboxThumbs');
 
-  const basePath = 'media/WhatsApp Unknown 2026-10-29 at 12.22.43 PM/';
-  const images = [
-    "WhatsApp Image 2026-10-28 at 8.11.27 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.27 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.28 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.28 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.28 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.29 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.29 PM (3).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.29 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.34 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.35 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.35 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.35 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.36 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.36 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.37 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.37 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.37 PM (3).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.37 PM (4).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.37 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.38 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.38 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.38 PM (3).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.38 PM (4).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.38 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.39 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.39 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.39 PM (3).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.39 PM (4).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.39 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.40 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.40 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.41 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.41 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.41 PM (3).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.41 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.42 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.42 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.42 PM (3).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.42 PM (4).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.42 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.43 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.43 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.43 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.44 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.44 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.44 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.45 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.45 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.45 PM (3).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.45 PM (4).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.45 PM.jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.46 PM (1).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.46 PM (2).jpeg",
-    "WhatsApp Image 2026-10-28 at 8.11.46 PM.jpeg"
+  const GALLERY = [
+    { src: 'assets/images/flyer-banner.jpeg', title: 'NIJEDEE PAINTS — Bringing Colors to Life', tag: 'Paints & Wall Finishes' },
+    { src: 'assets/images/flyer-services.jpeg', title: 'NIJEDEE 13 Service Categories — Complete Property Scope', tag: 'Full Maintenance' },
+    { src: 'assets/images/flyer-academy.jpeg', title: 'NIJEDEE Artisan Academy — Professional Training & Vetting', tag: 'Artisan Academy' },
+    { src: 'assets/images/work-painting-1.jpeg', title: 'Painting & Decorative Wall Finishes', tag: 'Painting Work' },
+    { src: 'assets/images/work-electrical-1.jpeg', title: 'Electrical Installations & DB Wiring', tag: 'Electrical Work' },
+    { src: 'assets/images/work-carpentry-1.jpeg', title: 'Carpentry, Doors & Custom Cabinetry', tag: 'Carpentry Work' },
+    { src: 'assets/images/work-ac-1.jpeg', title: 'Air Conditioning Installation & Servicing', tag: 'HVAC Work' },
+    { src: 'assets/images/work-solar-1.jpeg', title: 'Solar Inverter Systems & Backup Power', tag: 'Solar & Power' },
+    { src: 'assets/images/work-tiling-1.jpeg', title: 'Floor & Wall Tiling Installation', tag: 'Tiling Work' },
+    { src: 'assets/images/work-borehole-1.jpeg', title: 'Borehole Drilling & Water Treatment Systems', tag: 'Water Services' },
+    { src: 'assets/images/work-roofing-1.jpeg', title: 'Roofing Repair, Trusses & Waterproofing', tag: 'Roofing Work' },
+    { src: 'assets/images/work-cleaning-1.jpeg', title: 'Deep Cleaning & Post-Construction Cleanup', tag: 'Cleaning Work' },
+    { src: 'assets/images/work-generator-1.jpeg', title: 'Generator Diagnostics & Heavy Servicing', tag: 'Generator Work' },
+    { src: 'assets/images/work-plumbing-1.jpeg', title: 'Plumbing, Pressure Pumps & Leak Repairs', tag: 'Plumbing Work' },
+    { src: 'assets/images/prop-lekki-shortlet.jpeg', title: 'Luxury Serviced Shortlet — Lekki Phase 1', tag: 'Property Listing' },
+    { src: 'assets/images/prop-chevron-villa.jpeg', title: 'Contemporary 3-Bedroom Terrace — Chevron', tag: 'Property Listing' },
+    { src: 'assets/images/prop-badore-duplex.jpeg', title: 'Executive 4-Bedroom Duplex — Badore Ajah', tag: 'Property Listing' },
+    { src: 'assets/images/prop-sangotedo-flat.jpeg', title: 'Modern 2-Bedroom Apartment — Sangotedo', tag: 'Property Listing' },
+    { src: 'assets/images/prop-ajah-terrace.jpeg', title: 'Open-Plan Corporate Office Suite — Ajah', tag: 'Property Listing' }
   ];
 
   let currentIndex = 0;
-  let activeIndex = 0;
+  let thumbElements = [];
 
-  function getImageUrl(name) {
-    return encodeURI(basePath + name);
+  // Populate Thumbnails under the "X"
+  thumbsContainer.innerHTML = '';
+  GALLERY.forEach((item, idx) => {
+    const thumb = document.createElement('button');
+    thumb.type = 'button';
+    thumb.className = 'tk-lightbox__thumb-item' + (idx === 0 ? ' is-active' : '');
+    thumb.setAttribute('aria-label', item.title);
+    thumb.innerHTML = `<img src="${item.src}" alt="${item.title}" loading="lazy">`;
+    thumb.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToSlide(idx);
+    });
+    thumbsContainer.appendChild(thumb);
+    thumbElements.push(thumb);
+  });
+
+  function goToSlide(idx) {
+    if (idx < 0) idx = GALLERY.length - 1;
+    if (idx >= GALLERY.length) idx = 0;
+    currentIndex = idx;
+
+    const item = GALLERY[currentIndex];
+    
+    // Smooth transition
+    mainImg.style.opacity = '0';
+    mainImg.style.transform = 'scale(0.97)';
+    
+    setTimeout(() => {
+      mainImg.src = item.src;
+      mainImg.alt = item.title;
+      if (titleEl) titleEl.textContent = item.title;
+      if (counterEl) counterEl.textContent = `${currentIndex + 1} / ${GALLERY.length}`;
+      mainImg.style.opacity = '1';
+      mainImg.style.transform = 'scale(1)';
+    }, 120);
+
+    // Update active thumbnail
+    thumbElements.forEach((th, i) => {
+      if (i === currentIndex) {
+        th.classList.add('is-active');
+        th.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } else {
+        th.classList.remove('is-active');
+      }
+    });
   }
 
-  function preloadImage(url) {
-    const img = new Image();
-    img.src = url;
+  function openLightbox(startIdx = 0) {
+    goToSlide(startIdx);
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
   }
 
-  for (let i = 0; i < Math.min(5, images.length); i++) {
-    preloadImage(getImageUrl(images[i]));
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
   }
 
-  function advanceSlide() {
-    const nextImageIndex = (currentIndex + 1) % images.length;
-    currentIndex = nextImageIndex;
-    const nextUrl = getImageUrl(images[nextImageIndex]);
+  // Open on clicking hero showcase
+  heroTrigger.addEventListener('click', () => openLightbox(0));
+  heroTrigger.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openLightbox(0);
+    }
+  });
 
-    const incomingSlideIndex = activeIndex === 0 ? 1 : 0;
-    const incomingSlide = slides[incomingSlideIndex];
-    const outgoingSlide = slides[activeIndex];
-
-    incomingSlide.src = nextUrl;
-    incomingSlide.classList.add('active');
-    outgoingSlide.classList.remove('active');
-    activeIndex = incomingSlideIndex;
-
-    const aheadIndex = (currentIndex + 1) % images.length;
-    preloadImage(getImageUrl(images[aheadIndex]));
+  // Close on clicking "X" button directly under image
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeLightbox();
+    });
   }
 
-  setInterval(advanceSlide, 3000);
+  // Close on backdrop click
+  if (backdrop) {
+    backdrop.addEventListener('click', closeLightbox);
+  }
+
+  // Close on Escape key
+  window.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') {
+      closeLightbox();
+    }
+  });
+
+  /* ── Swipe & Drag Gesture Support on Full Image (NO ARROWS) ── */
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+  const dragThreshold = 40; // minimum px movement to register swipe
+
+  // Touch gestures for mobile
+  imgWrap.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  imgWrap.addEventListener('touchend', (e) => {
+    if (e.changedTouches.length !== 1) return;
+    const diffX = e.changedTouches[0].clientX - startX;
+    const diffY = e.changedTouches[0].clientY - startY;
+
+    // Only handle horizontal swipes
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > dragThreshold) {
+      if (diffX < 0) {
+        // Swiped left -> next image
+        goToSlide(currentIndex + 1);
+      } else {
+        // Swiped right -> prev image
+        goToSlide(currentIndex - 1);
+      }
+    }
+  }, { passive: true });
+
+  // Mouse drag gestures for desktop
+  imgWrap.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return; // only left click
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+  });
+
+  window.addEventListener('mouseup', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    const diffX = e.clientX - startX;
+    const diffY = e.clientY - startY;
+
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > dragThreshold) {
+      if (diffX < 0) {
+        goToSlide(currentIndex + 1);
+      } else {
+        goToSlide(currentIndex - 1);
+      }
+    }
+  });
 })();
 
 /* ============================================================

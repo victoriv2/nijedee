@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -76,10 +76,9 @@
         <a class="tk-btn tk-btn--ghost tk-btn--lg" href="shop.html">Shop Materials</a>
       </div>
     </div>
-    <div class="tk-hero__figure" id="heroPhotoSlider" aria-label="NIJEDEE Verified Artisans and Project Showcase">
+    <div class="tk-hero__figure" id="heroPhotoSlider" aria-label="NIJEDEE Verified Project Showcase (Click to expand full view)" role="button" tabindex="0" title="Click to view full image gallery">
       <div class="tk-hero__slides">
-        <img class="tk-hero__photo tk-hero__slide active" id="heroSlideA" src="media/WhatsApp%20Unknown%202026-10-29%20at%2012.22.43%20PM/WhatsApp%20Image%202026-10-28%20at%208.11.27%20PM%20(1).jpeg" alt="NIJEDEE Verified Work in Lagos">
-        <img class="tk-hero__photo tk-hero__slide" id="heroSlideB" src="media/WhatsApp%20Unknown%202026-10-29%20at%2012.22.43%20PM/WhatsApp%20Image%202026-10-28%20at%208.11.27%20PM.jpeg" alt="NIJEDEE Verified Work across Lagos">
+        <img class="tk-hero__photo tk-hero__slide active" id="heroSlideA" src="assets/images/flyer-banner.jpeg" alt="NIJEDEE Paints - Bringing Colors to Life">
       </div>
       <div class="tk-hero__badge">
         <p class="tk-hero__badge-name">
@@ -93,6 +92,15 @@
           <span class="tk-dot"></span>
           <span>Lekki &middot; Ajah &middot; Badore</span>
         </p>
+      </div>
+      <div class="tk-hero__expand-hint">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <polyline points="9 21 3 21 3 15"></polyline>
+          <line x1="21" y1="3" x2="14" y2="10"></line>
+          <line x1="3" y1="21" x2="10" y2="14"></line>
+        </svg>
+        <span>Full View</span>
       </div>
     </div>
   </div>
@@ -504,6 +512,50 @@
     </div>
   </div>
 </footer>
+
+<!-- ===================== HERO FULL-VIEW GALLERY LIGHTBOX ===================== -->
+<div id="tkImageLightbox" class="tk-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="NIJEDEE Project Showcase Gallery">
+  <div class="tk-lightbox__backdrop" id="lightboxBackdrop"></div>
+  <div class="tk-lightbox__container" role="document">
+    
+    <!-- 1. FULL VIEW IMAGE (Swipable, NO arrows!) -->
+    <div class="tk-lightbox__stage">
+      <div class="tk-lightbox__img-wrap" id="lightboxImgWrap" title="Swipe left or right to switch images">
+        <img id="lightboxMainImg" class="tk-lightbox__img" src="assets/images/flyer-banner.jpeg" alt="NIJEDEE Project Showcase" draggable="false">
+      </div>
+      <div class="tk-lightbox__caption">
+        <span class="tk-lightbox__title" id="lightboxTitle">NIJEDEE PAINTS &mdash; Bringing Colors to Life</span>
+        <span class="tk-lightbox__counter" id="lightboxCounter">1 / 19</span>
+      </div>
+      <div class="tk-lightbox__hint">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="7 13 12 18 17 13"></polyline>
+          <polyline points="7 6 12 11 17 6"></polyline>
+        </svg>
+        <span>Swipe left &middot; right or click images below</span>
+      </div>
+    </div>
+
+    <!-- 2. "X" BUTTON UNDER THE IMAGE TO CLOSE -->
+    <div class="tk-lightbox__close-bar">
+      <button type="button" id="lightboxCloseBtn" class="tk-lightbox__close-btn" aria-label="Close full view gallery">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        <span>Close</span>
+      </button>
+    </div>
+
+    <!-- 3. SLIDABLE THUMBNAILS OF ALL IMAGES UNDER THE "X" -->
+    <div class="tk-lightbox__thumbs-wrapper">
+      <div class="tk-lightbox__thumbs-scroll" id="lightboxThumbs" tabindex="0" aria-label="Project images list">
+        <!-- Populated dynamically by main.js with all assets/images/ files -->
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <script src="assets/js/main.js"></script>
 </body>
