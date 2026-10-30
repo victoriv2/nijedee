@@ -25,12 +25,14 @@
       <a href="about.html">About Us</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <a class="tk-btn tk-btn--primary tk-btn--sm" href="book.html">Book a Service</a>
-    <button type="button" class="tk-header__burger" aria-label="Open menu" aria-expanded="false">
-      <svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <path d="M5 9h22M5 16h22M5 23h22"/>
-      </svg>
-    </button>
+    <div class="tk-header__actions">
+      <a class="tk-btn tk-btn--primary tk-btn--sm" href="book.html">Book a Service</a>
+      <button type="button" class="tk-header__burger" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M5 9h22M5 16h22M5 23h22"/>
+        </svg>
+      </button>
+    </div>
   </div>
   <!-- Mobile Drawer -->
   <div class="tk-header__drawer">
@@ -55,11 +57,11 @@
 <section class="tk-hero">
   <div class="tk-container tk-hero__top">
     <div class="tk-hero__copy">
-      <div class="tk-hero__badge-trust">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="tk-hero__badge-trust" style="white-space:nowrap;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
-        <span>NIJEDEE GROUP &middot; CAC RC 1403323</span>
+        <span style="white-space:nowrap;display:inline-block;">NIJEDEE GROUP &middot; CAC RC 1403323</span>
       </div>
       <h1 class="tk-h1">Your Property. Our Responsibility.</h1>
       <p class="tk-lead">NIJEDEE is a technology-driven property maintenance, repair, cleaning, facility management and property marketplace company serving homeowners, tenants, landlords, businesses and property managers across Lagos.</p>

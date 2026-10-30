@@ -380,8 +380,47 @@ ul, ol {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  padding: 6px;
   color: var(--tk-navy);
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+.tk-header__burger:hover,
+.hamburger:hover {
+  background: rgba(11, 94, 215, 0.08);
+}
+.hamburger {
+  flex-direction: column;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background: var(--tk-navy);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Header Action Group (Book a Service + Menu grouped at the right) */
+.tk-header__actions,
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Fallback if CTA button is direct child */
+.tk-header__inner > .tk-btn--sm,
+.navbar-inner > .navbar-cta {
+  margin-left: auto;
 }
 
 /* Mobile Drawer */
@@ -490,6 +529,20 @@ ul, ol {
   font-weight: 700;
   color: var(--tk-primary);
   width: fit-content;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.tk-hero__badge-trust span {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  display: inline-block;
+}
+
+.tk-hero__badge-trust svg {
+  flex-shrink: 0;
 }
 
 .tk-hero__stores {
@@ -1885,8 +1938,26 @@ textarea.form-control {
    Responsive Breakpoints & Comprehensive Mobile Optimization
    ============================================================= */
 @media (max-width: 1024px) {
-  .tk-header__nav { display: none; }
-  .tk-header__burger { display: block; }
+  .tk-header__nav,
+  .navbar-nav {
+    display: none;
+  }
+  .tk-header__burger,
+  .hamburger {
+    display: inline-flex;
+  }
+  .tk-header__actions,
+  .navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .tk-header__inner,
+  .navbar-inner {
+    justify-content: space-between;
+  }
   .tk-hero__top { grid-template-columns: 1fr; gap: 32px; }
   .tk-hero__figure { justify-self: center; max-width: 100%; }
   .tk-hero__stats { grid-template-columns: 1fr; gap: 16px; }
@@ -1990,16 +2061,68 @@ textarea.form-control {
     line-height: 1.55 !important;
   }
 
-  /* Header on Mobile */
+  /* Header on Mobile: Logo on left, Book a Service + Hamburger grouped at right */
   .tk-header__inner,
   .navbar-inner {
     padding-inline: 16px;
-    height: 62px;
+    height: 64px;
+    gap: 10px;
+  }
+
+  .tk-header__logo img,
+  .navbar-logo img {
+    height: 40px !important;
+    max-height: 40px !important;
+    width: auto !important;
+  }
+
+  .tk-header__actions,
+  .navbar-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
   }
 
   .tk-header .tk-btn--sm,
-  .navbar .navbar-cta {
-    display: none;
+  .navbar .navbar-cta,
+  .tk-header__actions .tk-btn,
+  .navbar-actions .btn {
+    display: inline-flex !important;
+    height: 35px !important;
+    padding: 0 13px !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    border-radius: 999px !important;
+    letter-spacing: -0.01em !important;
+    min-width: auto !important;
+  }
+
+  /* Trust Badge on Mobile: Guaranteed Single Line */
+  .tk-hero__badge-trust {
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 5px clamp(10px, 3vw, 14px) !important;
+    gap: 6px !important;
+    font-size: clamp(0.72rem, 3.2vw, 0.85rem) !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .tk-hero__badge-trust span {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    font-size: inherit !important;
+  }
+
+  .tk-hero__badge-trust svg {
+    flex-shrink: 0 !important;
+    width: 14px !important;
+    height: 14px !important;
   }
 
   /* Hero Section */
