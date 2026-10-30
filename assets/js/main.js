@@ -450,7 +450,7 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
   function startHeroTimer() {
     if (heroTimer) clearInterval(heroTimer);
-    heroTimer = setInterval(advanceHeroSlide, 3000); // exactly every 3 seconds
+    heroTimer = setInterval(advanceHeroSlide, 2000); // exactly every 2 seconds
   }
 
   function pauseHeroTimer() {
