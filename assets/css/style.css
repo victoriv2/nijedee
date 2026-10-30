@@ -2395,6 +2395,9 @@ textarea.form-control {
   .artisan-action-btns {
     flex-direction: column !important;
     gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .btn-row .btn,
@@ -2403,6 +2406,9 @@ textarea.form-control {
   .product-actions-row a,
   .artisan-action-btns a {
     width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
     justify-content: center !important;
     text-align: center !important;
   }
