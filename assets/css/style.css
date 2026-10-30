@@ -99,6 +99,9 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 body {
@@ -109,6 +112,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
 }
 
 img, picture, svg, video {
@@ -423,12 +429,12 @@ ul, ol {
   margin-left: auto;
 }
 
-/* Mobile Drawer */
+/* Mobile Drawer (Hardware-accelerated off-canvas, zero horizontal layout bleed) */
 .tk-header__drawer,
 .mobile-nav {
   position: fixed;
   top: 0;
-  right: -320px;
+  right: 0;
   width: min(320px, 86vw);
   height: 100vh;
   background: var(--tk-white);
@@ -437,12 +443,18 @@ ul, ol {
   display: flex;
   flex-direction: column;
   padding: 32px 24px;
-  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(100%);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .tk-header__drawer.open,
 .mobile-nav.open {
-  right: 0;
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .tk-drawer-overlay,
@@ -1884,11 +1896,11 @@ textarea.form-control {
   gap: 16px;
 }
 
-/* Cart Slide-in Drawer */
+/* Cart Slide-in Drawer (Hardware-accelerated off-canvas, zero horizontal layout bleed) */
 .cart-drawer {
   position: fixed;
   top: 0;
-  right: -420px;
+  right: 0;
   width: min(420px, 92vw);
   height: 100vh;
   background: var(--tk-white);
@@ -1896,10 +1908,17 @@ textarea.form-control {
   z-index: 3000;
   display: flex;
   flex-direction: column;
-  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(100%);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .cart-drawer.open {
-  right: 0;
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
 }
 .cart-drawer__header {
   padding: 20px 24px;
@@ -2359,8 +2378,8 @@ textarea.form-control {
   }
 
   .cart-drawer {
-    width: 100vw !important;
-    max-width: 100vw !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   /* Footer on Mobile */
