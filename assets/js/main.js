@@ -43,23 +43,73 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
   if (!burgers.length || !drawers.length) return;
 
-  const openDrawer = () => {
+  // Move drawers and overlays directly to <body> so sticky/backdrop-filter headers don't trap them
+  drawers.forEach(d => {
+    if (d.parentElement && d.parentElement.tagName.toLowerCase() === 'header') {
+      document.body.appendChild(d);
+    }
+  });
+  overlays.forEach(o => {
+    if (o.parentElement && o.parentElement.tagName.toLowerCase() === 'header') {
+      document.body.appendChild(o);
+    }
+  });
+
+  let scrollPos = 0;
+
+  const openDrawer = (e) => {
+    if (e) e.stopPropagation();
+    scrollPos = window.scrollY || document.documentElement.scrollTop;
     drawers.forEach(d => d.classList.add('open'));
     overlays.forEach(o => o.classList.add('open'));
-    document.body.style.overflow = 'hidden';
+    burgers.forEach(b => b.setAttribute('aria-expanded', 'true'));
+    document.documentElement.classList.add('drawer-open');
+    document.body.classList.add('drawer-open');
+    document.body.style.top = `-${scrollPos}px`;
   };
 
   const closeDrawer = () => {
     drawers.forEach(d => d.classList.remove('open'));
     overlays.forEach(o => o.classList.remove('open'));
-    document.body.style.overflow = '';
+    burgers.forEach(b => b.setAttribute('aria-expanded', 'false'));
+    document.documentElement.classList.remove('drawer-open');
+    document.body.classList.remove('drawer-open');
+    const prevTop = document.body.style.top;
+    document.body.style.top = '';
+    if (prevTop) {
+      window.scrollTo(0, parseInt(prevTop, 10) * -1);
+    }
   };
 
   burgers.forEach(b => b.addEventListener('click', openDrawer));
   closeBtns.forEach(c => c.addEventListener('click', closeDrawer));
-  overlays.forEach(o => o.addEventListener('click', closeDrawer));
+
+  // Close when clicking or touching the overlay (click outside)
+  overlays.forEach(o => {
+    o.addEventListener('click', closeDrawer);
+    o.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      closeDrawer();
+    }, { passive: false });
+    // Prevent scrolling/swiping through the overlay to background content
+    o.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+  });
+
+  // Close when any link inside drawer is clicked
   drawers.forEach(d => {
     qsa('a', d).forEach(a => a.addEventListener('click', closeDrawer));
+  });
+
+  // Global document click-outside fallback
+  document.addEventListener('click', (e) => {
+    const isAnyOpen = drawers.some(d => d.classList.contains('open'));
+    if (!isAnyOpen) return;
+    if (e.target.closest('.tk-header__drawer, .mobile-nav, .tk-header__burger, .hamburger')) {
+      return;
+    }
+    closeDrawer();
   });
 
   // Guard: Automatically close and reset mobile drawer on desktop screen resize or desktop load
