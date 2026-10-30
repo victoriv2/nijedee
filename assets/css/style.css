@@ -349,6 +349,7 @@ ul, ol {
   display: flex;
   align-items: center;
   gap: clamp(14px, 1.8vw, 32px);
+  margin-left: auto;
 }
 .tk-header__nav a,
 .navbar-nav a {
@@ -419,14 +420,16 @@ ul, ol {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-left: auto;
   flex-shrink: 0;
 }
 
-/* Fallback if CTA button is direct child */
-.tk-header__inner > .tk-btn--sm,
-.navbar-inner > .navbar-cta {
-  margin-left: auto;
+@media (max-width: 1024px) {
+  .tk-header__actions,
+  .navbar-actions,
+  .tk-header__inner > .tk-btn--sm,
+  .navbar-inner > .navbar-cta {
+    margin-left: auto;
+  }
 }
 
 /* Mobile Drawer (Hardware-accelerated off-canvas, zero horizontal layout bleed) */
