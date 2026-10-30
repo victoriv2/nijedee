@@ -457,6 +457,24 @@ ul, ol {
   pointer-events: auto;
 }
 
+/* Guard: On desktop (> 1024px), mobile drawer & overlay are completely disabled and never rendered */
+@media (min-width: 1025px) {
+  .tk-header__drawer,
+  .mobile-nav,
+  .tk-drawer-overlay,
+  .mobile-nav-overlay,
+  .tk-header__drawer.open,
+  .mobile-nav.open,
+  .tk-drawer-overlay.open,
+  .mobile-nav-overlay.open {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateX(100%) !important;
+    opacity: 0 !important;
+  }
+}
+
 .tk-drawer-overlay,
 .mobile-nav-overlay {
   position: fixed;

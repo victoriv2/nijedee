@@ -61,6 +61,16 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   drawers.forEach(d => {
     qsa('a', d).forEach(a => a.addEventListener('click', closeDrawer));
   });
+
+  // Guard: Automatically close and reset mobile drawer on desktop screen resize or desktop load
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1024) {
+      closeDrawer();
+    }
+  });
+  if (window.innerWidth > 1024) {
+    closeDrawer();
+  }
 })();
 
 /* ── Taskie FAQ Accordion ────────────────────────────────────── */
