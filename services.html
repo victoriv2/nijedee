@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Services | NIJEDEE Property Maintenance &amp; Cleaning</title>
-  <meta name="description" content="Explore NIJEDEE's 13 comprehensive property services across Lagos: cleaning, repairs, electrical, plumbing, painting, building materials, shortlets and security.">
+  <title>Our 13 Service Categories | NIJEDEE Property Maintenance &amp; Cleaning</title>
+  <meta name="description" content="Explore NIJEDEE's 13 core property service categories across Lagos: plumbing, electrical, AC maintenance, painting, cleaning, fumigation, carpentry, POP, CCTV, solar, facility management, water engineering, and handyman repairs.">
   <link rel="icon" type="image/png" href="assets/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     .page-banner {
       background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
       padding: 72px 0 60px;
@@ -22,31 +25,37 @@
       color: #ffffff;
       font-size: clamp(2rem, 4vw, 3rem);
       margin-bottom: 12px;
+      font-weight: 800;
     }
     .page-banner p {
-      color: rgba(255, 255, 255, 0.85);
-      font-size: 1.1rem;
-      max-width: 650px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 1.08rem;
+      max-width: 680px;
       margin: 0 auto;
+      line-height: 1.6;
     }
     .service-nav-tabs {
       display: flex;
       gap: 10px;
       overflow-x: auto;
-      padding: 16px 0;
+      padding: 16px 4px;
       scrollbar-width: thin;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
+      -webkit-overflow-scrolling: touch;
     }
     .service-tab-btn {
-      padding: 10px 20px;
+      padding: 9px 18px;
       border-radius: 50px;
       border: 1.5px solid var(--border);
       background: var(--white);
       color: var(--text-dark);
       font-weight: 600;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       white-space: nowrap;
+      text-decoration: none;
       transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
     }
     .service-tab-btn:hover, .service-tab-btn.active {
       background: var(--blue);
@@ -61,9 +70,10 @@
       margin-bottom: 32px;
       box-shadow: var(--shadow-sm);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      scroll-margin-top: 96px;
     }
     .category-block:hover {
-      border-color: var(--blue);
+      border-color: #CBD5E1;
       box-shadow: var(--shadow-md);
     }
     .category-header {
@@ -71,7 +81,7 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 24px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
     .cat-title-wrap {
@@ -80,8 +90,8 @@
       align-items: center;
     }
     .cat-icon-badge {
-      width: 64px;
-      height: 64px;
+      width: 58px;
+      height: 58px;
       border-radius: 14px;
       background: #E3F0FF;
       color: var(--blue);
@@ -91,51 +101,62 @@
       flex-shrink: 0;
     }
     .cat-title-wrap h2 {
-      font-size: 1.5rem;
+      font-size: 1.45rem;
+      font-weight: 700;
       margin-bottom: 4px;
+      color: var(--text-dark);
     }
-    .cat-title-wrap span {
-      font-size: 0.85rem;
-      font-weight: 600;
+    .cat-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
       color: var(--blue);
       background: #EBF3FF;
       padding: 3px 10px;
       border-radius: 100px;
+      display: inline-block;
+      letter-spacing: 0.02em;
+    }
+    .cat-description {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.65;
+      margin-bottom: 20px;
     }
     .services-checklist-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 14px;
-      margin: 24px 0;
+      gap: 12px;
+      margin: 20px 0 24px;
     }
     .checklist-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: var(--text-dark);
       background: #F8FAFC;
-      padding: 10px 16px;
+      padding: 10px 14px;
       border-radius: 8px;
-      border: 1px solid #EDF2F7;
+      border: 1px solid #EEF2F6;
+      font-weight: 500;
     }
     .checklist-item svg {
-      width: 18px;
-      height: 18px;
-      color: var(--success);
+      width: 17px;
+      height: 17px;
+      color: #10B981;
       flex-shrink: 0;
     }
     .cat-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 20px;
+      padding-top: 18px;
       border-top: 1px solid var(--border);
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 14px;
     }
     .cat-coverage {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       color: var(--text-muted);
       display: flex;
       align-items: center;
@@ -143,30 +164,22 @@
     }
     .cat-coverage svg {
       color: var(--blue);
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
     }
-    .gallery-preview {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 20px;
-    }
-    .gallery-thumb {
-      height: 120px;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #E2E8F0;
-    }
-    .gallery-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .cat-highlight {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      background: #F1F5F9;
+      padding: 4px 10px;
+      border-radius: 6px;
     }
     @media (max-width: 768px) {
       .category-block { padding: 24px 18px; }
-      .cat-title-wrap { flex-direction: column; align-items: flex-start; }
-      .gallery-preview { grid-template-columns: repeat(2, 1fr); }
+      .cat-title-wrap { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .services-checklist-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -219,502 +232,532 @@
 <!-- PAGE BANNER -->
 <section class="page-banner">
   <div class="container">
-    <span class="section-label" style="background:rgba(255,255,255,0.18); color:#ffffff; margin-bottom:14px;">Complete Property Solutions</span>
+    <span class="section-label" style="background:rgba(255,255,255,0.18); color:#ffffff; margin-bottom:14px;">Module 2 &middot; Services Catalogue</span>
     <h1>Our 13 Service Categories</h1>
-    <p>Everything your residential, rental, or commercial property requires. Verified artisans, premium materials, and transparent pricing across Lagos.</p>
+    <p>The core engine driving NIJEDEE property maintenance, repairs, and care. Verified artisans, transparent pricing, and structured service delivery across Lagos.</p>
   </div>
 </section>
 
 <!-- MAIN CONTENT -->
-<section class="section" style="background:#F9FBFC;">
+<section class="section" style="background:#F9FBFC; padding: 40px 0 60px;">
   <div class="container">
-    <!-- Quick filter tabs -->
-    <div class="service-nav-tabs">
-      <a href="#cat-maintenance" class="service-tab-btn active">Maintenance &amp; Repairs</a>
-      <a href="#cat-cleaning" class="service-tab-btn">Cleaning &amp; Fumigation</a>
-      <a href="#cat-building" class="service-tab-btn">Building Mart</a>
-      <a href="#cat-interior" class="service-tab-btn">Interior &amp; Furniture</a>
-      <a href="#cat-paint" class="service-tab-btn">Paint &amp; Fillers</a>
-      <a href="#cat-properties" class="service-tab-btn">Shortlet &amp; Rentals</a>
-      <a href="#cat-solar" class="service-tab-btn">Solar &amp; Inverter</a>
-      <a href="#cat-academy" class="service-tab-btn">Artisan Academy</a>
-      <a href="#cat-security" class="service-tab-btn">Lions Gate Security</a>
-      <a href="#cat-plumbing" class="service-tab-btn">Plumbing</a>
-      <a href="#cat-electrical" class="service-tab-btn">Electrical</a>
-      <a href="#cat-carpentry" class="service-tab-btn">Carpentry</a>
-      <a href="#cat-general" class="service-tab-btn">General Repairs</a>
+    
+    <!-- Quick filter navigation tabs for all 13 categories -->
+    <div class="service-nav-tabs" aria-label="Category Jump Navigation">
+      <a href="#cat-plumbing" class="service-tab-btn active">01. Plumbing</a>
+      <a href="#cat-electrical" class="service-tab-btn">02. Electrical</a>
+      <a href="#cat-ac" class="service-tab-btn">03. AC Maintenance</a>
+      <a href="#cat-painting" class="service-tab-btn">04. Painting &amp; Decor</a>
+      <a href="#cat-cleaning" class="service-tab-btn">05. Cleaning Services</a>
+      <a href="#cat-fumigation" class="service-tab-btn">06. Fumigation</a>
+      <a href="#cat-carpentry" class="service-tab-btn">07. Carpentry</a>
+      <a href="#cat-pop-tiling" class="service-tab-btn">08. POP &amp; Tiling</a>
+      <a href="#cat-cctv" class="service-tab-btn">09. CCTV &amp; Security</a>
+      <a href="#cat-solar" class="service-tab-btn">10. Solar &amp; Inverter</a>
+      <a href="#cat-facility" class="service-tab-btn">11. Facility Care</a>
+      <a href="#cat-water" class="service-tab-btn">12. Borehole &amp; Water</a>
+      <a href="#cat-handyman" class="service-tab-btn">13. Handyman &amp; Repairs</a>
     </div>
 
-    <!-- 1. Property Maintenance & Repairs -->
-    <div id="cat-maintenance" class="category-block">
-      <div class="category-header">
-        <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-          </div>
-          <div>
-            <h2>Property Maintenance &amp; Facility Care</h2>
-            <span>Category 01</span>
-          </div>
-        </div>
-        <a href="book.html?service=maintenance" class="btn btn-primary">Book This Service</a>
-      </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Comprehensive preventive and corrective facility management for private residences, commercial complexes, schools, and corporate offices. We ensure full structural integrity, drainage health, and routine upkeep.</p>
-      
-      <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Scheduled Annual Facility Maintenance Contracts</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Roof Leak Diagnostics &amp; Waterproofing</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Wall Crack Injection &amp; Structural Plastering</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Swimming Pool Care &amp; Water Pump Filtration</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Compound Drainage Clearing &amp; Sump Pits</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Interlock Paver Restoration &amp; Kerb Staining</div>
-      </div>
-
-      <div class="cat-footer">
-        <div class="cat-coverage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Active coverage: Badore, Ajah, Sangotedo, Lekki Phase 1 &amp; 2
-        </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">Guaranteed response within 2 hours</span>
-      </div>
-    </div>
-
-    <!-- 2. Cleaning & Fumigation -->
-    <div id="cat-cleaning" class="category-block">
-      <div class="category-header">
-        <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
-          <div>
-            <h2>Cleaning &amp; Fumigation Services</h2>
-            <span>Category 02</span>
-          </div>
-        </div>
-        <a href="book.html?service=cleaning" class="btn btn-primary">Book This Service</a>
-      </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">State-of-the-art hygiene solutions using industrial floor scrubbers, high-temperature steam extractors, eco-safe detergents, and NAFDAC-approved pest elimination treatments.</p>
-      
-      <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Deep Cleaning (Homes, Apartments &amp; Offices)</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Post-Construction &amp; Renovation Clean-up</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Carpet, Rug &amp; Upholstery Steam Extraction</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Full Fumigation &amp; Pest Extermination (General)</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>High-Rise Window &amp; Architectural Glass Wash</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Sofa, Mattress &amp; Dining Chair Detailing</div>
-      </div>
-
-      <div class="gallery-preview">
-        <div class="gallery-thumb"><img src="assets/images/work-solar-1.jpeg" alt="Carpet extraction cleaning"></div>
-        <div class="gallery-thumb"><img src="assets/images/work-tiling-1.jpeg" alt="Sofa deep washing"></div>
-        <div class="gallery-thumb"><img src="assets/images/work-roofing-1.jpeg" alt="Floor polishing scrubber"></div>
-        <div class="gallery-thumb"><img src="assets/images/work-carpentry-1.jpeg" alt="Post construction scrub"></div>
-      </div>
-
-      <div class="cat-footer" style="margin-top:20px;">
-        <div class="cat-coverage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Same-day and weekend booking availability
-        </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">100% Satisfaction or free re-clean</span>
-      </div>
-    </div>
-
-    <!-- 3. Building Mart -->
-    <div id="cat-building" class="category-block">
-      <div class="category-header">
-        <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <div>
-            <h2>Building Mart &amp; Materials Supply</h2>
-            <span>Category 03</span>
-          </div>
-        </div>
-        <a href="shop.html" class="btn btn-primary">Browse Mart Catalogue</a>
-      </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Direct procurement of construction and property development materials at verified wholesale rates. Save cost with guaranteed genuine quality delivered straight to your site.</p>
-      
-      <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Dangote &amp; BUA 50kg Cement Deliveries</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>High-Strength 6-inch &amp; 9-inch Vibrated Blocks</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Granite, Sharp Sand &amp; Hardcore Tippers</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Water Tanks (GeePee, Power Tank 500L - 5000L)</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>PPR, PVC Pipes &amp; Plumbing Connectors</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Safety Gear, Helmets, Boots &amp; Site Harnesses</div>
-      </div>
-
-      <div class="cat-footer">
-        <div class="cat-coverage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Direct dispatch depot located in Badore &amp; Ajah
-        </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">Wholesale discounts on bulk orders</span>
-      </div>
-    </div>
-
-    <!-- 4. Interior & Furniture Design -->
-    <div id="cat-interior" class="category-block">
-      <div class="category-header">
-        <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-          </div>
-          <div>
-            <h2>Interior &amp; Furniture Design</h2>
-            <span>Category 04</span>
-          </div>
-        </div>
-        <a href="book.html?service=interior" class="btn btn-primary">Book Consultation</a>
-      </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Architectural styling, bespoke woodwork, POP ceiling artistry, accent walls, and custom furniture tailored to elevate shortlet apartments and executive residences.</p>
-      
-      <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>POP False Ceiling Design with LED Cove Strips</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom Modern Kitchen Cabinets &amp; Islands</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Fitted Wardrobes &amp; Walk-in Dressing Closets</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>TV Media Wall Units with Acoustic Slats</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Luxury Sofa Upholstery &amp; Modular Sectionals</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Window Blinds, Automated Curtains &amp; Pelmets</div>
-      </div>
-
-      <div class="cat-footer">
-        <div class="cat-coverage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          3D visualization and sample moodboards provided
-        </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">Engineered hardwood and HDF finishes</span>
-      </div>
-    </div>
-
-    <!-- 5. Emulsion & Satin Paint / Fillers -->
-    <div id="cat-paint" class="category-block">
-      <div class="category-header">
-        <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M2 12h20"/></svg>
-          </div>
-          <div>
-            <h2>Emulsion &amp; Satin Paint / Screeding Fillers</h2>
-            <span>Category 05</span>
-          </div>
-        </div>
-        <a href="book.html?service=painting" class="btn btn-primary">Book Professional Painter</a>
-      </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Flawless wall screeding, waterproof exterior coats, and anti-fungal satin emulsions produced and applied with masterful craftsmanship.</p>
-      
-      <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>POP Wall Screeding &amp; Surface Mirror Smoothing</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Nijedee Premium Washable Satin Paint Application</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Exterior Weatherproof Emulsion &amp; Texcote</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Epoxy Floor Coating for Garages &amp; Warehouses</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Wood Varnish, Lacquer &amp; Door Spray Finishing</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Anti-Damp Wall Priming &amp; Mould Treatments</div>
-      </div>
-
-      <div class="gallery-preview">
-        <div class="gallery-thumb"><img src="assets/images/work-borehole-1.jpeg" alt="Wall painting roller"></div>
-        <div class="gallery-thumb"><img src="assets/images/work-generator-1.jpeg" alt="Corner skirting paint work"></div>
-        <div class="gallery-thumb"><img src="assets/images/work-painting-1.jpeg" alt="Cornice POP plastering"></div>
-        <div class="gallery-thumb"><img src="assets/images/work-electrical-1.jpeg" alt="Ceiling fixture detailing"></div>
-      </div>
-
-      <div class="cat-footer" style="margin-top:20px;">
-        <div class="cat-coverage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          We bring our own protective tarpaulins and masking tapes
-        </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">5-Year Colour Retention Warranty</span>
-      </div>
-    </div>
-
-    <!-- 6. To-Let & Short Let -->
-    <div id="cat-properties" class="category-block">
-      <div class="category-header">
-        <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
-          <div>
-            <h2>To-Let, Shortlet &amp; Property Management</h2>
-            <span>Category 06</span>
-          </div>
-        </div>
-        <a href="properties.html" class="btn btn-primary">Explore Properties</a>
-      </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Full-service tenant management, shortlet booking hosting, and long-term rental coordination for landlords and discerning guests in prime Lekki-Ajah neighborhoods.</p>
-      
-      <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Fully Serviced Shortlet Apartments (Daily / Weekly)</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Verified Long-Term House Rentals (Ajah, Lekki, Badore)</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>End-to-End Property Facility Maintenance</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Tenant Screening, Background Checks &amp; Rent Collection</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>House Turnover Inspection &amp; Refresh Service</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Commercial Property &amp; Office Space Leasing</div>
-      </div>
-
-      <div class="cat-footer">
-        <div class="cat-coverage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Dedicated landlord dashboard with monthly statements
-        </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">Zero hassle tenant management</span>
-      </div>
-    </div>
-
-    <!-- 7. Solar & Inverter -->
-    <div id="cat-solar" class="category-block">
-      <div class="category-header">
-        <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          </div>
-          <div>
-            <h2>Solar &amp; Inverter Power Solutions</h2>
-            <span>Category 07</span>
-          </div>
-        </div>
-        <a href="book.html?service=solar" class="btn btn-primary">Request Power Audit</a>
-      </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Cut down astronomical generator fueling costs. We engineer, size, install and maintain Tier-1 Lithium battery solar systems that power your pumps, ACs and electronics 24/7.</p>
-      
-      <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Complete 1kVA - 20kVA Pure Sine Wave Inverters</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>High-Efficiency Monocrystalline Panels (450W - 650W)</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>LiFePO4 Lithium Battery Storage Upgrades</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Automatic Changeover Switch (ATS) Wiring</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Solar Water Borehole Pumping Systems</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Quarterly Battery Health Testing &amp; Panel Cleaning</div>
-      </div>
-
-      <div class="cat-footer">
-        <div class="cat-coverage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Complimentary energy load audit for every property
-        </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">Up to 10-Year Battery Lifespan</span>
-      </div>
-    </div>
-
-    <!-- 8. Artisans Training -->
-    <div id="cat-academy" class="category-block">
-      <div class="category-header">
-        <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-          </div>
-          <div>
-            <h2>Artisans Vocational Academy</h2>
-            <span>Category 08</span>
-          </div>
-        </div>
-        <a href="academy.html" class="btn btn-primary">Enroll in Academy</a>
-      </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Empowering the next generation of Nigerian technicians. We offer rigorous hands-on technical training, soft skills, site safety, and job placement upon graduation.</p>
-      
-      <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Domestic &amp; Industrial Plumbing Certification</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Electrical Installation &amp; Solar Inverter Technology</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Modern Screeding, Wall Painting &amp; Wallpapering</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Carpentry, Cabinetry &amp; POP False Ceiling Craft</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Customer Relations, Ethical Conduct &amp; Site Safety</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Direct Induction into Nijedee Artisan Job Network</div>
-      </div>
-
-      <div class="cat-footer">
-        <div class="cat-coverage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Practical workshop sessions with certified masters
-        </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">Certificate awarded upon completion</span>
-      </div>
-    </div>
-
-    <!-- 9. Lions Gate Security -->
-    <div id="cat-security" class="category-block">
-      <div class="category-header">
-        <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <div>
-            <h2>Lions Gate Security Services</h2>
-            <span>Category 09</span>
-          </div>
-        </div>
-        <a href="book.html?service=security" class="btn btn-primary">Book Security Survey</a>
-      </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Physical perimeter security guards, razor wire fortification, CCTV IP camera surveillance, and biometric access control for gated estates, plazas and private residences.</p>
-      
-      <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Vetted, Uniformed Security Operatives</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>CCTV Smart Camera Installation &amp; Remote Phone Feed</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Electric Perimeter Fencing &amp; Razor Wire Topping</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Automated Gate Motors &amp; Intercom Systems</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Estate Access Control &amp; Visitor QR Pass System</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>24/7 Security Patrol &amp; Rapid Emergency Response</div>
-      </div>
-
-      <div class="cat-footer">
-        <div class="cat-coverage">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Serving gated communities across Badore, Ajah, Sangotedo, Lekki
-        </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">24/7 Control Room Monitoring</span>
-      </div>
-    </div>
-
-    <!-- 10. Plumbing & Water Systems -->
+    <!-- 01. Plumbing -->
     <div id="cat-plumbing" class="category-block">
       <div class="category-header">
         <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v6m0 8v6M4.93 4.93l4.24 4.24m5.66 5.66l4.24 4.24M2 12h6m8 0h6M4.93 19.07l4.24-4.24m5.66-5.66l4.24-4.24"/></svg>
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+            </svg>
           </div>
           <div>
-            <h2>Plumbing &amp; Water Engineering</h2>
-            <span>Category 10</span>
+            <h2>Plumbing</h2>
+            <span class="cat-badge">Category 01</span>
           </div>
         </div>
-        <a href="book.html?service=plumbing" class="btn btn-primary">Book Plumber</a>
+        <a href="book.html?service=plumbing" class="btn btn-primary">Book Plumbing</a>
       </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">From simple tap leaks to complete multistory pipe routing and automated pressure boosting, our licensed plumbers resolve water issues rapidly without damaging your tiles.</p>
+      <p class="cat-description">Professional water supply diagnostics, leak repairs, drainage clearing, and complete plumbing installations for residential and commercial spaces.</p>
       
       <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Burst Pipe Repairs &amp; Concealed Leak Detection</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Overhead Water Tank Installation &amp; Scaffolding</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Water Treatment Plant &amp; Reverse Osmosis Setup</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Bathroom Sanitary Ware &amp; Modern Shower Cubicles</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Borehole Submersible Pump &amp; Automatic Float Switch</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Water Heater Installation, Flushing &amp; Thermostats</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Leak repairs &amp; pipe diagnostics</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Blocked drains &amp; waste pipe clearing</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Toilet &amp; pipe repairs</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Water tank &amp; pump install</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Bathroom &amp; kitchen plumbing</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Water heater &amp; valve servicing</div>
       </div>
 
       <div class="cat-footer">
         <div class="cat-coverage">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Emergency callout units on standby in Lekki-Ajah
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
         </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">All piping pressure-tested before signoff</span>
+        <span class="cat-highlight">Pressure-Tested Before Signoff</span>
       </div>
     </div>
 
-    <!-- 11. Electrical Repairs -->
+    <!-- 02. Electrical -->
     <div id="cat-electrical" class="category-block">
       <div class="category-header">
         <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
           </div>
           <div>
-            <h2>Electrical Wiring &amp; Fault Diagnostics</h2>
-            <span>Category 11</span>
+            <h2>Electrical</h2>
+            <span class="cat-badge">Category 02</span>
           </div>
         </div>
-        <a href="book.html?service=electrical" class="btn btn-primary">Book Electrician</a>
+        <a href="book.html?service=electrical" class="btn btn-primary">Book Electrical</a>
       </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Certified electrical engineers for conduit wiring, breaker trips, lighting fixtures, surge suppression, and energy-efficient load balancing.</p>
+      <p class="cat-description">Certified electrical troubleshooting, wiring, distribution board management, and safety-compliant installations following Nigerian electrical standards.</p>
       
       <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Distribution Board (DB) Re-organization &amp; Earthing</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Conduit &amp; Surface Electrical Wiring</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Chandelier, Spotlight &amp; Smart Lighting Installation</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Surge Protection Devices &amp; Lightning Arresters</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Short-Circuit &amp; Sparking Socket Resolution</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Generator Interlock &amp; Changeover Automation</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Fault diagnosis &amp; short-circuit resolution</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Socket, switch &amp; lighting install</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Wiring &amp; rewiring (conduit &amp; surface)</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Generator connections &amp; changeover switches</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Distribution boards (DB) &amp; earthing systems</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Surge protection &amp; circuit breaker checks</div>
       </div>
 
       <div class="cat-footer">
         <div class="cat-coverage">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Adherence to NEMSA safety guidelines
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
         </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">Safety-tested components only</span>
+        <span class="cat-highlight">Certified Safety Compliant</span>
       </div>
     </div>
 
-    <!-- 12. Carpentry & Woodwork -->
+    <!-- 03. AC Installation & Maintenance -->
+    <div id="cat-ac" class="category-block">
+      <div class="category-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/>
+            </svg>
+          </div>
+          <div>
+            <h2>AC Installation &amp; Maintenance</h2>
+            <span class="cat-badge">Category 03</span>
+          </div>
+        </div>
+        <a href="book.html?service=ac" class="btn btn-primary">Book AC Service</a>
+      </div>
+      <p class="cat-description">Specialized cooling technicians for residential and commercial split units, inverter air conditioners, and centralized cooling systems.</p>
+      
+      <div class="services-checklist-grid">
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Installation &amp; servicing</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Cleaning &amp; gas refill (R22, R410A, R32)</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Leak detection &amp; repair</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Compressor services &amp; capacitor testing</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Preventive maintenance contracts</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Drain pipe flushing &amp; coil disinfection</div>
+      </div>
+
+      <div class="cat-footer">
+        <div class="cat-coverage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
+        </div>
+        <span class="cat-highlight">HVAC Certified Specialists</span>
+      </div>
+    </div>
+
+    <!-- 04. Painting & Decoration -->
+    <div id="cat-painting" class="category-block">
+      <div class="category-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M19 3H5a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z"/>
+              <path d="M12 11v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-2"/>
+              <path d="M7 21h10"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Painting &amp; Decoration</h2>
+            <span class="cat-badge">Category 04</span>
+          </div>
+        </div>
+        <a href="book.html?service=painting" class="btn btn-primary">Book Painting</a>
+      </div>
+      <p class="cat-description">Premium surface preparation, smooth POP screeding, weather-resistant exterior coats, and decorative finishes for enduring beauty.</p>
+      
+      <div class="services-checklist-grid">
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Interior &amp; exterior painting</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Wall preparation &amp; screeding</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Texture &amp; special finishes</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Commercial painting &amp; repaints</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Anti-damp wall treatment &amp; priming</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Wood varnish, door spraying &amp; trims</div>
+      </div>
+
+      <div class="cat-footer">
+        <div class="cat-coverage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
+        </div>
+        <span class="cat-highlight">Washable &amp; Weatherproof Coatings</span>
+      </div>
+    </div>
+
+    <!-- 05. Cleaning Services -->
+    <div id="cat-cleaning" class="category-block">
+      <div class="category-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Cleaning Services</h2>
+            <span class="cat-badge">Category 05</span>
+          </div>
+        </div>
+        <a href="book.html?service=cleaning" class="btn btn-primary">Book Cleaning</a>
+      </div>
+      <p class="cat-description">Comprehensive hygiene care and industrial-grade cleaning solutions for homes, rental apartments, move-ins, and corporate premises.</p>
+      
+      <div class="services-checklist-grid">
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Regular home cleaning</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Deep cleaning &amp; sanitization</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Move-in / move-out cleaning</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Post-construction cleaning</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Office, kitchen &amp; bathroom deep clean</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Laundry &amp; upholstery steam extraction</div>
+      </div>
+
+      <div class="cat-footer">
+        <div class="cat-coverage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
+        </div>
+        <span class="cat-highlight">Industrial Extraction Equipment</span>
+      </div>
+    </div>
+
+    <!-- 06. Fumigation & Pest Control -->
+    <div id="cat-fumigation" class="category-block">
+      <div class="category-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Fumigation &amp; Pest Control</h2>
+            <span class="cat-badge">Category 06</span>
+          </div>
+        </div>
+        <a href="book.html?service=fumigation" class="btn btn-primary">Book Fumigation</a>
+      </div>
+      <p class="cat-description">Environmental pest eradication using NAFDAC-approved solutions to eliminate termites, bedbugs, cockroaches, rodents, and mosquitoes safely.</p>
+      
+      <div class="services-checklist-grid">
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>General fumigation &amp; misting</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Cockroach, bedbug &amp; mosquito control</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Pest inspection &amp; subterranean termite check</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Preventive treatment &amp; barrier misting</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Rodent control &amp; baiting systems</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Pre-occupancy &amp; post-construction treatment</div>
+      </div>
+
+      <div class="cat-footer">
+        <div class="cat-coverage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
+        </div>
+        <span class="cat-highlight">NAFDAC-Approved &amp; Low-Odor</span>
+      </div>
+    </div>
+
+    <!-- 07. Carpentry & Furniture -->
     <div id="cat-carpentry" class="category-block">
       <div class="category-header">
         <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5M12 2l-7 7 7 7 7-7-7-7z"/></svg>
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M20 7h-9M14 17H5M12 2l-7 7 7 7 7-7-7-7z"/>
+            </svg>
           </div>
           <div>
-            <h2>Carpentry &amp; Custom Woodwork</h2>
-            <span>Category 12</span>
+            <h2>Carpentry &amp; Furniture</h2>
+            <span class="cat-badge">Category 07</span>
           </div>
         </div>
-        <a href="book.html?service=carpentry" class="btn btn-primary">Book Carpenter</a>
+        <a href="book.html?service=carpentry" class="btn btn-primary">Book Carpentry</a>
       </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">Master carpenters for roof timber rafters, acoustic wall panelling, security door hanging, hardwood floor fitting, and structural woodwork restorations.</p>
+      <p class="cat-description">Custom woodwork, kitchen cabinetry, door fittings, and durable furniture crafted for longevity in coastal climate conditions.</p>
       
       <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Flush, Panel &amp; Security Door Hanging &amp; Locksets</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Timber Roof Truss Construction &amp; Facial Boards</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Hardwood &amp; Laminated Floor Tile Laying</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Office Workstations, Partitioning &amp; Boardroom Tables</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Broken Furniture Restoration &amp; Re-gluing</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom Pergolas, Wooden Gazebos &amp; Decking</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Wardrobes &amp; kitchen cabinets</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Beds, TV consoles &amp; shelves</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Office furniture &amp; workstations</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Custom furniture &amp; repairs</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Flush, panel &amp; security door installation</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Timber roof rafters &amp; joinery repair</div>
       </div>
 
       <div class="cat-footer">
         <div class="cat-coverage">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Marine-grade treated timbers for coastal humidity
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
         </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">Precision joinery guarantee</span>
+        <span class="cat-highlight">Precision Joinery &amp; Moisture-Resistant Board</span>
       </div>
     </div>
 
-    <!-- 13. General Repairs -->
-    <div id="cat-general" class="category-block">
+    <!-- 08. POP, Tiling & Interior -->
+    <div id="cat-pop-tiling" class="category-block">
       <div class="category-header">
         <div class="cat-title-wrap">
-          <div class="cat-icon-badge">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
           </div>
           <div>
-            <h2>General Home &amp; Handyman Repairs</h2>
-            <span>Category 13</span>
+            <h2>POP, Tiling &amp; Interior</h2>
+            <span class="cat-badge">Category 08</span>
           </div>
         </div>
-        <a href="book.html?service=general" class="btn btn-primary">Book Handyman</a>
+        <a href="book.html?service=pop-tiling" class="btn btn-primary">Book POP &amp; Tiling</a>
       </div>
-      <p style="color:var(--text-muted); font-size:1rem; line-height:1.7;">From mounting flat-screen TVs to repairing sliding aluminium windows, fixing noisy AC units and replacing door locks, our prompt handyman team has you covered.</p>
+      <p class="cat-description">Modern ceiling designs, acoustic wall panels, and high-precision tile installations transforming residential and commercial interiors.</p>
       
       <div class="services-checklist-grid">
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>TV Wall Bracket Mounting &amp; Cable Concealment</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Air Conditioner Servicing, Gas Refill &amp; Washing</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Sliding Aluminium Glass Windows &amp; Netting Replacement</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Curtain Rods, Picture Frames &amp; Mirror Mounting</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Door Handle, Cylinder Lock &amp; Deadbolt Replacement</div>
-        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>IKEA &amp; Flatpack Furniture Assembly &amp; Fitting</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>POP ceiling design &amp; repair</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Wall screeding &amp; wall panels</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Floor &amp; wall tiling (porcelain &amp; ceramic)</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Interior decoration &amp; architectural coving</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Tile repair, regrouting &amp; leveling</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Skirting boards &amp; accent wall styling</div>
       </div>
 
       <div class="cat-footer">
         <div class="cat-coverage">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Equipped with professional laser levels, drills &amp; toolkits
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
         </div>
-        <span style="font-size:0.88rem; font-weight:600; color:var(--text-dark);">Billed with transparent hourly or fixed rates</span>
+        <span class="cat-highlight">Laser-Aligned Surface Leveling</span>
+      </div>
+    </div>
+
+    <!-- 09. CCTV & Security -->
+    <div id="cat-cctv" class="category-block">
+      <div class="category-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M23 7l-7 5 7 5V7z"/>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+            </svg>
+          </div>
+          <div>
+            <h2>CCTV &amp; Security</h2>
+            <span class="cat-badge">Category 09</span>
+          </div>
+        </div>
+        <a href="book.html?service=cctv-security" class="btn btn-primary">Book CCTV &amp; Security</a>
+      </div>
+      <p class="cat-description">Electronic surveillance systems, IP camera installations, perimeter alerts, and mobile remote monitoring for homes and commercial estates.</p>
+      
+      <div class="services-checklist-grid">
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Installation &amp; maintenance of CCTV cameras</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Camera replacement &amp; DVR/NVR upgrades</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Remote monitoring setup on mobile devices</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Electric perimeter fence check &amp; energizer repair</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Video intercom &amp; door access wiring</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Network cable termination &amp; switch configuration</div>
+      </div>
+
+      <div class="cat-footer">
+        <div class="cat-coverage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
+        </div>
+        <span class="cat-highlight">24/7 Remote Mobile Feed</span>
+      </div>
+    </div>
+
+    <!-- 10. Solar & Inverter -->
+    <div id="cat-solar" class="category-block">
+      <div class="category-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Solar &amp; Inverter</h2>
+            <span class="cat-badge">Category 10</span>
+          </div>
+        </div>
+        <a href="book.html?service=solar-inverter" class="btn btn-primary">Book Solar Audit</a>
+      </div>
+      <p class="cat-description">Reliable alternative power systems, high-efficiency solar panel arrays, and lithium battery storage to reduce generator fuel dependency.</p>
+      
+      <div class="services-checklist-grid">
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Solar panel installation &amp; roof mounting</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Inverter &amp; battery installation (1kVA – 20kVA)</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>System maintenance &amp; upgrade</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Energy consumption assessment &amp; sizing</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>LiFePO4 Lithium battery replacements</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Automatic Changeover Switch (ATS) wiring</div>
+      </div>
+
+      <div class="cat-footer">
+        <div class="cat-coverage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
+        </div>
+        <span class="cat-highlight">Clean, Continuous Power Supply</span>
+      </div>
+    </div>
+
+    <!-- 11. Facility Management -->
+    <div id="cat-facility" class="category-block">
+      <div class="category-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <polyline points="17 11 19 13 23 9"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Facility Management</h2>
+            <span class="cat-badge">Category 11</span>
+          </div>
+        </div>
+        <a href="book.html?service=facility-management" class="btn btn-primary">Book Facility Care</a>
+      </div>
+      <p class="cat-description">Structured operational care, scheduled inspections, and vendor oversight protecting property assets and rental value.</p>
+      
+      <div class="services-checklist-grid">
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Routine property inspections</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Preventive maintenance schedules</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Artisan/vendor management &amp; oversight</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Property condition reports &amp; logs</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Compound drainage, lighting &amp; safety checks</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Prompt tenant repair coordination</div>
+      </div>
+
+      <div class="cat-footer">
+        <div class="cat-coverage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
+        </div>
+        <span class="cat-highlight">Structured Asset Preservation</span>
+      </div>
+    </div>
+
+    <!-- 12. Borehole & Water Treatment -->
+    <div id="cat-water" class="category-block">
+      <div class="category-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Borehole &amp; Water Treatment</h2>
+            <span class="cat-badge">Category 12</span>
+          </div>
+        </div>
+        <a href="book.html?service=borehole-water" class="btn btn-primary">Book Water Treatment</a>
+      </div>
+      <p class="cat-description">Comprehensive water engineering from borehole drilling and submersible pump setups to multistage water purification plants.</p>
+      
+      <div class="services-checklist-grid">
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Borehole drilling &amp; geological survey support</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Water treatment plant installation (iron &amp; odor removal)</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Filter replacement (carbon, sand, resin media)</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Water quality testing &amp; pH balancing</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Pump repairs &amp; submersible motor replacement</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Pressure pump &amp; automatic float switch setup</div>
+      </div>
+
+      <div class="cat-footer">
+        <div class="cat-coverage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
+        </div>
+        <span class="cat-highlight">Laboratory Tested Clean Water</span>
+      </div>
+    </div>
+
+    <!-- 13. General Handyman & Structural Repairs -->
+    <div id="cat-handyman" class="category-block">
+      <div class="category-header">
+        <div class="cat-title-wrap">
+          <div class="cat-icon-badge" aria-hidden="true">
+            <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+          </div>
+          <div>
+            <h2>General Handyman &amp; Structural Repairs</h2>
+            <span class="cat-badge">Category 13</span>
+          </div>
+        </div>
+        <a href="book.html?service=handyman-structural" class="btn btn-primary">Book Handyman</a>
+      </div>
+      <p class="cat-description">Prompt multi-trade repairs, fix-it solutions, and structural touch-ups for everyday residential and commercial property maintenance needs.</p>
+      
+      <div class="services-checklist-grid">
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Minor masonry &amp; brickwork</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Door &amp; window latch/hinge repairs</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Roof leak patching &amp; ceiling repair</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>General repairs &amp; mounting (TV, mirrors)</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Sliding aluminium window &amp; net fixes</div>
+        <div class="checklist-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Door handle, lock &amp; deadbolt replacement</div>
+      </div>
+
+      <div class="cat-footer">
+        <div class="cat-coverage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo (Lagos)
+        </div>
+        <span class="cat-highlight">Fully Equipped Handymen</span>
       </div>
     </div>
 
     <!-- Bottom Call to Action -->
-    <div style="background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%); border-radius:16px; padding:48px 32px; text-align:center; color:#fff; margin-top: 48px; margin-bottom: 28px; box-shadow: 0 10px 30px rgba(7, 34, 79, 0.1);">
-      <h2 style="color:#ffffff; margin-bottom:12px; font-size:clamp(1.5rem, 2.5vw, 2.1rem);">Need multiple services for your property?</h2>
-      <p style="color:rgba(255,255,255,0.85); font-size:1.05rem; max-width:600px; margin:0 auto 28px;">Combine your cleaning, painting, plumbing and repairs under one single coordinated Nijedee project manager.</p>
-      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-        <a href="book.html" class="btn btn-secondary btn-lg">Book Service Online</a>
-        <a href="tel:08167469581" class="btn btn-outline-white btn-lg">Call 08167469581</a>
+    <div style="background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%); border-radius:16px; padding:44px 32px; text-align:center; color:#fff; margin-top: 48px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(7, 34, 79, 0.08);">
+      <h2 style="color:#ffffff; margin-bottom:10px; font-size:clamp(1.4rem, 2.4vw, 2rem); font-weight:800;">Need multiple services for your property?</h2>
+      <p style="color:rgba(255,255,255,0.88); font-size:1.02rem; max-width:620px; margin:0 auto 24px; line-height:1.6;">Combine your cleaning, painting, plumbing, and electrical repairs under one single coordinated NIJEDEE project manager.</p>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <a href="book.html" class="btn btn-secondary btn-lg" style="font-weight:700;">Book Service Online</a>
+        <a href="https://wa.me/2347085329909" target="_blank" rel="noopener" class="btn btn-outline-white btn-lg" style="font-weight:700;">Chat on WhatsApp</a>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- FOOTER -->
 <!-- ===================== FOOTER ===================== -->
 <footer class="tk-footer">
   <div class="tk-footer__band">
@@ -749,7 +792,7 @@
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           </a>
           <a href="contact.html" aria-label="Location">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </a>
         </div>
       </div>
@@ -806,6 +849,18 @@
   </div>
 </footer>
 
+<script>
+  // Active highlight for navigation tabs on click and on scroll
+  document.addEventListener('DOMContentLoaded', function() {
+    const tabBtns = document.querySelectorAll('.service-tab-btn');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  });
+</script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

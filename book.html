@@ -291,19 +291,19 @@
             <label for="bookService">Select Service Category</label>
             <select id="bookService" required onchange="updateSubCategories()">
               <option value="">-- Choose a Service --</option>
-              <option value="Cleaning & Fumigation" selected>Cleaning &amp; Fumigation</option>
-              <option value="Property Maintenance & Repairs">Property Maintenance &amp; Repairs</option>
-              <option value="Building Mart & Materials">Building Mart (Building Materials)</option>
-              <option value="Interior & Furniture Design">Interior &amp; Furniture Design</option>
-              <option value="Painting & Wall Screeding">Painting &amp; Wall Screeding</option>
-              <option value="To-Let & Shortlet Management">To-Let &amp; Shortlet Management</option>
-              <option value="Solar & Inverter Solutions">Solar &amp; Inverter Solutions</option>
-              <option value="Artisans Academy Training">Artisans Academy Training</option>
-              <option value="Lions Gate Security Services">Lions Gate Security Services</option>
-              <option value="Plumbing & Water Systems">Plumbing &amp; Water Systems</option>
-              <option value="Electrical Repairs & Wiring">Electrical Repairs &amp; Wiring</option>
-              <option value="Carpentry & Woodwork">Carpentry &amp; Woodwork</option>
-              <option value="General Handyman Repairs">General Handyman Repairs</option>
+              <option value="Plumbing">01. Plumbing</option>
+              <option value="Electrical">02. Electrical</option>
+              <option value="AC Installation &amp; Maintenance">03. AC Installation &amp; Maintenance</option>
+              <option value="Painting &amp; Decoration">04. Painting &amp; Decoration</option>
+              <option value="Cleaning Services" selected>05. Cleaning Services</option>
+              <option value="Fumigation &amp; Pest Control">06. Fumigation &amp; Pest Control</option>
+              <option value="Carpentry &amp; Furniture">07. Carpentry &amp; Furniture</option>
+              <option value="POP, Tiling &amp; Interior">08. POP, Tiling &amp; Interior</option>
+              <option value="CCTV &amp; Security">09. CCTV &amp; Security</option>
+              <option value="Solar &amp; Inverter">10. Solar &amp; Inverter</option>
+              <option value="Facility Management">11. Facility Management</option>
+              <option value="Borehole &amp; Water Treatment">12. Borehole &amp; Water Treatment</option>
+              <option value="General Handyman &amp; Structural Repairs">13. General Handyman &amp; Structural Repairs</option>
             </select>
           </div>
 
@@ -461,8 +461,8 @@
         <div class="success-badge-circle">
           <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <h2 style="font-size:1.6rem; margin-bottom:8px; color:var(--text-dark);">Booking Confirmed!</h2>
-        <p style="color:var(--text-muted); font-size:0.95rem;">Your service request has been registered in our central dispatch system.</p>
+        <h2 style="font-size:1.6rem; margin-bottom:8px; color:var(--text-dark);">Service Request Received!</h2>
+        <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.6; max-width:520px; margin:0 auto 16px;">Your service request has been received. A NIJEDEE representative will contact you to confirm the details, pricing and appointment.</p>
         
         <div>
           <span style="font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; display:block; margin-top:14px;">Booking Reference Number</span>
@@ -609,16 +609,19 @@
     sub.innerHTML = '';
     
     const optionsMap = {
-      'Cleaning & Fumigation': ['House Deep Cleaning', 'Post-Construction Cleaning', 'Full Fumigation & Pest Elimination', 'Carpet & Rug Steam Wash', 'Sofa & Furniture Detailing'],
-      'Property Maintenance & Repairs': ['Annual Facility Contract', 'Roof Leak & Waterproofing', 'Wall Plastering & Masonry', 'Compound Drainage Cleaning'],
-      'Building Mart & Materials': ['Cement & Aggregate Supply', 'Vibrated Blocks Supply', 'PPR / PVC Plumbing Fittings', 'Safety Gear & Hardware'],
-      'Interior & Furniture Design': ['POP False Ceiling Design', 'Modern Kitchen Cabinets', 'Fitted Wardrobes', 'TV Wall Acoustic Panelling'],
-      'Painting & Wall Screeding': ['Screeding & Mirror Finish', 'Satin Washable Wall Painting', 'Exterior Texcote Finish', 'Epoxy Flooring'],
-      'Solar & Inverter Solutions': ['Complete Solar Inverter Setup', 'Lithium Battery Upgrade', 'Solar Water Pump Borehole', 'System Maintenance & Inspection'],
-      'Plumbing & Water Systems': ['Concealed Leak Repair', 'Water Tank & Stand Fitting', 'Borehole Submersible Pump', 'Bathroom Sanitary Fitting'],
-      'Electrical Repairs & Wiring': ['Distribution Board Fault Finding', 'Chandelier & Spotlight Mounting', 'Conduit Wiring', 'Generator Interlock Switch'],
-      'Carpentry & Woodwork': ['Security Door Hanging', 'Timber Roof Repair', 'Hardwood Flooring', 'Furniture Repair'],
-      'General Handyman Repairs': ['TV Wall Bracket Installation', 'Air Conditioner Servicing & Gas Refill', 'Aluminium Window Repair', 'Lockset & Handle Replacement']
+      'Plumbing': ['Leak Repairs & Diagnostics', 'Blocked Drains & Pipe Clearing', 'Toilet & Cistern Repairs', 'Water Tank & Pump Installation', 'Bathroom & Kitchen Plumbing', 'Water Heater & Valve Servicing'],
+      'Electrical': ['Fault Diagnosis & Breaker Trips', 'Socket, Switch & Lighting Install', 'Wiring & Rewiring (Conduit/Surface)', 'Generator Connections & Changeover', 'Distribution Board (DB) & Earthing', 'Surge Protection Devices'],
+      'AC Installation & Maintenance': ['AC Installation & Servicing', 'Coil Cleaning & Chemical Wash', 'Gas Refill (R22/R410A/R32)', 'Leak Detection & Pipe Insulation', 'Compressor Diagnostics & Capacitor', 'Preventive Maintenance Contract'],
+      'Painting & Decoration': ['Interior Wall Painting', 'Exterior Weatherproof Painting', 'POP Wall Screeding & Mirror Finish', 'Texture Coatings & Special Finishes', 'Commercial Building Painting', 'Anti-Damp Wall Priming'],
+      'Cleaning Services': ['Regular Home Cleaning', 'Comprehensive Deep Cleaning', 'Move-in / Move-out Cleaning', 'Post-Construction Cleaning', 'Office & Commercial Cleaning', 'Carpet, Rug & Upholstery Steam Extraction'],
+      'Fumigation & Pest Control': ['General Premises Fumigation', 'Cockroach, Bedbug & Mosquito Control', 'Termite Inspection & Barrier Treatment', 'Rodent Eradication & Baiting Stations', 'Pre-Occupancy Preventive Treatment'],
+      'Carpentry & Furniture': ['Wardrobes & Fitted Closets', 'Kitchen Cabinet Installation', 'Beds, TV Media Consoles & Shelving', 'Office Workstations & Desks', 'Door Hanging & Locksets', 'Furniture Repairs & Restoration'],
+      'POP, Tiling & Interior': ['POP False Ceiling Design & Repairs', 'Acoustic Wall Panelling', 'Floor & Wall Tiling (Porcelain/Ceramic)', 'Tile Regrouting & Surface Leveling', 'Cornices, Skirting & Trims', 'Interior Accent Styling'],
+      'CCTV & Security': ['CCTV Camera Installation (IP/HD)', 'DVR/NVR Configuration & Storage', 'Camera Replacement & System Upgrade', 'Remote Mobile Monitoring Setup', 'Electric Fence & Energizer Repair', 'Intercom & Access Control'],
+      'Solar & Inverter': ['Solar Panel Installation & Racking', 'Pure Sine Wave Inverter Setup', 'LiFePO4 Lithium Battery Upgrade', 'Energy Consumption Assessment', 'System Maintenance & Optimization', 'Automatic Changeover (ATS) Wiring'],
+      'Facility Management': ['Routine Property Inspections', 'Preventive Maintenance Schedules', 'Artisan & Vendor Management', 'Property Condition Reports', 'Compound Drainage & Exterior Upkeep', 'Tenant Repair Liaison'],
+      'Borehole & Water Treatment': ['Borehole Drilling & Geological Survey', 'Water Treatment Plant Installation', 'Filtration Media Replacement', 'Water Quality Testing & Balancing', 'Submersible Pump Installation & Repairs', 'Booster Pressure Pump Setup'],
+      'General Handyman & Structural Repairs': ['Minor Masonry & Brickwork', 'Door & Window Latch/Hinge Repairs', 'Roof Leak Patching & Ceiling Fix', 'TV Bracket Mounting & Hanging', 'Sliding Window & Net Repairs', 'Lockset & Deadbolt Replacement']
     };
 
     const list = optionsMap[main] || ['General Consultation & Inspection', 'On-Site Diagnostic Survey'];
@@ -691,9 +694,20 @@
   const urlParams = new URLSearchParams(window.location.search);
   const svcParam = urlParams.get('service');
   if (svcParam) {
+    const term = svcParam.toLowerCase().replace(/-/g, ' ');
     const sel = document.getElementById('bookService');
     for (let opt of sel.options) {
-      if (opt.value.toLowerCase().includes(svcParam)) {
+      const val = opt.value.toLowerCase();
+      if (val.includes(term) || 
+          (term.includes('ac') && val.includes('ac')) || 
+          (term.includes('pop') && val.includes('pop')) || 
+          (term.includes('cctv') && val.includes('cctv')) || 
+          (term.includes('security') && val.includes('security')) || 
+          (term.includes('solar') && val.includes('solar')) || 
+          (term.includes('facility') && val.includes('facility')) || 
+          (term.includes('water') && val.includes('water')) || 
+          (term.includes('borehole') && val.includes('borehole')) || 
+          (term.includes('handyman') && val.includes('handyman'))) {
         sel.value = opt.value;
         updateSubCategories();
         break;
