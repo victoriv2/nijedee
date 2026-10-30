@@ -48,7 +48,7 @@
   --tk-green-lightest:       #ECFDF5;
 
   /* Typography Scale */
-  --tk-font:                 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --tk-font:                 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --tk-h1:                   clamp(2.25rem, 1.35rem + 3.6vw, 4rem);
   --tk-h2:                   clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
   --tk-h3:                   clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
