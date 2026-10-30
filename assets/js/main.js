@@ -692,3 +692,24 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
   window.initCustomModularPickers = initAll;
 })();
+
+/* ── Persistent WhatsApp Floating Pill (Official Wikimedia SVG) ─ */
+(function initFloatingWhatsApp() {
+  const mount = () => {
+    if (document.querySelector('.tk-wa-float')) return;
+    const floatBtn = document.createElement('a');
+    floatBtn.className = 'tk-wa-float';
+    floatBtn.href = 'https://wa.me/2347085329909?text=Hello%20NIJEDEE,%20I%20would%20like%20to%20make%20an%20enquiry';
+    floatBtn.target = '_blank';
+    floatBtn.rel = 'noopener';
+    floatBtn.setAttribute('aria-label', 'Chat with NIJEDEE on WhatsApp');
+    floatBtn.innerHTML = '<img src="assets/images/whatsapp.svg" alt="WhatsApp" width="32" height="32" loading="lazy">';
+    document.body.appendChild(floatBtn);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mount);
+  } else {
+    mount();
+  }
+})();
