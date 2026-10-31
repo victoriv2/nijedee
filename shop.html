@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -338,6 +338,15 @@
         height: auto !important;
         min-height: 42px !important;
       }
+      .modal-form-row {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+      }
+    }
+    .modal-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
   </style>
 </head>
@@ -710,7 +719,7 @@
         <label class="form-label">Full Name *</label>
         <input type="text" class="form-control" id="orderCustName" required placeholder="e.g. Segun Adeyemi">
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="modal-form-row">
         <div class="form-group">
           <label class="form-label">Phone Number *</label>
           <input type="tel" class="form-control" id="orderCustPhone" required placeholder="080XXXXXXXX">
@@ -724,7 +733,7 @@
         <label class="form-label">Site / Delivery Address *</label>
         <input type="text" class="form-control" id="orderCustAddress" required placeholder="Estate name, Street, Landmark">
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="modal-form-row">
         <div class="form-group">
           <label class="form-label">Delivery Zone *</label>
           <select class="form-control" id="orderCustZone" required>
