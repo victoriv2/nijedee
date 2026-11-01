@@ -1,225 +1,620 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find a Verified Artisan | NIJEDEE</title>
-  <meta name="description" content="Find and book background-checked, certified plumbers, electricians, painters, carpenters and AC technicians across Badore, Ajah, Sangotedo and Lekki.">
+  <title>Request a Verified Artisan | NIJEDEE Trade Dispatch</title>
+  <meta name="description" content="Select your trade specification and request verified, background-checked plumbers, electricians, AC techs, painters, carpenters and tilers across Lekki, Ajah, Badore & Sangotedo.">
   <link rel="icon" type="image/png" href="assets/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    .artisan-directory-hero {
-      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
-      padding: 68px 0 54px;
+    html, body {
+      overflow-x: hidden !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+
+    .container,
+    .artisan-spec-grid,
+    .artisan-request-layout,
+    .artisan-request-form-card,
+    .artisan-dispatch-info-card,
+    .trade-specs-grid,
+    .trade-spec-card,
+    .artisan-trust-grid,
+    .artisan-join-banner {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Hero */
+    .artisan-hero {
+      background: linear-gradient(135deg, #07224F 0%, #1565C0 100%);
+      padding: 64px 0 52px;
       color: #ffffff;
       text-align: center;
     }
-    .artisan-directory-hero h1 {
-      color: #ffffff;
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      margin-bottom: 10px;
-    }
-    .artisan-directory-hero p {
-      color: rgba(255,255,255,0.85);
-      font-size: 1.05rem;
-      max-width: 600px;
-      margin: 0 auto 24px;
-    }
-    .artisan-search-box {
-      max-width: 540px;
-      margin: 0 auto;
-      display: flex;
-      background: #ffffff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    }
-    .artisan-search-box input {
-      flex: 1;
-      border: none;
-      padding: 14px 18px;
-      font-size: 0.95rem;
-      outline: none;
-    }
-    .artisan-search-box button {
-      background: var(--blue);
-      color: #ffffff;
-      padding: 0 24px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-    }
-    .artisans-layout-wrap {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      gap: 32px;
-      padding: 48px 0 36px;
-    }
-    .artisan-filter-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 18px;
-      height: fit-content;
-      position: sticky;
-      top: 90px;
-    }
-    .artisan-filter-card h3 {
-      font-size: 1.05rem;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-    .cat-filter-list {
-      display: flex;
-      flex-direction: column;
+    .artisan-hero-pill {
+      display: inline-flex;
+      align-items: center;
       gap: 6px;
-    }
-    .cat-filter-btn {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--navy);
-      cursor: pointer;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      text-align: left;
-      width: 100%;
-      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    }
-    .cat-filter-btn:hover {
-      background: #EBF3FE;
-      color: var(--blue);
-      border-color: #93C5FD;
-    }
-    .cat-filter-btn.active {
-      background: var(--blue) !important;
-      color: #ffffff !important;
-      border-color: var(--blue) !important;
-    }
-    .cat-count {
-      background: #EBF3FE;
-      color: var(--blue);
-      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.82rem;
       font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 100px;
-      display: inline-block;
-      line-height: 1.2;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: #ffffff;
     }
-    .cat-filter-btn.active .cat-count {
-      background: rgba(255, 255, 255, 0.25) !important;
-      color: #ffffff !important;
+    .artisan-hero h1 {
+      color: #ffffff;
+      font-size: clamp(1.9rem, 4vw, 2.85rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 14px;
     }
-    .artisan-grid-view {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 22px;
+    .artisan-hero p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.05rem;
+      max-width: 660px;
+      margin: 0 auto 24px;
+      line-height: 1.6;
     }
-    .artisan-card-item {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 26px 20px;
-      text-align: center;
+    .artisan-hero-trust-bar {
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .hero-trust-item {
+      display: inline-flex;
       align-items: center;
-      box-shadow: var(--shadow-sm);
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 0.84rem;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* Request & Dispatch Module */
+    .artisan-request-section {
+      padding: 48px 0 60px;
+      background: #F8FAFD;
+    }
+    .artisan-request-layout {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 32px;
+      align-items: flex-start;
+      margin-top: 28px;
+    }
+    .artisan-request-form-card {
+      background: #ffffff;
+      border: 1px solid var(--tk-neutral-100);
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 10px 30px rgba(7, 34, 79, 0.06);
+    }
+    .artisan-request-form-card h2 {
+      font-size: 1.45rem;
+      color: var(--tk-navy);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .artisan-request-form-card p.form-subtitle {
+      font-size: 0.9rem;
+      color: var(--tk-offwhite-dark);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .spec-form-group {
+      margin-bottom: 18px;
+      width: 100%;
+    }
+    .spec-form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--tk-navy);
+      margin-bottom: 6px;
+    }
+    .spec-form-group select,
+    .spec-form-group input,
+    .spec-form-group textarea {
+      width: 100%;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.92rem;
+      color: var(--tk-text);
+      font-family: inherit;
+      box-sizing: border-box;
+      background: #ffffff;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .artisan-card-item:hover {
-      border-color: var(--blue);
-      box-shadow: var(--shadow-md);
+    .spec-form-group select:focus,
+    .spec-form-group input:focus,
+    .spec-form-group textarea:focus {
+      outline: none;
+      border-color: var(--tk-primary);
+      box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.15);
     }
-    .artisan-avatar-circle {
-      width: 84px;
-      height: 84px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    /* Urgency selector pills */
+    .urgency-pills {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .urgency-pill-option {
+      position: relative;
+    }
+    .urgency-pill-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .urgency-pill-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 10px 8px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 8px;
+      background: #ffffff;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--tk-navy);
+      transition: all 0.2s ease;
+    }
+    .urgency-pill-option input[type="radio"]:checked + .urgency-pill-label {
+      border-color: var(--tk-primary);
+      background: #EBF3FE;
+      color: var(--tk-primary-dark);
+      font-weight: 700;
+    }
+
+    .request-action-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .btn-whatsapp-dispatch {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #25D366;
       color: #ffffff;
-      font-size: 1.6rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 14px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      width: 100%;
+      box-sizing: border-box;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+    .btn-whatsapp-dispatch:hover {
+      background: #1EBE5D;
+    }
+    .btn-online-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--tk-navy);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 13px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      box-sizing: border-box;
+      transition: background 0.2s ease;
+    }
+    .btn-online-submit:hover {
+      background: #0f346e;
+    }
+
+    /* Side info card */
+    .artisan-dispatch-info-card {
+      background: #ffffff;
+      border: 1px solid var(--tk-neutral-100);
+      border-radius: 16px;
+      padding: 30px 24px;
+      box-shadow: 0 10px 30px rgba(7, 34, 79, 0.05);
+    }
+    .artisan-dispatch-info-card h3 {
+      font-size: 1.25rem;
+      color: var(--tk-navy);
       font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .dispatch-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 18px;
+      margin-bottom: 24px;
+    }
+    .dispatch-step-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .step-number-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #EBF3FE;
+      color: var(--tk-primary);
+      font-weight: 800;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 14px;
-      border: 3px solid #EBF3FF;
-      overflow: hidden;
+      flex-shrink: 0;
     }
-    .artisan-avatar-circle img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .artisan-name-title {
-      font-size: 1.1rem;
+    .step-text h4 {
+      font-size: 0.95rem;
       font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 4px;
+      color: var(--tk-navy);
+      margin-bottom: 3px;
     }
-    .artisan-trade-badge {
-      font-size: 0.84rem;
+    .step-text p {
+      font-size: 0.85rem;
+      color: var(--tk-offwhite-dark);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .helpdesk-callout {
+      background: linear-gradient(135deg, #07224F 0%, #1565C0 100%);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 20px 18px;
+      margin-top: 20px;
+    }
+    .helpdesk-callout h4 {
+      font-size: 0.95rem;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .helpdesk-callout p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 10px;
+    }
+    .helpdesk-callout a {
+      color: #93C5FD;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    /* Section: Trade Specifications Directory */
+    .trade-specs-section {
+      padding: 60px 0 70px;
+      background: #ffffff;
+    }
+    .section-header-center {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 36px;
+    }
+    .section-header-center h2 {
+      font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+      font-weight: 800;
+      color: var(--tk-navy);
+      margin-bottom: 10px;
+    }
+    .section-header-center p {
+      color: var(--tk-offwhite-dark);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .trade-filter-nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .trade-nav-btn {
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
       font-weight: 600;
-      color: var(--blue);
-      margin-bottom: 8px;
+      color: var(--tk-navy);
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .artisan-verified-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: #E8F5EE;
-      color: var(--success);
-      font-size: 0.76rem;
-      font-weight: 700;
-      padding: 3px 12px;
-      border-radius: 100px;
-      margin-bottom: 12px;
+    .trade-nav-btn:hover {
+      background: #EBF3FE;
+      color: var(--tk-primary);
+      border-color: #93C5FD;
     }
-    .artisan-rating-row {
+    .trade-nav-btn.active {
+      background: var(--tk-primary) !important;
+      color: #ffffff !important;
+      border-color: var(--tk-primary) !important;
+    }
+
+    .trade-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+      gap: 24px;
+    }
+    .trade-spec-card {
+      background: #ffffff;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 16px rgba(7, 34, 79, 0.04);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .trade-spec-card:hover {
+      border-color: var(--tk-primary);
+      box-shadow: 0 10px 28px rgba(7, 34, 79, 0.08);
+      transform: translateY(-2px);
+    }
+    .trade-spec-header {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.85rem;
-      color: var(--text-dark);
-      font-weight: 600;
-      margin-bottom: 16px;
+      gap: 12px;
+      margin-bottom: 14px;
     }
-    .artisan-rating-row span.count {
-      color: var(--text-muted);
-      font-weight: 400;
+    .trade-spec-icon-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      background: #EBF3FE;
+      color: var(--tk-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .trade-spec-title-wrap h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--tk-navy);
+      margin: 0;
+      line-height: 1.3;
+    }
+    .trade-spec-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--tk-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .trade-spec-scope-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 18px 0;
+      flex: 1;
+    }
+    .trade-spec-scope-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.84rem;
+      color: #334155;
+      padding: 5px 0;
+      line-height: 1.4;
+    }
+    .trade-spec-scope-list li::before {
+      content: "•";
+      color: var(--tk-primary);
+      font-weight: bold;
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .trade-spec-footer {
+      border-top: 1px solid #F1F5F9;
+      padding-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dispatch-time-indicator {
       font-size: 0.78rem;
-    }
-    .artisan-loc-row {
-      font-size: 0.82rem;
-      color: var(--text-muted);
+      color: #16A34A;
+      font-weight: 600;
       display: flex;
       align-items: center;
       gap: 4px;
-      margin-bottom: 18px;
     }
-    .artisan-loc-row svg {
-      width: 14px;
-      height: 14px;
-      color: var(--blue);
+    .btn-select-spec {
+      background: #EBF3FE;
+      color: var(--tk-primary);
+      font-weight: 700;
+      font-size: 0.84rem;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid #BFDBFE;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
     }
-    .artisan-action-btns {
+    .btn-select-spec:hover {
+      background: var(--tk-primary);
+      color: #ffffff;
+      border-color: var(--tk-primary);
+    }
+
+    /* Trust Section */
+    .artisan-trust-section {
+      background: #F8FAFD;
+      padding: 56px 0;
+      border-top: 1px solid #E2E8F0;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .artisan-trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+      gap: 20px;
+      margin-top: 28px;
+    }
+    .trust-card {
+      background: #ffffff;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 12px rgba(7, 34, 79, 0.03);
+    }
+    .trust-card h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--tk-navy);
+      margin-bottom: 6px;
       display: flex;
+      align-items: center;
       gap: 8px;
-      width: 100%;
-      margin-top: auto;
     }
+    .trust-card p {
+      font-size: 0.85rem;
+      color: var(--tk-offwhite-dark);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Join as Artisan CTA */
+    .artisan-join-banner {
+      background: linear-gradient(135deg, #07224F 0%, #1565C0 100%);
+      border-radius: 16px;
+      padding: 44px 32px;
+      color: #ffffff;
+      text-align: center;
+      margin: 56px 0 20px;
+      box-shadow: 0 10px 30px rgba(7, 34, 79, 0.1);
+    }
+    .artisan-join-banner h3 {
+      font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+      color: #ffffff;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+    .artisan-join-banner p {
+      font-size: 0.98rem;
+      color: rgba(255,255,255,0.88);
+      max-width: 600px;
+      margin: 0 auto 24px;
+      line-height: 1.6;
+    }
+
+    /* Modal for submission feedback */
+    .request-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(7, 34, 79, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .request-modal-box {
+      background: #ffffff;
+      border-radius: 16px;
+      max-width: 460px;
+      width: 100%;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+    .request-modal-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #DCFCE7;
+      color: #16A34A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    /* Mobile Responsive */
     @media (max-width: 850px) {
-      .artisans-layout-wrap { grid-template-columns: minmax(0, 1fr); width: 100%; }
-      .artisan-filter-card { position: static; width: 100%; max-width: 100%; overflow: hidden; }
-      .artisan-grid-view { grid-template-columns: 1fr; width: 100%; }
+      .artisan-hero {
+        padding: 44px 16px 36px;
+      }
+      .artisan-request-layout {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 24px;
+      }
+      .artisan-request-form-card {
+        padding: 22px 16px !important;
+      }
+      .form-grid-2 {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 0 !important;
+      }
+      .urgency-pills {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 8px;
+      }
+      .urgency-pill-label {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 8px;
+        padding: 10px 14px;
+        text-align: left;
+      }
+      .artisan-dispatch-info-card {
+        padding: 22px 16px !important;
+      }
+      .trade-specs-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 16px !important;
+      }
+      .trade-spec-card {
+        padding: 20px 16px !important;
+      }
+      .artisan-join-banner {
+        padding: 30px 18px !important;
+      }
+      .artisan-join-banner .tk-btn {
+        width: 100% !important;
+        justify-content: center !important;
+      }
     }
   </style>
 </head>
@@ -270,328 +665,565 @@
 <div class="tk-drawer-overlay"></div>
 
 <!-- HERO BANNER -->
-<section class="artisan-directory-hero">
+<section class="artisan-hero">
   <div class="container">
-    <span class="section-label" style="background:rgba(255,255,255,0.18); color:#ffffff; margin-bottom:12px;">Verified Artisan Network</span>
-    <h1>Find a Verified Artisan</h1>
-    <p>Skilled professionals. Background-checked. Identity-vetted. Transparent pricing with zero advance artisan fees.</p>
-    <div class="artisan-search-box">
-      <input type="text" id="artisanSearchInput" placeholder="Search by trade or location e.g. plumber, electrician, Ajah..." onkeyup="filterArtisans()">
-      <button onclick="filterArtisans()">Search</button>
+    <span class="artisan-hero-pill">Module 02 &bull; Verified Trade Dispatch &bull; CAC RC 1403323</span>
+    <h1>Request a Verified Artisan</h1>
+    <p>Zero guesswork, no anonymous labor, no artisan extortion. Select your exact trade specification below and NIJEDEE dispatches an identity-vetted, trade-tested technician directly to your property across Lekki, Ajah, Badore, and Sangotedo.</p>
+    
+    <div class="artisan-hero-trust-bar">
+      <div class="hero-trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        NIN &amp; Address Vetted
+      </div>
+      <div class="hero-trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Practical Skills Tested
+      </div>
+      <div class="hero-trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        45&ndash;60 Min Dispatch
+      </div>
+      <div class="hero-trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        NIJEDEE Supervised &amp; Guaranteed
+      </div>
     </div>
   </div>
 </section>
 
-<!-- MAIN DIRECTORY -->
-<div class="container">
-  <div class="artisans-layout-wrap">
+<!-- MAIN SPECIFICATION & DISPATCH REQUEST SECTION -->
+<section class="artisan-request-section" id="artisan-request-form">
+  <div class="container">
     
-    <!-- Sidebar Trade Filter -->
-    <aside class="artisan-filter-card">
-      <h3>Artisan Trades</h3>
-      <div class="cat-filter-list">
-        <button class="cat-filter-btn active" onclick="setTradeFilter('all', this)">
-          <span>All Trades</span>
-          <span class="cat-count">10</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('plumber', this)">
-          <span>Plumbing</span>
-          <span class="cat-count">1</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('electrician', this)">
-          <span>Electrical</span>
-          <span class="cat-count">1</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('ac', this)">
-          <span>AC &amp; Refrigeration</span>
-          <span class="cat-count">1</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('painter', this)">
-          <span>Painting &amp; Screeding</span>
-          <span class="cat-count">1</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('carpenter', this)">
-          <span>Carpentry &amp; Joinery</span>
-          <span class="cat-count">1</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('tiler', this)">
-          <span>Tiling &amp; Flooring</span>
-          <span class="cat-count">1</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('pop', this)">
-          <span>POP &amp; Drywall</span>
-          <span class="cat-count">1</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('cleaner', this)">
-          <span>Cleaning &amp; Janitorial</span>
-          <span class="cat-count">1</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('cctv', this)">
-          <span>CCTV &amp; Security</span>
-          <span class="cat-count">1</span>
-        </button>
-        <button class="cat-filter-btn" onclick="setTradeFilter('solar', this)">
-          <span>Solar &amp; Inverter</span>
-          <span class="cat-count">1</span>
-        </button>
-      </div>
-
-      <div style="margin-top:32px; background:#F8FAFC; border:1px solid var(--border); border-radius:8px; padding:18px; text-align:center;">
-        <h4 style="font-size:0.95rem; margin-bottom:6px; color:var(--text-dark);">Are You a Skilled Artisan?</h4>
-        <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:14px;">Get verified, receive steady job requests, and grow with Nijedee.</p>
-        <a href="become-artisan.html" class="btn btn-outline btn-sm btn-full">Join as an Artisan</a>
-      </div>
-    </aside>
-
-    <!-- Artisans Grid -->
-    <main>
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:20px;">
-        <span style="font-size:0.9rem; color:var(--text-muted);" id="artisanResultsCount">Showing 10 verified artisans across 10 trades</span>
-        <span style="font-size:0.82rem; color:var(--success); font-weight:600; display:flex; align-items:center; gap:5px;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          Identity &amp; Address Vetted
-        </span>
-      </div>
-
-      <div class="artisan-grid-view" id="artisansGrid">
+    <div class="artisan-request-layout">
+      
+      <!-- Left: Interactive Spec Selection & Request Form -->
+      <div class="artisan-request-form-card">
+        <h2>Select Artisan Specification</h2>
+        <p class="form-subtitle">Choose the required trade specialization and provide job details. Our dispatch desk connects you with an insured, certified technician closest to your location.</p>
         
-        <!-- Artisan 1: Plumbing -->
-        <div class="artisan-card-item" data-trade="plumber" data-keywords="emmanuel olutife plumber plumbing leak pipe ajah badore">
-          <div class="artisan-avatar-circle">EO</div>
-          <h3 class="artisan-name-title">Emmanuel Olutife</h3>
-          <span class="artisan-trade-badge">Licensed Master Plumber</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
+        <form id="artisanDispatchForm" onsubmit="handleDispatchFormSubmit(event)">
+          
+          <!-- 1. Trade Specification -->
+          <div class="spec-form-group">
+            <label for="tradeSpecSelect">1. Trade Specialization (Spec) *</label>
+            <select id="tradeSpecSelect" required onchange="syncSelectedTrade()">
+              <option value="">-- Choose Trade Specification --</option>
+              <option value="Plumbing & Water Systems">Plumbing &amp; Sanitary Engineering (Pipes, Leaks, Pumps, Heaters)</option>
+              <option value="Electrical & Power Systems">Electrical &amp; Power Systems (Wiring, Breakers, Faults, Lighting)</option>
+              <option value="Air Conditioning (HVAC)">Air Conditioning &amp; Refrigeration (Servicing, Gas Refill, Installation)</option>
+              <option value="Painting & Wall Finishing">Painting, Screeding &amp; Wall Finishing (Interior, Exterior, Satin)</option>
+              <option value="Carpentry & Woodwork">Carpentry, Joinery &amp; Furniture (Doors, Wardrobes, Kitchen Cabinets)</option>
+              <option value="Tiling & Floor Finishing">Tiling &amp; Flooring (Ceramic, Porcelain, Marble Installation &amp; Regrout)</option>
+              <option value="POP Ceiling & Drywall">POP False Ceiling, Cornices &amp; Drywall Partitions</option>
+              <option value="Solar & Inverter Systems">Solar &amp; Inverter Installation &amp; Battery Diagnostics</option>
+              <option value="CCTV & Smart Security">CCTV Security Cameras, Intercom &amp; Automated Access Control</option>
+              <option value="Roofing & Aluminum Works">Roofing, Leak Repairs, Guttering &amp; Aluminum Glazing</option>
+              <option value="Masonry & Bricklaying">Masonry, Bricklaying, Plastering &amp; Structural Repairs</option>
+              <option value="Deep Cleaning & Fumigation">Post-Construction Cleaning, Move-in Scrub &amp; Pest Fumigation</option>
+            </select>
           </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.8 <span class="count">&bull; 40+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Badore &bull; Ajah Axis
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=plumbing" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
 
-        <!-- Artisan 2: Electrical -->
-        <div class="artisan-card-item" data-trade="electrician" data-keywords="babatunde adekoya electrician electrical wiring board lekki ajah">
-          <div class="artisan-avatar-circle">BA</div>
-          <h3 class="artisan-name-title">Babatunde Adekoya</h3>
-          <span class="artisan-trade-badge">Senior Electrical Engineer</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
-          </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.9 <span class="count">&bull; 50+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Lekki &bull; Ajah
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=electrical" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
+          <!-- 2. Service Scope / Job Type -->
+          <div class="form-grid-2">
+            <div class="spec-form-group">
+              <label for="jobScopeSelect">2. Scope of Work *</label>
+              <select id="jobScopeSelect" required>
+                <option value="Emergency Fault Diagnosis & Repair">Fault Diagnosis &amp; Repair</option>
+                <option value="New Equipment / Fixture Installation">New Fixture / System Installation</option>
+                <option value="Routine Preventative Servicing">Routine Maintenance / Servicing</option>
+                <option value="Full Project / Renovation Work">Full Project / Renovation Work</option>
+                <option value="Inspection / Second Opinion">Site Assessment &amp; Cost Estimation</option>
+              </select>
+            </div>
 
-        <!-- Artisan 3: AC & Refrigeration -->
-        <div class="artisan-card-item" data-trade="ac" data-keywords="samuel eze ac air conditioner gas refill refrigeration ajah lekki">
-          <div class="artisan-avatar-circle">SE</div>
-          <h3 class="artisan-name-title">Samuel Eze</h3>
-          <span class="artisan-trade-badge">HVAC &amp; AC Specialist</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
+            <!-- 3. Location Corridor -->
+            <div class="spec-form-group">
+              <label for="locationCorridorSelect">3. Location Corridor *</label>
+              <select id="locationCorridorSelect" required>
+                <option value="Ajah Central">Ajah Central &bull; Ilaje &bull; Ado Road</option>
+                <option value="Badore Axis">Badore Axis &bull; Langbasa &bull; Addo</option>
+                <option value="Sangotedo">Sangotedo &bull; Monastery &bull; Abijo</option>
+                <option value="Lekki Phase 1">Lekki Phase 1 &bull; Admiralty</option>
+                <option value="Lekki Phase 2 / Chevron">Lekki Phase 2 &bull; Chevron &bull; Agungi</option>
+                <option value="Ikate / Elegushi / Osapa">Ikate &bull; Elegushi &bull; Osapa London</option>
+                <option value="Other Lagos Corridor">Other Lagos Corridor (By arrangement)</option>
+              </select>
+            </div>
           </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.9 <span class="count">&bull; 45+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Ajah &bull; Badore Axis
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=ac" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
 
-        <!-- Artisan 4: Painting & Screeding -->
-        <div class="artisan-card-item" data-trade="painter" data-keywords="tosin adeyemi painter painting screeder wall satin emulsion sangotedo">
-          <div class="artisan-avatar-circle">TA</div>
-          <h3 class="artisan-name-title">Tosin Adeyemi</h3>
-          <span class="artisan-trade-badge">Master Painter &amp; Screeder</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
+          <!-- 4. Job Description -->
+          <div class="spec-form-group">
+            <label for="jobDescriptionText">4. Describe the Issue or Project Scope *</label>
+            <textarea id="jobDescriptionText" rows="3" placeholder="e.g. Master bedroom split AC is blowing warm air and leaking water inside. Need technician with vacuum pump and R410A gas check." required></textarea>
           </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.8 <span class="count">&bull; 35+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Sangotedo &bull; Ajah
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=painting" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
 
-        <!-- Artisan 5: Carpentry & Joinery -->
-        <div class="artisan-card-item" data-trade="carpenter" data-keywords="ibrahim musa carpenter carpentry furniture door wood cabinet badore">
-          <div class="artisan-avatar-circle">IM</div>
-          <h3 class="artisan-name-title">Ibrahim Musa</h3>
-          <span class="artisan-trade-badge">Custom Joiner &amp; Woodworker</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
+          <!-- 5. Urgency / Timing -->
+          <div class="spec-form-group">
+            <label>5. Desired Response Urgency *</label>
+            <div class="urgency-pills">
+              <div class="urgency-pill-option">
+                <input type="radio" id="urgencyImmediate" name="urgencyOption" value="Immediate Dispatch (45-60 mins)" checked>
+                <label for="urgencyImmediate" class="urgency-pill-label">
+                  <span>⚡ Immediate</span>
+                  <span style="font-size:0.7rem;color:var(--tk-offwhite-dark);font-weight:normal;">Within 45-60 mins</span>
+                </label>
+              </div>
+              <div class="urgency-pill-option">
+                <input type="radio" id="urgencyToday" name="urgencyOption" value="Later Today">
+                <label for="urgencyToday" class="urgency-pill-label">
+                  <span>📅 Later Today</span>
+                  <span style="font-size:0.7rem;color:var(--tk-offwhite-dark);font-weight:normal;">Morning / Afternoon</span>
+                </label>
+              </div>
+              <div class="urgency-pill-option">
+                <input type="radio" id="urgencyScheduled" name="urgencyOption" value="Scheduled Date">
+                <label for="urgencyScheduled" class="urgency-pill-label">
+                  <span>🗓️ Scheduled</span>
+                  <span style="font-size:0.7rem;color:var(--tk-offwhite-dark);font-weight:normal;">Specific date/weekend</span>
+                </label>
+              </div>
+            </div>
           </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.8 <span class="count">&bull; 30+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Badore &bull; Sangotedo
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=carpentry" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
 
-        <!-- Artisan 6: Tiling & Flooring -->
-        <div class="artisan-card-item" data-trade="tiler" data-keywords="friday akpan tiler tiling floor wall porcelain marble lekki">
-          <div class="artisan-avatar-circle">FA</div>
-          <h3 class="artisan-name-title">Friday Akpan</h3>
-          <span class="artisan-trade-badge">Porcelain &amp; Marble Tiler</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
+          <!-- 6. Customer Details -->
+          <div class="form-grid-2">
+            <div class="spec-form-group">
+              <label for="custName">Your Full Name *</label>
+              <input type="text" id="custName" placeholder="e.g. Victor Okafor" required>
+            </div>
+            <div class="spec-form-group">
+              <label for="custPhone">Phone / WhatsApp Number *</label>
+              <input type="tel" id="custPhone" placeholder="07085329909" required>
+            </div>
           </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.8 <span class="count">&bull; 28+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Lekki Phase 2 &bull; Chevron
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=pop-tiling" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
 
-        <!-- Artisan 7: POP & Drywall -->
-        <div class="artisan-card-item" data-trade="pop" data-keywords="chidi okonkwo pop plaster ceiling drywall lighting sangotedo ajah">
-          <div class="artisan-avatar-circle">CO</div>
-          <h3 class="artisan-name-title">Chidi Okonkwo</h3>
-          <span class="artisan-trade-badge">POP &amp; False Ceiling Specialist</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
+          <!-- Actions -->
+          <div class="request-action-row">
+            <button type="button" class="btn-whatsapp-dispatch" onclick="submitViaWhatsApp()">
+              <svg fill="currentColor" viewBox="0 0 32 32" width="20" height="20"><path d="M26.576 5.363c-2.69-2.69-6.406-4.354-10.511-4.354-8.209 0-14.865 6.655-14.865 14.865 0 2.732 0.737 5.291 2.022 7.491l-0.038-0.070-2.109 7.702 7.879-2.067c2.051 1.139 4.498 1.809 7.102 1.809h0.006c8.209-0.003 14.862-6.659 14.862-14.868 0-4.103-1.662-7.817-4.349-10.507l0 0zM16.062 28.228h-0.005c-0 0-0.001 0-0.001 0-2.319 0-4.489-0.64-6.342-1.753l0.056 0.031-0.451-0.267-4.675 1.227 1.247-4.559-0.294-0.467c-1.185-1.862-1.889-4.131-1.889-6.565 0-6.822 5.531-12.353 12.353-12.353s12.353 5.531 12.353 12.353c0 6.822-5.53 12.353-12.353 12.353h-0zM22.838 18.977c-0.371-0.186-2.197-1.083-2.537-1.208-0.341-0.124-0.589-0.185-0.837 0.187-0.246 0.371-0.958 1.207-1.175 1.455-0.216 0.249-0.434 0.279-0.805 0.094-1.15-0.466-2.138-1.087-2.997-1.852l0.010 0.009c-0.799-0.74-1.484-1.587-2.037-2.521l-0.028-0.052c-0.216-0.371-0.023-0.572 0.162-0.757 0.167-0.166 0.372-0.434 0.557-0.65 0.146-0.179 0.271-0.384 0.366-0.604l0.006-0.017c0.043-0.087 0.068-0.188 0.068-0.296 0-0.131-0.037-0.253-0.101-0.357l0.002 0.003c-0.094-0.186-0.836-2.014-1.145-2.758-0.302-0.724-0.609-0.625-0.836-0.637-0.216-0.010-0.464-0.012-0.712-0.012-0.395 0.010-0.746 0.188-0.988 0.463l-0.001 0.002c-0.802 0.761-1.3 1.834-1.3 3.023 0 0.026 0 0.053 0.001 0.079l-0-0.004c0.131 1.467 0.681 2.784 1.527 3.857l-0.012-0.015c1.604 2.379 3.742 4.282 6.251 5.564l0.094 0.043c0.548 0.248 1.25 0.513 1.968 0.74l0.149 0.041c0.442 0.14 0.951 0.221 1.479 0.221 0.303 0 0.601-0.027 0.889-0.078l-0.031 0.004c1.069-0.223 1.956-0.868 2.497-1.749l0.009-0.017c0.165-0.366 0.261-0.793 0.261-1.242 0-0.185-0.016-0.366-0.047-0.542l0.003 0.019c-0.092-0.155-0.34-0.247-0.712-0.434z"/></svg>
+              <span>Instant Dispatch via WhatsApp (Fastest)</span>
+            </button>
+            <button type="submit" class="btn-online-submit">
+              <span>Submit Dispatch Request Online</span>
+            </button>
           </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.9 <span class="count">&bull; 32+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Sangotedo &bull; Ajah
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=pop-tiling" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
 
-        <!-- Artisan 8: Cleaning -->
-        <div class="artisan-card-item" data-trade="cleaner" data-keywords="grace amadi cleaner cleaning post-construction deep clean fumigation lekki ajah">
-          <div class="artisan-avatar-circle">GA</div>
-          <h3 class="artisan-name-title">Grace Amadi</h3>
-          <span class="artisan-trade-badge">Deep Clean &amp; Post-Construction Lead</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
-          </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.9 <span class="count">&bull; 60+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Lekki &bull; Ajah &bull; Badore
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=cleaning" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
-
-        <!-- Artisan 9: CCTV & Security -->
-        <div class="artisan-card-item" data-trade="cctv" data-keywords="victor udoh cctv security camera dvr nvr intercom access control ajah">
-          <div class="artisan-avatar-circle">VU</div>
-          <h3 class="artisan-name-title">Victor Udoh</h3>
-          <span class="artisan-trade-badge">CCTV &amp; Access Control Engineer</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
-          </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.9 <span class="count">&bull; 40+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Ajah &bull; Lekki Corridor
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=cctv" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
-
-        <!-- Artisan 10: Solar & Inverter -->
-        <div class="artisan-card-item" data-trade="solar" data-keywords="kolawole sanusi solar inverter battery panel charge controller badore lekki">
-          <div class="artisan-avatar-circle">KS</div>
-          <h3 class="artisan-name-title">Kolawole Sanusi</h3>
-          <span class="artisan-trade-badge">Certified Solar &amp; Inverter Tech</span>
-          <div class="artisan-verified-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            Verified by NIJEDEE
-          </div>
-          <div class="artisan-rating-row">
-            <svg width="15" height="15" fill="#F59E0B" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            4.9 <span class="count">&bull; 35+ Jobs Completed</span>
-          </div>
-          <div class="artisan-loc-row">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Badore &bull; Ajah &bull; Lekki
-          </div>
-          <div class="artisan-action-btns">
-            <a href="artisan-profile.html" class="btn btn-outline btn-sm" style="flex:1;">Profile</a>
-            <a href="book.html?service=solar" class="btn btn-primary btn-sm" style="flex:1;">Hire</a>
-          </div>
-        </div>
-
+        </form>
       </div>
-    </main>
 
+      <!-- Right: Dispatch Standards & Coverage Information -->
+      <div class="artisan-dispatch-info-card">
+        <h3>How NIJEDEE Dispatch Works</h3>
+        <p style="font-size:0.88rem;color:var(--tk-offwhite-dark);line-height:1.5;">Every artisan dispatched through our platform is a verified professional operating under NIJEDEE operational standards.</p>
+        
+        <div class="dispatch-steps-list">
+          <div class="dispatch-step-item">
+            <div class="step-number-circle">1</div>
+            <div class="step-text">
+              <h4>You Select the Spec</h4>
+              <p>Pick your trade, describe the exact fault or project scope, and set your area in Lagos.</p>
+            </div>
+          </div>
+          <div class="dispatch-step-item">
+            <div class="step-number-circle">2</div>
+            <div class="step-text">
+              <h4>Closest Verified Match</h4>
+              <p>Our dispatch team assigns an identity-vetted, trade-tested technician operating in your immediate corridor.</p>
+            </div>
+          </div>
+          <div class="dispatch-step-item">
+            <div class="step-number-circle">3</div>
+            <div class="step-text">
+              <h4>Transparent Diagnostic &amp; Quote</h4>
+              <p>The technician inspects the work on-site, explains the diagnosis, and provides clear upfront material and labor pricing.</p>
+            </div>
+          </div>
+          <div class="dispatch-step-item">
+            <div class="step-number-circle">4</div>
+            <div class="step-text">
+              <h4>Guaranteed Quality</h4>
+              <p>All completed work is logged, supervised, and backed by NIJEDEE warranty against craftsmanship defects.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="helpdesk-callout">
+          <h4>Need Immediate Booking Help?</h4>
+          <p>Our direct property operations desk is available on calls and WhatsApp across all trade emergencies:</p>
+          <div style="font-size:0.92rem;font-weight:700;">
+            Direct Desk: <a href="tel:07085329909">07085329909</a> &bull; <a href="tel:08167469581">08167469581</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION: BROWSE ALL 12 TRADE SPECIFICATIONS -->
+<section class="trade-specs-section">
+  <div class="container">
+    
+    <div class="section-header-center">
+      <h2>Browse Available Trade Specifications</h2>
+      <p>Explore the full range of certified trade specializations covered by our active dispatch pool. Click any trade card to automatically select that spec for immediate request.</p>
+    </div>
+
+    <!-- Trade Category Filter Navigation -->
+    <div class="trade-filter-nav">
+      <button class="trade-nav-btn active" onclick="filterTradeCards('all', this)">All Specs (12)</button>
+      <button class="trade-nav-btn" onclick="filterTradeCards('mep', this)">Plumbing &amp; Electrical</button>
+      <button class="trade-nav-btn" onclick="filterTradeCards('hvac-solar', this)">AC &amp; Solar Power</button>
+      <button class="trade-nav-btn" onclick="filterTradeCards('finishing', this)">Finishes &amp; Walls</button>
+      <button class="trade-nav-btn" onclick="filterTradeCards('wood-tile', this)">Carpentry &amp; Tiling</button>
+      <button class="trade-nav-btn" onclick="filterTradeCards('structural', this)">Roofing &amp; Structural</button>
+      <button class="trade-nav-btn" onclick="filterTradeCards('cleaning', this)">Cleaning &amp; Security</button>
+    </div>
+
+    <!-- Trade Cards Grid -->
+    <div class="trade-specs-grid" id="tradeSpecsContainer">
+      
+      <!-- Spec 1: Plumbing -->
+      <div class="trade-spec-card" data-category="mep" data-spec="Plumbing & Water Systems">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">🚰</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 01 &bull; SANITARY &amp; WATER</span>
+            <h3>Plumbing &amp; Water Systems</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Concealed leak detection &amp; burst pipe repairs</li>
+          <li>Water heater (Ariston/Thermocool) installation</li>
+          <li>Borehole submersible pump &amp; pressure tank setup</li>
+          <li>Bathroom sanitary fixtures, mixers &amp; shower cubicles</li>
+          <li>Overhead water tank cleaning &amp; automatic float valves</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Plumbing & Water Systems')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 2: Electrical -->
+      <div class="trade-spec-card" data-category="mep" data-spec="Electrical & Power Systems">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">⚡</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 02 &bull; POWER &amp; WIRING</span>
+            <h3>Electrical &amp; Power Systems</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Complete conduit &amp; surface residential wiring</li>
+          <li>Distribution board (DB) troubleshooting &amp; breakers</li>
+          <li>Generator automatic transfer switch (ATS) installation</li>
+          <li>LED profile lights, chandeliers &amp; architectural lighting</li>
+          <li>Power earthing, surge arresters &amp; load balancing</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Electrical & Power Systems')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 3: AC & Refrigeration -->
+      <div class="trade-spec-card" data-category="hvac-solar" data-spec="Air Conditioning (HVAC)">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">❄️</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 03 &bull; HVAC &amp; COOLING</span>
+            <h3>Air Conditioning (HVAC)</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Split, cassette &amp; floor-standing AC installation</li>
+          <li>Gas leakage detection, pressure testing &amp; R410A refill</li>
+          <li>Deep coil chemical foam cleaning &amp; sanitization</li>
+          <li>Compressor &amp; control board (PCB) troubleshooting</li>
+          <li>Water drainage piping overhaul &amp; anti-icing fixes</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Air Conditioning (HVAC)')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 4: Painting & Wall Finishing -->
+      <div class="trade-spec-card" data-category="finishing" data-spec="Painting & Wall Finishing">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">🎨</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 04 &bull; WALL FINISHES</span>
+            <h3>Painting, Screeding &amp; Finishes</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Surface screeding, POP skimming &amp; sanding to mirror finish</li>
+          <li>Interior &amp; exterior painting (Satin, Matt, Silk, Gloss)</li>
+          <li>Anti-fungal, moisture-seal &amp; damp-proof wall primers</li>
+          <li>Decorative wall paneling, fluted boards &amp; paint design</li>
+          <li>Complete apartment move-out / move-in repainting</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Painting & Wall Finishing')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 5: Carpentry & Joinery -->
+      <div class="trade-spec-card" data-category="wood-tile" data-spec="Carpentry & Woodwork">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">🪚</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 05 &bull; JOINERY &amp; WOOD</span>
+            <h3>Carpentry &amp; Furniture Works</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Flush &amp; panel door installation, alignment &amp; smart locks</li>
+          <li>Custom modular kitchen cabinets &amp; quartz countertops</li>
+          <li>Walk-in wardrobe fabrication &amp; sliding track repairs</li>
+          <li>Bed frames, dining sets &amp; executive furniture repairs</li>
+          <li>Roof truss wood treatment &amp; fascia board replacement</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Carpentry & Woodwork')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 6: Tiling & Flooring -->
+      <div class="trade-spec-card" data-category="wood-tile" data-spec="Tiling & Floor Finishing">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">🧱</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 06 &bull; TILING &amp; FLOORS</span>
+            <h3>Tiling, Marble &amp; Flooring</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Porcelain, vitrified, ceramic &amp; granite tile installation</li>
+          <li>Laser-level floor alignment &amp; seamless waterproof grouting</li>
+          <li>Bathroom wall tiling, shower curbs &amp; niche fabrication</li>
+          <li>Hollow / cracked tile replacement &amp; expansion joints</li>
+          <li>Interlocking paving stones &amp; stamped concrete walkways</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Tiling & Floor Finishing')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 7: POP Ceiling & Drywall -->
+      <div class="trade-spec-card" data-category="finishing" data-spec="POP Ceiling & Drywall">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">🏛️</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 07 &bull; CEILINGS &amp; DRYWALL</span>
+            <h3>POP Ceiling &amp; Drywall</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Modern suspended POP false ceilings &amp; perimeter coves</li>
+          <li>Concealed strip lighting troughs &amp; spot lamp cutouts</li>
+          <li>Gypsum drywall room partitions &amp; acoustic ceiling tiles</li>
+          <li>Sagging, water-damaged or cracked POP restoration</li>
+          <li>Architectural cornices, medallions &amp; crown moldings</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('POP Ceiling & Drywall')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 8: Solar & Inverter Systems -->
+      <div class="trade-spec-card" data-category="hvac-solar" data-spec="Solar & Inverter Systems">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">☀️</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 08 &bull; RENEWABLE POWER</span>
+            <h3>Solar, Inverter &amp; Battery Systems</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Hybrid &amp; off-grid solar inverter installation (1kVA &ndash; 20kVA)</li>
+          <li>Lithium-ion &amp; tubular battery health diagnostics</li>
+          <li>Monocrystalline solar panel roof mounting &amp; MPPT wiring</li>
+          <li>Dedicated inverter circuit separation in distribution board</li>
+          <li>Preventative cleaning &amp; battery equalization servicing</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Solar & Inverter Systems')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 9: CCTV & Smart Security -->
+      <div class="trade-spec-card" data-category="cleaning" data-spec="CCTV & Smart Security">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">📹</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 09 &bull; SMART SECURITY</span>
+            <h3>CCTV &amp; Access Security</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>IP &amp; Analog CCTV camera setup with remote phone viewing</li>
+          <li>NVR / DVR storage hard drive configuration &amp; backup</li>
+          <li>Video doorbell, gate intercom &amp; electric fence wiring</li>
+          <li>Fingerprint &amp; biometric RFID smart door lock fitting</li>
+          <li>Burglar alarm sensor calibration &amp; motion beams</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('CCTV & Smart Security')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 10: Roofing & Aluminum -->
+      <div class="trade-spec-card" data-category="structural" data-spec="Roofing & Aluminum Works">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">🏠</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 10 &bull; ROOF &amp; ALUMINUM</span>
+            <h3>Roofing, Gutters &amp; Aluminum</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Stone-coated, aluminum &amp; corrugated roof leak remediation</li>
+          <li>Rainwater gutter installation, unblocking &amp; downpipes</li>
+          <li>Aluminum sliding windows, casements &amp; netting mesh</li>
+          <li>Tempered glass shower enclosures &amp; balcony handrails</li>
+          <li>Flashing sealant, roof ridge caps &amp; waterproofing</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Roofing & Aluminum Works')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 11: Masonry & Structural -->
+      <div class="trade-spec-card" data-category="structural" data-spec="Masonry & Bricklaying">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">🔨</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 11 &bull; CIVIL &amp; MASONRY</span>
+            <h3>Masonry &amp; Structural Repairs</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Wall crack stitching, structural patching &amp; plastering</li>
+          <li>Block laying, fence wall construction &amp; pillars</li>
+          <li>Soakaway / septic tank renovation &amp; soakaway pits</li>
+          <li>Parapet wall waterproofing &amp; foundation damp protection</li>
+          <li>Concrete slab casting, ramps &amp; entrance remodeling</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Masonry & Bricklaying')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Spec 12: Deep Cleaning & Fumigation -->
+      <div class="trade-spec-card" data-category="cleaning" data-spec="Deep Cleaning & Fumigation">
+        <div class="trade-spec-header">
+          <div class="trade-spec-icon-box">🧹</div>
+          <div class="trade-spec-title-wrap">
+            <span class="trade-spec-tag">SPEC 12 &bull; SANITATION &amp; PEST</span>
+            <h3>Deep Cleaning &amp; Fumigation</h3>
+          </div>
+        </div>
+        <ul class="trade-spec-scope-list">
+          <li>Post-construction debris removal, cement scrubbing &amp; shine</li>
+          <li>Move-in / move-out thorough sanitization &amp; kitchen degrease</li>
+          <li>Industrial upholstery, couch &amp; carpet steam shampooing</li>
+          <li>Pest control fumigation (termites, rodents, bedbugs &amp; roaches)</li>
+          <li>Water holding reservoir chemical scrubbing &amp; sterilization</li>
+        </ul>
+        <div class="trade-spec-footer">
+          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Deep Cleaning & Fumigation')">Request Spec &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION: TRUST & VETTING ASSURANCE -->
+<section class="artisan-trust-section">
+  <div class="container">
+    <div class="section-header-center" style="margin-bottom:12px;">
+      <span class="section-label" style="background:#EBF3FE;color:var(--tk-primary);margin-bottom:8px;">Zero Fake Guarantee</span>
+      <h2>Why NIJEDEE Verified Dispatch is Safe</h2>
+      <p>We do not publish fabricated profiles or unvetted contractors. Every artisan working under NIJEDEE goes through our strict 4-step compliance check.</p>
+    </div>
+
+    <div class="artisan-trust-grid">
+      <div class="trust-card">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          1. Identity &amp; NIN Verification
+        </h4>
+        <p>National Identity Number (NIN) authentication, valid residential address physical check, and two verified guarantors on record.</p>
+      </div>
+
+      <div class="trust-card">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          2. Practical Trade Testing
+        </h4>
+        <p>Hands-on diagnostic assessment conducted at the NIJEDEE Vocational Academy to verify real tool handling, safety, and workmanship.</p>
+      </div>
+
+      <div class="trust-card">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          3. Fixed Standard Pricing
+        </h4>
+        <p>Zero artisan haggling or inflated charges. Diagnostic rates and material quotations follow standardized Lagos market benchmarks.</p>
+      </div>
+
+      <div class="trust-card">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          4. Workmanship Guarantee
+        </h4>
+        <p>Every dispatch job is monitored by a NIJEDEE supervisor. If a repair fails within our warranty period, it is rectified without labor cost.</p>
+      </div>
+    </div>
+
+    <!-- Banner for Real Artisans to Join -->
+    <div class="artisan-join-banner">
+      <h3>Are You a Skilled Artisan or Trade Contractor?</h3>
+      <p>Pass our vetting process, get verified, and receive direct job dispatch contracts across Lekki, Ajah, Badore, and Sangotedo with guaranteed prompt payment.</p>
+      <a href="become-artisan.html" class="tk-btn tk-btn--secondary" style="font-weight:700;padding:14px 28px;">Apply for Artisan Verification &rarr;</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUBMISSION CONFIRMATION MODAL -->
+<div class="request-modal-overlay" id="submissionModal">
+  <div class="request-modal-box">
+    <div class="request-modal-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h3 style="font-size:1.35rem;color:var(--tk-navy);margin-bottom:8px;font-weight:800;">Dispatch Request Received</h3>
+    <p style="font-size:0.9rem;color:var(--tk-offwhite-dark);line-height:1.5;margin-bottom:20px;" id="modalFeedbackText">
+      Your request has been logged. Our property dispatch team will call or WhatsApp you within 15 minutes to confirm technician assignment.
+    </p>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button type="button" class="btn-online-submit" onclick="closeSubmissionModal()" style="width:auto;padding:10px 22px;">Done</button>
+    </div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <!-- ===================== FOOTER ===================== -->
 <footer class="tk-footer">
   <div class="tk-footer__band">
@@ -684,38 +1316,111 @@
 </footer>
 
 <script>
-  function setTradeFilter(trade, btn) {
-    document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+  // Select a trade directly from any trade specification card
+  function selectTradeFromCard(tradeName) {
+    const select = document.getElementById('tradeSpecSelect');
+    if (select) {
+      select.value = tradeName;
+    }
+    const formSection = document.getElementById('artisan-request-form');
+    if (formSection) {
+      formSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    const jobDesc = document.getElementById('jobDescriptionText');
+    if (jobDesc && !jobDesc.value) {
+      jobDesc.focus();
+    }
+  }
 
-    const cards = document.querySelectorAll('.artisan-card-item');
-    let visibleCount = 0;
+  function syncSelectedTrade() {
+    // optional hook for trade selection change
+  }
+
+  // Filter trade specification cards
+  function filterTradeCards(category, btn) {
+    document.querySelectorAll('.trade-nav-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.trade-spec-card');
     cards.forEach(card => {
-      if (trade === 'all' || card.dataset.trade === trade) {
+      if (category === 'all' || card.dataset.category === category) {
         card.style.display = 'flex';
-        visibleCount++;
       } else {
         card.style.display = 'none';
       }
     });
-    document.getElementById('artisanResultsCount').textContent = `Showing ${visibleCount} verified artisans`;
   }
 
-  function filterArtisans() {
-    const query = document.getElementById('artisanSearchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('.artisan-card-item');
-    let visibleCount = 0;
-    cards.forEach(card => {
-      const keywords = card.dataset.keywords.toLowerCase();
-      if (keywords.includes(query)) {
-        card.style.display = 'flex';
-        visibleCount++;
-      } else {
-        card.style.display = 'none';
-      }
-    });
-    document.getElementById('artisanResultsCount').textContent = `Showing ${visibleCount} verified artisans matching "${query}"`;
+  // Submit via WhatsApp with pre-formatted job spec
+  function submitViaWhatsApp() {
+    const trade = document.getElementById('tradeSpecSelect').value || 'General Technical Fault';
+    const scope = document.getElementById('jobScopeSelect').value;
+    const location = document.getElementById('locationCorridorSelect').value;
+    const desc = document.getElementById('jobDescriptionText').value.trim() || 'Need urgent technical inspection';
+    const custName = document.getElementById('custName').value.trim() || 'Prospective Client';
+    const custPhone = document.getElementById('custPhone').value.trim() || 'Not specified';
+    
+    let urgency = 'Immediate Dispatch (45-60 mins)';
+    const urgencyRadio = document.querySelector('input[name="urgencyOption"]:checked');
+    if (urgencyRadio) urgency = urgencyRadio.value;
+
+    const message = `*NIJEDEE VERIFIED ARTISAN DISPATCH REQUEST*\n` +
+      `-----------------------------------------\n` +
+      `*Trade Spec:* ${trade}\n` +
+      `*Scope:* ${scope}\n` +
+      `*Location Corridor:* ${location}\n` +
+      `*Urgency:* ${urgency}\n` +
+      `*Client Name:* ${custName}\n` +
+      `*Client Phone:* ${custPhone}\n` +
+      `*Fault / Scope Details:* ${desc}\n` +
+      `-----------------------------------------\n` +
+      `Please dispatch a verified technician to my location.`;
+
+    const encoded = encodeURIComponent(message);
+    window.open(`https://wa.me/2347085329909?text=${encoded}`, '_blank');
   }
+
+  // Submit via Online Request Form
+  function handleDispatchFormSubmit(e) {
+    e.preventDefault();
+    const trade = document.getElementById('tradeSpecSelect').value;
+    const custName = document.getElementById('custName').value.trim();
+    const location = document.getElementById('locationCorridorSelect').value;
+    
+    const feedback = document.getElementById('modalFeedbackText');
+    if (feedback) {
+      feedback.textContent = `Thank you, ${custName}. Your request for a verified "${trade}" technician in ${location} has been received. Our dispatch coordinator will call or WhatsApp you shortly.`;
+    }
+    
+    const modal = document.getElementById('submissionModal');
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  }
+
+  function closeSubmissionModal() {
+    const modal = document.getElementById('submissionModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  // Pre-select trade if passed via URL parameter e.g. artisans.html?trade=plumbing
+  window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const tradeParam = params.get('trade');
+    if (tradeParam) {
+      const select = document.getElementById('tradeSpecSelect');
+      if (select) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value.toLowerCase().includes(tradeParam.toLowerCase())) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    }
+  });
 </script>
 <script src="assets/js/main.js"></script>
 </body>
