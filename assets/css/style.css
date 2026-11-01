@@ -484,7 +484,7 @@ body.drawer-open {
   background: var(--tk-white);
   box-shadow: -8px 0 32px rgba(7, 34, 79, 0.25);
   z-index: 10000;
-  display: flex;
+  display: none;
   flex-direction: column;
   padding: 32px 24px;
   transform: translateX(100%);
@@ -497,6 +497,7 @@ body.drawer-open {
 }
 .tk-header__drawer.open,
 .mobile-nav.open {
+  display: flex !important;
   transform: translateX(0);
   visibility: visible;
   pointer-events: auto;
@@ -528,7 +529,7 @@ body.drawer-open {
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100vw;
+  width: 100%;
   height: 100%;
   height: 100vh;
   height: 100dvh;
@@ -2170,6 +2171,33 @@ textarea.form-control {
   /* Typography & Layout Spacing */
   :root {
     --tk-gutter: 16px;
+  }
+
+  .tk-container,
+  .container {
+    padding-inline: 16px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .tk-btn,
+  .btn {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Grid children zero min-width protection against mobile horizontal blowout */
+  .grid, [class*="-grid"], [class*="grid-"] {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .grid > *, [class*="-grid"] > *, [class*="grid-"] > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .tk-h1, h1 {

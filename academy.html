@@ -124,19 +124,95 @@
       margin: 0 auto 16px;
     }
 
+    html, body {
+      overflow-x: hidden !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+
+    .container,
+    .programs-grid-container,
+    .program-card-single,
+    .academy-pillars-row,
+    .pillar-box,
+    .academy-gain-box,
+    .academy-cohort-cta {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .academy-cohort-cta {
+      background: linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%);
+      border-radius: 16px;
+      padding: 48px 32px;
+      text-align: center;
+      color: #fff;
+      margin-top: 48px;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 30px rgba(7, 34, 79, 0.1);
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .academy-gain-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px;
+      margin: 40px 0 32px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .academy-gain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+      gap: 16px;
+      width: 100%;
+      min-width: 0;
+    }
+
     @media (max-width: 768px) {
       .programs-grid-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) !important;
         gap: 20px;
         margin: 32px 0 48px;
       }
       .academy-pillars-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) !important;
         gap: 16px;
         margin: 28px 0 40px;
       }
       .academy-hero {
         padding: 48px 16px;
+      }
+      .academy-cohort-cta {
+        padding: 28px 16px !important;
+      }
+      .academy-cohort-cta h2 {
+        font-size: 1.35rem !important;
+        line-height: 1.3 !important;
+      }
+      .academy-cohort-cta p {
+        font-size: 0.92rem !important;
+        margin-bottom: 20px !important;
+      }
+      .academy-cohort-cta .btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        white-space: normal !important;
+        height: auto !important;
+        min-height: 48px !important;
+        padding: 12px 18px !important;
+      }
+      .academy-gain-box {
+        padding: 24px 16px !important;
+      }
+      .academy-gain-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
       }
     }
   </style>
@@ -537,12 +613,12 @@
     </div>
 
     <!-- What Students Gain Section from Blueprint -->
-    <div style="background:#ffffff; border:1px solid var(--border); border-radius:16px; padding:36px; margin:40px 0 32px;">
+    <div class="academy-gain-box">
       <h3 style="font-size:1.35rem; margin-bottom:12px; color:var(--text-dark);">What Students Gain from NIJEDEE Academy</h3>
       <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.7; margin-bottom:20px;">
         Practical training, hands-on experience and real business knowledge to pursue immediate employment, launch a business, or work as independent certified professionals. All qualified graduates feed directly into the NIJEDEE verified artisan dispatch network.
       </p>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+      <div class="academy-gain-grid">
         <div style="background:#F8FAFC; border:1px solid var(--border); border-radius:8px; padding:16px;">
           <strong style="color:var(--blue); font-size:0.95rem; display:block; margin-bottom:4px;">1. Hands-On Mastery</strong>
           <span style="font-size:0.83rem; color:var(--text-muted);">Real tool operation and live structural mockups on site.</span>
@@ -559,7 +635,7 @@
     </div>
 
     <!-- Academy Registration CTA -->
-    <div style="background:linear-gradient(135deg, #0A2D6E 0%, #1565C0 100%); border-radius:16px; padding:48px 32px; text-align:center; color:#fff; margin-top: 48px; margin-bottom: 28px; box-shadow: 0 10px 30px rgba(7, 34, 79, 0.1);">
+    <div class="academy-cohort-cta">
       <h2 style="color:#ffffff; margin-bottom:12px; font-size:clamp(1.5rem, 2.5vw, 2.1rem);">Next Cohort Begins on the 1st of Every Month</h2>
       <p style="color:rgba(255,255,255,0.85); font-size:1.05rem; max-width:620px; margin:0 auto 28px;">Limited to 15 students per workshop to guarantee intensive one-on-one tool mastery and field apprenticeship.</p>
       <button class="btn btn-secondary btn-lg" onclick="openEnrollModal('General Vocational Application')">Register for Upcoming Cohort</button>

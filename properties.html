@@ -251,10 +251,34 @@
       border-color: var(--tk-primary);
     }
 
+    html, body {
+      overflow-x: hidden !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+    .container,
+    .prop-categories-grid,
+    .prop-cat-card,
+    .prop-mgmt-section,
+    .prop-mgmt-grid,
+    .prop-mgmt-item,
+    .prop-request-section,
+    .prop-request-grid,
+    .prop-request-info,
+    .prop-form-card,
+    .prop-owner-banner {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+
     .prop-form-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 14px;
+      width: 100%;
+      min-width: 0;
     }
     .prop-owner-banner {
       background: linear-gradient(135deg, #07224F 0%, #1565C0 100%);
@@ -271,12 +295,12 @@
     @media (max-width: 850px) {
       .properties-grid,
       .prop-categories-grid,
-      .prop-mgmt-grid { grid-template-columns: 1fr !important; }
-      .prop-request-grid { grid-template-columns: 1fr !important; gap: 28px; }
+      .prop-mgmt-grid { grid-template-columns: minmax(0, 1fr) !important; }
+      .prop-request-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 28px; }
       .prop-mgmt-section, .prop-request-section { padding: 32px 20px; }
       .properties-hero { padding: 48px 16px; }
       .prop-owner-banner {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: minmax(0, 1fr) !important;
         padding: 32px 20px !important;
         gap: 20px !important;
         text-align: left;
@@ -307,25 +331,39 @@
       .prop-form-card {
         padding: 20px 14px !important;
         border-radius: 12px;
+        overflow: hidden;
       }
       .prop-form-card h3 {
         font-size: 1.2rem !important;
       }
       .prop-form-row {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: minmax(0, 1fr) !important;
         gap: 0 !important;
       }
       .prop-form-card input,
       .prop-form-card select,
-      .prop-form-card textarea {
+      .prop-form-card textarea,
+      .prop-form-card .tk-custom-select-wrapper,
+      .prop-form-card .tk-custom-select-trigger {
         padding: 10px 12px !important;
         font-size: 0.88rem !important;
         margin-bottom: 12px !important;
         max-width: 100% !important;
         min-width: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
       }
       .prop-cat-card {
         padding: 24px 18px !important;
+      }
+      .prop-cat-card .tk-btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        white-space: normal !important;
+        height: auto !important;
+        min-height: 44px !important;
+        padding: 10px 14px !important;
       }
       .prop-mgmt-section {
         padding: 24px 14px !important;
@@ -343,14 +381,23 @@
       }
       .prop-owner-banner .tk-btn {
         width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        white-space: normal !important;
+        height: auto !important;
+        min-height: 48px !important;
+        padding: 12px 18px !important;
         justify-content: center !important;
       }
       .prop-hero-actions {
         flex-direction: column !important;
         width: 100% !important;
+        gap: 10px !important;
       }
       .prop-hero-actions .tk-btn {
         width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
         justify-content: center !important;
       }
     }
@@ -411,7 +458,7 @@
     <div class="prop-hero-actions">
       <a href="#property-inquiry" class="tk-btn tk-btn--primary">Request a Property</a>
       <button type="button" class="tk-btn tk-btn--outline" onclick="openPropertyModal()" style="color:#ffffff;border-color:rgba(255,255,255,0.6);">List Your Property</button>
-      <a href="#facility-management" class="tk-btn tk-btn--ghost" style="color:#ffffff;">Property Management</a>
+      <a href="#facility-management" class="tk-btn tk-btn--ghost" style="background:#ffffff; color:var(--tk-navy); font-weight:700;">Property Management</a>
     </div>
   </div>
 </section>

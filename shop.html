@@ -302,10 +302,11 @@
         gap: 4px !important;
       }
       .product-grid-view {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: minmax(0, 1fr) !important;
         gap: 16px !important;
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
       }
       .product-card-item {
         width: 100% !important;
