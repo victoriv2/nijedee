@@ -456,7 +456,8 @@
     <h1>Find, Rent, Sell or Manage Properties</h1>
     <p>Extending NIJEDEE from services into real estate. Connecting verified property owners, tenants, and shortlet guests with integrated maintenance across Lekki, Ajah, Badore, and Sangotedo.</p>
     <div class="prop-hero-actions">
-      <a href="#property-inquiry" class="tk-btn tk-btn--primary">Request a Property</a>
+      <a href="#available-listings" class="tk-btn tk-btn--primary">View Available Listings</a>
+      <a href="#property-inquiry" class="tk-btn tk-btn--outline" style="color:#ffffff;border-color:rgba(255,255,255,0.6);">Request a Property</a>
       <button type="button" class="tk-btn tk-btn--outline" onclick="openPropertyModal()" style="color:#ffffff;border-color:rgba(255,255,255,0.6);">List Your Property</button>
       <a href="#facility-management" class="tk-btn tk-btn--ghost" style="background:#ffffff; color:var(--tk-navy); font-weight:700;">Property Management</a>
     </div>
@@ -670,6 +671,57 @@
           </h4>
           <p>Detailed periodic physical condition reports and expense summaries delivered straight to the landlord's dashboard or WhatsApp.</p>
         </div>
+      </div>
+    </div>
+
+    <!-- Verified Available Properties Showcase -->
+    <div style="margin-bottom:56px;" id="available-listings">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:28px;">
+        <div>
+          <span class="section-label" style="background:#EBF3FE; color:var(--tk-primary); margin-bottom:8px; display:inline-block;">Verified Listings</span>
+          <h3 style="font-size:clamp(1.5rem, 2.5vw, 1.9rem); color:var(--tk-navy); font-weight:800; margin:0;">Available Properties in Our Corridor</h3>
+        </div>
+        <p style="color:var(--tk-offwhite-dark); font-size:0.92rem; margin:0; max-width:480px;">Inspected, vetted, and backed by NIJEDEE property maintenance teams in Badore, Ajah, and Lekki.</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:24px;">
+        
+        <!-- Listing 1: Self-Contain Apartment, Badore Ajah -->
+        <div style="background:#ffffff; border:1px solid #E2E8F0; border-radius:16px; overflow:hidden; box-shadow:0 4px 16px rgba(7,34,79,0.05); display:flex; flex-direction:column;">
+          <div style="position:relative; width:100%; height:220px; background:#f1f5f9; overflow:hidden;">
+            <img src="assets/images/properties/self-contain-badore-ajah.jpg" alt="Self-Contain Apartment in Badore Ajah" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:12px; left:12px; background:var(--tk-primary); color:#ffffff; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:50px; text-transform:uppercase; letter-spacing:0.5px;">For Rent</span>
+            <span style="position:absolute; top:12px; right:12px; background:rgba(7,34,79,0.85); color:#ffffff; font-size:0.75rem; font-weight:600; padding:4px 10px; border-radius:50px;">Badore, Ajah</span>
+          </div>
+
+          <div style="padding:22px; display:flex; flex-direction:column; flex:1;">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px;">
+              <span style="font-size:1.35rem; font-weight:800; color:var(--tk-navy);">&#8358;950,000 <span style="font-size:0.85rem; font-weight:500; color:var(--tk-offwhite-dark);">/ year</span></span>
+              <span style="font-size:0.8rem; font-weight:600; color:#10B981; background:#ECFDF5; padding:3px 8px; border-radius:4px;">Verified Direct</span>
+            </div>
+
+            <h4 style="font-size:1.1rem; font-weight:700; color:var(--tk-navy); margin-bottom:8px;">Self-Contain Apartment</h4>
+            <p style="font-size:0.88rem; color:var(--tk-offwhite-dark); line-height:1.55; margin-bottom:16px; flex:1;">
+              Spacious, well-ventilated self-contained apartment with all-round polished marble-style vitrified tiles, modern POP ceiling design with recessed spotlighting, dual aluminum sliding windows, and private en-suite bath.
+            </p>
+
+            <div style="display:flex; flex-wrap:wrap; gap:8px; font-size:0.78rem; color:var(--tk-navy); font-weight:600; margin-bottom:18px; padding-top:12px; border-top:1px solid #f1f5f9;">
+              <span style="background:#F8FAFC; padding:4px 8px; border-radius:4px; border:1px solid #E2E8F0;">&check; POP Ceiling</span>
+              <span style="background:#F8FAFC; padding:4px 8px; border-radius:4px; border:1px solid #E2E8F0;">&check; Vitrified Tiles</span>
+              <span style="background:#F8FAFC; padding:4px 8px; border-radius:4px; border:1px solid #E2E8F0;">&check; En-Suite Bath</span>
+              <span style="background:#F8FAFC; padding:4px 8px; border-radius:4px; border:1px solid #E2E8F0;">&check; Gated Compound</span>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+              <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE%20Properties,%20I%20want%20to%20inspect%20the%20Self-Contain%20in%20Badore%20Ajah%20(NGN%20950,000/year)" target="_blank" rel="noopener" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1; text-align:center; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+                <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="16" height="16">
+                <span>Book Inspection</span>
+              </a>
+              <a href="#property-inquiry" class="tk-btn tk-btn--outline tk-btn--sm" onclick="selectInquiryType('Properties for Rent'); document.getElementById('inqLocation').value='Badore';" style="padding-inline:14px;">Inquire</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
