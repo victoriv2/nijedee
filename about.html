@@ -135,10 +135,78 @@
       border-radius: 10px;
       border: 1px solid var(--border);
     }
+    /* Founder & CEO Section */
+    .founder-section {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 44px 36px;
+      margin: 60px 0;
+      box-shadow: 0 8px 24px rgba(7, 34, 79, 0.05);
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .founder-grid {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 40px;
+      align-items: center;
+      width: 100%;
+    }
+    .founder-image-card {
+      text-align: center;
+      width: 100%;
+    }
+    .founder-image-wrap {
+      position: relative;
+      display: inline-block;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(7, 34, 79, 0.12);
+      border: 4px solid #ffffff;
+      max-width: 100%;
+    }
+    .founder-image-wrap img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .founder-motto-box {
+      background: linear-gradient(135deg, #07224F 0%, #1565C0 100%);
+      color: #ffffff;
+      padding: 18px 24px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 6px 18px rgba(7, 34, 79, 0.1);
+      margin-top: 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
     @media (max-width: 850px) {
       .mission-vision-grid { grid-template-columns: 1fr; }
       .ecosystem-diagram-grid { grid-template-columns: 1fr; }
       .about-split-row { grid-template-columns: 1fr; }
+      .founder-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 28px !important;
+      }
+      .founder-section {
+        padding: 28px 18px !important;
+        margin: 40px 0 !important;
+      }
+      .founder-image-card img {
+        max-width: 260px !important;
+      }
+      .founder-motto-box {
+        padding: 16px !important;
+      }
     }
     @media (max-width: 540px) {
       .media-collage-grid { grid-template-columns: 1fr; }
@@ -153,7 +221,7 @@
 <header class="tk-header">
   <div class="tk-header__inner">
     <a class="tk-header__logo" href="index.html" aria-label="NIJEDEE Home">
-      <img src="assets/images/logo.png" alt="NIJEDEE Corporate Logo" style="height:48px; max-height:48px; max-width:160px; width:auto; object-fit:contain;">
+      <img src="assets/images/logo.png" alt="NIJEDEE Corporate Logo" style="height:60px; max-height:60px; max-width:200px; width:auto; object-fit:contain;">
     </a>
     <nav class="tk-header__nav" aria-label="Primary navigation">
       <a href="index.html">Home</a>
@@ -261,6 +329,47 @@
         <img src="assets/images/work-solar-1.jpeg" alt="Nijedee cleaning team">
         <img src="assets/images/work-ac-1.jpeg" alt="Balcony maintenance work">
         <img src="assets/images/work-cleaning-1.jpeg" alt="Commercial facility exterior">
+      </div>
+    </div>
+
+    <!-- About the Founder & CEO Section -->
+    <div class="founder-section">
+      <div class="founder-grid">
+        
+        <!-- Founder Image Card -->
+        <div class="founder-image-card">
+          <div class="founder-image-wrap">
+            <img src="assets/images/founder-ceo.jpg" alt="OLASUNKANMI JOSEPH AJAYI - Founder &amp; CEO, NIJEDEE Group">
+          </div>
+          <div style="margin-top:14px;">
+            <span style="display:inline-block; background:#EBF3FE; color:var(--tk-primary); font-size:0.78rem; font-weight:800; padding:5px 14px; border-radius:999px; text-transform:uppercase; letter-spacing:0.04em;">Executive Leadership</span>
+          </div>
+        </div>
+
+        <!-- Founder Bio & Vision -->
+        <div class="founder-content">
+          <span class="section-label" style="margin-bottom:8px;">About the Founder &amp; CEO</span>
+          <h2 style="font-size:clamp(1.6rem, 3vw, 2.2rem); color:var(--tk-navy); font-weight:800; line-height:1.2; margin-bottom:6px;">OLASUNKANMI JOSEPH AJAYI</h2>
+          <p style="font-size:1.05rem; font-weight:700; color:var(--tk-primary); margin-bottom:20px;">Founder &amp; CEO, NIJEDEE Group</p>
+          
+          <div style="font-size:0.95rem; color:var(--tk-text); line-height:1.75;">
+            <p style="margin-bottom:14px;">Olasunkanmi Joseph Ajayi is an entrepreneur and visionary business leader with a passion for innovation, customer satisfaction and business development.</p>
+            <p style="margin-bottom:14px;">Since founding NIJEDEE in 2016, he has been building a trusted brand offering property maintenance, repairs, cleaning, building materials and other property solutions.</p>
+            <p style="margin-bottom:18px;">His vision is to transform NIJEDEE into a leading technology-driven property services company, creating opportunities, empowering skilled workers and making property services easier and more accessible.</p>
+          </div>
+
+          <!-- Motto Callout Card -->
+          <div class="founder-motto-box">
+            <div style="width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.18); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div>
+              <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:700; color:#93C5FD; display:block; margin-bottom:2px;">His Motto</span>
+              <strong style="font-size:1.05rem; font-weight:800; color:#ffffff; font-style:italic;">&ldquo;With Nijedee, Impossible Is Nothing.&rdquo;</strong>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
