@@ -427,19 +427,15 @@
         <h3>Product Categories</h3>
         <div class="cat-filter-list">
           <button class="cat-filter-btn active" onclick="setCategoryFilter('all', this)">
-            <span>All Authentic Paints</span>
+            <span>All Products</span>
+            <span class="cat-count">4</span>
+          </button>
+          <button class="cat-filter-btn" onclick="setCategoryFilter('paints', this)">
+            <span>NIJEDEE Paints</span>
             <span class="cat-count">3</span>
           </button>
-          <button class="cat-filter-btn" onclick="setCategoryFilter('satin', this)">
-            <span>Higher Satin</span>
-            <span class="cat-count">1</span>
-          </button>
-          <button class="cat-filter-btn" onclick="setCategoryFilter('matt', this)">
-            <span>Matt Emulsion</span>
-            <span class="cat-count">1</span>
-          </button>
-          <button class="cat-filter-btn" onclick="setCategoryFilter('emulsion', this)">
-            <span>Higher Emulsion</span>
+          <button class="cat-filter-btn" onclick="setCategoryFilter('lighting', this)">
+            <span>POP &amp; LED Lighting</span>
             <span class="cat-count">1</span>
           </button>
         </div>
@@ -460,14 +456,14 @@
       <!-- Products Grid -->
       <div>
         <div class="shop-status-bar">
-          <span style="font-size:0.9rem;color:var(--tk-offwhite-dark);" id="productsCountText">Showing 3 authentic factory products</span>
+          <span style="font-size:0.9rem;color:var(--tk-offwhite-dark);" id="productsCountText">Showing 4 authentic products</span>
           <span style="font-size:0.85rem;color:var(--tk-primary);font-weight:700;">Factory Direct &middot; Free Delivery Badore &amp; Ajah</span>
         </div>
 
         <div class="product-grid-view" id="productsGrid">
 
           <!-- Product 1: NIJEDEE Higher Satin Paint 20L -->
-          <div class="product-card-item" data-category="satin" data-keywords="nijedee paints higher satin 20l brilliant colors excellent coverage superior durability 65000">
+          <div class="product-card-item" data-category="paints satin" data-keywords="nijedee paints higher satin 20l brilliant colors excellent coverage superior durability 65000">
             <div class="product-img-box">
               <span class="product-badge-tag">Higher Satin &middot; 20L</span>
               <img src="assets/images/shop/nijedee-higher-satin.jpg" alt="NIJEDEE Paints Higher Satin 20L">
@@ -485,7 +481,7 @@
           </div>
 
           <!-- Product 2: NIJEDEE Matt Emulsion Paint 20L -->
-          <div class="product-card-item" data-category="matt" data-keywords="nijedee paints matt emulsion 20l rich colors superior coverage long lasting finish 55000">
+          <div class="product-card-item" data-category="paints matt" data-keywords="nijedee paints matt emulsion 20l rich colors superior coverage long lasting finish 55000">
             <div class="product-img-box">
               <span class="product-badge-tag">Matt Emulsion &middot; 20L</span>
               <img src="assets/images/shop/nijedee-matt-emulsion.jpg" alt="NIJEDEE Paints Matt Emulsion 20L">
@@ -503,7 +499,7 @@
           </div>
 
           <!-- Product 3: NIJEDEE Higher Emulsion Paint 20L -->
-          <div class="product-card-item" data-category="emulsion" data-keywords="nijedee paints higher emulsion 20l excellent paint superior coverage great durability 20000">
+          <div class="product-card-item" data-category="paints emulsion" data-keywords="nijedee paints higher emulsion 20l excellent paint superior coverage great durability 20000">
             <div class="product-img-box">
               <span class="product-badge-tag">Higher Emulsion &middot; 20L</span>
               <img src="assets/images/shop/nijedee-higher-emulsion.jpg" alt="NIJEDEE Paints Higher Emulsion 20L">
@@ -516,6 +512,35 @@
               <div class="product-actions-row">
                 <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addToCart('NIJEDEE Higher Emulsion (20L)', 20000)">Add to Cart</button>
                 <a href="https://wa.me/2347085329909?text=I%20want%20to%20order%20NIJEDEE%20Higher%20Emulsion%2020L%20(NGN%2020,000)" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;" title="Order via WhatsApp">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 4: Led Lighting Dimmable Recessed POP LED Light -->
+          <div class="product-card-item" data-category="lighting" data-keywords="led lighting 18w 12w 6w 3w glass dimmable recessed pop led light electrical lighting 5548 7448">
+            <div class="product-img-box">
+              <span class="product-badge-tag">Glass Dimmable &middot; 3W&ndash;18W</span>
+              <img src="assets/images/shop/glass-pop-led-lights.jpg" alt="Glass Dimmable Recessed POP LED Light 18W 12W 6W 3W">
+            </div>
+            <div class="product-details-body">
+              <span class="product-cat-name">Brand: Led Lighting &middot; Recessed POP</span>
+              <h4 class="product-title-text">Glass Dimmable Recessed POP LED Light</h4>
+              <p class="product-desc-text">Energy-efficient decorative glass-rim recessed POP ceiling spotlight with heavy-duty clips and external isolated driver. Available in 3W, 6W, 12W, and 18W.</p>
+              
+              <div style="margin:10px 0;">
+                <label for="popLedWattageSelect" style="font-size:0.75rem;font-weight:700;color:var(--tk-navy);display:block;margin-bottom:4px;">Select Wattage / Size:</label>
+                <select id="popLedWattageSelect" class="tk-input" style="padding:6px 10px;font-size:0.82rem;height:auto;border-color:var(--tk-neutral-200);width:100%;background:#ffffff;" onchange="updateLedPrice(this)">
+                  <option value="5548" data-label="3W Glass Recessed POP LED Light">3W Glass POP LED &mdash; &#8358;5,548</option>
+                  <option value="6180" data-label="6W Glass Recessed POP LED Light">6W Glass POP LED &mdash; &#8358;6,180</option>
+                  <option value="6850" data-label="12W Glass Recessed POP LED Light">12W Glass POP LED &mdash; &#8358;6,850</option>
+                  <option value="7448" data-label="18W Glass Recessed POP LED Light">18W Glass POP LED &mdash; &#8358;7,448</option>
+                </select>
+              </div>
+
+              <div class="product-price-val" id="popLedPriceVal">&#8358;5,548 &ndash; &#8358;7,448</div>
+              <div class="product-actions-row">
+                <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="addPopLedToCart()">Add to Cart</button>
+                <a id="popLedWhatsAppBtn" href="https://wa.me/2347085329909?text=I%20want%20to%20order%203W%20Glass%20Recessed%20POP%20LED%20Light%20(NGN%205,548)" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;" title="Order via WhatsApp">WhatsApp</a>
               </div>
             </div>
           </div>
@@ -801,6 +826,27 @@
     document.getElementById('checkoutModal').classList.remove('open');
   }
 
+  function updateLedPrice(selectEl) {
+    const price = parseInt(selectEl.value, 10);
+    const label = selectEl.options[selectEl.selectedIndex].getAttribute('data-label');
+    const priceDisplay = document.getElementById('popLedPriceVal');
+    if (priceDisplay) {
+      priceDisplay.innerHTML = '&#8358;' + price.toLocaleString();
+    }
+    const waBtn = document.getElementById('popLedWhatsAppBtn');
+    if (waBtn) {
+      waBtn.href = `https://wa.me/2347085329909?text=${encodeURIComponent('I want to order ' + label + ' (NGN ' + price.toLocaleString() + ')')}`;
+    }
+  }
+
+  function addPopLedToCart() {
+    const selectEl = document.getElementById('popLedWattageSelect');
+    if (!selectEl) return;
+    const price = parseInt(selectEl.value, 10);
+    const label = selectEl.options[selectEl.selectedIndex].getAttribute('data-label');
+    addToCart(label, price);
+  }
+
   function setCategoryFilter(category, btn) {
     document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -808,7 +854,8 @@
     const cards = document.querySelectorAll('.product-card-item');
     let visibleCount = 0;
     cards.forEach(card => {
-      if (category === 'all' || card.dataset.category === category) {
+      const cats = (card.dataset.category || '').split(' ');
+      if (category === 'all' || cats.includes(category)) {
         card.style.display = '';
         visibleCount++;
       } else {
