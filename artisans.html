@@ -17,6 +17,11 @@
       width: 100% !important;
     }
 
+    /* STRICT RULES: ZERO EMOJIS, ZERO HOVER-UP (no translateY) */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     .container,
     .artisan-spec-grid,
     .artisan-request-layout,
@@ -183,7 +188,7 @@
       border-radius: 8px;
       background: #ffffff;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 600;
       color: var(--tk-navy);
       transition: all 0.2s ease;
@@ -217,10 +222,12 @@
       text-decoration: none;
       width: 100%;
       box-sizing: border-box;
-      transition: background 0.2s ease, transform 0.1s ease;
+      transition: background 0.2s ease;
+      transform: none !important;
     }
     .btn-whatsapp-dispatch:hover {
       background: #1EBE5D;
+      transform: none !important;
     }
     .btn-online-submit {
       display: inline-flex;
@@ -238,9 +245,11 @@
       width: 100%;
       box-sizing: border-box;
       transition: background 0.2s ease;
+      transform: none !important;
     }
     .btn-online-submit:hover {
       background: #0f346e;
+      transform: none !important;
     }
 
     /* Side info card */
@@ -362,6 +371,7 @@
       background: #EBF3FE;
       color: var(--tk-primary);
       border-color: #93C5FD;
+      transform: none !important;
     }
     .trade-nav-btn.active {
       background: var(--tk-primary) !important;
@@ -382,12 +392,13 @@
       display: flex;
       flex-direction: column;
       box-shadow: 0 4px 16px rgba(7, 34, 79, 0.04);
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transform: none !important;
     }
     .trade-spec-card:hover {
       border-color: var(--tk-primary);
       box-shadow: 0 10px 28px rgba(7, 34, 79, 0.08);
-      transform: translateY(-2px);
+      transform: none !important;
     }
     .trade-spec-header {
       display: flex;
@@ -404,7 +415,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
       flex-shrink: 0;
     }
     .trade-spec-title-wrap h3 {
@@ -457,7 +467,12 @@
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+    }
+    .dispatch-time-indicator svg {
+      width: 14px;
+      height: 14px;
+      stroke: #16A34A;
     }
     .btn-select-spec {
       background: #EBF3FE;
@@ -471,11 +486,13 @@
       text-decoration: none;
       transition: all 0.2s ease;
       white-space: nowrap;
+      transform: none !important;
     }
     .btn-select-spec:hover {
       background: var(--tk-primary);
       color: #ffffff;
       border-color: var(--tk-primary);
+      transform: none !important;
     }
 
     /* Trust Section */
@@ -497,6 +514,7 @@
       border-radius: 12px;
       padding: 24px 20px;
       box-shadow: 0 4px 12px rgba(7, 34, 79, 0.03);
+      transform: none !important;
     }
     .trust-card h4 {
       font-size: 1rem;
@@ -523,6 +541,7 @@
       text-align: center;
       margin: 56px 0 20px;
       box-shadow: 0 10px 30px rgba(7, 34, 79, 0.1);
+      transform: none !important;
     }
     .artisan-join-banner h3 {
       font-size: clamp(1.4rem, 2.8vw, 1.9rem);
@@ -766,22 +785,22 @@
               <div class="urgency-pill-option">
                 <input type="radio" id="urgencyImmediate" name="urgencyOption" value="Immediate Dispatch (45-60 mins)" checked>
                 <label for="urgencyImmediate" class="urgency-pill-label">
-                  <span>⚡ Immediate</span>
-                  <span style="font-size:0.7rem;color:var(--tk-offwhite-dark);font-weight:normal;">Within 45-60 mins</span>
+                  <span>Immediate</span>
+                  <span style="font-size:0.72rem;color:var(--tk-offwhite-dark);font-weight:normal;">Within 45-60 mins</span>
                 </label>
               </div>
               <div class="urgency-pill-option">
                 <input type="radio" id="urgencyToday" name="urgencyOption" value="Later Today">
                 <label for="urgencyToday" class="urgency-pill-label">
-                  <span>📅 Later Today</span>
-                  <span style="font-size:0.7rem;color:var(--tk-offwhite-dark);font-weight:normal;">Morning / Afternoon</span>
+                  <span>Later Today</span>
+                  <span style="font-size:0.72rem;color:var(--tk-offwhite-dark);font-weight:normal;">Morning / Afternoon</span>
                 </label>
               </div>
               <div class="urgency-pill-option">
                 <input type="radio" id="urgencyScheduled" name="urgencyOption" value="Scheduled Date">
                 <label for="urgencyScheduled" class="urgency-pill-label">
-                  <span>🗓️ Scheduled</span>
-                  <span style="font-size:0.7rem;color:var(--tk-offwhite-dark);font-weight:normal;">Specific date/weekend</span>
+                  <span>Scheduled</span>
+                  <span style="font-size:0.72rem;color:var(--tk-offwhite-dark);font-weight:normal;">Specific date/weekend</span>
                 </label>
               </div>
             </div>
@@ -889,7 +908,9 @@
       <!-- Spec 1: Plumbing -->
       <div class="trade-spec-card" data-category="mep" data-spec="Plumbing & Water Systems">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">🚰</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 01 &bull; SANITARY &amp; WATER</span>
             <h3>Plumbing &amp; Water Systems</h3>
@@ -903,7 +924,10 @@
           <li>Overhead water tank cleaning &amp; automatic float valves</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Plumbing & Water Systems')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -911,7 +935,9 @@
       <!-- Spec 2: Electrical -->
       <div class="trade-spec-card" data-category="mep" data-spec="Electrical & Power Systems">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">⚡</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 02 &bull; POWER &amp; WIRING</span>
             <h3>Electrical &amp; Power Systems</h3>
@@ -925,7 +951,10 @@
           <li>Power earthing, surge arresters &amp; load balancing</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Electrical & Power Systems')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -933,7 +962,9 @@
       <!-- Spec 3: AC & Refrigeration -->
       <div class="trade-spec-card" data-category="hvac-solar" data-spec="Air Conditioning (HVAC)">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">❄️</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 03 &bull; HVAC &amp; COOLING</span>
             <h3>Air Conditioning (HVAC)</h3>
@@ -947,7 +978,10 @@
           <li>Water drainage piping overhaul &amp; anti-icing fixes</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Air Conditioning (HVAC)')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -955,7 +989,9 @@
       <!-- Spec 4: Painting & Wall Finishing -->
       <div class="trade-spec-card" data-category="finishing" data-spec="Painting & Wall Finishing">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">🎨</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 11V4a1 1 0 00-1-1H4a1 1 0 00-1 1v5a1 1 0 001 1h14a1 1 0 001-1zM9 11v8a2 2 0 002 2h2a2 2 0 002-2v-8"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 04 &bull; WALL FINISHES</span>
             <h3>Painting, Screeding &amp; Finishes</h3>
@@ -969,7 +1005,10 @@
           <li>Complete apartment move-out / move-in repainting</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Painting & Wall Finishing')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -977,7 +1016,9 @@
       <!-- Spec 5: Carpentry & Joinery -->
       <div class="trade-spec-card" data-category="wood-tile" data-spec="Carpentry & Woodwork">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">🪚</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2l4 4-9 9-4-4 9-9zM3 21l3-3M2 22l2-2M15 5l2 2"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 05 &bull; JOINERY &amp; WOOD</span>
             <h3>Carpentry &amp; Furniture Works</h3>
@@ -991,7 +1032,10 @@
           <li>Roof truss wood treatment &amp; fascia board replacement</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Carpentry & Woodwork')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -999,7 +1043,9 @@
       <!-- Spec 6: Tiling & Flooring -->
       <div class="trade-spec-card" data-category="wood-tile" data-spec="Tiling & Floor Finishing">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">🧱</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 06 &bull; TILING &amp; FLOORS</span>
             <h3>Tiling, Marble &amp; Flooring</h3>
@@ -1013,7 +1059,10 @@
           <li>Interlocking paving stones &amp; stamped concrete walkways</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Tiling & Floor Finishing')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -1021,7 +1070,9 @@
       <!-- Spec 7: POP Ceiling & Drywall -->
       <div class="trade-spec-card" data-category="finishing" data-spec="POP Ceiling & Drywall">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">🏛️</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 21h18M4 18h16M6 18V6M18 18V6M2 6h20M12 2l10 4H2l10-4z"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 07 &bull; CEILINGS &amp; DRYWALL</span>
             <h3>POP Ceiling &amp; Drywall</h3>
@@ -1035,7 +1086,10 @@
           <li>Architectural cornices, medallions &amp; crown moldings</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('POP Ceiling & Drywall')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -1043,7 +1097,9 @@
       <!-- Spec 8: Solar & Inverter Systems -->
       <div class="trade-spec-card" data-category="hvac-solar" data-spec="Solar & Inverter Systems">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">☀️</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 08 &bull; RENEWABLE POWER</span>
             <h3>Solar, Inverter &amp; Battery Systems</h3>
@@ -1057,7 +1113,10 @@
           <li>Preventative cleaning &amp; battery equalization servicing</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Solar & Inverter Systems')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -1065,7 +1124,9 @@
       <!-- Spec 9: CCTV & Smart Security -->
       <div class="trade-spec-card" data-category="cleaning" data-spec="CCTV & Smart Security">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">📹</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 09 &bull; SMART SECURITY</span>
             <h3>CCTV &amp; Access Security</h3>
@@ -1079,7 +1140,10 @@
           <li>Burglar alarm sensor calibration &amp; motion beams</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('CCTV & Smart Security')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -1087,7 +1151,9 @@
       <!-- Spec 10: Roofing & Aluminum -->
       <div class="trade-spec-card" data-category="structural" data-spec="Roofing & Aluminum Works">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">🏠</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 10 &bull; ROOF &amp; ALUMINUM</span>
             <h3>Roofing, Gutters &amp; Aluminum</h3>
@@ -1101,7 +1167,10 @@
           <li>Flashing sealant, roof ridge caps &amp; waterproofing</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Roofing & Aluminum Works')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -1109,7 +1178,9 @@
       <!-- Spec 11: Masonry & Structural -->
       <div class="trade-spec-card" data-category="structural" data-spec="Masonry & Bricklaying">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">🔨</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l8-6 8 6v10M9 20v-6h6v6"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 11 &bull; CIVIL &amp; MASONRY</span>
             <h3>Masonry &amp; Structural Repairs</h3>
@@ -1123,7 +1194,10 @@
           <li>Concrete slab casting, ramps &amp; entrance remodeling</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Masonry & Bricklaying')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -1131,7 +1205,9 @@
       <!-- Spec 12: Deep Cleaning & Fumigation -->
       <div class="trade-spec-card" data-category="cleaning" data-spec="Deep Cleaning & Fumigation">
         <div class="trade-spec-header">
-          <div class="trade-spec-icon-box">🧹</div>
+          <div class="trade-spec-icon-box" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
           <div class="trade-spec-title-wrap">
             <span class="trade-spec-tag">SPEC 12 &bull; SANITATION &amp; PEST</span>
             <h3>Deep Cleaning &amp; Fumigation</h3>
@@ -1145,7 +1221,10 @@
           <li>Water holding reservoir chemical scrubbing &amp; sterilization</li>
         </ul>
         <div class="trade-spec-footer">
-          <span class="dispatch-time-indicator">⚡ 45&ndash;60 mins dispatch</span>
+          <span class="dispatch-time-indicator">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            45&ndash;60 mins dispatch
+          </span>
           <a href="#artisan-request-form" class="btn-select-spec" onclick="selectTradeFromCard('Deep Cleaning & Fumigation')">Request Spec &rarr;</a>
         </div>
       </div>
@@ -1356,7 +1435,7 @@
     const trade = document.getElementById('tradeSpecSelect').value || 'General Technical Fault';
     const scope = document.getElementById('jobScopeSelect').value;
     const location = document.getElementById('locationCorridorSelect').value;
-    const desc = document.getElementById('jobDescriptionText').value.trim() || 'Need urgent technical inspection';
+    const desc = document.getElementById('jobDescriptionText').value.trim() || 'Need technical inspection';
     const custName = document.getElementById('custName').value.trim() || 'Prospective Client';
     const custPhone = document.getElementById('custPhone').value.trim() || 'Not specified';
     
