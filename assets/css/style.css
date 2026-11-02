@@ -142,10 +142,10 @@ img, picture, svg, video {
 /* Header logo: enlarged to fill header proportionally WITHOUT increasing header height */
 .navbar-logo img,
 .tk-header__logo img {
-  height: 60px !important;
-  max-height: 60px !important;
+  height: 72px !important;
+  max-height: 72px !important;
   width: auto !important;
-  max-width: 220px !important;
+  max-width: 240px !important;
   object-fit: contain !important;
 }
 
@@ -365,9 +365,9 @@ ul, ol {
 }
 .tk-header__logo img,
 .navbar-logo img {
-  height: 48px;
-  max-height: 48px;
-  max-width: 160px;
+  height: 72px;
+  max-height: 72px;
+  max-width: 240px;
   width: auto;
   object-fit: contain;
 }
@@ -2234,9 +2234,9 @@ textarea.form-control {
 
   .tk-header__logo img,
   .navbar-logo img {
-    height: 48px !important;
-    max-height: 48px !important;
-    max-width: 170px !important;
+    height: 56px !important;
+    max-height: 56px !important;
+    max-width: 190px !important;
     width: auto !important;
   }
 
