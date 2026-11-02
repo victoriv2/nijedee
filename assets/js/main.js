@@ -967,3 +967,97 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     mount();
   }
 })();
+
+/* =============================================================
+   Home Page Promotional Flyers Showcase & Viewer
+   ============================================================= */
+(function initHomeFlyers() {
+  function setup() {
+    const section = document.querySelector('.tk-flyers');
+    if (!section) return;
+
+    const filterBtns = section.querySelectorAll('.tk-flyers__filter-btn');
+    const cards = section.querySelectorAll('.tk-flyer-card');
+    const modal = document.getElementById('tkFlyerModal');
+    const modalImg = document.getElementById('tkFlyerModalImg');
+    const modalTitle = document.getElementById('tkFlyerModalTitle');
+    const modalWa = document.getElementById('tkFlyerModalWa');
+    const modalClose = document.getElementById('tkFlyerModalClose');
+
+    // 1. Category Filtering
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter') || 'all';
+
+        cards.forEach(card => {
+          const cat = card.getAttribute('data-category') || '';
+          if (filter === 'all' || cat === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // 2. Open Modal for Full View
+    function openModal(imgSrc, title, waHref) {
+      if (!modal || !modalImg) return;
+      modalImg.src = imgSrc;
+      modalImg.alt = title || 'NIJEDEE Flyer';
+      if (modalTitle) modalTitle.textContent = title || 'NIJEDEE Official Flyer';
+      if (modalWa) modalWa.href = waHref || 'https://wa.me/2347085329909';
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    // Attach click handlers to cards
+    cards.forEach(card => {
+      const imgBox = card.querySelector('.tk-flyer-card__img-box');
+      const viewBtn = card.querySelector('.tk-flyer-card__btn-view');
+      const img = card.querySelector('.tk-flyer-card__img');
+      const titleEl = card.querySelector('.tk-flyer-card__title');
+      const waBtn = card.querySelector('.tk-flyer-card__btn-wa');
+
+      const triggerView = (e) => {
+        e.preventDefault();
+        const src = img ? (img.getAttribute('data-full-src') || img.src) : '';
+        const title = titleEl ? titleEl.textContent.trim() : 'NIJEDEE Offer';
+        const waHref = waBtn ? waBtn.href : 'https://wa.me/2347085329909';
+        openModal(src, title, waHref);
+      };
+
+      if (imgBox) imgBox.addEventListener('click', triggerView);
+      if (viewBtn) viewBtn.addEventListener('click', triggerView);
+    });
+
+    // Modal close listeners
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && modal.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+})();

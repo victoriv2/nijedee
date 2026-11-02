@@ -3241,3 +3241,350 @@ textarea.form-control {
     font-size: 0.82rem;
   }
 }
+
+/* =============================================================
+   Active Campaigns & Promotional Flyers Section (Home Page Body)
+   ============================================================= */
+.tk-flyers {
+  padding-block: var(--tk-section-padding, 72px);
+  background: #f1f5f9;
+  border-top: 1px solid rgba(147, 197, 253, 0.35);
+  border-bottom: 1px solid rgba(147, 197, 253, 0.35);
+}
+
+.tk-flyers__head {
+  text-align: center;
+  max-width: 780px;
+  margin-inline: auto;
+  margin-bottom: 32px;
+}
+
+.tk-flyers__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(13, 82, 183, 0.08);
+  border: 1px solid rgba(13, 82, 183, 0.2);
+  border-radius: 9999px;
+  color: var(--tk-primary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.tk-flyers__filters {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  padding-inline: 4px;
+}
+
+.tk-flyers__filter-btn {
+  background: #ffffff;
+  border: 1px solid var(--tk-neutral-200);
+  color: var(--tk-navy);
+  padding: 9px 18px;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transform: none !important;
+}
+
+.tk-flyers__filter-btn:hover {
+  background: rgba(13, 82, 183, 0.06);
+  border-color: var(--tk-primary);
+  color: var(--tk-primary);
+  transform: none !important;
+}
+
+.tk-flyers__filter-btn.active {
+  background: var(--tk-navy);
+  border-color: var(--tk-navy);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(7, 34, 79, 0.18);
+}
+
+.tk-flyers__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.tk-flyer-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(7, 34, 79, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transform: none !important;
+}
+
+.tk-flyer-card:hover {
+  border-color: var(--tk-primary);
+  box-shadow: 0 8px 24px rgba(7, 34, 79, 0.12);
+  transform: none !important;
+}
+
+.tk-flyer-card__img-box {
+  position: relative;
+  background: #07224f;
+  width: 100%;
+  aspect-ratio: 9 / 12;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.tk-flyer-card__img-box--landscape {
+  aspect-ratio: 16 / 10;
+}
+
+.tk-flyer-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+.tk-flyer-card__img-box:hover .tk-flyer-card__img {
+  opacity: 0.95;
+}
+
+.tk-flyer-card__tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(7, 34, 79, 0.92);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tk-flyer-card__zoom-hint {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tk-flyer-card__body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tk-flyer-card__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tk-navy);
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.tk-flyer-card__desc {
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.tk-flyer-card__actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tk-flyer-card__btn-wa {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--tk-primary);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: var(--tk-radius);
+  border: none;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  transform: none !important;
+}
+
+.tk-flyer-card__btn-wa:hover {
+  background: var(--tk-navy);
+  transform: none !important;
+}
+
+.tk-flyer-card__btn-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1px solid var(--tk-neutral-200);
+  border-radius: var(--tk-radius);
+  color: var(--tk-navy);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transform: none !important;
+}
+
+.tk-flyer-card__btn-view:hover {
+  background: #f8fafc;
+  border-color: var(--tk-primary);
+  color: var(--tk-primary);
+  transform: none !important;
+}
+
+/* Modal for High-Res Flyer Full View */
+.tk-flyer-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(7, 34, 79, 0.88);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.tk-flyer-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tk-flyer-modal__content {
+  position: relative;
+  max-width: 520px;
+  width: 100%;
+  max-height: 92vh;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.tk-flyer-modal__img-wrap {
+  overflow-y: auto;
+  max-height: calc(92vh - 64px);
+  background: #07224f;
+  display: flex;
+  justify-content: center;
+}
+
+.tk-flyer-modal__img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.tk-flyer-modal__bar {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+.tk-flyer-modal__title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--tk-navy);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tk-flyer-modal__close {
+  background: #f1f5f9;
+  border: none;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--tk-navy);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: background-color 0.2s ease;
+  transform: none !important;
+}
+
+.tk-flyer-modal__close:hover {
+  background: #e2e8f0;
+  transform: none !important;
+}
+
+@media (max-width: 640px) {
+  .tk-flyers {
+    padding-block: 48px;
+  }
+  .tk-flyers__filters {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+  .tk-flyers__filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    padding: 7px 14px;
+  }
+  .tk-flyers__grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .tk-flyer-card__img-box {
+    aspect-ratio: 9 / 11;
+  }
+}
