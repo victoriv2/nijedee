@@ -1061,3 +1061,259 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     setup();
   }
 })();
+
+/* ── Global Full-View Image Lightbox (Across All Images Site-Wide) ── */
+(function initGlobalImageLightbox() {
+  let modalEl = null;
+  let modalImg = null;
+  let modalCaption = null;
+  let closeBtn = null;
+  let prevBtn = null;
+  let nextBtn = null;
+
+  let galleryItems = [];
+  let currentIndex = 0;
+
+  function ensureModal() {
+    if (document.getElementById('globalLightboxModal')) {
+      modalEl = document.getElementById('globalLightboxModal');
+      modalImg = document.getElementById('globalLightboxImg');
+      modalCaption = document.getElementById('globalLightboxCaption');
+      closeBtn = document.getElementById('globalLightboxCloseBtn');
+      prevBtn = document.getElementById('globalLightboxPrev');
+      nextBtn = document.getElementById('globalLightboxNext');
+      return;
+    }
+
+    modalEl = document.createElement('div');
+    modalEl.id = 'globalLightboxModal';
+    modalEl.className = 'global-lightbox-overlay';
+    modalEl.setAttribute('aria-hidden', 'true');
+    modalEl.setAttribute('role', 'dialog');
+    modalEl.setAttribute('aria-modal', 'true');
+    modalEl.innerHTML = `
+      <div class="global-lightbox-dialog">
+        <button type="button" id="globalLightboxPrev" class="global-lightbox-nav-btn prev" aria-label="Previous image" style="display:none;">&#10094;</button>
+        <button type="button" id="globalLightboxNext" class="global-lightbox-nav-btn next" aria-label="Next image" style="display:none;">&#10095;</button>
+        <div class="global-lightbox-media-wrapper">
+          <img id="globalLightboxImg" class="global-lightbox-img" src="" alt="Full view preview">
+          <div id="globalLightboxCaption" class="global-lightbox-caption" style="display:none;"></div>
+        </div>
+        <div class="global-lightbox-bottom-bar">
+          <button type="button" id="globalLightboxCloseBtn" class="global-lightbox-close-btn" aria-label="Close full view">
+            <span class="close-x-icon">&times;</span>
+            <span class="close-text">Close</span>
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modalEl);
+
+    modalImg = document.getElementById('globalLightboxImg');
+    modalCaption = document.getElementById('globalLightboxCaption');
+    closeBtn = document.getElementById('globalLightboxCloseBtn');
+    prevBtn = document.getElementById('globalLightboxPrev');
+    nextBtn = document.getElementById('globalLightboxNext');
+
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeLightbox();
+    });
+
+    modalEl.addEventListener('click', (e) => {
+      if (e.target === modalEl || e.target.classList.contains('global-lightbox-dialog')) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!modalEl || !modalEl.classList.contains('is-active')) return;
+      if (e.key === 'Escape') {
+        closeLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        showPrev();
+      } else if (e.key === 'ArrowRight') {
+        showNext();
+      }
+    });
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+    }
+  }
+
+  function openLightbox(src, caption, group) {
+    ensureModal();
+    if (!src) return;
+
+    if (group && group.length > 1) {
+      galleryItems = group;
+      currentIndex = galleryItems.findIndex(item => item.src === src);
+      if (currentIndex === -1) currentIndex = 0;
+    } else {
+      galleryItems = [{ src, caption }];
+      currentIndex = 0;
+    }
+
+    updateNavState();
+    renderCurrent();
+
+    modalEl.style.display = 'flex';
+    void modalEl.offsetWidth;
+    modalEl.classList.add('is-active');
+    modalEl.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function renderCurrent() {
+    if (!galleryItems[currentIndex]) return;
+    const item = galleryItems[currentIndex];
+    modalImg.src = item.src;
+    modalImg.alt = item.caption || 'Full view image';
+
+    if (item.caption && item.caption.trim()) {
+      modalCaption.textContent = item.caption.trim();
+      modalCaption.style.display = 'block';
+    } else {
+      modalCaption.textContent = '';
+      modalCaption.style.display = 'none';
+    }
+  }
+
+  function updateNavState() {
+    if (!prevBtn || !nextBtn) return;
+    if (galleryItems.length > 1) {
+      prevBtn.style.display = 'flex';
+      nextBtn.style.display = 'flex';
+    } else {
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+    }
+  }
+
+  function showPrev() {
+    if (galleryItems.length <= 1) return;
+    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+    renderCurrent();
+  }
+
+  function showNext() {
+    if (galleryItems.length <= 1) return;
+    currentIndex = (currentIndex + 1) % galleryItems.length;
+    renderCurrent();
+  }
+
+  function closeLightbox() {
+    if (!modalEl) return;
+    modalEl.classList.remove('is-active');
+    modalEl.setAttribute('aria-hidden', 'true');
+    setTimeout(() => {
+      if (!modalEl.classList.contains('is-active')) {
+        modalEl.style.display = 'none';
+        modalImg.src = '';
+      }
+    }, 220);
+    document.body.style.overflow = '';
+  }
+
+  function isEligibleImage(img) {
+    if (!img) return false;
+    const src = (img.getAttribute('src') || '').toLowerCase();
+    const alt = (img.getAttribute('alt') || '').toLowerCase();
+
+    // Ignore SVGs and small UI icons
+    if (src.endsWith('.svg') || src.includes('.svg?')) return false;
+    if (src.includes('logo') || alt.includes('logo')) return false;
+    if (src.includes('whatsapp') || alt.includes('whatsapp')) return false;
+    if (src.includes('favicon')) return false;
+
+    // Ignore branding elements
+    if (img.closest('.tk-header__brand') || img.closest('.tk-footer__brand') || img.closest('.tk-footer__social')) {
+      return false;
+    }
+
+    // Ignore if explicitly marked
+    if (img.dataset.noLightbox === 'true') return false;
+
+    return true;
+  }
+
+  function scanAndBind() {
+    ensureModal();
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+      if (img.dataset.hasLightbox) return;
+      if (!isEligibleImage(img)) return;
+
+      img.dataset.hasLightbox = 'true';
+      img.style.cursor = 'zoom-in';
+
+      img.addEventListener('click', function(e) {
+        // If inside an action button (phone, wa, submit), do not hijack
+        const parentLink = this.closest('a');
+        if (parentLink) {
+          const href = parentLink.getAttribute('href') || '';
+          if (href.startsWith('tel:') || href.startsWith('mailto:') || href.includes('wa.me') || parentLink.classList.contains('tk-btn')) {
+            return;
+          }
+          e.preventDefault();
+        }
+
+        const fullSrc = this.getAttribute('data-full-src') || this.currentSrc || this.src;
+        const caption = this.getAttribute('alt') || this.getAttribute('title') || '';
+
+        // Collect gallery context if inside a container with multiple images
+        let group = [];
+        const cardContainer = this.closest('.product-card-item') ||
+                              this.closest('.prop-cat-card') ||
+                              this.closest('#available-listings > div > div') ||
+                              this.closest('.tk-flyer-card') ||
+                              this.closest('.project-card') ||
+                              this.closest('.properties-gallery');
+
+        if (cardContainer) {
+          const siblings = cardContainer.querySelectorAll('img');
+          siblings.forEach(sImg => {
+            if (isEligibleImage(sImg)) {
+              const sSrc = sImg.getAttribute('data-full-src') || sImg.currentSrc || sImg.src;
+              const sCaption = sImg.getAttribute('alt') || sImg.getAttribute('title') || '';
+              if (sSrc && !group.some(item => item.src === sSrc)) {
+                group.push({ src: sSrc, caption: sCaption });
+              }
+            }
+          });
+        }
+
+        openLightbox(fullSrc, caption, group.length > 1 ? group : null);
+      });
+    });
+  }
+
+  // Initial binding
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scanAndBind);
+  } else {
+    scanAndBind();
+  }
+
+  // Observe dynamic additions (e.g. tabs, category filters, injected cards)
+  if (window.MutationObserver && document.body) {
+    const observer = new MutationObserver(() => {
+      scanAndBind();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  window.openGlobalLightbox = openLightbox;
+  window.refreshGlobalLightbox = scanAndBind;
+})();
