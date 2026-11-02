@@ -1062,167 +1062,234 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   }
 })();
 
-/* ── Global Full-View Image Lightbox (Across All Images Site-Wide) ── */
+/* ── Universal Image Lightbox (Identical to Home Screen Showcase) ─ */
 (function initGlobalImageLightbox() {
-  let modalEl = null;
-  let modalImg = null;
-  let modalCaption = null;
+  let lightbox = null;
+  let backdrop = null;
+  let mainImg = null;
+  let imgWrap = null;
+  let titleEl = null;
+  let counterEl = null;
+  let hintEl = null;
   let closeBtn = null;
-  let prevBtn = null;
-  let nextBtn = null;
+  let thumbsWrapper = null;
+  let thumbsContainer = null;
 
-  let galleryItems = [];
-  let currentIndex = 0;
+  let currentGallery = [];
+  let currentIdx = 0;
+  let thumbElements = [];
 
-  function ensureModal() {
-    if (document.getElementById('globalLightboxModal')) {
-      modalEl = document.getElementById('globalLightboxModal');
-      modalImg = document.getElementById('globalLightboxImg');
-      modalCaption = document.getElementById('globalLightboxCaption');
-      closeBtn = document.getElementById('globalLightboxCloseBtn');
-      prevBtn = document.getElementById('globalLightboxPrev');
-      nextBtn = document.getElementById('globalLightboxNext');
+  function ensureLightbox() {
+    if (document.getElementById('tkUniversalLightbox')) {
+      lightbox = document.getElementById('tkUniversalLightbox');
+      backdrop = document.getElementById('univLightboxBackdrop');
+      mainImg = document.getElementById('univLightboxMainImg');
+      imgWrap = document.getElementById('univLightboxImgWrap');
+      titleEl = document.getElementById('univLightboxTitle');
+      counterEl = document.getElementById('univLightboxCounter');
+      hintEl = document.getElementById('univLightboxHint');
+      closeBtn = document.getElementById('univLightboxCloseBtn');
+      thumbsWrapper = document.getElementById('univLightboxThumbsWrapper');
+      thumbsContainer = document.getElementById('univLightboxThumbs');
       return;
     }
 
-    modalEl = document.createElement('div');
-    modalEl.id = 'globalLightboxModal';
-    modalEl.className = 'global-lightbox-overlay';
-    modalEl.setAttribute('aria-hidden', 'true');
-    modalEl.setAttribute('role', 'dialog');
-    modalEl.setAttribute('aria-modal', 'true');
-    modalEl.innerHTML = `
-      <div class="global-lightbox-dialog">
-        <button type="button" id="globalLightboxPrev" class="global-lightbox-nav-btn prev" aria-label="Previous image" style="display:none;">&#10094;</button>
-        <button type="button" id="globalLightboxNext" class="global-lightbox-nav-btn next" aria-label="Next image" style="display:none;">&#10095;</button>
-        <div class="global-lightbox-media-wrapper">
-          <img id="globalLightboxImg" class="global-lightbox-img" src="" alt="Full view preview">
-          <div id="globalLightboxCaption" class="global-lightbox-caption" style="display:none;"></div>
+    lightbox = document.createElement('div');
+    lightbox.id = 'tkUniversalLightbox';
+    lightbox.className = 'tk-lightbox';
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-modal', 'true');
+    lightbox.setAttribute('aria-label', 'NIJEDEE Verified Item Full View');
+
+    // Exactly matching the home screen HTML structure
+    lightbox.innerHTML = `
+      <div class="tk-lightbox__backdrop" id="univLightboxBackdrop"></div>
+      <div class="tk-lightbox__container" role="document">
+        
+        <!-- 1. FULL VIEW IMAGE (Swipable, NO arrows!) -->
+        <div class="tk-lightbox__stage">
+          <div class="tk-lightbox__img-wrap" id="univLightboxImgWrap" title="Swipe left or right to switch images">
+            <img id="univLightboxMainImg" class="tk-lightbox__img" src="" alt="NIJEDEE Full View Preview" draggable="false">
+          </div>
+          <div class="tk-lightbox__caption">
+            <span class="tk-lightbox__title" id="univLightboxTitle">NIJEDEE Verified Item</span>
+            <span class="tk-lightbox__counter" id="univLightboxCounter">1 / 1</span>
+          </div>
+          <div class="tk-lightbox__hint" id="univLightboxHint">
+            <span>Swipe left &middot; right or click images below</span>
+          </div>
         </div>
-        <div class="global-lightbox-bottom-bar">
-          <button type="button" id="globalLightboxCloseBtn" class="global-lightbox-close-btn" aria-label="Close full view">
-            <span class="close-x-icon">&times;</span>
-            <span class="close-text">Close</span>
+
+        <!-- 2. "X" BUTTON UNDER THE IMAGE TO CLOSE -->
+        <div class="tk-lightbox__close-bar">
+          <button type="button" id="univLightboxCloseBtn" class="tk-lightbox__close-btn" aria-label="Close full view gallery">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            <span>Close</span>
           </button>
         </div>
+
+        <!-- 3. SLIDABLE THUMBNAILS OF ALL IMAGES UNDER THE "X" -->
+        <div class="tk-lightbox__thumbs-wrapper" id="univLightboxThumbsWrapper">
+          <div class="tk-lightbox__thumbs-scroll" id="univLightboxThumbs" tabindex="0" aria-label="Images list">
+          </div>
+        </div>
+
       </div>
     `;
-    document.body.appendChild(modalEl);
 
-    modalImg = document.getElementById('globalLightboxImg');
-    modalCaption = document.getElementById('globalLightboxCaption');
-    closeBtn = document.getElementById('globalLightboxCloseBtn');
-    prevBtn = document.getElementById('globalLightboxPrev');
-    nextBtn = document.getElementById('globalLightboxNext');
+    document.body.appendChild(lightbox);
 
-    closeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeLightbox();
-    });
+    backdrop = document.getElementById('univLightboxBackdrop');
+    mainImg = document.getElementById('univLightboxMainImg');
+    imgWrap = document.getElementById('univLightboxImgWrap');
+    titleEl = document.getElementById('univLightboxTitle');
+    counterEl = document.getElementById('univLightboxCounter');
+    hintEl = document.getElementById('univLightboxHint');
+    closeBtn = document.getElementById('univLightboxCloseBtn');
+    thumbsWrapper = document.getElementById('univLightboxThumbsWrapper');
+    thumbsContainer = document.getElementById('univLightboxThumbs');
 
-    modalEl.addEventListener('click', (e) => {
-      if (e.target === modalEl || e.target.classList.contains('global-lightbox-dialog')) {
+    // Close on "X" button
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         closeLightbox();
-      }
-    });
+      });
+    }
 
-    document.addEventListener('keydown', (e) => {
-      if (!modalEl || !modalEl.classList.contains('is-active')) return;
+    // Close on backdrop click
+    if (backdrop) {
+      backdrop.addEventListener('click', closeLightbox);
+    }
+
+    // Keyboard navigation (Escape to close, arrows to slide)
+    window.addEventListener('keydown', (e) => {
+      if (!lightbox || !lightbox.classList.contains('is-open')) return;
       if (e.key === 'Escape') {
         closeLightbox();
       } else if (e.key === 'ArrowLeft') {
-        showPrev();
+        goToSlide(currentIdx - 1);
       } else if (e.key === 'ArrowRight') {
-        showNext();
+        goToSlide(currentIdx + 1);
       }
     });
 
-    if (prevBtn) {
-      prevBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showPrev();
-      });
-    }
+    // Touch swipe left/right on main image (NO ARROWS)
+    if (imgWrap) {
+      let startX = 0;
+      let startY = 0;
+      const dragThreshold = 35;
 
-    if (nextBtn) {
-      nextBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showNext();
-      });
+      imgWrap.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+
+      imgWrap.addEventListener('touchend', (e) => {
+        if (e.changedTouches.length !== 1) return;
+        const diffX = e.changedTouches[0].clientX - startX;
+        const diffY = e.changedTouches[0].clientY - startY;
+
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > dragThreshold) {
+          if (diffX < 0) {
+            goToSlide(currentIdx + 1);
+          } else {
+            goToSlide(currentIdx - 1);
+          }
+        }
+      }, { passive: true });
     }
   }
 
-  function openLightbox(src, caption, group) {
-    ensureModal();
-    if (!src) return;
+  function goToSlide(idx) {
+    if (!currentGallery.length) return;
+    if (idx < 0) idx = currentGallery.length - 1;
+    if (idx >= currentGallery.length) idx = 0;
+    currentIdx = idx;
 
-    if (group && group.length > 1) {
-      galleryItems = group;
-      currentIndex = galleryItems.findIndex(item => item.src === src);
-      if (currentIndex === -1) currentIndex = 0;
-    } else {
-      galleryItems = [{ src, caption }];
-      currentIndex = 0;
+    const item = currentGallery[currentIdx];
+    if (mainImg) {
+      mainImg.style.opacity = '0';
+      mainImg.style.transform = 'scale(0.97)';
+      setTimeout(() => {
+        mainImg.src = item.src;
+        mainImg.alt = item.caption || 'NIJEDEE Verified Item';
+        if (titleEl) titleEl.textContent = item.caption || 'NIJEDEE Verified Item';
+        if (counterEl) {
+          if (currentGallery.length > 1) {
+            counterEl.textContent = `${currentIdx + 1} / ${currentGallery.length}`;
+            counterEl.style.display = 'inline-block';
+          } else {
+            counterEl.style.display = 'none';
+          }
+        }
+        mainImg.style.opacity = '1';
+        mainImg.style.transform = 'scale(1)';
+      }, 100);
     }
 
-    updateNavState();
-    renderCurrent();
+    // Update active thumbnail
+    thumbElements.forEach((th, i) => {
+      if (i === currentIdx) {
+        th.classList.add('is-active');
+        th.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } else {
+        th.classList.remove('is-active');
+      }
+    });
+  }
 
-    modalEl.style.display = 'flex';
-    void modalEl.offsetWidth;
-    modalEl.classList.add('is-active');
-    modalEl.setAttribute('aria-hidden', 'false');
+  function openLightbox(items, startIndex = 0) {
+    ensureLightbox();
+    if (!items || !items.length) return;
+
+    currentGallery = items;
+    currentIdx = startIndex;
+    thumbElements = [];
+
+    // Populate thumbnail strip under the "X" if multiple images
+    if (currentGallery.length > 1) {
+      thumbsWrapper.style.display = 'block';
+      hintEl.style.display = 'block';
+      counterEl.style.display = 'inline-block';
+      thumbsContainer.innerHTML = '';
+
+      currentGallery.forEach((item, idx) => {
+        const thumb = document.createElement('button');
+        thumb.type = 'button';
+        thumb.className = 'tk-lightbox__thumb-item' + (idx === currentIdx ? ' is-active' : '');
+        thumb.setAttribute('aria-label', `Photo ${idx + 1}`);
+        thumb.innerHTML = `<img src="${item.src}" alt="${item.caption || 'Photo'} ${idx + 1}" loading="lazy">`;
+        thumb.addEventListener('click', (e) => {
+          e.stopPropagation();
+          goToSlide(idx);
+        });
+        thumbsContainer.appendChild(thumb);
+        thumbElements.push(thumb);
+      });
+    } else {
+      // Single image: hide thumbnails strip and hint
+      thumbsWrapper.style.display = 'none';
+      hintEl.style.display = 'none';
+      counterEl.style.display = 'none';
+    }
+
+    goToSlide(currentIdx);
+
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 
-  function renderCurrent() {
-    if (!galleryItems[currentIndex]) return;
-    const item = galleryItems[currentIndex];
-    modalImg.src = item.src;
-    modalImg.alt = item.caption || 'Full view image';
-
-    if (item.caption && item.caption.trim()) {
-      modalCaption.textContent = item.caption.trim();
-      modalCaption.style.display = 'block';
-    } else {
-      modalCaption.textContent = '';
-      modalCaption.style.display = 'none';
-    }
-  }
-
-  function updateNavState() {
-    if (!prevBtn || !nextBtn) return;
-    if (galleryItems.length > 1) {
-      prevBtn.style.display = 'flex';
-      nextBtn.style.display = 'flex';
-    } else {
-      prevBtn.style.display = 'none';
-      nextBtn.style.display = 'none';
-    }
-  }
-
-  function showPrev() {
-    if (galleryItems.length <= 1) return;
-    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-    renderCurrent();
-  }
-
-  function showNext() {
-    if (galleryItems.length <= 1) return;
-    currentIndex = (currentIndex + 1) % galleryItems.length;
-    renderCurrent();
-  }
-
   function closeLightbox() {
-    if (!modalEl) return;
-    modalEl.classList.remove('is-active');
-    modalEl.setAttribute('aria-hidden', 'true');
-    setTimeout(() => {
-      if (!modalEl.classList.contains('is-active')) {
-        modalEl.style.display = 'none';
-        modalImg.src = '';
-      }
-    }, 220);
+    if (!lightbox) return;
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
 
@@ -1231,25 +1298,29 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     const src = (img.getAttribute('src') || '').toLowerCase();
     const alt = (img.getAttribute('alt') || '').toLowerCase();
 
-    // Ignore SVGs and small UI icons
+    // Ignore SVGs, logos, whatsapp icon, and tiny icons
     if (src.endsWith('.svg') || src.includes('.svg?')) return false;
     if (src.includes('logo') || alt.includes('logo')) return false;
     if (src.includes('whatsapp') || alt.includes('whatsapp')) return false;
     if (src.includes('favicon')) return false;
 
-    // Ignore branding elements
+    // Ignore header and footer branding
     if (img.closest('.tk-header__brand') || img.closest('.tk-footer__brand') || img.closest('.tk-footer__social')) {
       return false;
     }
 
-    // Ignore if explicitly marked
+    // Don't bind images inside the lightbox itself!
+    if (img.closest('#tkImageLightbox') || img.closest('#tkUniversalLightbox')) {
+      return false;
+    }
+
     if (img.dataset.noLightbox === 'true') return false;
 
     return true;
   }
 
   function scanAndBind() {
-    ensureModal();
+    ensureLightbox();
     const images = document.querySelectorAll('img');
     images.forEach(img => {
       if (img.dataset.hasLightbox) return;
@@ -1259,7 +1330,7 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
       img.style.cursor = 'zoom-in';
 
       img.addEventListener('click', function(e) {
-        // If inside an action button (phone, wa, submit), do not hijack
+        // Don't hijack functional action buttons
         const parentLink = this.closest('a');
         if (parentLink) {
           const href = parentLink.getAttribute('href') || '';
@@ -1269,10 +1340,10 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
           e.preventDefault();
         }
 
-        const fullSrc = this.getAttribute('data-full-src') || this.currentSrc || this.src;
+        const clickedSrc = this.getAttribute('data-full-src') || this.currentSrc || this.src;
         const caption = this.getAttribute('alt') || this.getAttribute('title') || '';
 
-        // Collect gallery context if inside a container with multiple images
+        // Check if image belongs to a card container with multiple photos (like properties or products)
         let group = [];
         const cardContainer = this.closest('.product-card-item') ||
                               this.closest('.prop-cat-card') ||
@@ -1286,7 +1357,7 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
           siblings.forEach(sImg => {
             if (isEligibleImage(sImg)) {
               const sSrc = sImg.getAttribute('data-full-src') || sImg.currentSrc || sImg.src;
-              const sCaption = sImg.getAttribute('alt') || sImg.getAttribute('title') || '';
+              const sCaption = sImg.getAttribute('alt') || sImg.getAttribute('title') || caption;
               if (sSrc && !group.some(item => item.src === sSrc)) {
                 group.push({ src: sSrc, caption: sCaption });
               }
@@ -1294,26 +1365,27 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
           });
         }
 
-        openLightbox(fullSrc, caption, group.length > 1 ? group : null);
+        if (group.length > 1) {
+          const startIdx = group.findIndex(item => item.src === clickedSrc);
+          openLightbox(group, startIdx >= 0 ? startIdx : 0);
+        } else {
+          openLightbox([{ src: clickedSrc, caption: caption }], 0);
+        }
       });
     });
   }
 
-  // Initial binding
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', scanAndBind);
   } else {
     scanAndBind();
   }
 
-  // Observe dynamic additions (e.g. tabs, category filters, injected cards)
   if (window.MutationObserver && document.body) {
-    const observer = new MutationObserver(() => {
-      scanAndBind();
-    });
+    const observer = new MutationObserver(() => scanAndBind());
     observer.observe(document.body, { childList: true, subtree: true });
   }
 
-  window.openGlobalLightbox = openLightbox;
+  window.openGlobalLightbox = (items, startIdx) => openLightbox(items, startIdx);
   window.refreshGlobalLightbox = scanAndBind;
 })();
