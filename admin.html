@@ -726,11 +726,11 @@
       object-fit: cover;
     }
 
-    /* Lightbox */
+    /* Lightbox (Full View with under-photo close button) */
     .adm-lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.92);
+      background: rgba(4, 20, 47, 0.94);
       z-index: 2000;
       display: flex;
       align-items: center;
@@ -743,28 +743,43 @@
       display: flex;
     }
 
-    .adm-lightbox img {
-      max-width: 90vw;
-      max-height: 85vh;
-      border-radius: 8px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    .adm-lightbox-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      max-width: 92vw;
+      max-height: 92vh;
     }
 
-    .adm-lightbox__close {
-      position: absolute;
-      top: 24px;
-      right: 24px;
+    .adm-lightbox-content img {
+      max-width: 90vw;
+      max-height: 78vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      background: #000000;
+    }
+
+    .adm-lightbox-under-close {
       background: rgba(255, 255, 255, 0.2);
       color: #FFFFFF;
-      border: none;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
       width: 44px;
       height: 44px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 24px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+      transform: none !important;
+    }
+
+    .adm-lightbox-under-close:hover {
+      background: rgba(255, 255, 255, 0.35);
+      border-color: #FFFFFF;
+      transform: none !important;
     }
 
     /* Settings View */
@@ -818,15 +833,230 @@
       display: flex;
     }
 
+    /* Password Input Toggle Button */
+    .adm-input-toggle-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .adm-pw-toggle-btn {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--adm-muted);
+      padding: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: color 0.15s ease;
+      transform: none !important;
+    }
+
+    .adm-pw-toggle-btn:hover {
+      color: var(--adm-navy);
+      transform: none !important;
+    }
+
+    /* Mobile Navigation Drawer */
+    .adm-mobile-hamburger {
+      display: none;
+      background: #FFFFFF;
+      border: 1px solid var(--adm-border);
+      border-radius: 8px;
+      width: 38px;
+      height: 38px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--adm-navy);
+      padding: 0;
+      transform: none !important;
+    }
+
+    .adm-mobile-brand {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--adm-navy);
+    }
+
+    .adm-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 34, 79, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 9998;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .adm-drawer-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .adm-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--adm-navy);
+      color: #FFFFFF;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.35);
+      transform: translateX(-100%) !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .adm-drawer.active {
+      transform: translateX(0) !important;
+    }
+
+    .adm-drawer__header {
+      padding: 20px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .adm-drawer__close {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #FFFFFF;
+      font-size: 22px;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transform: none !important;
+    }
+
+    /* Subtitle in topbar */
+    .adm-topbar__subtitle {
+      font-size: 0.8rem;
+      color: var(--adm-muted);
+      margin-top: 2px;
+    }
+
+    .adm-topbar__controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     @media (max-width: 768px) {
       .adm-sidebar {
-        display: none;
+        display: none !important;
+      }
+      .adm-mobile-hamburger {
+        display: inline-flex !important;
+      }
+      .adm-mobile-brand {
+        display: inline-flex !important;
       }
       .adm-content {
-        padding: 16px;
+        padding: 14px !important;
       }
       .adm-topbar {
-        padding: 0 16px;
+        height: auto !important;
+        padding: 12px 14px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+      }
+      .adm-topbar__nav-bar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+      }
+      .adm-topbar__title-wrap {
+        width: 100% !important;
+        padding-top: 6px;
+        border-top: 1px solid #F1F5F9;
+      }
+      .adm-topbar__title {
+        font-size: 1.15rem !important;
+        line-height: 1.3 !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+      }
+      .adm-user-email {
+        display: none !important;
+      }
+      .adm-user-chip {
+        padding: 4px !important;
+        border: none !important;
+        background: transparent !important;
+      }
+      .adm-signout-text {
+        display: none !important;
+      }
+      .adm-notif-btn {
+        width: 36px !important;
+        height: 36px !important;
+      }
+      .adm-stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 18px !important;
+      }
+      .adm-stat-card {
+        padding: 14px 12px !important;
+      }
+      .adm-stat-number {
+        font-size: 1.4rem !important;
+      }
+      .adm-stat-info h4 {
+        font-size: 0.72rem !important;
+      }
+      .adm-stat-icon {
+        width: 36px !important;
+        height: 36px !important;
+      }
+      .adm-stat-icon svg {
+        width: 18px !important;
+        height: 18px !important;
+      }
+      .adm-filter-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+      }
+      .adm-search-wrap {
+        width: 100% !important;
+      }
+      .adm-filter-group {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+      }
+      .adm-filter-select {
+        width: 100% !important;
+      }
+      .adm-modal-card {
+        padding: 18px !important;
+        max-height: 94vh !important;
+      }
+      .adm-modal-grid {
+        grid-template-columns: 1fr !important;
       }
     }
   </style>
@@ -849,7 +1079,13 @@
       </div>
       <div class="adm-form-group">
         <label class="adm-form-label" for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" class="adm-form-input" placeholder="Enter password" required>
+        <div class="adm-input-toggle-wrap">
+          <input type="password" id="loginPassword" class="adm-form-input" placeholder="Enter password" required style="padding-right:44px;">
+          <button type="button" class="adm-pw-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)" aria-label="Toggle password visibility">
+            <svg class="eye-open" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="eye-closed" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
       </div>
       <button type="submit" id="loginSubmitBtn" class="adm-btn adm-btn--primary adm-btn--full" style="padding:14px;">
         <span>Sign In to Dashboard</span>
@@ -858,10 +1094,45 @@
   </div>
 </div>
 
+<!-- Mobile Navigation Drawer -->
+<div id="admMobileDrawerBackdrop" class="adm-drawer-backdrop" onclick="toggleMobileMenu(false)"></div>
+<aside id="admMobileDrawer" class="adm-drawer">
+  <div class="adm-drawer__header">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <img src="assets/images/logo.png" alt="NIJEDEE" style="height:36px; background:#fff; padding:3px; border-radius:6px;">
+      <div>
+        <h4 style="margin:0; color:#fff; font-size:0.92rem;">NIJEDEE OPS</h4>
+        <span style="font-size:0.72rem; color:#94A3B8;">Admin Console</span>
+      </div>
+    </div>
+    <button type="button" class="adm-drawer__close" onclick="toggleMobileMenu(false)">&times;</button>
+  </div>
+  <nav class="adm-nav" style="padding:16px 12px;">
+    <a class="adm-nav__link active" onclick="switchTab('requests'); toggleMobileMenu(false);">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>All Requests</span>
+      <span id="mobileSidebarNewCount" class="adm-nav__badge" style="display:none;">0</span>
+    </a>
+    <a class="adm-nav__link" onclick="switchTab('settings'); toggleMobileMenu(false);">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Account &amp; Security</span>
+    </a>
+    <a class="adm-nav__link" href="index.html" target="_blank">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>View Live Site</span>
+    </a>
+  </nav>
+  <div style="padding:16px 20px; border-top:1px solid rgba(255,255,255,0.1); margin-top:auto;">
+    <button type="button" class="adm-btn adm-btn--danger adm-btn--full adm-btn--sm" onclick="handleAdminLogout()">
+      <span>Sign Out</span>
+    </button>
+  </div>
+</aside>
+
 <!-- DASHBOARD LAYOUT (Shown when logged in) -->
 <div id="admDashView" class="adm-layout" style="display:none;">
 
-  <!-- Sidebar -->
+  <!-- Sidebar (Desktop) -->
   <aside class="adm-sidebar">
     <div class="adm-sidebar__brand">
       <img src="assets/images/logo.png" alt="NIJEDEE">
@@ -873,7 +1144,7 @@
 
     <nav class="adm-nav">
       <a class="adm-nav__link active" onclick="switchTab('requests')">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         <span>All Requests</span>
         <span id="sidebarNewCount" class="adm-nav__badge" style="display:none;">0</span>
       </a>
@@ -896,30 +1167,46 @@
   <!-- Main View -->
   <main class="adm-main">
     
-    <!-- Topbar -->
+    <!-- Topbar (Responsive 2-Row / Adaptive Design) -->
     <header class="adm-topbar">
-      <div class="adm-topbar__left">
-        <h2 id="topbarPageTitle" class="adm-topbar__title">Inquiries &amp; Customer Requests</h2>
-      </div>
-
-      <div class="adm-topbar__right">
-        <!-- Notification Bell with Indicator -->
-        <button type="button" class="adm-notif-btn" onclick="filterByNew()" title="New Requests Notification Indicator">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <div id="notifDot" class="adm-notif-dot"></div>
-        </button>
-
-        <!-- Admin User Chip -->
-        <div class="adm-user-chip">
-          <div class="adm-user-avatar" id="userAvatarText">AD</div>
-          <span class="adm-user-email" id="currentUserDisplay">admin@nijedee.com</span>
+      <!-- Upper controls row on mobile / Right items on desktop -->
+      <div class="adm-topbar__nav-bar">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <!-- Mobile Hamburger Toggle -->
+          <button type="button" class="adm-mobile-hamburger" onclick="toggleMobileMenu()" aria-label="Open navigation menu">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="adm-mobile-brand">
+            <img src="assets/images/logo.png" alt="NIJEDEE" style="height:28px; width:auto;">
+            <span>NIJEDEE OPS</span>
+          </div>
         </div>
 
-        <!-- Logout Button -->
-        <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="handleAdminLogout()">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          <span>Sign Out</span>
-        </button>
+        <div class="adm-topbar__controls">
+          <!-- Notification Bell with Indicator -->
+          <button type="button" class="adm-notif-btn" onclick="filterByNew()" title="New Requests Notification Indicator">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <div id="notifDot" class="adm-notif-dot"></div>
+          </button>
+
+          <!-- Admin User Chip -->
+          <div class="adm-user-chip" title="Logged in Administrator">
+            <div class="adm-user-avatar" id="userAvatarText">AD</div>
+            <span class="adm-user-email" id="currentUserDisplay">admin@nijedee.com</span>
+          </div>
+
+          <!-- Logout Button -->
+          <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="handleAdminLogout()" title="Sign Out">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="adm-signout-text">Sign Out</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Title wrap -->
+      <div class="adm-topbar__title-wrap">
+        <h2 id="topbarPageTitle" class="adm-topbar__title">Inquiries &amp; Customer Requests</h2>
+        <div class="adm-topbar__subtitle" id="topbarSubtitle">Live customer dispatches &amp; requests overview</div>
       </div>
     </header>
 
@@ -1089,11 +1376,23 @@
           <form id="changePasswordForm" onsubmit="handleChangePassword(event)">
             <div class="adm-form-group">
               <label class="adm-form-label" for="newPasswordInput">New Password</label>
-              <input type="password" id="newPasswordInput" class="adm-form-input" minlength="8" placeholder="Minimum 8 characters" required>
+              <div class="adm-input-toggle-wrap">
+                <input type="password" id="newPasswordInput" class="adm-form-input" minlength="8" placeholder="Minimum 8 characters" required style="padding-right:44px;">
+                <button type="button" class="adm-pw-toggle-btn" onclick="togglePasswordVisibility('newPasswordInput', this)" aria-label="Toggle password visibility">
+                  <svg class="eye-open" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-closed" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
             </div>
             <div class="adm-form-group">
               <label class="adm-form-label" for="confirmPasswordInput">Confirm New Password</label>
-              <input type="password" id="confirmPasswordInput" class="adm-form-input" minlength="8" placeholder="Re-type new password" required>
+              <div class="adm-input-toggle-wrap">
+                <input type="password" id="confirmPasswordInput" class="adm-form-input" minlength="8" placeholder="Re-type new password" required style="padding-right:44px;">
+                <button type="button" class="adm-pw-toggle-btn" onclick="togglePasswordVisibility('confirmPasswordInput', this)" aria-label="Toggle password visibility">
+                  <svg class="eye-open" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-closed" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
             </div>
             <button type="submit" id="savePasswordBtn" class="adm-btn adm-btn--primary">
               <span>Update Password</span>
@@ -1215,10 +1514,17 @@
   </div>
 </div>
 
-<!-- FULL IMAGE LIGHTBOX -->
+<!-- FULL IMAGE LIGHTBOX (Under-photo close button) -->
 <div id="admLightbox" class="adm-lightbox" onclick="closeLightbox()">
-  <button type="button" class="adm-lightbox__close" onclick="closeLightbox()">&times;</button>
-  <img id="lightboxImg" src="" alt="Enlarged Image" onclick="event.stopPropagation()">
+  <div class="adm-lightbox-content" onclick="event.stopPropagation()">
+    <img id="lightboxImg" src="" alt="Enlarged Image">
+    <button type="button" class="adm-lightbox-under-close" onclick="closeLightbox()" aria-label="Close enlarged view">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
 </div>
 
 <!-- IN-APP TOAST ALERT FOR NEW REQUESTS -->
@@ -1232,12 +1538,80 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/custom-picker.js"></script>
 <script>
   let allRequests = [];
   let currentActiveRequest = null;
   let activeTabName = 'requests';
   let currentUser = null;
   let lastToastRequestId = null;
+
+  // Password Visibility Toggle Handler
+  function togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+
+    const eyeOpen = btn.querySelector('.eye-open');
+    const eyeClosed = btn.querySelector('.eye-closed');
+    if (eyeOpen && eyeClosed) {
+      if (isPassword) {
+        eyeOpen.style.display = 'none';
+        eyeClosed.style.display = 'block';
+      } else {
+        eyeOpen.style.display = 'block';
+        eyeClosed.style.display = 'none';
+      }
+    }
+  }
+
+  // Mobile Drawer Navigation Handler
+  function toggleMobileMenu(force) {
+    const drawer = document.getElementById('admMobileDrawer');
+    const backdrop = document.getElementById('admMobileDrawerBackdrop');
+    if (!drawer || !backdrop) return;
+    const isOpen = drawer.classList.contains('active');
+    const shouldOpen = typeof force === 'boolean' ? force : !isOpen;
+
+    if (shouldOpen) {
+      drawer.classList.add('active');
+      backdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    } else {
+      drawer.classList.remove('active');
+      backdrop.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Normalize Images from various request schemas (Array, JSON string, or items list)
+  function getNormalizedImages(req) {
+    if (!req) return [];
+    let list = [];
+    if (req.images) {
+      if (Array.isArray(req.images)) {
+        list = [...req.images];
+      } else if (typeof req.images === 'string') {
+        try {
+          const parsed = JSON.parse(req.images);
+          if (Array.isArray(parsed)) list = parsed;
+          else if (typeof parsed === 'string') list = [parsed];
+        } catch (e) {
+          if (req.images.includes(',')) {
+            list = req.images.split(',').map(s => s.trim());
+          } else if (req.images.trim()) {
+            list = [req.images.trim()];
+          }
+        }
+      }
+    }
+    // Also check item images if materials order with products
+    if (list.length === 0 && req.details && Array.isArray(req.details.items)) {
+      list = req.details.items.map(i => i.img).filter(Boolean);
+    }
+    return list.filter(Boolean);
+  }
 
   // Initialize Audio Context for synthesized sound notification
   function playNotificationChime() {
@@ -1351,17 +1725,24 @@
     const tabReq = document.getElementById('tabRequests');
     const tabSet = document.getElementById('tabSettings');
     const title = document.getElementById('topbarPageTitle');
+    const subtitle = document.getElementById('topbarSubtitle');
 
     if (tab === 'requests') {
       tabReq.style.display = 'block';
       tabSet.style.display = 'none';
       title.textContent = 'Inquiries & Customer Requests';
-      document.querySelectorAll('.adm-nav__link')[0].classList.add('active');
+      if (subtitle) subtitle.textContent = 'Live customer dispatches & requests overview';
+      document.querySelectorAll('.adm-nav__link').forEach(l => {
+        if (l.textContent.includes('All Requests')) l.classList.add('active');
+      });
     } else if (tab === 'settings') {
       tabReq.style.display = 'none';
       tabSet.style.display = 'block';
       title.textContent = 'Administrator Account & Security';
-      document.querySelectorAll('.adm-nav__link')[1].classList.add('active');
+      if (subtitle) subtitle.textContent = 'Manage email credentials & access security';
+      document.querySelectorAll('.adm-nav__link').forEach(l => {
+        if (l.textContent.includes('Account & Security')) l.classList.add('active');
+      });
     }
   }
 
@@ -1403,15 +1784,23 @@
 
     // Sidebar badge & topbar notification dot
     const sbBadge = document.getElementById('sidebarNewCount');
+    const mobBadge = document.getElementById('mobileSidebarNewCount');
     const dot = document.getElementById('notifDot');
 
     if (newCount > 0) {
-      sbBadge.textContent = newCount;
-      sbBadge.style.display = 'inline-block';
-      dot.classList.add('active');
+      if (sbBadge) {
+        sbBadge.textContent = newCount;
+        sbBadge.style.display = 'inline-block';
+      }
+      if (mobBadge) {
+        mobBadge.textContent = newCount;
+        mobBadge.style.display = 'inline-block';
+      }
+      if (dot) dot.classList.add('active');
     } else {
-      sbBadge.style.display = 'none';
-      dot.classList.remove('active');
+      if (sbBadge) sbBadge.style.display = 'none';
+      if (mobBadge) mobBadge.style.display = 'none';
+      if (dot) dot.classList.remove('active');
     }
   }
 
@@ -1471,12 +1860,13 @@
       const isNew = req.status === 'new';
       const statusBadge = getStatusBadge(req.status);
       const typeLabel = getTypeLabel(req.type);
-      const imagesCount = Array.isArray(req.images) ? req.images.length : 0;
-      const firstImg = imagesCount > 0 ? req.images[0] : null;
+      const images = getNormalizedImages(req);
+      const imagesCount = images.length;
+      const firstImg = imagesCount > 0 ? images[0] : null;
 
       const imgCell = firstImg 
-        ? `<div style="display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation(); openLightbox('${firstImg}')">
-             <img src="${firstImg}" class="adm-img-thumb" alt="Attachment">
+        ? `<div style="display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation(); openLightbox('${escapeHtml(firstImg)}')">
+             <img src="${escapeHtml(firstImg)}" class="adm-img-thumb" alt="Attachment" onerror="this.onerror=null; this.src='assets/images/logo.png'; this.style.objectFit='contain';">
              ${imagesCount > 1 ? `<span class="adm-img-badge">+${imagesCount - 1}</span>` : ''}
            </div>`
         : `<span style="color:#94A3B8; font-size:0.75rem;">None</span>`;
@@ -1573,13 +1963,13 @@
 
     // Render Images
     const imgContainer = document.getElementById('modalImagesContainer');
-    const images = Array.isArray(req.images) ? req.images : [];
+    const images = getNormalizedImages(req);
     if (images.length === 0) {
       imgContainer.innerHTML = '<span style="color:var(--adm-muted); font-size:0.85rem;">No photos attached with this submission.</span>';
     } else {
       imgContainer.innerHTML = images.map(imgUrl => `
-        <div class="adm-gallery-item" onclick="openLightbox('${imgUrl}')">
-          <img src="${imgUrl}" alt="Request attachment">
+        <div class="adm-gallery-item" onclick="openLightbox('${escapeHtml(imgUrl)}')">
+          <img src="${escapeHtml(imgUrl)}" alt="Request attachment" onerror="this.onerror=null; this.src='assets/images/logo.png'; this.style.objectFit='contain';">
         </div>`).join('');
     }
 
