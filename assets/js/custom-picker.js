@@ -277,10 +277,10 @@
   }
 
   function enhanceSelect(select) {
+    if (!select) return;
     if (select.dataset.customPickerEnhanced === 'true') return;
     if (select.hasAttribute('data-no-custom')) return;
-    // Don't enhance hidden selects
-    if (select.offsetParent === null && select.style.display === 'none') return;
+    if (select.closest('.custom-select-wrapper')) return;
 
     select.dataset.customPickerEnhanced = 'true';
     select.classList.add('custom-select-native-hidden');
@@ -298,6 +298,8 @@
     const trigger = document.createElement('button');
     trigger.type = 'button';
     trigger.className = 'custom-select-trigger';
+    if (select.classList.contains('form-control')) trigger.classList.add('form-control');
+    if (select.classList.contains('adm-filter-select')) trigger.classList.add('adm-filter-select');
     trigger.setAttribute('aria-haspopup', 'dialog');
     trigger.setAttribute('aria-expanded', 'false');
 
@@ -346,6 +348,7 @@
 
   // Global exports
   window.initCustomPickers = initAll;
+  window.initCustomModularPickers = initAll;
   window.refreshCustomPicker = function (select) {
     if (select) {
       const wrapper = select.closest('.custom-select-wrapper');

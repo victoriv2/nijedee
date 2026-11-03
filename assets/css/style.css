@@ -7,7 +7,6 @@
    ============================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-@import url('custom-picker.css');
 
 :root {
   /* NIJEDEE Official Flyer Color Tokens */
@@ -2753,340 +2752,341 @@ textarea.form-control {
   }
 }
 
-/* =============================================================
-   Custom Modular Picker System
-   Desktop: Custom Modal Dialog / Popover Picker
-   Mobile: Bottom Sheet Modal / Action Sheet
-   ============================================================= */
+/**
+ * NIJEDEE - Universal Custom Modular Picker & Bottom Sheet Modal
+ * Replaces native OS <select> dialogs with:
+ *  - Custom Modal Dialog (on Desktop >= 768px)
+ *  - Bottom Sheet Modal / Action Sheet (on Mobile < 768px)
+ * Strictly zero emojis and zero translateY hover lifts.
+ */
 
-/* Native select hidden accessibly */
-.tk-custom-select-native {
+/* Hidden native select */
+.custom-select-native-hidden {
   position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
 }
 
-/* Custom Select Trigger Field */
-.tk-custom-select-wrapper {
+/* Custom Trigger Button */
+.custom-select-wrapper {
   position: relative;
+  display: block;
   width: 100%;
 }
 
-.tk-custom-select-trigger {
+.custom-select-trigger {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  min-height: 48px;
+  gap: 10px;
+  padding: 12px 14px;
   background: #FFFFFF;
-  border: 1px solid var(--tk-neutral-100);
-  border-radius: var(--tk-radius-sm);
+  border: 1.5px solid #E2E8F0;
+  border-radius: 8px;
+  font-family: inherit;
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--tk-navy);
-  font-family: inherit;
+  color: #0F172A;
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  outline: none;
+  user-select: none;
   box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  transform: none !important;
 }
 
-.tk-custom-select-trigger:hover {
-  border-color: var(--tk-navy-light);
+.custom-select-trigger:hover {
+  border-color: #94A3B8;
+  background-color: #F8FAFC;
+  transform: none !important;
 }
 
-.tk-custom-select-trigger:focus,
-.tk-custom-select-trigger.is-active {
-  border-color: var(--tk-primary);
-  box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.14);
+.custom-select-trigger:focus,
+.custom-select-trigger.active {
+  outline: none;
+  border-color: #1E5EFF;
+  box-shadow: 0 0 0 3px rgba(30, 94, 255, 0.15);
+  background-color: #FFFFFF;
+  transform: none !important;
 }
 
-.tk-custom-select-text {
+.custom-select-trigger.has-placeholder {
+  color: #64748B;
+}
+
+.custom-select-trigger__text {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-right: 10px;
 }
 
-.tk-custom-select-trigger.is-placeholder .tk-custom-select-text {
-  color: var(--tk-neutral-400);
-}
-
-.tk-custom-select-arrow {
+.custom-select-trigger__icon {
+  flex-shrink: 0;
+  color: #64748B;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--tk-neutral-400);
-  transition: transform 0.25s ease, color 0.2s ease;
-  flex-shrink: 0;
+  transition: color 0.15s ease;
 }
 
-.tk-custom-select-trigger.is-active .tk-custom-select-arrow {
-  transform: rotate(180deg);
-  color: var(--tk-primary);
+.custom-select-trigger:hover .custom-select-trigger__icon,
+.custom-select-trigger.active .custom-select-trigger__icon {
+  color: #1E5EFF;
 }
 
-/* Picker Overlay Backdrop */
-.tk-picker-backdrop {
+/* Overlay Backdrop */
+.custom-picker-backdrop {
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(3, 16, 38, 0.55);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 999999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(7, 34, 79, 0.55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 99998;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
-  padding: 20px;
-  box-sizing: border-box;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
-.tk-picker-backdrop.is-open {
+.custom-picker-backdrop.active {
   opacity: 1;
   visibility: visible;
 }
 
-/* Desktop Custom Modal Dialog (> 640px) */
-.tk-picker-sheet {
+/* Container for Desktop Modal & Mobile Bottom Sheet */
+.custom-picker-dialog {
+  position: fixed;
+  z-index: 99999;
   background: #FFFFFF;
-  width: 100%;
-  max-width: 480px;
-  border-radius: 18px;
-  box-shadow: 0 24px 60px rgba(7, 34, 79, 0.28);
-  border: 1px solid rgba(147, 197, 253, 0.35);
-  display: flex;
-  flex-direction: column;
-  max-height: 85vh;
-  overflow: hidden;
-  transform: scale(0.95);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
-}
-
-.tk-picker-backdrop.is-open .tk-picker-sheet {
-  transform: scale(1);
-}
-
-.tk-picker-handle-bar {
-  display: none;
-}
-
-.tk-picker-header {
-  padding: 18px 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #E2E8F0;
-  background: #FFFFFF;
-}
-
-.tk-picker-title-wrap {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.tk-picker-pill {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--tk-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.tk-picker-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--tk-navy);
-  margin: 0;
-}
-
-.tk-picker-close {
-  background: #F1F5F9;
-  border: none;
-  font-size: 20px;
-  line-height: 1;
-  color: var(--tk-neutral-700);
-  cursor: pointer;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.tk-picker-close:hover {
-  background: #E2E8F0;
-  color: var(--tk-navy);
-}
-
-.tk-picker-search-wrap {
-  padding: 12px 20px;
-  background: #F8FAFC;
-  border-bottom: 1px solid #E2E8F0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--tk-neutral-400);
-}
-
-.tk-picker-search-input {
-  flex: 1;
-  border: 1px solid #CBD5E1;
-  border-radius: var(--tk-radius-sm);
-  padding: 10px 14px;
-  font-size: 0.9rem;
-  outline: none;
-  background: #FFFFFF;
-  color: var(--tk-navy);
-  font-family: inherit;
-}
-
-.tk-picker-search-input:focus {
-  border-color: var(--tk-primary);
-  box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.12);
-}
-
-.tk-picker-options {
-  padding: 10px 14px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  max-height: 52vh;
-  -webkit-overflow-scrolling: touch;
-}
-
-.tk-picker-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 13px 16px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--tk-navy);
-  font-family: inherit;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-  min-height: 48px;
-  box-sizing: border-box;
-}
-
-.tk-picker-option:hover {
-  background: #F1F5F9;
-}
-
-.tk-picker-option.is-selected {
-  background: #F0F6FF;
-  color: var(--tk-primary);
-  font-weight: 700;
-  border-color: #BFDBFE;
-}
-
-.tk-picker-check {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid #CBD5E1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-left: 12px;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-
-.tk-picker-option.is-selected .tk-picker-check {
-  border-color: var(--tk-primary);
-  background: var(--tk-primary);
-  color: #FFFFFF;
-}
-
-.tk-picker-check svg {
-  display: none;
-}
-
-.tk-picker-option.is-selected .tk-picker-check svg {
-  display: block;
-}
-
-.tk-picker-no-results {
-  padding: 24px;
-  text-align: center;
-  color: var(--tk-neutral-400);
-  font-size: 0.9rem;
-}
-
-/* Mobile Bottom Sheet Modal / Action Sheet (<= 640px) */
-@media (max-width: 640px) {
-  .tk-picker-backdrop {
-    align-items: flex-end;
-    padding: 0;
+/* DESKTOP (>= 768px): Custom Modal Dialog */
+@media (min-width: 768px) {
+  .custom-picker-dialog {
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    max-width: 480px;
+    max-height: 82vh;
+    border-radius: 14px;
+    border: 1px solid #E2E8F0;
+    transform: translate(-50%, -50%) scale(0.96) !important;
   }
 
-  .tk-picker-sheet {
-    max-width: 100%;
-    border-radius: 22px 22px 0 0;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
+  .custom-picker-dialog.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
+
+  .custom-picker-handle {
+    display: none;
+  }
+}
+
+/* MOBILE (< 768px): Bottom Sheet Modal / Action Sheet */
+@media (max-width: 767px) {
+  .custom-picker-dialog {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
     max-height: 85vh;
-    transform: translateY(100%);
-    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
-    padding-bottom: env(safe-area-inset-bottom, 16px);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+    transform: translateY(100%) !important;
   }
 
-  .tk-picker-backdrop.is-open .tk-picker-sheet {
-    transform: translateY(0);
+  .custom-picker-dialog.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) !important;
   }
 
-  .tk-picker-handle-bar {
+  .custom-picker-handle {
     display: flex;
     justify-content: center;
     padding: 10px 0 4px;
     cursor: grab;
-    background: #FFFFFF;
   }
 
-  .tk-picker-handle {
-    width: 44px;
-    height: 5px;
-    border-radius: 999px;
+  .custom-picker-handle__pill {
+    width: 42px;
+    height: 4.5px;
     background: #CBD5E1;
+    border-radius: 3px;
   }
+}
 
-  .tk-picker-options {
-    max-height: 58vh;
-  }
+/* Picker Header */
+.custom-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #E2E8F0;
+  gap: 12px;
+}
 
-  .tk-picker-option {
-    min-height: 52px;
-    padding: 14px 16px;
-    font-size: 1rem;
-  }
+.custom-picker-header__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #07224F;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.custom-picker-header__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: none;
+  background: #F1F5F9;
+  color: #475569;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  transform: none !important;
+}
+
+.custom-picker-header__close:hover {
+  background: #E2E8F0;
+  color: #0F172A;
+  transform: none !important;
+}
+
+/* Picker Search (Filter options) */
+.custom-picker-search {
+  padding: 10px 18px;
+  border-bottom: 1px solid #F1F5F9;
+  position: relative;
+  background: #FFFFFF;
+}
+
+.custom-picker-search input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  font-size: 0.9rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 8px;
+  background: #F8FAFC;
+  color: #0F172A;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.custom-picker-search input:focus {
+  outline: none;
+  border-color: #1E5EFF;
+  background: #FFFFFF;
+}
+
+.custom-picker-search__icon {
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%) !important;
+  color: #94A3B8;
+  display: inline-flex;
+  pointer-events: none;
+}
+
+/* Options List */
+.custom-picker-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 52vh;
+  padding: 8px 12px;
+  margin: 0;
+  list-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.custom-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  min-height: 48px;
+  border-radius: 8px;
+  font-size: 0.94rem;
+  color: #1E293B;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  margin-bottom: 3px;
+  user-select: none;
+  transform: none !important;
+}
+
+.custom-picker-item:hover {
+  background-color: #F1F5F9;
+  color: #07224F;
+  transform: none !important;
+}
+
+.custom-picker-item.selected {
+  background-color: #EFF6FF;
+  color: #1E5EFF;
+  font-weight: 700;
+}
+
+.custom-picker-item.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.custom-picker-item__label {
+  flex: 1;
+  word-break: break-word;
+}
+
+.custom-picker-item__check {
+  display: none;
+  width: 20px;
+  height: 20px;
+  color: #1E5EFF;
+  flex-shrink: 0;
+}
+
+.custom-picker-item.selected .custom-picker-item__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-picker-empty {
+  padding: 28px 16px;
+  text-align: center;
+  color: #94A3B8;
+  font-size: 0.88rem;
+}
+
+/* Prevent background body scroll when picker is active */
+body.custom-picker-open {
+  overflow: hidden !important;
 }
 
 /* ============================================================
