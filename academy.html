@@ -816,10 +816,25 @@
 
   function handleEnrollSubmit(e) {
     e.preventDefault();
-    const name = document.getElementById('enrName').value;
-    const phone = document.getElementById('enrPhone').value;
-    const prog = document.getElementById('enrProgram').value;
-    alert(`Application Received!\n\nThank you, ${name}. Our Academy Admissions Officer will contact you on WhatsApp (${phone}) with payment details and your workshop orientation guide for ${prog}.`);
+    const name = document.getElementById('enrName')?.value.trim() || 'Applicant';
+    const phone = document.getElementById('enrPhone')?.value.trim() || '';
+    const edu = document.getElementById('enrEdu')?.value || 'Technical';
+    const prog = document.getElementById('enrProgram')?.value || 'Technical Skills Programme';
+    const schedule = document.getElementById('enrSchedule')?.value || 'Weekday Morning';
+
+    const msg = 
+      `*NIJEDEE TECHNICAL ACADEMY ENROLLMENT*\n` +
+      `-----------------------------------------\n` +
+      `*Programme:* ${prog}\n` +
+      `*Applicant Name:* ${name}\n` +
+      `*WhatsApp / Phone:* ${phone}\n` +
+      `*Educational Background:* ${edu}\n` +
+      `*Preferred Schedule:* ${schedule}\n` +
+      `-----------------------------------------\n` +
+      `Hello NIJEDEE Academy Admissions Desk, I would like to enroll in the ${prog} program. Please send me registration and workshop orientation details.`;
+
+    const waUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
     closeEnrollModal();
   }
 </script>

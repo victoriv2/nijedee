@@ -474,7 +474,7 @@
         <div style="margin-top:24px;background:var(--tk-primary-lightest);border:1px solid var(--tk-navy-light);border-radius:var(--tk-radius-sm);padding:16px;">
           <h4 style="font-size:0.9rem;font-weight:700;color:var(--tk-navy);margin-bottom:6px;">Building Mart Sourcing</h4>
           <p style="font-size:0.8rem;color:var(--tk-offwhite-dark);margin-bottom:12px;">40% Down Payment, Balance on Delivery. Free delivery within Badore for cement, tiles, plumbing, and electrical fittings.</p>
-          <a href="https://wa.me/2348167469581?text=Hello%20NIJEDEE,%20I%20want%20to%20order%20building%20materials" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="width:100%;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:6px;"><img src="assets/images/whatsapp.svg" alt="WhatsApp" width="16" height="16"> WhatsApp Mart Desk</a>
+          <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE,%20I%20want%20to%20order%20building%20materials" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="width:100%;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:6px;"><img src="assets/images/whatsapp.svg" alt="WhatsApp" width="16" height="16"> WhatsApp Mart Desk</a>
         </div>
 
         <div style="margin-top:16px;background:var(--tk-white);border:1px solid var(--tk-neutral-200);border-radius:var(--tk-radius-sm);padding:16px;">
@@ -971,7 +971,7 @@
                 </div>
               </div>
               <div style="display:flex;flex-direction:column;gap:10px;min-width:220px;">
-                <a href="https://wa.me/2348167469581?text=Hello%20NIJEDEE%20Building%20Mart%2C%20I%20need%20a%20quotation%20for%20building%20materials" target="_blank" rel="noopener" class="tk-btn tk-btn--primary" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;">
+                <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE%20Building%20Mart%2C%20I%20need%20a%20quotation%20for%20building%20materials" target="_blank" rel="noopener" class="tk-btn tk-btn--primary" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;">
                   <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="16" height="16">
                   <span>Request Sourcing Quote</span>
                 </a>
@@ -1218,21 +1218,37 @@
 
   function handleCheckoutSubmit(e) {
     e.preventDefault();
-    const name = document.getElementById('orderCustName').value;
-    const phone = document.getElementById('orderCustPhone').value;
-    const address = document.getElementById('orderCustAddress').value;
-    const zone = document.getElementById('orderCustZone').value;
+    const name = document.getElementById('orderCustName')?.value.trim() || 'Client';
+    const phone = document.getElementById('orderCustPhone')?.value.trim() || '';
+    const whatsapp = document.getElementById('orderCustWhatsApp')?.value.trim() || phone;
+    const address = document.getElementById('orderCustAddress')?.value.trim() || 'Location on file';
+    const zone = document.getElementById('orderCustZone')?.value || 'Badore/Ajah';
+    const payPref = document.getElementById('orderPaymentPref')?.value || 'Direct Bank Transfer';
     const subtotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
-    const summary = cart.map(i => `${i.name} (x${i.qty})`).join(', ');
+    const summary = cart.length ? cart.map(i => `- ${i.name} (x${i.qty}) = NGN ${(i.price * i.qty).toLocaleString()}`).join('\n') : '- Materials Order';
 
-    const msg = `Hello NIJEDEE, I placed a materials order:\nName: ${name}\nPhone: ${phone}\nAddress: ${address} (${zone})\nItems: ${summary}\nTotal: NGN ${subtotal.toLocaleString()}`;
+    const msg = 
+      `*NIJEDEE BUILDING MART & MATERIALS ORDER*\n` +
+      `-----------------------------------------\n` +
+      `*Customer Name:* ${name}\n` +
+      `*Phone Number:* ${phone}\n` +
+      `*WhatsApp:* ${whatsapp}\n` +
+      `*Delivery Address:* ${address}\n` +
+      `*Delivery Corridor:* ${zone}\n` +
+      `*Payment Preference:* ${payPref}\n` +
+      `-----------------------------------------\n` +
+      `*Ordered Items:*\n${summary}\n` +
+      `-----------------------------------------\n` +
+      `*Materials Subtotal:* NGN ${subtotal.toLocaleString()}\n` +
+      `-----------------------------------------\n` +
+      `Hello NIJEDEE Mart Desk, please confirm my materials order and calculate dispatch haulage.`;
+
     const whatsappUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(msg)}`;
 
-    alert('Your order has been recorded! Click OK to forward directly to NIJEDEE dispatch on WhatsApp.');
-    window.open(whatsappUrl, '_blank');
     cart = [];
     updateCartUI();
     document.getElementById('checkoutModal').classList.remove('open');
+    window.open(whatsappUrl, '_blank');
   }
 
   function updateLedPrice(selectEl) {

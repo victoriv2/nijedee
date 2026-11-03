@@ -994,7 +994,13 @@
             <h2>Application Submitted!</h2>
             <p>Your artisan application has been received successfully.</p>
             <div class="ref-code" id="ref-code">ART-2025-00000</div>
-            <p>We will review your application and contact you within <strong>48 hours</strong> via phone and WhatsApp. Ensure your phone is reachable.</p>
+            <p>We will review your application and contact you within <strong>48 hours</strong> via phone and WhatsApp. You can also fast-track your onboarding by forwarding your details directly to our verification desk.</p>
+            <div class="success-btn-row" style="margin-bottom:12px;">
+              <a id="artisan-wa-link" href="https://wa.me/2347085329909" target="_blank" rel="noopener" class="btn btn-primary" style="background:#25D366; border-color:#25D366; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700;">
+                <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="18" height="18">
+                <span>Fast-Track Onboarding on WhatsApp</span>
+              </a>
+            </div>
             <div class="success-btn-row">
               <a href="index.html" class="btn btn-outline">Back to Home</a>
               <a href="artisans.html" class="btn btn-primary">Find Jobs</a>
@@ -1224,12 +1230,50 @@
       alert('Please accept the terms and conditions to proceed.');
       return;
     }
+
+    const ref = generateRef();
+    const fullName = (document.getElementById('fullname')?.value || '').trim();
+    const phone = (document.getElementById('phone')?.value || '').trim();
+    const whatsapp = (document.getElementById('whatsapp')?.value || phone).trim();
+    const area = document.getElementById('area')?.value || 'Badore/Ajah';
+    const trade = document.getElementById('trade')?.value || 'General Artisan';
+    const experience = document.getElementById('experience')?.value || 'Not specified';
+    const toolsEl = document.querySelector('input[name="has_tools"]:checked');
+    const toolStatus = toolsEl ? toolsEl.parentElement.textContent.trim() : 'Equipped';
+    
+    const areasChecked = Array.from(document.querySelectorAll('input[name="work_areas"]:checked')).map(el => el.parentElement.textContent.trim());
+    const areasList = areasChecked.length ? areasChecked.join(', ') : 'Lekki-Ajah Corridor';
+
+    const waText = 
+      `*NIJEDEE ARTISAN NETWORK APPLICATION*\n` +
+      `-----------------------------------------\n` +
+      `*Application Ref:* ${ref}\n` +
+      `*Full Name:* ${fullName}\n` +
+      `*Phone Number:* ${phone}\n` +
+      `*WhatsApp:* ${whatsapp}\n` +
+      `*Primary Trade:* ${trade}\n` +
+      `*Experience:* ${experience}\n` +
+      `*Operational Base:* ${area}, Lagos\n` +
+      `*Tooling Status:* ${toolStatus}\n` +
+      `*Coverage Areas:* ${areasList}\n` +
+      `-----------------------------------------\n` +
+      `Hello NIJEDEE Onboarding Desk, I have completed my artisan registration form. Please review my profile for accreditation.`;
+
+    const waUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(waText)}`;
+
     document.getElementById('artisan-form').style.display = 'none';
     document.getElementById('progress-steps').style.display = 'none';
     const success = document.getElementById('artisan-success');
     success.classList.remove('hidden');
-    document.getElementById('ref-code').textContent = generateRef();
+    document.getElementById('ref-code').textContent = ref;
+
+    const waLink = document.getElementById('artisan-wa-link');
+    if (waLink) waLink.href = waUrl;
+
     window.scrollTo({ top: document.getElementById('artisan-form-card').offsetTop - 100, behavior: 'smooth' });
+
+    // Open WhatsApp in new tab
+    window.open(waUrl, '_blank');
   });
 
   // Initialize
