@@ -1054,6 +1054,11 @@
           <label>Property Description &amp; Number of Bedrooms</label>
           <textarea id="propOwnerDesc" placeholder="e.g. 3-bedroom fully detached bungalow, newly painted with POP ceilings..." required></textarea>
         </div>
+        <div class="form-group">
+          <label for="propOwnerPhotos">Upload Property Photos (Optional)</label>
+          <input type="file" id="propOwnerPhotos" multiple accept="image/*" style="padding:8px; border:1px dashed #CBD5E1; border-radius:6px; width:100%; background:#FAFAFA;">
+          <small style="color:var(--text-muted); font-size:0.8rem; display:block; margin-top:4px;">Upload exterior, living room, kitchen, or bathroom pictures.</small>
+        </div>
         <div class="modal-footer" style="padding:0; margin-top:20px;">
           <button type="button" class="btn btn-outline" onclick="closePropertyModal()">Cancel</button>
           <button type="submit" class="btn btn-primary">Submit Listing</button>
@@ -1180,6 +1185,28 @@
 
     const msg = `Hello NIJEDEE, I would like to inquire about a property:\n\n• Category: ${category}\n• Location: ${location}\n• Size/Bedrooms: ${bedrooms}\n• Name: ${name}\n• Phone: ${phone}\n• Target Date: ${timing || 'Flexible'}\n• Details: ${notes || 'Standard inquiry'}`;
     const waUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(msg)}`;
+
+    const refNum = 'PROP-' + Math.floor(10000 + Math.random() * 90000);
+    if (window.submitNijedeeRequest) {
+      window.submitNijedeeRequest({
+        ref_code: refNum,
+        type: 'property_inquiry',
+        title: `Property Inquiry - ${category} (${location})`,
+        client_name: name,
+        client_phone: phone,
+        client_whatsapp: phone,
+        location: location,
+        urgency: 'Normal',
+        details: {
+          category,
+          location,
+          bedrooms,
+          targetDate: timing,
+          notes
+        }
+      });
+    }
+
     window.open(waUrl, '_blank');
   }
 
@@ -1201,10 +1228,34 @@
 
     const msg = `Hello NIJEDEE, I want to submit my property for listing/management:\n\n• Owner: ${name}\n• Phone: ${phone}\n• Category: ${type}\n• Location: ${location}\n• Description: ${desc}`;
     const waUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(msg)}`;
+
+    const refNum = 'LIST-' + Math.floor(10000 + Math.random() * 90000);
+    const photoFiles = document.getElementById('propOwnerPhotos')?.files;
+    if (window.submitNijedeeRequest) {
+      window.submitNijedeeRequest({
+        ref_code: refNum,
+        type: 'property_listing',
+        title: `Property Listing - ${type} (${location})`,
+        client_name: name,
+        client_phone: phone,
+        client_whatsapp: phone,
+        location: location,
+        urgency: 'Normal',
+        details: {
+          category: type,
+          location: location,
+          description: desc
+        },
+        files: photoFiles
+      });
+    }
+
     window.open(waUrl, '_blank');
     closePropertyModal();
   }
 </script>
 <script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
 </body>
 </html>

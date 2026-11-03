@@ -834,10 +834,31 @@
       `Hello NIJEDEE Academy Admissions Desk, I would like to enroll in the ${prog} program. Please send me registration and workshop orientation details.`;
 
     const waUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(msg)}`;
+
+    const refNum = 'ACAD-' + Math.floor(10000 + Math.random() * 90000);
+    if (window.submitNijedeeRequest) {
+      window.submitNijedeeRequest({
+        ref_code: refNum,
+        type: 'academy_enrollment',
+        title: `Academy Application - ${prog} (${name})`,
+        client_name: name,
+        client_phone: phone,
+        client_whatsapp: phone,
+        urgency: 'Normal',
+        details: {
+          programme: prog,
+          education: edu,
+          schedule: schedule
+        }
+      });
+    }
+
     window.open(waUrl, '_blank');
     closeEnrollModal();
   }
 </script>
 <script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
 </body>
 </html>

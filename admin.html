@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Operations Portal | NIJEDEE</title>
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    :root {
+      --adm-navy: #07224F;
+      --adm-navy-dark: #04142F;
+      --adm-blue: #1E5EFF;
+      --adm-bg: #F8FAFC;
+      --adm-card: #FFFFFF;
+      --adm-border: #E2E8F0;
+      --adm-text: #0F172A;
+      --adm-muted: #64748B;
+      --adm-success: #16A34A;
+      --adm-warning: #D97706;
+      --adm-danger: #DC2626;
+      --adm-purple: #7C3AED;
+    }
+
+    body {
+      background: var(--adm-bg);
+      color: var(--adm-text);
+      font-family: var(--tk-font, system-ui, sans-serif);
+      margin: 0;
+      padding: 0 !important;
+      min-height: 100vh;
+    }
+
+    * {
+      box-sizing: border-box;
+      transform: none !important;
+    }
+
+    /* Auth Screen */
+    .adm-auth-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(circle at top right, #0D3578 0%, #07224F 60%, #03132B 100%);
+    }
+
+    .adm-auth-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .adm-auth-logo {
+      display: block;
+      margin: 0 auto 20px;
+      height: 64px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .adm-auth-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--adm-navy);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .adm-auth-sub {
+      color: var(--adm-muted);
+      font-size: 0.88rem;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .adm-form-group {
+      margin-bottom: 20px;
+    }
+
+    .adm-form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--adm-navy);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .adm-form-input, .adm-form-select, .adm-form-textarea {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--adm-border);
+      border-radius: 8px;
+      background: #FFFFFF;
+      color: var(--adm-text);
+      transition: border-color 0.15s ease;
+      font-family: inherit;
+    }
+
+    .adm-form-input:focus, .adm-form-select:focus, .adm-form-textarea:focus {
+      outline: none;
+      border-color: var(--adm-blue);
+      box-shadow: 0 0 0 3px rgba(30, 94, 255, 0.15);
+    }
+
+    .adm-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, opacity 0.15s ease;
+      font-family: inherit;
+      line-height: 1;
+    }
+
+    .adm-btn--primary {
+      background: var(--adm-blue);
+      color: #FFFFFF;
+    }
+
+    .adm-btn--primary:hover {
+      background: #154ACC;
+    }
+
+    .adm-btn--success {
+      background: #25D366;
+      color: #FFFFFF;
+    }
+
+    .adm-btn--success:hover {
+      background: #1FA855;
+    }
+
+    .adm-btn--outline {
+      background: transparent;
+      border: 1.5px solid var(--adm-border);
+      color: var(--adm-text);
+    }
+
+    .adm-btn--outline:hover {
+      background: var(--adm-bg);
+      border-color: #CBD5E1;
+    }
+
+    .adm-btn--danger {
+      background: #FEE2E2;
+      color: #991B1B;
+      border: 1px solid #FCA5A5;
+    }
+
+    .adm-btn--danger:hover {
+      background: #FCA5A5;
+    }
+
+    .adm-btn--sm {
+      padding: 8px 14px;
+      font-size: 0.82rem;
+    }
+
+    .adm-btn--full {
+      width: 100%;
+    }
+
+    .adm-alert {
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .adm-alert--error {
+      background: #FEF2F2;
+      border: 1px solid #FCA5A5;
+      color: #991B1B;
+    }
+
+    .adm-alert--success {
+      background: #F0FDF4;
+      border: 1px solid #86EFAC;
+      color: #166534;
+    }
+
+    /* Dashboard Layout */
+    .adm-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .adm-sidebar {
+      width: 260px;
+      background: var(--adm-navy);
+      color: #FFFFFF;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .adm-sidebar__brand {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .adm-sidebar__brand img {
+      height: 44px;
+      width: auto;
+      object-fit: contain;
+      background: #FFFFFF;
+      padding: 4px;
+      border-radius: 6px;
+    }
+
+    .adm-sidebar__brand-text h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin: 0;
+      color: #FFFFFF;
+    }
+
+    .adm-sidebar__brand-text span {
+      font-size: 0.72rem;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .adm-nav {
+      padding: 20px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .adm-nav__link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      color: #CBD5E1;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: background 0.15s ease, color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .adm-nav__link:hover, .adm-nav__link.active {
+      background: rgba(30, 94, 255, 0.25);
+      color: #FFFFFF;
+    }
+
+    .adm-nav__link svg {
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+
+    .adm-nav__badge {
+      margin-left: auto;
+      background: #EF4444;
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px;
+      line-height: 1;
+    }
+
+    .adm-sidebar__footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.78rem;
+      color: #94A3B8;
+    }
+
+    /* Main Content */
+    .adm-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--adm-bg);
+    }
+
+    /* Topbar */
+    .adm-topbar {
+      height: 70px;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--adm-border);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .adm-topbar__left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .adm-topbar__title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--adm-navy);
+      margin: 0;
+    }
+
+    .adm-topbar__right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .adm-notif-btn {
+      position: relative;
+      background: var(--adm-bg);
+      border: 1px solid var(--adm-border);
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--adm-navy);
+    }
+
+    .adm-notif-dot {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 10px;
+      height: 10px;
+      background: #EF4444;
+      border: 2px solid #FFFFFF;
+      border-radius: 50%;
+      display: none;
+    }
+
+    .adm-notif-dot.active {
+      display: block;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    .adm-user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      background: var(--adm-bg);
+      border: 1px solid var(--adm-border);
+      border-radius: 8px;
+    }
+
+    .adm-user-avatar {
+      width: 32px;
+      height: 32px;
+      background: var(--adm-navy);
+      color: #FFFFFF;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .adm-user-email {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--adm-navy);
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Content Area */
+    .adm-content {
+      padding: 28px;
+      flex: 1;
+    }
+
+    /* Stats Grid */
+    .adm-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .adm-stat-card {
+      background: #FFFFFF;
+      border: 1px solid var(--adm-border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .adm-stat-card:hover {
+      border-color: var(--adm-blue);
+    }
+
+    .adm-stat-info h4 {
+      margin: 0 0 6px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--adm-muted);
+      font-weight: 700;
+    }
+
+    .adm-stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--adm-navy);
+      line-height: 1;
+    }
+
+    .adm-stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Filter Bar */
+    .adm-filter-bar {
+      background: #FFFFFF;
+      border: 1px solid var(--adm-border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .adm-search-wrap {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+
+    .adm-search-wrap svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%) !important;
+      color: var(--adm-muted);
+    }
+
+    .adm-search-input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      font-size: 0.88rem;
+      border: 1.5px solid var(--adm-border);
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .adm-search-input:focus {
+      border-color: var(--adm-blue);
+    }
+
+    .adm-filter-select {
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      border: 1.5px solid var(--adm-border);
+      border-radius: 8px;
+      background: #FFFFFF;
+      color: var(--adm-navy);
+      font-weight: 600;
+      outline: none;
+    }
+
+    /* Table Container */
+    .adm-table-wrap {
+      background: #FFFFFF;
+      border: 1px solid var(--adm-border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .adm-table-header-row {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--adm-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .adm-table-header-row h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--adm-navy);
+      margin: 0;
+    }
+
+    .adm-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .adm-table th {
+      background: #F8FAFC;
+      padding: 12px 18px;
+      color: var(--adm-muted);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--adm-border);
+    }
+
+    .adm-table td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--adm-border);
+      vertical-align: middle;
+    }
+
+    .adm-table tr:hover td {
+      background: #F8FAFC;
+    }
+
+    .adm-table tr.is-unread td {
+      background: #EFF6FF;
+      font-weight: 600;
+    }
+
+    .adm-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1;
+    }
+
+    .adm-badge--new { background: #DBEAFE; color: #1E40AF; }
+    .adm-badge--in_progress { background: #FEF3C7; color: #92400E; }
+    .adm-badge--completed { background: #DCFCE7; color: #166534; }
+    .adm-badge--cancelled { background: #FEE2E2; color: #991B1B; }
+
+    .adm-type-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--adm-navy);
+      background: #F1F5F9;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .adm-img-thumb {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--adm-border);
+      cursor: pointer;
+    }
+
+    .adm-img-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--adm-blue);
+      background: #EFF6FF;
+      padding: 3px 7px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Modal Drawer */
+    .adm-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 20, 47, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      display: none;
+    }
+
+    .adm-modal-overlay.open {
+      display: flex;
+    }
+
+    .adm-modal {
+      background: #FFFFFF;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 720px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--adm-border);
+    }
+
+    .adm-modal__header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--adm-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: #FFFFFF;
+      z-index: 10;
+    }
+
+    .adm-modal__title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--adm-navy);
+      margin: 0;
+    }
+
+    .adm-modal__body {
+      padding: 24px;
+    }
+
+    .adm-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+      background: #F8FAFC;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--adm-border);
+    }
+
+    .adm-detail-item label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--adm-muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .adm-detail-item span {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--adm-navy);
+      word-break: break-word;
+    }
+
+    .adm-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .adm-gallery-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1.5px solid var(--adm-border);
+      aspect-ratio: 1;
+      cursor: pointer;
+      background: #F1F5F9;
+    }
+
+    .adm-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Lightbox */
+    .adm-lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      display: none;
+    }
+
+    .adm-lightbox.open {
+      display: flex;
+    }
+
+    .adm-lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .adm-lightbox__close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Settings View */
+    .adm-settings-wrap {
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .adm-settings-card {
+      background: #FFFFFF;
+      border: 1px solid var(--adm-border);
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .adm-settings-card h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--adm-navy);
+      margin: 0 0 6px;
+    }
+
+    .adm-settings-card p {
+      font-size: 0.85rem;
+      color: var(--adm-muted);
+      margin: 0 0 20px;
+    }
+
+    /* Toast Notification */
+    .adm-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--adm-navy);
+      color: #FFFFFF;
+      padding: 16px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border-left: 4px solid var(--adm-blue);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1500;
+      display: none;
+    }
+
+    .adm-toast.active {
+      display: flex;
+    }
+
+    @media (max-width: 768px) {
+      .adm-sidebar {
+        display: none;
+      }
+      .adm-content {
+        padding: 16px;
+      }
+      .adm-topbar {
+        padding: 0 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- AUTHENTICATION SCREEN (Shown when logged out) -->
+<div id="admAuthView" class="adm-auth-wrap">
+  <div class="adm-auth-card">
+    <img src="assets/images/logo.png" alt="NIJEDEE Logo" class="adm-auth-logo">
+    <h2 class="adm-auth-title">Admin Operations Portal</h2>
+    <p class="adm-auth-sub">Sign in with verified administrator credentials</p>
+
+    <div id="authAlert" class="adm-alert adm-alert--error"></div>
+
+    <form id="admLoginForm" onsubmit="handleAdminLogin(event)">
+      <div class="adm-form-group">
+        <label class="adm-form-label" for="loginEmail">Admin Email</label>
+        <input type="email" id="loginEmail" class="adm-form-input" placeholder="admin@nijedee.com" required value="admin@nijedee.com">
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-form-label" for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" class="adm-form-input" placeholder="Enter password" required>
+      </div>
+      <button type="submit" id="loginSubmitBtn" class="adm-btn adm-btn--primary adm-btn--full" style="padding:14px;">
+        <span>Sign In to Dashboard</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD LAYOUT (Shown when logged in) -->
+<div id="admDashView" class="adm-layout" style="display:none;">
+
+  <!-- Sidebar -->
+  <aside class="adm-sidebar">
+    <div class="adm-sidebar__brand">
+      <img src="assets/images/logo.png" alt="NIJEDEE">
+      <div class="adm-sidebar__brand-text">
+        <h3>NIJEDEE OPS</h3>
+        <span>Admin Console</span>
+      </div>
+    </div>
+
+    <nav class="adm-nav">
+      <a class="adm-nav__link active" onclick="switchTab('requests')">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>All Requests</span>
+        <span id="sidebarNewCount" class="adm-nav__badge" style="display:none;">0</span>
+      </a>
+      <a class="adm-nav__link" onclick="switchTab('settings')">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Account &amp; Security</span>
+      </a>
+      <a class="adm-nav__link" href="index.html" target="_blank">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <span>View Live Site</span>
+      </a>
+    </nav>
+
+    <div class="adm-sidebar__footer">
+      <span>Database: Supabase Live</span><br>
+      <span style="color:#22C55E; font-weight:700;">&bull; Realtime Connected</span>
+    </div>
+  </aside>
+
+  <!-- Main View -->
+  <main class="adm-main">
+    
+    <!-- Topbar -->
+    <header class="adm-topbar">
+      <div class="adm-topbar__left">
+        <h2 id="topbarPageTitle" class="adm-topbar__title">Inquiries &amp; Customer Requests</h2>
+      </div>
+
+      <div class="adm-topbar__right">
+        <!-- Notification Bell with Indicator -->
+        <button type="button" class="adm-notif-btn" onclick="filterByNew()" title="New Requests Notification Indicator">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div id="notifDot" class="adm-notif-dot"></div>
+        </button>
+
+        <!-- Admin User Chip -->
+        <div class="adm-user-chip">
+          <div class="adm-user-avatar" id="userAvatarText">AD</div>
+          <span class="adm-user-email" id="currentUserDisplay">admin@nijedee.com</span>
+        </div>
+
+        <!-- Logout Button -->
+        <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="handleAdminLogout()">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT: REQUESTS TAB -->
+    <section id="tabRequests" class="adm-content">
+      
+      <!-- KPI Metrics Bar -->
+      <div class="adm-stats">
+        <div class="adm-stat-card" onclick="setQuickFilter('all')">
+          <div class="adm-stat-info">
+            <h4>Total Submissions</h4>
+            <div id="kpiTotal" class="adm-stat-number">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#EFF6FF; color:#1E5EFF;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card" onclick="setQuickFilter('new')">
+          <div class="adm-stat-info">
+            <h4>New / Unhandled</h4>
+            <div id="kpiNew" class="adm-stat-number" style="color:#2563EB;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#DBEAFE; color:#1E40AF;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card" onclick="setQuickFilter('in_progress')">
+          <div class="adm-stat-info">
+            <h4>In Progress</h4>
+            <div id="kpiInProgress" class="adm-stat-number" style="color:#D97706;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#FEF3C7; color:#92400E;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card" onclick="setQuickFilter('completed')">
+          <div class="adm-stat-info">
+            <h4>Completed / Closed</h4>
+            <div id="kpiCompleted" class="adm-stat-number" style="color:#16A34A;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#DCFCE7; color:#166534;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Sorting Bar -->
+      <div class="adm-filter-bar">
+        <div class="adm-search-wrap">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="admSearch" class="adm-search-input" placeholder="Search by name, phone, ref code, or keywords..." oninput="renderRequests()">
+        </div>
+
+        <!-- Filter by Category/Type -->
+        <select id="filterType" class="adm-filter-select" onchange="renderRequests()">
+          <option value="all">All Channels / Types</option>
+          <option value="service_booking">Service Booking (book.html)</option>
+          <option value="artisan_dispatch">Artisan Dispatch (artisans.html)</option>
+          <option value="artisan_application">Artisan Network Application</option>
+          <option value="academy_enrollment">Academy Enrollment</option>
+          <option value="materials_order">Materials Mart Orders</option>
+          <option value="property_inquiry">Property Inspection Inquiry</option>
+          <option value="property_listing">Property Owner Listing</option>
+          <option value="contact_message">Contact Consultation</option>
+        </select>
+
+        <!-- Filter by Status -->
+        <select id="filterStatus" class="adm-filter-select" onchange="renderRequests()">
+          <option value="all">All Statuses</option>
+          <option value="new">New</option>
+          <option value="in_progress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+
+        <!-- Filter by Location -->
+        <select id="filterLocation" class="adm-filter-select" onchange="renderRequests()">
+          <option value="all">All Corridors</option>
+          <option value="Badore">Badore Axis</option>
+          <option value="Ajah">Ajah Central</option>
+          <option value="Sangotedo">Sangotedo</option>
+          <option value="Lekki">Lekki Corridor</option>
+        </select>
+
+        <!-- Sort By -->
+        <select id="sortOrder" class="adm-filter-select" onchange="renderRequests()">
+          <option value="date_desc">Newest First</option>
+          <option value="date_asc">Oldest First</option>
+          <option value="urgency">Urgency First</option>
+        </select>
+
+        <!-- Refresh Button -->
+        <button type="button" class="adm-btn adm-btn--outline" onclick="fetchRequests(true)" title="Reload requests">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          <span>Refresh</span>
+        </button>
+      </div>
+
+      <!-- Requests Table -->
+      <div class="adm-table-wrap">
+        <div class="adm-table-header-row">
+          <h3>Customer Submissions (<span id="tableRecordCount">0</span>)</h3>
+          <span style="font-size:0.82rem; color:var(--adm-muted);">Click any row to view full details and images</span>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Client Name &amp; Phone</th>
+                <th>Location</th>
+                <th>Summary / Details</th>
+                <th>Photos</th>
+                <th>Submitted</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="requestsTableBody">
+              <tr>
+                <td colspan="9" style="text-align:center; padding:40px; color:var(--adm-muted);">Loading live requests...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CONTENT: SETTINGS TAB (Change Email & Change Password) -->
+    <section id="tabSettings" class="adm-content" style="display:none;">
+      <div class="adm-settings-wrap">
+        
+        <!-- Alerts for Settings -->
+        <div id="settingsAlert" class="adm-alert"></div>
+
+        <!-- Card 1: Change Email -->
+        <div class="adm-settings-card">
+          <h3>Administrator Email Address</h3>
+          <p>Update the verified email address used to sign in to the NIJEDEE Admin Console.</p>
+
+          <form id="changeEmailForm" onsubmit="handleChangeEmail(event)">
+            <div class="adm-form-group">
+              <label class="adm-form-label">Current Email</label>
+              <input type="text" id="settingsCurrentEmail" class="adm-form-input" readonly style="background:#F1F5F9;">
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-form-label" for="newEmailInput">New Admin Email Address</label>
+              <input type="email" id="newEmailInput" class="adm-form-input" placeholder="e.g. director@nijedee.com" required>
+            </div>
+            <button type="submit" id="saveEmailBtn" class="adm-btn adm-btn--primary">
+              <span>Save &amp; Update Email</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Card 2: Change Password -->
+        <div class="adm-settings-card">
+          <h3>Change Admin Password</h3>
+          <p>Set a strong password for administrative access (minimum 8 characters).</p>
+
+          <form id="changePasswordForm" onsubmit="handleChangePassword(event)">
+            <div class="adm-form-group">
+              <label class="adm-form-label" for="newPasswordInput">New Password</label>
+              <input type="password" id="newPasswordInput" class="adm-form-input" minlength="8" placeholder="Minimum 8 characters" required>
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-form-label" for="confirmPasswordInput">Confirm New Password</label>
+              <input type="password" id="confirmPasswordInput" class="adm-form-input" minlength="8" placeholder="Re-type new password" required>
+            </div>
+            <button type="submit" id="savePasswordBtn" class="adm-btn adm-btn--primary">
+              <span>Update Password</span>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- REQUEST DETAILS MODAL -->
+<div id="requestDetailModal" class="adm-modal-overlay">
+  <div class="adm-modal">
+    <div class="adm-modal__header">
+      <div>
+        <span id="modalRefCode" class="adm-type-tag">REF-0000</span>
+        <h3 id="modalReqTitle" class="adm-modal__title" style="margin-top:4px;">Request Details</h3>
+      </div>
+      <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="closeDetailModal()">&times; Close</button>
+    </div>
+
+    <div class="adm-modal__body">
+      
+      <!-- Details Grid -->
+      <div class="adm-detail-grid">
+        <div class="adm-detail-item">
+          <label>Client Name</label>
+          <span id="modalClientName">-</span>
+        </div>
+        <div class="adm-detail-item">
+          <label>Phone / WhatsApp</label>
+          <span id="modalClientPhone">-</span>
+        </div>
+        <div class="adm-detail-item">
+          <label>Email Address</label>
+          <span id="modalClientEmail">-</span>
+        </div>
+        <div class="adm-detail-item">
+          <label>Location Corridor</label>
+          <span id="modalLocation">-</span>
+        </div>
+        <div class="adm-detail-item">
+          <label>Full Site Address</label>
+          <span id="modalAddress">-</span>
+        </div>
+        <div class="adm-detail-item">
+          <label>Urgency Level</label>
+          <span id="modalUrgency">-</span>
+        </div>
+        <div class="adm-detail-item">
+          <label>Current Status</label>
+          <span id="modalStatusBadge">-</span>
+        </div>
+        <div class="adm-detail-item">
+          <label>Submitted At</label>
+          <span id="modalCreatedAt">-</span>
+        </div>
+      </div>
+
+      <!-- Attached Photos / Files Section -->
+      <div style="margin-bottom:24px;">
+        <h4 style="font-size:0.92rem; font-weight:800; color:var(--adm-navy); margin:0 0 8px;">Attached Photos &amp; Images</h4>
+        <div id="modalImagesContainer" class="adm-gallery-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Specific Form Field Details -->
+      <div style="margin-bottom:24px;">
+        <h4 style="font-size:0.92rem; font-weight:800; color:var(--adm-navy); margin:0 0 8px;">Full Submission Breakdown</h4>
+        <div id="modalFieldsBreakdown" style="background:#F8FAFC; border:1px solid var(--adm-border); border-radius:8px; padding:16px; font-size:0.88rem; line-height:1.6;">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Admin Actions: Update Status & Internal Notes -->
+      <div style="background:#F1F5F9; border-radius:10px; padding:18px; margin-bottom:20px;">
+        <h4 style="font-size:0.92rem; font-weight:800; color:var(--adm-navy); margin:0 0 12px;">Admin Management &amp; Dispatch Desk</h4>
+        
+        <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:14px;">
+          <div style="flex:1; min-width:180px;">
+            <label class="adm-form-label" style="font-size:0.75rem;">Change Request Status</label>
+            <select id="modalStatusSelect" class="adm-form-select">
+              <option value="new">New / Pending</option>
+              <option value="in_progress">In Progress / Contacted</option>
+              <option value="completed">Completed / Resolved</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button type="button" class="adm-btn adm-btn--primary" onclick="saveStatusUpdate()">Update Status</button>
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label class="adm-form-label" style="font-size:0.75rem;">Internal Dispatch Notes</label>
+          <textarea id="modalAdminNotes" class="adm-form-textarea" rows="2" placeholder="e.g. Assigned Musa for inspection at 2 PM. Fee agreed."></textarea>
+          <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" style="margin-top:8px;" onclick="saveAdminNotes()">Save Note</button>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; border-top:1px solid #CBD5E1; padding-top:14px;">
+          <a id="modalWhatsAppChatBtn" href="#" target="_blank" rel="noopener" class="adm-btn adm-btn--success adm-btn--sm">
+            <svg viewBox="0 0 32 32" width="16" height="16" fill="currentColor"><path d="M26.576 5.363c-2.69-2.69-6.406-4.354-10.511-4.354-8.209 0-14.865 6.655-14.865 14.865 0 2.732 0.737 5.291 2.022 7.491l-0.038-0.070-2.109 7.702 7.879-2.067c2.051 1.139 4.498 1.809 7.102 1.809h0.006c8.209-0.003 14.862-6.659 14.862-14.868 0-4.103-1.662-7.817-4.349-10.507l0 0z"/></svg>
+            <span>Message Client on WhatsApp</span>
+          </a>
+          <a id="modalCallBtn" href="#" class="adm-btn adm-btn--outline adm-btn--sm">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Call Client</span>
+          </a>
+          <button type="button" class="adm-btn adm-btn--danger adm-btn--sm" style="margin-left:auto;" onclick="deleteCurrentRequest()">Delete</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FULL IMAGE LIGHTBOX -->
+<div id="admLightbox" class="adm-lightbox" onclick="closeLightbox()">
+  <button type="button" class="adm-lightbox__close" onclick="closeLightbox()">&times;</button>
+  <img id="lightboxImg" src="" alt="Enlarged Image" onclick="event.stopPropagation()">
+</div>
+
+<!-- IN-APP TOAST ALERT FOR NEW REQUESTS -->
+<div id="admToast" class="adm-toast" onclick="viewToastRequest()">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#22C55E" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+  <div>
+    <div style="font-size:0.75rem; text-transform:uppercase; color:#94A3B8; font-weight:800;">New Customer Submission</div>
+    <div id="toastMessage" style="font-weight:700; font-size:0.92rem;">New service booking received</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script>
+  let allRequests = [];
+  let currentActiveRequest = null;
+  let activeTabName = 'requests';
+  let currentUser = null;
+  let lastToastRequestId = null;
+
+  // Initialize Audio Context for synthesized sound notification
+  function playNotificationChime() {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+
+      const playTone = (freq, start, duration) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime + start);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + start);
+        osc.stop(ctx.currentTime + start + duration);
+      };
+
+      // 2-tone pleasant chime
+      playTone(880, 0, 0.25);
+      playTone(1320, 0.12, 0.4);
+    } catch (e) {
+      console.warn('Audio chime note:', e);
+    }
+  }
+
+  // --- Authentication Handlers ---
+  async function checkAuthSession() {
+    const sb = getNijedeeSupabase();
+    if (!sb) return;
+
+    const { data: { session } } = await sb.auth.getSession();
+    if (session && session.user) {
+      currentUser = session.user;
+      showDashboard();
+    } else {
+      showAuth();
+    }
+
+    // Listen to auth changes
+    sb.auth.onAuthStateChange((_event, session) => {
+      if (session && session.user) {
+        currentUser = session.user;
+        showDashboard();
+      } else {
+        currentUser = null;
+        showAuth();
+      }
+    });
+  }
+
+  function showAuth() {
+    document.getElementById('admAuthView').style.display = 'flex';
+    document.getElementById('admDashView').style.display = 'none';
+  }
+
+  function showDashboard() {
+    document.getElementById('admAuthView').style.display = 'none';
+    document.getElementById('admDashView').style.display = 'flex';
+
+    const email = currentUser?.email || 'admin@nijedee.com';
+    document.getElementById('currentUserDisplay').textContent = email;
+    document.getElementById('settingsCurrentEmail').value = email;
+    document.getElementById('userAvatarText').textContent = email.substring(0, 2).toUpperCase();
+
+    fetchRequests();
+    setupRealtimeSubscription();
+  }
+
+  async function handleAdminLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const btn = document.getElementById('loginSubmitBtn');
+    const alertBox = document.getElementById('authAlert');
+
+    alertBox.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Authenticating...';
+
+    const sb = getNijedeeSupabase();
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+    btn.disabled = false;
+    btn.textContent = 'Sign In to Dashboard';
+
+    if (error) {
+      alertBox.textContent = error.message || 'Invalid administrator email or password.';
+      alertBox.style.display = 'block';
+      return;
+    }
+
+    currentUser = data.user;
+    showDashboard();
+  }
+
+  async function handleAdminLogout() {
+    const sb = getNijedeeSupabase();
+    if (sb) await sb.auth.signOut();
+    showAuth();
+  }
+
+  // --- Tabs Switching ---
+  function switchTab(tab) {
+    activeTabName = tab;
+    document.querySelectorAll('.adm-nav__link').forEach(link => link.classList.remove('active'));
+
+    const tabReq = document.getElementById('tabRequests');
+    const tabSet = document.getElementById('tabSettings');
+    const title = document.getElementById('topbarPageTitle');
+
+    if (tab === 'requests') {
+      tabReq.style.display = 'block';
+      tabSet.style.display = 'none';
+      title.textContent = 'Inquiries & Customer Requests';
+      document.querySelectorAll('.adm-nav__link')[0].classList.add('active');
+    } else if (tab === 'settings') {
+      tabReq.style.display = 'none';
+      tabSet.style.display = 'block';
+      title.textContent = 'Administrator Account & Security';
+      document.querySelectorAll('.adm-nav__link')[1].classList.add('active');
+    }
+  }
+
+  // --- Fetch & Render Requests ---
+  async function fetchRequests(notify = false) {
+    const sb = getNijedeeSupabase();
+    if (!sb) return;
+
+    const { data, error } = await sb
+      .from('requests')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Fetch requests error:', error);
+      return;
+    }
+
+    allRequests = data || [];
+    renderRequests();
+    updateKPIs();
+
+    if (notify) {
+      showToast('Requests refreshed with live database data.');
+    }
+  }
+
+  function updateKPIs() {
+    const total = allRequests.length;
+    const newCount = allRequests.filter(r => r.status === 'new').length;
+    const inProg = allRequests.filter(r => r.status === 'in_progress').length;
+    const completed = allRequests.filter(r => r.status === 'completed').length;
+
+    document.getElementById('kpiTotal').textContent = total;
+    document.getElementById('kpiNew').textContent = newCount;
+    document.getElementById('kpiInProgress').textContent = inProg;
+    document.getElementById('kpiCompleted').textContent = completed;
+    document.getElementById('tableRecordCount').textContent = total;
+
+    // Sidebar badge & topbar notification dot
+    const sbBadge = document.getElementById('sidebarNewCount');
+    const dot = document.getElementById('notifDot');
+
+    if (newCount > 0) {
+      sbBadge.textContent = newCount;
+      sbBadge.style.display = 'inline-block';
+      dot.classList.add('active');
+    } else {
+      sbBadge.style.display = 'none';
+      dot.classList.remove('active');
+    }
+  }
+
+  function renderRequests() {
+    const tbody = document.getElementById('requestsTableBody');
+    const search = (document.getElementById('admSearch').value || '').toLowerCase().trim();
+    const filterType = document.getElementById('filterType').value;
+    const filterStatus = document.getElementById('filterStatus').value;
+    const filterLocation = document.getElementById('filterLocation').value;
+    const sortOrder = document.getElementById('sortOrder').value;
+
+    let filtered = allRequests.filter(r => {
+      // Search
+      const kw = `${r.ref_code || ''} ${r.client_name || ''} ${r.client_phone || ''} ${r.client_email || ''} ${r.location || ''} ${r.title || ''} ${JSON.stringify(r.details || {})}`.toLowerCase();
+      if (search && !kw.includes(search)) return false;
+
+      // Filter Type
+      if (filterType !== 'all' && r.type !== filterType) return false;
+
+      // Filter Status
+      if (filterStatus !== 'all' && r.status !== filterStatus) return false;
+
+      // Filter Location
+      if (filterLocation !== 'all') {
+        const loc = (r.location || '') + ' ' + (r.address || '');
+        if (!loc.toLowerCase().includes(filterLocation.toLowerCase())) return false;
+      }
+
+      return true;
+    });
+
+    // Sorting
+    filtered.sort((a, b) => {
+      if (sortOrder === 'date_asc') return new Date(a.created_at) - new Date(b.created_at);
+      if (sortOrder === 'urgency') {
+        const uA = (a.urgency || '').toLowerCase().includes('immediate') ? 2 : 1;
+        const uB = (b.urgency || '').toLowerCase().includes('immediate') ? 2 : 1;
+        return uB - uA;
+      }
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+
+    document.getElementById('tableRecordCount').textContent = filtered.length;
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align:center; padding:50px 20px; color:var(--adm-muted);">
+            No customer requests match your current search or filter criteria.
+          </td>
+        </tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(req => {
+      const dateStr = formatDate(req.created_at);
+      const isNew = req.status === 'new';
+      const statusBadge = getStatusBadge(req.status);
+      const typeLabel = getTypeLabel(req.type);
+      const imagesCount = Array.isArray(req.images) ? req.images.length : 0;
+      const firstImg = imagesCount > 0 ? req.images[0] : null;
+
+      const imgCell = firstImg 
+        ? `<div style="display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation(); openLightbox('${firstImg}')">
+             <img src="${firstImg}" class="adm-img-thumb" alt="Attachment">
+             ${imagesCount > 1 ? `<span class="adm-img-badge">+${imagesCount - 1}</span>` : ''}
+           </div>`
+        : `<span style="color:#94A3B8; font-size:0.75rem;">None</span>`;
+
+      return `
+        <tr class="${isNew ? 'is-unread' : ''}" style="cursor:pointer;" onclick="openDetailModal('${req.id}')">
+          <td><strong style="color:var(--adm-navy);">${req.ref_code || 'N/A'}</strong></td>
+          <td>${statusBadge}</td>
+          <td><span class="adm-type-tag">${typeLabel}</span></td>
+          <td>
+            <div style="font-weight:700; color:var(--adm-navy);">${escapeHtml(req.client_name)}</div>
+            <div style="font-size:0.78rem; color:var(--adm-muted);">${escapeHtml(req.client_phone || req.client_whatsapp || '-')}</div>
+          </td>
+          <td>${escapeHtml(req.location || 'Badore/Ajah')}</td>
+          <td>
+            <div style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--adm-navy); font-weight:600;">
+              ${escapeHtml(req.title)}
+            </div>
+            ${req.urgency && req.urgency.toLowerCase().includes('immediate') ? '<span style="color:#DC2626; font-size:0.72rem; font-weight:800;">IMMEDIATE (45-60 MINS)</span>' : ''}
+          </td>
+          <td>${imgCell}</td>
+          <td style="color:var(--adm-muted); font-size:0.8rem; white-space:nowrap;">${dateStr}</td>
+          <td>
+            <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="event.stopPropagation(); openDetailModal('${req.id}')">
+              View
+            </button>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  // --- Realtime Subscription ---
+  function setupRealtimeSubscription() {
+    const sb = getNijedeeSupabase();
+    if (!sb) return;
+
+    sb.channel('realtime_requests')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'requests' }, payload => {
+        playNotificationChime();
+        const newReq = payload.new;
+        allRequests.unshift(newReq);
+        renderRequests();
+        updateKPIs();
+        showToast(`New ${getTypeLabel(newReq.type)} from ${newReq.client_name}!`, newReq.id);
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'requests' }, payload => {
+        const updated = payload.new;
+        const idx = allRequests.findIndex(r => r.id === updated.id);
+        if (idx !== -1) {
+          allRequests[idx] = updated;
+          renderRequests();
+          updateKPIs();
+        }
+      })
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'requests' }, payload => {
+        allRequests = allRequests.filter(r => r.id !== payload.old.id);
+        renderRequests();
+        updateKPIs();
+      })
+      .subscribe();
+  }
+
+  // --- Detail Modal ---
+  function openDetailModal(id) {
+    const req = allRequests.find(r => r.id === id);
+    if (!req) return;
+    currentActiveRequest = req;
+
+    document.getElementById('modalRefCode').textContent = req.ref_code || 'REF';
+    document.getElementById('modalReqTitle').textContent = req.title;
+    document.getElementById('modalClientName').textContent = req.client_name;
+    document.getElementById('modalClientPhone').textContent = req.client_phone || req.client_whatsapp || 'Not provided';
+    document.getElementById('modalClientEmail').textContent = req.client_email || 'Not provided';
+    document.getElementById('modalLocation').textContent = req.location || 'Badore/Ajah Corridor';
+    document.getElementById('modalAddress').textContent = req.address || 'Address on file';
+    document.getElementById('modalUrgency').textContent = req.urgency || 'Normal';
+    document.getElementById('modalStatusBadge').innerHTML = getStatusBadge(req.status);
+    document.getElementById('modalCreatedAt').textContent = new Date(req.created_at).toLocaleString();
+
+    document.getElementById('modalStatusSelect').value = req.status || 'new';
+    document.getElementById('modalAdminNotes').value = req.notes || '';
+
+    // Direct WhatsApp Button
+    const waPhone = (req.client_whatsapp || req.client_phone || '').replace(/[^0-9]/g, '');
+    const waUrl = waPhone ? `https://wa.me/${waPhone.startsWith('0') ? '234' + waPhone.substring(1) : waPhone}?text=${encodeURIComponent('Hello ' + req.client_name + ', contacting you from NIJEDEE regarding your request (' + (req.ref_code || '') + ').')}` : '#';
+    const waBtn = document.getElementById('modalWhatsAppChatBtn');
+    waBtn.href = waUrl;
+    waBtn.style.display = waPhone ? 'inline-flex' : 'none';
+
+    // Call Client Button
+    const callBtn = document.getElementById('modalCallBtn');
+    callBtn.href = req.client_phone ? `tel:${req.client_phone}` : '#';
+    callBtn.style.display = req.client_phone ? 'inline-flex' : 'none';
+
+    // Render Images
+    const imgContainer = document.getElementById('modalImagesContainer');
+    const images = Array.isArray(req.images) ? req.images : [];
+    if (images.length === 0) {
+      imgContainer.innerHTML = '<span style="color:var(--adm-muted); font-size:0.85rem;">No photos attached with this submission.</span>';
+    } else {
+      imgContainer.innerHTML = images.map(imgUrl => `
+        <div class="adm-gallery-item" onclick="openLightbox('${imgUrl}')">
+          <img src="${imgUrl}" alt="Request attachment">
+        </div>`).join('');
+    }
+
+    // Render Details JSON breakdown
+    const detailsContainer = document.getElementById('modalFieldsBreakdown');
+    const details = req.details || {};
+    const keys = Object.keys(details);
+    if (keys.length === 0) {
+      detailsContainer.innerHTML = '<span>No extra custom fields provided.</span>';
+    } else {
+      let html = '<table style="width:100%; border-collapse:collapse;">';
+      for (const k of keys) {
+        let val = details[k];
+        if (typeof val === 'object' && val !== null) val = JSON.stringify(val, null, 2);
+        html += `
+          <tr style="border-bottom:1px solid #E2E8F0;">
+            <td style="padding:6px 0; font-weight:700; width:35%; text-transform:capitalize; color:var(--adm-navy);">${escapeHtml(k.replace(/([A-Z])/g, ' $1'))}</td>
+            <td style="padding:6px 0; color:#334155;">${escapeHtml(String(val))}</td>
+          </tr>`;
+      }
+      html += '</table>';
+      detailsContainer.innerHTML = html;
+    }
+
+    document.getElementById('requestDetailModal').classList.add('open');
+
+    // Auto mark as read if new
+    if (!req.is_read) {
+      markAsRead(req.id);
+    }
+  }
+
+  function closeDetailModal() {
+    document.getElementById('requestDetailModal').classList.remove('open');
+    currentActiveRequest = null;
+  }
+
+  async function markAsRead(id) {
+    const sb = getNijedeeSupabase();
+    if (!sb) return;
+    await sb.from('requests').update({ is_read: true }).eq('id', id);
+    const req = allRequests.find(r => r.id === id);
+    if (req) req.is_read = true;
+  }
+
+  async function saveStatusUpdate() {
+    if (!currentActiveRequest) return;
+    const newStatus = document.getElementById('modalStatusSelect').value;
+    const sb = getNijedeeSupabase();
+    if (!sb) return;
+
+    const { error } = await sb.from('requests').update({ status: newStatus }).eq('id', currentActiveRequest.id);
+    if (error) {
+      alert('Failed to update status: ' + error.message);
+      return;
+    }
+
+    currentActiveRequest.status = newStatus;
+    document.getElementById('modalStatusBadge').innerHTML = getStatusBadge(newStatus);
+    renderRequests();
+    updateKPIs();
+    alert('Request status updated successfully!');
+  }
+
+  async function saveAdminNotes() {
+    if (!currentActiveRequest) return;
+    const notes = document.getElementById('modalAdminNotes').value.trim();
+    const sb = getNijedeeSupabase();
+    if (!sb) return;
+
+    const { error } = await sb.from('requests').update({ notes }).eq('id', currentActiveRequest.id);
+    if (error) {
+      alert('Failed to save notes: ' + error.message);
+      return;
+    }
+
+    currentActiveRequest.notes = notes;
+    alert('Dispatch notes saved successfully!');
+  }
+
+  async function deleteCurrentRequest() {
+    if (!currentActiveRequest) return;
+    if (!confirm('Are you sure you want to permanently delete this request record?')) return;
+
+    const sb = getNijedeeSupabase();
+    if (!sb) return;
+
+    const { error } = await sb.from('requests').delete().eq('id', currentActiveRequest.id);
+    if (error) {
+      alert('Delete failed: ' + error.message);
+      return;
+    }
+
+    allRequests = allRequests.filter(r => r.id !== currentActiveRequest.id);
+    closeDetailModal();
+    renderRequests();
+    updateKPIs();
+  }
+
+  // --- Lightbox ---
+  function openLightbox(url) {
+    document.getElementById('lightboxImg').src = url;
+    document.getElementById('admLightbox').classList.add('open');
+  }
+
+  function closeLightbox() {
+    document.getElementById('admLightbox').classList.remove('open');
+  }
+
+  // --- Toast Alerts ---
+  function showToast(message, reqId = null) {
+    lastToastRequestId = reqId;
+    const toast = document.getElementById('admToast');
+    document.getElementById('toastMessage').textContent = message;
+    toast.classList.add('active');
+    setTimeout(() => {
+      toast.classList.remove('active');
+    }, 6000);
+  }
+
+  function viewToastRequest() {
+    if (lastToastRequestId) {
+      openDetailModal(lastToastRequestId);
+      document.getElementById('admToast').classList.remove('active');
+    }
+  }
+
+  function filterByNew() {
+    switchTab('requests');
+    document.getElementById('filterStatus').value = 'new';
+    renderRequests();
+  }
+
+  function setQuickFilter(status) {
+    switchTab('requests');
+    document.getElementById('filterStatus').value = status;
+    renderRequests();
+  }
+
+  // --- Settings (Change Email & Change Password) ---
+  async function handleChangeEmail(e) {
+    e.preventDefault();
+    const newEmail = document.getElementById('newEmailInput').value.trim();
+    const btn = document.getElementById('saveEmailBtn');
+    const alertBox = document.getElementById('settingsAlert');
+
+    alertBox.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Updating Email...';
+
+    const sb = getNijedeeSupabase();
+    const { data, error } = await sb.auth.updateUser({ email: newEmail });
+
+    btn.disabled = false;
+    btn.textContent = 'Save & Update Email';
+
+    if (error) {
+      alertBox.className = 'adm-alert adm-alert--error';
+      alertBox.textContent = 'Error updating email: ' + error.message;
+      alertBox.style.display = 'block';
+      return;
+    }
+
+    alertBox.className = 'adm-alert adm-alert--success';
+    alertBox.textContent = `A confirmation link has been sent to ${newEmail}. Once confirmed, your login email will update automatically.`;
+    alertBox.style.display = 'block';
+    document.getElementById('newEmailInput').value = '';
+  }
+
+  async function handleChangePassword(e) {
+    e.preventDefault();
+    const newPass = document.getElementById('newPasswordInput').value;
+    const confirmPass = document.getElementById('confirmPasswordInput').value;
+    const btn = document.getElementById('savePasswordBtn');
+    const alertBox = document.getElementById('settingsAlert');
+
+    alertBox.style.display = 'none';
+
+    if (newPass !== confirmPass) {
+      alertBox.className = 'adm-alert adm-alert--error';
+      alertBox.textContent = 'New password and confirmation do not match.';
+      alertBox.style.display = 'block';
+      return;
+    }
+
+    if (newPass.length < 8) {
+      alertBox.className = 'adm-alert adm-alert--error';
+      alertBox.textContent = 'Password must be at least 8 characters long.';
+      alertBox.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Updating Password...';
+
+    const sb = getNijedeeSupabase();
+    const { data, error } = await sb.auth.updateUser({ password: newPass });
+
+    btn.disabled = false;
+    btn.textContent = 'Update Password';
+
+    if (error) {
+      alertBox.className = 'adm-alert adm-alert--error';
+      alertBox.textContent = 'Error updating password: ' + error.message;
+      alertBox.style.display = 'block';
+      return;
+    }
+
+    alertBox.className = 'adm-alert adm-alert--success';
+    alertBox.textContent = 'Password updated successfully! You can now use your new password on your next sign-in.';
+    alertBox.style.display = 'block';
+    document.getElementById('newPasswordInput').value = '';
+    document.getElementById('confirmPasswordInput').value = '';
+  }
+
+  // --- Helper Functions ---
+  function getStatusBadge(status) {
+    switch (status) {
+      case 'new': return '<span class="adm-badge adm-badge--new">New</span>';
+      case 'in_progress': return '<span class="adm-badge adm-badge--in_progress">In Progress</span>';
+      case 'completed': return '<span class="adm-badge adm-badge--completed">Completed</span>';
+      case 'cancelled': return '<span class="adm-badge adm-badge--cancelled">Cancelled</span>';
+      default: return `<span class="adm-badge">${escapeHtml(status || 'New')}</span>`;
+    }
+  }
+
+  function getTypeLabel(type) {
+    switch (type) {
+      case 'service_booking': return 'Service Booking';
+      case 'artisan_dispatch': return 'Artisan Dispatch';
+      case 'artisan_application': return 'Artisan Application';
+      case 'academy_enrollment': return 'Academy Enrollment';
+      case 'materials_order': return 'Materials Mart';
+      case 'property_inquiry': return 'Property Inquiry';
+      case 'property_listing': return 'Property Listing';
+      case 'contact_message': return 'Contact Message';
+      default: return type ? type.replace(/_/g, ' ') : 'General Request';
+    }
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '-';
+    const d = new Date(iso);
+    const now = new Date();
+    const diff = (now - d) / 1000;
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Initialize
+  window.addEventListener('DOMContentLoaded', () => {
+    checkAuthSession();
+  });
+</script>
+</body>
+</html>

@@ -1245,6 +1245,28 @@
 
     const whatsappUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(msg)}`;
 
+    const refNum = 'MART-' + Math.floor(10000 + Math.random() * 90000);
+    const cartSnapshot = [...cart];
+    if (window.submitNijedeeRequest) {
+      window.submitNijedeeRequest({
+        ref_code: refNum,
+        type: 'materials_order',
+        title: `Materials Order (${cartSnapshot.length} Items - NGN ${subtotal.toLocaleString()})`,
+        client_name: name,
+        client_phone: phone,
+        client_whatsapp: whatsapp,
+        location: zone,
+        address: address,
+        urgency: 'Normal',
+        details: {
+          items: cartSnapshot,
+          subtotal: subtotal,
+          paymentPreference: payPref,
+          corridor: zone
+        }
+      });
+    }
+
     cart = [];
     updateCartUI();
     document.getElementById('checkoutModal').classList.remove('open');
@@ -1308,5 +1330,7 @@
     if (countEl) countEl.textContent = `Showing ${visibleCount} authentic products`;
   }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
 </body>
 </html>

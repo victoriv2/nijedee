@@ -396,6 +396,12 @@
             <textarea id="accessNotes" placeholder="e.g. Estate gate code required, second floor apartment, water source available in compound..."></textarea>
           </div>
 
+          <div class="form-group" style="margin-top:16px;">
+            <label for="bookPhotos">Attach Photos of Fault / Site (Optional)</label>
+            <input type="file" id="bookPhotos" multiple accept="image/*" style="padding:8px; border:1px dashed var(--border); border-radius:6px; width:100%; background:#FAFAFA;">
+            <small style="color:var(--text-muted); font-size:0.8rem; display:block; margin-top:4px;">Upload images of leaking pipes, damaged walls, AC units, or electrical points.</small>
+          </div>
+
           <div class="btn-step-group">
             <button type="button" class="btn btn-outline" onclick="goToStep(1)">&larr; Back</button>
             <button type="button" class="btn btn-primary" onclick="goToStep(3)">Next Step &rarr;</button>
@@ -751,6 +757,32 @@
     const waBtn = document.getElementById('bookingWaBtn');
     if (waBtn) waBtn.href = waUrl;
 
+    // Asynchronously record into Supabase Admin Dashboard
+    const photoFiles = document.getElementById('bookPhotos')?.files;
+    if (window.submitNijedeeRequest) {
+      window.submitNijedeeRequest({
+        ref_code: refNum,
+        type: 'service_booking',
+        title: `${svc} - ${cat}`,
+        client_name: name,
+        client_phone: phone,
+        client_whatsapp: phone,
+        client_email: document.getElementById('clientEmail')?.value || '',
+        location: area,
+        address: addr,
+        urgency: urgency,
+        details: {
+          service: svc,
+          category: cat,
+          propertyType: type,
+          scheduledDate: date,
+          arrivalWindow: slot,
+          notes: notes
+        },
+        files: photoFiles
+      });
+    }
+
     window.open(waUrl, '_blank');
   }
 
@@ -780,5 +812,7 @@
   }
 </script>
 <script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
 </body>
 </html>

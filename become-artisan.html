@@ -1272,6 +1272,40 @@
 
     window.scrollTo({ top: document.getElementById('artisan-form-card').offsetTop - 100, behavior: 'smooth' });
 
+    // Dispatch to Supabase Admin Dashboard
+    const filesToUpload = [];
+    const f1 = document.querySelector('input[name="valid_id"]')?.files;
+    const f2 = document.querySelector('input[name="profile_photo"]')?.files;
+    const f3 = document.querySelector('input[name="certification"]')?.files;
+    if (f1 && f1[0]) filesToUpload.push(f1[0]);
+    if (f2 && f2[0]) filesToUpload.push(f2[0]);
+    if (f3 && f3[0]) filesToUpload.push(f3[0]);
+
+    if (window.submitNijedeeRequest) {
+      window.submitNijedeeRequest({
+        ref_code: ref,
+        type: 'artisan_application',
+        title: `Artisan Application - ${trade} (${fullName})`,
+        client_name: fullName,
+        client_phone: phone,
+        client_whatsapp: whatsapp,
+        client_email: document.getElementById('email')?.value || '',
+        location: area,
+        address: document.getElementById('address')?.value || '',
+        urgency: 'Normal',
+        details: {
+          trade,
+          experience,
+          toolStatus,
+          areasList,
+          bank: document.getElementById('bank_name')?.value || '',
+          account: document.getElementById('account')?.value || '',
+          accountName: document.getElementById('account_name')?.value || ''
+        },
+        files: filesToUpload
+      });
+    }
+
     // Open WhatsApp in new tab
     window.open(waUrl, '_blank');
   });
@@ -1279,5 +1313,7 @@
   // Initialize
   showStep(1);
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
 </body>
 </html>

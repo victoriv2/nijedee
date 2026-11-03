@@ -837,6 +837,12 @@
             </div>
           </div>
 
+          <div class="spec-form-group">
+            <label for="artisanFaultPhotos">Attach Photos of Problem / Equipment (Optional)</label>
+            <input type="file" id="artisanFaultPhotos" multiple accept="image/*" style="padding:8px; border:1px dashed var(--tk-border, #CBD5E1); border-radius:6px; width:100%; background:#FAFAFA;">
+            <small style="color:var(--tk-offwhite-dark); font-size:0.8rem; display:block; margin-top:4px;">Upload images of faulty plumbing, breaker panels, AC compressors, or furniture.</small>
+          </div>
+
           <!-- Actions -->
           <div class="request-action-row">
             <button type="button" class="btn-whatsapp-dispatch" onclick="submitViaWhatsApp()">
@@ -1524,6 +1530,29 @@
       modal.style.display = 'flex';
     }
 
+    // Record into Supabase Admin Dashboard
+    const photoFiles = document.getElementById('artisanFaultPhotos')?.files;
+    const refNum = 'DSP-' + Math.floor(10000 + Math.random() * 90000);
+    if (window.submitNijedeeRequest) {
+      window.submitNijedeeRequest({
+        ref_code: refNum,
+        type: 'artisan_dispatch',
+        title: `Artisan Dispatch - ${trade} (${urgency})`,
+        client_name: custName,
+        client_phone: custPhone,
+        client_whatsapp: custPhone,
+        location: location,
+        urgency: urgency,
+        details: {
+          trade: trade,
+          scope: scope,
+          faultDescription: desc,
+          urgency: urgency
+        },
+        files: photoFiles
+      });
+    }
+
     // Also auto-open WhatsApp dispatch tab
     window.open(waUrl, '_blank');
   }
@@ -1553,5 +1582,7 @@
   });
 </script>
 <script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
 </body>
 </html>
