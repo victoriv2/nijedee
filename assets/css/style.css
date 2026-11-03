@@ -708,6 +708,41 @@ body.drawer-open {
   gap: 28px;
 }
 
+.tk-hero__text-block {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tk-hero__faded-bg {
+  position: absolute;
+  inset: -14px -18px;
+  background-image: url('../images/hero-team-banner.jpg');
+  background-size: cover;
+  background-position: center 25%;
+  background-repeat: no-repeat;
+  opacity: 0.18;
+  border-radius: 18px;
+  z-index: -1;
+  pointer-events: none;
+  filter: saturate(1.15) contrast(1.05);
+  -webkit-mask-image: radial-gradient(ellipse 98% 98% at 50% 50%, #000 70%, transparent 100%);
+  mask-image: radial-gradient(ellipse 98% 98% at 50% 50%, #000 70%, transparent 100%);
+}
+
+@media (max-width: 768px) {
+  .tk-hero__text-block {
+    padding: 6px 2px;
+  }
+  .tk-hero__faded-bg {
+    inset: -10px -12px;
+    opacity: 0.20;
+    background-position: center 20%;
+  }
+}
+
 .tk-hero__badge-trust {
   display: inline-flex;
   align-items: center;
