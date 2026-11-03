@@ -115,12 +115,12 @@ body {
   width: 100%;
   max-width: 100%;
   position: relative;
-  padding-top: 84px;
+  padding-top: 118px;
 }
 
 @media (max-width: 640px) {
   body {
-    padding-top: 64px;
+    padding-top: 94px;
   }
 }
 
@@ -342,6 +342,104 @@ ul, ol {
 .tk-header.header-visible,
 .navbar.header-visible {
   transform: translateY(0);
+}
+
+/* =============================================================
+   Top Utility Bar (Header Top Strip - WhatsApp & Direct Phone)
+   ============================================================= */
+.tk-topbar {
+  background: var(--tk-navy, #07224F);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  line-height: 1;
+}
+
+.tk-topbar__inner {
+  max-width: var(--tk-max);
+  padding: 8px var(--tk-gutter);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tk-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #94A3B8;
+  font-size: 0.78rem;
+}
+
+.tk-topbar__badge {
+  background: rgba(30, 94, 255, 0.25);
+  color: #93C5FD;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+
+.tk-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.tk-topbar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: color 0.2s ease;
+  transform: none !important;
+}
+
+.tk-topbar__link:hover {
+  color: #93C5FD;
+  transform: none !important;
+}
+
+.tk-topbar__link--wa {
+  color: #25D366;
+  font-weight: 700;
+}
+
+.tk-topbar__link--wa:hover {
+  color: #4ade80;
+  transform: none !important;
+}
+
+.tk-topbar__link svg,
+.tk-topbar__link img {
+  display: block;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .tk-topbar__inner {
+    padding: 7px 14px;
+    justify-content: center;
+  }
+  .tk-topbar__left {
+    display: none;
+  }
+  .tk-topbar__right {
+    gap: 14px;
+    width: 100%;
+    justify-content: center;
+  }
+  .tk-topbar__link {
+    font-size: 0.76rem;
+  }
 }
 
 .tk-header__inner,
