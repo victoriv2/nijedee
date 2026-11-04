@@ -158,6 +158,21 @@ a {
 button, input, select, textarea {
   font-family: inherit;
   font-size: inherit;
+  box-sizing: border-box;
+}
+
+/* Universal Form Field Sizing & Boundaries: Prevent inputs/textareas from exceeding container */
+input,
+select,
+textarea {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+textarea {
+  resize: vertical !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 ul, ol {
@@ -1973,6 +1988,8 @@ body.drawer-open {
 }
 .form-control {
   width: 100%;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
   height: 48px;
   padding: 10px 16px;
   border-radius: var(--tk-radius-sm);
@@ -1991,7 +2008,9 @@ textarea.form-control {
   height: auto;
   min-height: 120px;
   padding: 14px 16px;
-  resize: vertical;
+  resize: vertical !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 /* Grids & Cards (Shop, Properties, Artisans) */
@@ -2140,6 +2159,8 @@ textarea.form-control {
 .form-group select,
 .form-group textarea {
   width: 100%;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
   padding: 12px 14px;
   border: 1px solid var(--tk-neutral-100);
   border-radius: var(--tk-radius-sm);
@@ -2148,6 +2169,10 @@ textarea.form-control {
   outline: none;
   background: var(--tk-white);
   transition: border-color 0.2s ease;
+}
+.form-group textarea {
+  resize: vertical !important;
+  min-height: 100px;
 }
 .form-group input:focus,
 .form-group select:focus,

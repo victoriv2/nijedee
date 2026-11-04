@@ -96,6 +96,8 @@
 
     .adm-form-input, .adm-form-select, .adm-form-textarea {
       width: 100%;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
       padding: 12px 14px;
       font-size: 0.95rem;
       border: 1.5px solid var(--adm-border);
@@ -104,6 +106,11 @@
       color: var(--adm-text);
       transition: border-color 0.15s ease;
       font-family: inherit;
+    }
+
+    .adm-form-textarea {
+      resize: vertical !important;
+      min-height: 80px;
     }
 
     .adm-form-input:focus, .adm-form-select:focus, .adm-form-textarea:focus {
