@@ -902,12 +902,14 @@
       z-index: 9998;
       opacity: 0;
       visibility: hidden;
+      pointer-events: none !important;
       transition: opacity 0.2s ease, visibility 0.2s ease;
     }
 
     .adm-drawer-backdrop.active {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto !important;
     }
 
     .adm-drawer {
@@ -916,18 +918,24 @@
       left: 0;
       bottom: 0;
       width: 280px;
+      max-width: 85vw;
       background: var(--adm-navy);
       color: #FFFFFF;
       z-index: 9999;
       display: flex;
       flex-direction: column;
-      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.35);
+      box-shadow: none !important;
       transform: translateX(-100%) !important;
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s !important;
     }
 
     .adm-drawer.active {
       transform: translateX(0) !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.35) !important;
     }
 
     .adm-drawer__header {
