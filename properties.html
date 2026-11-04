@@ -1330,9 +1330,14 @@
     }).join('');
   }
 
-  async function loadPropertiesFromSupabase() {
+  async function loadPropertiesFromSupabase(retries = 15) {
     const sb = getNijedeeSupabase();
-    if (!sb) return;
+    if (!sb) {
+      if (retries > 0) {
+        setTimeout(() => loadPropertiesFromSupabase(retries - 1), 150);
+      }
+      return;
+    }
 
     try {
       const { data: props, error } = await sb
@@ -1355,9 +1360,12 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
+  // Load properties dynamically on startup (checks both DOM ready and interactive state)
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => loadPropertiesFromSupabase());
+  } else {
     loadPropertiesFromSupabase();
-  });
+  }
 </script>
 </body>
 </html>

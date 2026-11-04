@@ -1101,13 +1101,6 @@
         </div>
       `;
     }).join('');
-              <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="handleCardAddToCart('${p.id}')">Add to Cart</button>
-              <a id="prodWaBtn_${p.id}" href="https://wa.me/2347085329909?text=${encodeURIComponent(waInitialText)}" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;" title="Order via WhatsApp">WhatsApp</a>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
 
     const countEl = document.getElementById('productsCountText');
     if (countEl) countEl.textContent = `Showing ${prods.length} authentic products`;
@@ -1115,9 +1108,14 @@
     updateCategoryBadges(prods);
   }
 
-  async function loadShopProductsFromSupabase() {
+  async function loadShopProductsFromSupabase(retries = 15) {
     const sb = getNijedeeSupabase();
-    if (!sb) return;
+    if (!sb) {
+      if (retries > 0) {
+        setTimeout(() => loadShopProductsFromSupabase(retries - 1), 150);
+      }
+      return;
+    }
 
     try {
       const { data: prods, error } = await sb
@@ -1140,10 +1138,12 @@
     }
   }
 
-  // Load products dynamically on startup
-  window.addEventListener('DOMContentLoaded', () => {
+  // Load products dynamically on startup (checks both DOM ready and interactive state)
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => loadShopProductsFromSupabase());
+  } else {
     loadShopProductsFromSupabase();
-  });
+  }
 
   function setCategoryFilter(category, btn) {
     document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
