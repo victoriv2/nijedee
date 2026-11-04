@@ -1804,6 +1804,20 @@ body.drawer-open {
   margin-inline: auto;
 }
 
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: var(--tk-radius-pill, 999px);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap !important;
+  box-sizing: border-box;
+}
+
 .filter-row,
 .service-nav-tabs {
   display: flex;
