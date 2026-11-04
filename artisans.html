@@ -58,6 +58,9 @@
       text-transform: uppercase;
       margin-bottom: 16px;
       color: #ffffff;
+      white-space: nowrap !important;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .artisan-hero h1 {
       color: #ffffff;
@@ -600,6 +603,13 @@
       .artisan-hero {
         padding: 44px 16px 36px;
       }
+      .artisan-hero-pill {
+        white-space: nowrap !important;
+        font-size: clamp(0.60rem, 2.7vw, 0.78rem) !important;
+        padding: 5px 12px !important;
+        letter-spacing: 0.02em !important;
+        max-width: 100% !important;
+      }
       .artisan-request-layout {
         grid-template-columns: minmax(0, 1fr) !important;
         gap: 24px;
@@ -710,7 +720,7 @@
 <!-- HERO BANNER -->
 <section class="artisan-hero">
   <div class="container">
-    <span class="artisan-hero-pill">Module 02 &bull; Verified Trade Dispatch &bull; CAC RC 1403323</span>
+    <span class="artisan-hero-pill" style="white-space: nowrap !important;">Module 02 &bull; Verified Trade Dispatch &bull; CAC RC 1403323</span>
     <h1>Request a Verified Artisan</h1>
     <p>Zero guesswork, no anonymous labor, no artisan extortion. Select your exact trade specification below and NIJEDEE dispatches an identity-vetted, trade-tested technician directly to your property across Lekki, Ajah, Badore, and Sangotedo.</p>
     

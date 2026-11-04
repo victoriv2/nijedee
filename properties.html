@@ -31,6 +31,9 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
       margin-bottom: 16px;
+      white-space: nowrap !important;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .properties-hero h1 {
       color: #ffffff;
@@ -304,6 +307,13 @@
       .prop-request-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 28px; }
       .prop-mgmt-section, .prop-request-section { padding: 32px 20px; }
       .properties-hero { padding: 48px 16px; }
+      .prop-module-pill {
+        white-space: nowrap !important;
+        font-size: clamp(0.68rem, 2.8vw, 0.78rem) !important;
+        padding: 5px 12px !important;
+        letter-spacing: 0.03em !important;
+        max-width: 100% !important;
+      }
       .prop-owner-banner {
         grid-template-columns: minmax(0, 1fr) !important;
         padding: 32px 20px !important;
@@ -476,7 +486,7 @@
 <!-- HERO -->
 <section class="properties-hero">
   <div class="container">
-    <span class="prop-module-pill">Module 05 &middot; Properties &amp; Facility Care</span>
+    <span class="prop-module-pill" style="white-space: nowrap !important;">Module 05 &middot; Properties &amp; Facility Care</span>
     <h1>Find, Rent, Sell or Manage Properties</h1>
     <p>Extending NIJEDEE from services into real estate. Connecting verified property owners, tenants, and shortlet guests with integrated maintenance across Lekki, Ajah, Badore, and Sangotedo.</p>
     <div class="prop-hero-actions">
