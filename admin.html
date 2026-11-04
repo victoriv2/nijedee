@@ -850,6 +850,147 @@
       display: flex;
     }
 
+    /* Switch toggle */
+    .adm-switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .adm-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .adm-switch-slider {
+      width: 38px;
+      height: 22px;
+      background: #CBD5E1;
+      border-radius: 20px;
+      position: relative;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+    }
+    .adm-switch-slider::before {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .adm-switch input:checked + .adm-switch-slider {
+      background: #16A34A;
+    }
+    .adm-switch input:checked + .adm-switch-slider::before {
+      transform: translateX(16px);
+    }
+
+    /* Multi-image preview grid */
+    .adm-upload-zone {
+      border: 2px dashed #CBD5E1;
+      border-radius: 10px;
+      padding: 16px;
+      background: #F8FAFC;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .adm-upload-zone:hover {
+      border-color: var(--adm-blue);
+      background: #EFF6FF;
+    }
+    .adm-img-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .adm-img-strip-item {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      border: 1.5px solid var(--adm-border);
+      overflow: hidden;
+      background: #F1F5F9;
+    }
+    .adm-img-strip-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .adm-img-strip-del {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 20px;
+      height: 20px;
+      background: rgba(220, 38, 38, 0.9);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      padding: 0;
+    }
+
+    /* Feature tags selector */
+    .adm-chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .adm-chip-btn {
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      color: var(--adm-navy);
+      padding: 5px 12px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .adm-chip-btn.active {
+      background: #1E5EFF;
+      border-color: #1E5EFF;
+      color: #FFFFFF;
+    }
+
+    /* Variant builder row */
+    .adm-variant-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 2fr 36px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 600px) {
+      .adm-variant-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+      .adm-variant-row button {
+        grid-column: 1 / -1;
+      }
+    }
+
     /* Password Input Toggle Button */
     .adm-input-toggle-wrap {
       position: relative;
@@ -1142,6 +1283,16 @@
       <span>All Requests</span>
       <span id="mobileSidebarNewCount" class="adm-nav__badge" style="display:none;">0</span>
     </a>
+    <a class="adm-nav__link" onclick="switchTab('products'); toggleMobileMenu(false);">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span>Shop Products</span>
+      <span id="mobileSidebarProductsCount" class="adm-nav__badge" style="background:#2563EB;">25</span>
+    </a>
+    <a class="adm-nav__link" onclick="switchTab('properties'); toggleMobileMenu(false);">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Properties</span>
+      <span id="mobileSidebarPropertiesCount" class="adm-nav__badge" style="background:#0D9488;">4</span>
+    </a>
     <a class="adm-nav__link" onclick="switchTab('settings'); toggleMobileMenu(false);">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       <span>Account &amp; Security</span>
@@ -1176,6 +1327,16 @@
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         <span>All Requests</span>
         <span id="sidebarNewCount" class="adm-nav__badge" style="display:none;">0</span>
+      </a>
+      <a class="adm-nav__link" onclick="switchTab('products')">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span>Shop Products</span>
+        <span id="sidebarProductsCount" class="adm-nav__badge" style="background:#2563EB;">25</span>
+      </a>
+      <a class="adm-nav__link" onclick="switchTab('properties')">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Properties</span>
+        <span id="sidebarPropertiesCount" class="adm-nav__badge" style="background:#0D9488;">4</span>
       </a>
       <a class="adm-nav__link" onclick="switchTab('settings')">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -1370,7 +1531,227 @@
 
     </section>
 
-    <!-- CONTENT: SETTINGS TAB (Change Email & Change Password) -->
+    <!-- CONTENT: PRODUCTS TAB (Shop & Materials Inventory) -->
+    <section id="tabProducts" class="adm-content" style="display:none;">
+      
+      <!-- KPI Metrics Bar -->
+      <div class="adm-stats">
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>Total Products</h4>
+            <div id="kpiProductsTotal" class="adm-stat-number">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#EFF6FF; color:#1E5EFF;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>Active / Live</h4>
+            <div id="kpiProductsActive" class="adm-stat-number" style="color:#16A34A;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#DCFCE7; color:#166534;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>Hidden / Draft</h4>
+            <div id="kpiProductsHidden" class="adm-stat-number" style="color:#94A3B8;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#F1F5F9; color:#64748B;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>In Stock</h4>
+            <div id="kpiProductsInStock" class="adm-stat-number" style="color:#2563EB;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#DBEAFE; color:#1E40AF;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Action Bar -->
+      <div class="adm-filter-bar">
+        <div class="adm-search-wrap">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="prodSearchInput" class="adm-search-input" placeholder="Search product name, brand, badge, price..." oninput="renderProducts()">
+        </div>
+
+        <select id="prodFilterCat" class="adm-filter-select" onchange="renderProducts()">
+          <option value="all">All Categories</option>
+          <option value="paints">NIJEDEE Paints</option>
+          <option value="lighting">Electrical &amp; Lighting</option>
+          <option value="plumbing">Plumbing &amp; Sanitary</option>
+          <option value="materials">Building Materials &amp; Hardware</option>
+          <option value="hvac">HVAC &amp; AC Supplies</option>
+        </select>
+
+        <select id="prodFilterStatus" class="adm-filter-select" onchange="renderProducts()">
+          <option value="all">All Statuses</option>
+          <option value="active">Active Only</option>
+          <option value="hidden">Hidden Only</option>
+          <option value="out_of_stock">Out of Stock</option>
+        </select>
+
+        <button type="button" class="adm-btn adm-btn--primary" onclick="openProductModal()" style="white-space:nowrap;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Add New Product</span>
+        </button>
+
+        <button type="button" class="adm-btn adm-btn--outline" onclick="fetchProducts(true)" title="Reload products">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          <span>Refresh</span>
+        </button>
+      </div>
+
+      <!-- Products Table -->
+      <div class="adm-table-wrap">
+        <div class="adm-table-header-row">
+          <h3>Shop Catalogue (<span id="productsRecordCount">0</span>)</h3>
+          <span style="font-size:0.82rem; color:var(--adm-muted);">Manage inventory, variant pricing, visibility &amp; details</span>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product &amp; Brand</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Variants</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody">
+              <tr>
+                <td colspan="8" style="text-align:center; padding:40px; color:var(--adm-muted);">Loading products catalogue...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CONTENT: PROPERTIES TAB (Real Estate & Shortlet Directory) -->
+    <section id="tabProperties" class="adm-content" style="display:none;">
+      
+      <!-- KPI Metrics Bar -->
+      <div class="adm-stats">
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>Total Properties</h4>
+            <div id="kpiPropTotal" class="adm-stat-number">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#F0FDFA; color:#0F766E;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>For Rent</h4>
+            <div id="kpiPropRent" class="adm-stat-number" style="color:#2563EB;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#EFF6FF; color:#1E5EFF;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>Shortlets</h4>
+            <div id="kpiPropShortlet" class="adm-stat-number" style="color:#D97706;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#FEF3C7; color:#92400E;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>Active Listings</h4>
+            <div id="kpiPropActive" class="adm-stat-number" style="color:#16A34A;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#DCFCE7; color:#166534;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Action Bar -->
+      <div class="adm-filter-bar">
+        <div class="adm-search-wrap">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="propSearchInput" class="adm-search-input" placeholder="Search property title, location, address, ref..." oninput="renderProperties()">
+        </div>
+
+        <select id="propFilterCat" class="adm-filter-select" onchange="renderProperties()">
+          <option value="all">All Categories</option>
+          <option value="rent">Properties for Rent</option>
+          <option value="shortlet">Shortlet Apartments</option>
+          <option value="sale">Properties for Sale</option>
+          <option value="management">Facility Management</option>
+        </select>
+
+        <select id="propFilterStatus" class="adm-filter-select" onchange="renderProperties()">
+          <option value="all">All Statuses</option>
+          <option value="active">Active Only</option>
+          <option value="hidden">Hidden Only</option>
+        </select>
+
+        <button type="button" class="adm-btn adm-btn--primary" onclick="openPropertyModal()" style="white-space:nowrap;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Register New Property</span>
+        </button>
+
+        <button type="button" class="adm-btn adm-btn--outline" onclick="fetchProperties(true)" title="Reload properties">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          <span>Refresh</span>
+        </button>
+      </div>
+
+      <!-- Properties Table -->
+      <div class="adm-table-wrap">
+        <div class="adm-table-header-row">
+          <h3>Real Estate Listings (<span id="propertiesRecordCount">0</span>)</h3>
+          <span style="font-size:0.82rem; color:var(--adm-muted);">Manage rental packages, pricing breakdowns, photos &amp; status</span>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>Title &amp; Address</th>
+                <th>Category</th>
+                <th>Rent / Price</th>
+                <th>Status Tag</th>
+                <th>Availability</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="propertiesTableBody">
+              <tr>
+                <td colspan="8" style="text-align:center; padding:40px; color:var(--adm-muted);">Loading real estate listings...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
     <section id="tabSettings" class="adm-content" style="display:none;">
       <div class="adm-settings-wrap">
         
@@ -1553,6 +1934,327 @@
   </div>
 </div>
 
+<!-- PRODUCT ADD / EDIT MODAL -->
+<div id="productCrudModal" class="adm-modal-overlay">
+  <div class="adm-modal" style="max-width:760px;">
+    <div class="adm-modal__header">
+      <h3 id="productModalTitle" class="adm-modal__title">Create New Shop Product</h3>
+      <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="closeProductModal()">&times; Close</button>
+    </div>
+
+    <div class="adm-modal__body">
+      <form id="productCrudForm" onsubmit="saveProduct(event)">
+        <input type="hidden" id="prodFormId">
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="prodFormName">Product Name *</label>
+            <input type="text" id="prodFormName" class="adm-form-input" placeholder="e.g. NIJEDEE Higher Satin (20L)" required>
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="prodFormCategory">Category *</label>
+            <select id="prodFormCategory" class="adm-form-select" required>
+              <option value="paints">NIJEDEE Paints</option>
+              <option value="lighting">Electrical &amp; Lighting</option>
+              <option value="plumbing">Plumbing &amp; Sanitary</option>
+              <option value="materials">Building Materials &amp; Hardware</option>
+              <option value="hvac">HVAC &amp; AC Supplies</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="prodFormBrand">Brand / Sub-Heading</label>
+            <input type="text" id="prodFormBrand" class="adm-form-input" placeholder="e.g. NIJEDEE Paints · 20 Litres or Brand: Led Lighting">
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="prodFormBadge">Card Badge Tag</label>
+            <input type="text" id="prodFormBadge" class="adm-form-input" placeholder="e.g. Higher Satin · 20L or Glass Dimmable · 3W–18W">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px;">
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="prodFormPrice">Base Price (₦) *</label>
+            <input type="number" id="prodFormPrice" class="adm-form-input" placeholder="e.g. 65000" required>
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="prodFormPriceMax">Max Price (₦) (Optional for ranges)</label>
+            <input type="number" id="prodFormPriceMax" class="adm-form-input" placeholder="e.g. 7448">
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="prodFormPriceDisplay">Price Display Override</label>
+            <input type="text" id="prodFormPriceDisplay" class="adm-form-input" placeholder="e.g. ₦5,548 – ₦7,448 or ₦1,200 / pair">
+          </div>
+        </div>
+
+        <div class="adm-form-group">
+          <label class="adm-form-label" for="prodFormDescription">Full Description</label>
+          <textarea id="prodFormDescription" class="adm-form-textarea" rows="3" placeholder="Product details, specs, coverage, application..."></textarea>
+        </div>
+
+        <!-- Wattage / Size Variants Builder -->
+        <div style="background:#F8FAFC; border:1px solid var(--adm-border); border-radius:8px; padding:16px; margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div>
+              <label class="adm-form-label" style="margin:0;">Wattage / Size Variants (Optional)</label>
+              <div style="font-size:0.75rem; color:var(--adm-muted);">Add multi-pricing options like 3W, 6W, 12W, 18W</div>
+            </div>
+            <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="addVariantRow()">+ Add Variant</button>
+          </div>
+
+          <div id="prodVariantsContainer">
+            <!-- Dynamic rows -->
+          </div>
+        </div>
+
+        <!-- Multi-Image Upload (Up to 5 images) -->
+        <div style="background:#F8FAFC; border:1px solid var(--adm-border); border-radius:8px; padding:16px; margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <label class="adm-form-label" style="margin:0;">Product Photos (Max 5 photos)</label>
+            <span id="prodImagesCount" style="font-size:0.75rem; font-weight:700; color:var(--adm-muted);">0 / 5 photos</span>
+          </div>
+          <div style="font-size:0.75rem; color:var(--adm-muted); margin-bottom:10px;">
+            Upload up to 5 photos. All images are automatically compressed to under 100KB.
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+            <input type="file" id="prodPhotoInput" multiple accept="image/*" style="display:none;" onchange="handleProductImageUpload(this)">
+            <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="document.getElementById('prodPhotoInput').click()">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Upload Photos</span>
+            </button>
+            <div style="display:flex; gap:6px; flex:1; min-width:220px;">
+              <input type="text" id="prodDirectImageUrl" class="adm-form-input" style="padding:6px 10px; font-size:0.82rem;" placeholder="Or paste image URL / asset path">
+              <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="addProductImageUrl()">Add</button>
+            </div>
+          </div>
+          <div id="prodImageUploadStatus" style="font-size:0.78rem; color:#1E5EFF; font-weight:700; margin-bottom:6px;"></div>
+
+          <div id="prodImagesStrip" class="adm-img-strip"></div>
+        </div>
+
+        <div class="adm-form-group">
+          <label class="adm-form-label" for="prodFormKeywords">Search Keywords (Optional)</label>
+          <input type="text" id="prodFormKeywords" class="adm-form-input" placeholder="e.g. paint satin white gloss 20l washable">
+        </div>
+
+        <!-- Stock & Active Toggles -->
+        <div style="display:flex; gap:24px; flex-wrap:wrap; background:#F1F5F9; border-radius:8px; padding:14px; margin-bottom:24px;">
+          <label class="adm-switch">
+            <input type="checkbox" id="prodFormInStock" checked>
+            <span class="adm-switch-slider"></span>
+            <span>In Stock</span>
+          </label>
+          <label class="adm-switch">
+            <input type="checkbox" id="prodFormIsActive" checked>
+            <span class="adm-switch-slider"></span>
+            <span>Active &amp; Visible on Shop</span>
+          </label>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="adm-btn adm-btn--outline" onclick="closeProductModal()">Cancel</button>
+          <button type="submit" id="prodSaveBtn" class="adm-btn adm-btn--primary">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- PROPERTY ADD / EDIT MODAL -->
+<div id="propertyCrudModal" class="adm-modal-overlay">
+  <div class="adm-modal" style="max-width:800px;">
+    <div class="adm-modal__header">
+      <h3 id="propertyModalTitle" class="adm-modal__title">Register New Property Listing</h3>
+      <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="closePropertyModal()">&times; Close</button>
+    </div>
+
+    <div class="adm-modal__body">
+      <form id="propertyCrudForm" onsubmit="saveProperty(event)">
+        <input type="hidden" id="propFormId">
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="propFormTitle">Property Title *</label>
+            <input type="text" id="propFormTitle" class="adm-form-input" placeholder="e.g. Shared Apartment · Ground Floor" required>
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="propFormCategory">Listing Category *</label>
+            <select id="propFormCategory" class="adm-form-select" required>
+              <option value="rent">Properties for Rent (Annual Lease)</option>
+              <option value="shortlet">Shortlet Apartments (Short Stay)</option>
+              <option value="sale">Properties for Sale (Purchase)</option>
+              <option value="management">Facility &amp; Asset Management</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="propFormBadge">Card Badge Tag</label>
+            <input type="text" id="propFormBadge" class="adm-form-input" placeholder="e.g. For Rent · Downstairs or Shortlet">
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="propFormLocation">Location Corridor *</label>
+            <select id="propFormLocation" class="adm-form-select" required>
+              <option value="Badore, Ajah">Badore, Ajah</option>
+              <option value="Ajah Central">Ajah Central</option>
+              <option value="Sangotedo">Sangotedo</option>
+              <option value="Lekki Phase 1">Lekki Phase 1</option>
+              <option value="Lekki Phase 2 / Chevron">Lekki Phase 2 / Chevron</option>
+              <option value="Other Lagos">Other Lagos Axis</option>
+            </select>
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="propFormRefCode">Reference Code</label>
+            <input type="text" id="propFormRefCode" class="adm-form-input" placeholder="e.g. Nf0926 or MEGA-01">
+          </div>
+        </div>
+
+        <div class="adm-form-group">
+          <label class="adm-form-label" for="propFormAddress">Full Estate / Landmark Address</label>
+          <input type="text" id="propFormAddress" class="adm-form-input" placeholder="e.g. Goodness Estate (Remlek Bus Stop), Badore, Ajah">
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px;">
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="propFormPrice">Base Rent / Price (₦) *</label>
+            <input type="number" id="propFormPrice" class="adm-form-input" placeholder="e.g. 800000" required oninput="calculatePropertyFeeTotal()">
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="propFormPeriod">Pricing Period *</label>
+            <select id="propFormPeriod" class="adm-form-select" required>
+              <option value="year">Per Year (/ year)</option>
+              <option value="night">Per Night (/ night)</option>
+              <option value="stay">Per Stay</option>
+              <option value="month">Per Month</option>
+              <option value="total">Total Purchase</option>
+            </select>
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="propFormPriceDisplay">Price Display Override</label>
+            <input type="text" id="propFormPriceDisplay" class="adm-form-input" placeholder="e.g. ₦800,000 / year">
+          </div>
+
+          <div class="adm-form-group">
+            <label class="adm-form-label" for="propFormStatusTag">Status Tag</label>
+            <input type="text" id="propFormStatusTag" class="adm-form-input" placeholder="e.g. Verified Direct, Pay &amp; Move In ASAP">
+          </div>
+        </div>
+
+        <!-- Complete Fee Breakdown -->
+        <div style="background:#F8FAFC; border:1px solid var(--adm-border); border-radius:8px; padding:16px; margin-bottom:20px;">
+          <h4 style="font-size:0.88rem; font-weight:800; color:var(--adm-navy); margin:0 0 10px;">Rental Fee Breakdown &amp; Package</h4>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-bottom:12px;">
+            <div>
+              <label class="adm-form-label" style="font-size:0.72rem;">Rent (₦)</label>
+              <input type="number" id="propFeeRent" class="adm-form-input" placeholder="800000" oninput="calculatePropertyFeeTotal()">
+            </div>
+            <div>
+              <label class="adm-form-label" style="font-size:0.72rem;">Legal (₦)</label>
+              <input type="number" id="propFeeLegal" class="adm-form-input" placeholder="80000" oninput="calculatePropertyFeeTotal()">
+            </div>
+            <div>
+              <label class="adm-form-label" style="font-size:0.72rem;">Agency (₦)</label>
+              <input type="number" id="propFeeAgency" class="adm-form-input" placeholder="80000" oninput="calculatePropertyFeeTotal()">
+            </div>
+            <div>
+              <label class="adm-form-label" style="font-size:0.72rem;">Caution (₦)</label>
+              <input type="number" id="propFeeCaution" class="adm-form-input" placeholder="150000" oninput="calculatePropertyFeeTotal()">
+            </div>
+            <div>
+              <label class="adm-form-label" style="font-size:0.72rem;">Service Charge (₦)</label>
+              <input type="number" id="propFeeService" class="adm-form-input" placeholder="150000" oninput="calculatePropertyFeeTotal()">
+            </div>
+            <div>
+              <label class="adm-form-label" style="font-size:0.72rem; color:#1E5EFF;">Total Package (₦)</label>
+              <input type="number" id="propFeeTotal" class="adm-form-input" placeholder="1260000" style="font-weight:800; border-color:#1E5EFF;">
+            </div>
+          </div>
+        </div>
+
+        <div class="adm-form-group">
+          <label class="adm-form-label" for="propFormDescription">Property Description</label>
+          <textarea id="propFormDescription" class="adm-form-textarea" rows="3" placeholder="Full details on layout, finishes, compound, electricity, water, security..."></textarea>
+        </div>
+
+        <!-- Features / Amenities Tags -->
+        <div style="background:#F8FAFC; border:1px solid var(--adm-border); border-radius:8px; padding:16px; margin-bottom:20px;">
+          <label class="adm-form-label" style="margin:0 0 6px;">Features &amp; Amenities (Click to select)</label>
+          <div id="propFeaturesChipContainer" class="adm-chip-list">
+            <!-- Dynamic tags -->
+          </div>
+          <div style="display:flex; gap:8px; margin-top:10px; max-width:320px;">
+            <input type="text" id="propCustomFeatureInput" class="adm-form-input" style="padding:6px 10px; font-size:0.82rem;" placeholder="Add custom feature tag">
+            <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="addCustomPropertyFeature()">Add</button>
+          </div>
+        </div>
+
+        <!-- Multi-Photo Upload (Up to 5 or more photos) -->
+        <div style="background:#F8FAFC; border:1px solid var(--adm-border); border-radius:8px; padding:16px; margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <label class="adm-form-label" style="margin:0;">Property Photos &amp; Multi-Angle Gallery</label>
+            <span id="propImagesCount" style="font-size:0.75rem; font-weight:700; color:var(--adm-muted);">0 photos</span>
+          </div>
+          <div style="font-size:0.75rem; color:var(--adm-muted); margin-bottom:10px;">
+            Upload exterior, lounge, bedroom, kitchen, and bathroom photos. All images are automatically compressed to under 100KB.
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+            <input type="file" id="propPhotoInput" multiple accept="image/*" style="display:none;" onchange="handlePropertyImageUpload(this)">
+            <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="document.getElementById('propPhotoInput').click()">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Upload Photos</span>
+            </button>
+            <div style="display:flex; gap:6px; flex:1; min-width:220px;">
+              <input type="text" id="propDirectImageUrl" class="adm-form-input" style="padding:6px 10px; font-size:0.82rem;" placeholder="Or paste image URL / asset path">
+              <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="addPropertyImageUrl()">Add</button>
+            </div>
+          </div>
+          <div id="propImageUploadStatus" style="font-size:0.78rem; color:#1E5EFF; font-weight:700; margin-bottom:6px;"></div>
+
+          <div id="propImagesStrip" class="adm-img-strip"></div>
+        </div>
+
+        <div class="adm-form-group">
+          <label class="adm-form-label" for="propFormWhatsApp">WhatsApp Inspection Message</label>
+          <input type="text" id="propFormWhatsApp" class="adm-form-input" placeholder="Hello NIJEDEE Properties, I want to inspect...">
+        </div>
+
+        <!-- Availability & Active Toggles -->
+        <div style="display:flex; gap:24px; flex-wrap:wrap; background:#F1F5F9; border-radius:8px; padding:14px; margin-bottom:24px;">
+          <label class="adm-switch">
+            <input type="checkbox" id="propFormIsAvailable" checked>
+            <span class="adm-switch-slider"></span>
+            <span>Currently Available</span>
+          </label>
+          <label class="adm-switch">
+            <input type="checkbox" id="propFormIsActive" checked>
+            <span class="adm-switch-slider"></span>
+            <span>Active &amp; Visible on Website</span>
+          </label>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="adm-btn adm-btn--outline" onclick="closePropertyModal()">Cancel</button>
+          <button type="submit" id="propSaveBtn" class="adm-btn adm-btn--primary">Save Property</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- FULL IMAGE LIGHTBOX (Under-photo close button) -->
 <div id="admLightbox" class="adm-lightbox" onclick="closeLightbox()">
   <div class="adm-lightbox-content" onclick="event.stopPropagation()">
@@ -1577,6 +2279,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/admin-catalog.js"></script>
 <script src="assets/js/custom-picker.js"></script>
 <script>
   let allRequests = [];
@@ -1720,6 +2423,8 @@
     document.getElementById('userAvatarText').textContent = email.substring(0, 2).toUpperCase();
 
     fetchRequests();
+    if (typeof fetchProducts === 'function') fetchProducts();
+    if (typeof fetchProperties === 'function') fetchProperties();
     setupRealtimeSubscription();
   }
 
@@ -1762,21 +2467,42 @@
     document.querySelectorAll('.adm-nav__link').forEach(link => link.classList.remove('active'));
 
     const tabReq = document.getElementById('tabRequests');
+    const tabProd = document.getElementById('tabProducts');
+    const tabProp = document.getElementById('tabProperties');
     const tabSet = document.getElementById('tabSettings');
     const title = document.getElementById('topbarPageTitle');
     const subtitle = document.getElementById('topbarSubtitle');
 
+    if (tabReq) tabReq.style.display = 'none';
+    if (tabProd) tabProd.style.display = 'none';
+    if (tabProp) tabProp.style.display = 'none';
+    if (tabSet) tabSet.style.display = 'none';
+
     if (tab === 'requests') {
-      tabReq.style.display = 'block';
-      tabSet.style.display = 'none';
+      if (tabReq) tabReq.style.display = 'block';
       title.textContent = 'Inquiries & Customer Requests';
       if (subtitle) subtitle.textContent = 'Live customer dispatches & requests overview';
       document.querySelectorAll('.adm-nav__link').forEach(l => {
         if (l.textContent.includes('All Requests')) l.classList.add('active');
       });
+    } else if (tab === 'products') {
+      if (tabProd) tabProd.style.display = 'block';
+      title.textContent = 'Shop Products & Materials Inventory';
+      if (subtitle) subtitle.textContent = 'Manage paint, electrical, plumbing, materials catalogue & variants';
+      document.querySelectorAll('.adm-nav__link').forEach(l => {
+        if (l.textContent.includes('Shop Products')) l.classList.add('active');
+      });
+      if (typeof fetchProducts === 'function') fetchProducts();
+    } else if (tab === 'properties') {
+      if (tabProp) tabProp.style.display = 'block';
+      title.textContent = 'Properties & Real Estate Listings';
+      if (subtitle) subtitle.textContent = 'Manage rentals, shortlets, fee packages, amenities & gallery';
+      document.querySelectorAll('.adm-nav__link').forEach(l => {
+        if (l.textContent.includes('Properties')) l.classList.add('active');
+      });
+      if (typeof fetchProperties === 'function') fetchProperties();
     } else if (tab === 'settings') {
-      tabReq.style.display = 'none';
-      tabSet.style.display = 'block';
+      if (tabSet) tabSet.style.display = 'block';
       title.textContent = 'Administrator Account & Security';
       if (subtitle) subtitle.textContent = 'Manage email credentials & access security';
       document.querySelectorAll('.adm-nav__link').forEach(l => {
@@ -2241,7 +2967,7 @@
 
     alert('All test submissions have been successfully cleared. The database is now at a clean zero-state.');
     switchTab('requests');
-    loadRequests();
+    fetchRequests();
   }
 
   // --- Helper Functions ---

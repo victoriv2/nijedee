@@ -492,6 +492,7 @@
         </div>
 
         <div class="product-grid-view" id="productsGrid">
+          <div id="productsDynamicContainer" style="display:contents;">
 
           <!-- Product 1: NIJEDEE Higher Satin Paint 20L -->
           <div class="product-card-item" data-category="paints satin" data-keywords="nijedee paints higher satin 20l brilliant colors excellent coverage superior durability 65000">
@@ -953,6 +954,7 @@
               </div>
             </div>
           </div>
+          </div>
 
           <!-- NIJEDEE Building Mart & Sourcing Notice (Real Flyer Terms) -->
           <div style="grid-column:1 / -1;background:var(--tk-white);border:1px solid var(--tk-neutral-100);border-radius:var(--tk-radius-lg);padding:28px;margin-top:16px;box-shadow:0 4px 16px rgba(7,34,79,0.04);">
@@ -1156,6 +1158,9 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/custom-picker.js"></script>
 <script>
   let cart = [];
 
@@ -1308,6 +1313,150 @@
     addToCart(label, price);
   }
 
+  // Dynamic Product Variant Price & Cart Handlers
+  function updateProdVariantPrice(selectEl, prodId) {
+    const price = parseInt(selectEl.value, 10);
+    const label = selectEl.options[selectEl.selectedIndex].getAttribute('data-label');
+    const priceDisplay = document.getElementById(`prodPriceVal_${prodId}`);
+    if (priceDisplay) {
+      priceDisplay.innerHTML = '&#8358;' + price.toLocaleString();
+    }
+    const waBtn = document.getElementById(`prodWaBtn_${prodId}`);
+    if (waBtn) {
+      waBtn.href = `https://wa.me/2347085329909?text=${encodeURIComponent('I want to order ' + label + ' (NGN ' + price.toLocaleString() + ')')}`;
+    }
+  }
+
+  function handleCardAddToCart(prodId) {
+    const selectEl = document.getElementById(`variantSelect_${prodId}`);
+    if (selectEl) {
+      const price = parseInt(selectEl.value, 10);
+      const label = selectEl.options[selectEl.selectedIndex].getAttribute('data-label');
+      addToCart(label, price);
+    } else {
+      const p = window._loadedShopProducts?.find(item => item.id === prodId);
+      if (p) {
+        addToCart(p.name, p.price);
+      }
+    }
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function updateCategoryBadges(prods) {
+    const counts = {
+      all: prods.length,
+      paints: prods.filter(p => p.category === 'paints').length,
+      materials: prods.filter(p => p.category === 'materials').length,
+      lighting: prods.filter(p => p.category === 'lighting').length,
+      plumbing: prods.filter(p => p.category === 'plumbing').length,
+      hvac: prods.filter(p => p.category === 'hvac').length
+    };
+
+    document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+      const fnStr = btn.getAttribute('onclick') || '';
+      for (const [cat, num] of Object.entries(counts)) {
+        if (fnStr.includes(`'${cat}'`)) {
+          const span = btn.querySelector('.cat-count');
+          if (span) span.textContent = num;
+        }
+      }
+    });
+  }
+
+  function renderDynamicShopProducts(prods) {
+    window._loadedShopProducts = prods;
+    const container = document.getElementById('productsDynamicContainer');
+    if (!container) return;
+
+    container.innerHTML = prods.map(p => {
+      const images = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image_url ? [p.image_url] : []);
+      const mainImg = images[0] || 'assets/images/logo.png';
+      const variants = Array.isArray(p.variants) ? p.variants : [];
+      const catClasses = `${p.category || ''} ${(p.brand || '').toLowerCase()}`;
+      const kw = (p.keywords || `${p.name} ${p.brand || ''} ${p.category || ''} ${p.badge || ''} ${p.price}`).toLowerCase();
+
+      let variantsSelectHtml = '';
+      if (variants.length > 0) {
+        variantsSelectHtml = `
+          <div style="margin:10px 0;">
+            <label for="variantSelect_${p.id}" style="font-size:0.75rem;font-weight:700;color:var(--tk-navy);display:block;margin-bottom:4px;">Select Wattage / Size:</label>
+            <select id="variantSelect_${p.id}" class="tk-input" style="padding:6px 10px;font-size:0.82rem;height:auto;border-color:var(--tk-neutral-200);width:100%;background:#ffffff;" onchange="updateProdVariantPrice(this, '${p.id}')">
+              ${variants.map(v => `<option value="${v.price}" data-label="${escapeHtml(v.label)}">${escapeHtml(v.display || (v.label + ' — ₦' + (v.price || 0).toLocaleString()))}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      }
+
+      const priceText = p.price_display || ('₦' + (p.price || 0).toLocaleString());
+      const waInitialText = variants.length > 0
+        ? `I want to order ${variants[0].label} (NGN ${variants[0].price.toLocaleString()})`
+        : `I want to order ${p.name} (${priceText})`;
+
+      return `
+        <div class="product-card-item" data-category="${escapeHtml(catClasses)}" data-keywords="${escapeHtml(kw)}">
+          <div class="product-img-box">
+            ${p.badge ? `<span class="product-badge-tag">${escapeHtml(p.badge)}</span>` : ''}
+            <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(p.name)}">
+          </div>
+          <div class="product-details-body">
+            <span class="product-cat-name">${escapeHtml(p.brand || p.category)}</span>
+            <h4 class="product-title-text">${escapeHtml(p.name)}</h4>
+            <p class="product-desc-text">${escapeHtml(p.description || '')}</p>
+            ${variantsSelectHtml}
+            <div class="product-price-val" id="prodPriceVal_${p.id}">${priceText}</div>
+            <div class="product-actions-row">
+              <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="handleCardAddToCart('${p.id}')">Add to Cart</button>
+              <a id="prodWaBtn_${p.id}" href="https://wa.me/2347085329909?text=${encodeURIComponent(waInitialText)}" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;" title="Order via WhatsApp">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const countEl = document.getElementById('productsCountText');
+    if (countEl) countEl.textContent = `Showing ${prods.length} authentic products`;
+
+    updateCategoryBadges(prods);
+  }
+
+  async function loadShopProductsFromSupabase() {
+    const sb = getNijedeeSupabase();
+    if (!sb) return;
+
+    try {
+      const { data: prods, error } = await sb
+        .from('products')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true })
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.warn('Could not load products from Supabase:', error);
+        return;
+      }
+
+      if (prods && prods.length > 0) {
+        renderDynamicShopProducts(prods);
+      }
+    } catch (err) {
+      console.warn('Failed to fetch shop products:', err);
+    }
+  }
+
+  // Load products dynamically on startup
+  window.addEventListener('DOMContentLoaded', () => {
+    loadShopProductsFromSupabase();
+  });
+
   function setCategoryFilter(category, btn) {
     document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -1344,8 +1493,5 @@
     if (countEl) countEl.textContent = `Showing ${visibleCount} authentic products`;
   }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase-client.js"></script>
-<script src="assets/js/custom-picker.js"></script>
 </body>
 </html>
