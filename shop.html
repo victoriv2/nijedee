@@ -968,6 +968,8 @@
   function formatNaira(val) {
     if (val === null || val === undefined || val === '') return '';
     let s = String(val).trim();
+    // Normalize any stray question marks or legacy replacement markers
+    s = s.replace(/^\?+\s*/, '₦').replace(/(\s*[-–—]\s*)\?+/g, '$1₦');
     if (s.startsWith('₦') || s.startsWith('&#8358;') || s.toUpperCase().startsWith('NGN')) {
       return s;
     }
@@ -983,6 +985,13 @@
         return `₦${n1.toLocaleString()} – ₦${n2.toLocaleString()}`;
       }
     }
+    if (/^(\d[\d,.]*)\s*(\/.*)$/.test(s)) {
+      const num = parseFloat(RegExp.$1.replace(/,/g, ''));
+      const suffix = RegExp.$2.trim();
+      if (!isNaN(num)) {
+        return `₦${num.toLocaleString()} ${suffix}`;
+      }
+    }
     return '₦' + s;
   }
 
@@ -992,7 +1001,7 @@
     const label = selectEl.options[selectEl.selectedIndex].getAttribute('data-label');
     const priceDisplay = document.getElementById(`prodPriceVal_${prodId}`);
     if (priceDisplay && !isNaN(price)) {
-      priceDisplay.innerHTML = '&#8358;' + price.toLocaleString();
+      priceDisplay.textContent = '₦' + price.toLocaleString();
     }
     const waBtn = document.getElementById(`prodWaBtn_${prodId}`);
     if (waBtn && !isNaN(price)) {

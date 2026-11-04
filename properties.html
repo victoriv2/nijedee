@@ -33,7 +33,8 @@
       text-transform: uppercase;
       margin-bottom: 16px;
       white-space: nowrap !important;
-      box-sizing: border-box;
+      max-width: 95vw !important;
+      box-sizing: border-box !important;
     }
     .properties-hero h1 {
       color: #ffffff;
@@ -309,9 +310,11 @@
       .properties-hero { padding: 48px 16px; }
       .prop-module-pill {
         white-space: nowrap !important;
-        font-size: clamp(0.70rem, 3.2vw, 0.8rem) !important;
-        padding: 5px 14px !important;
-        letter-spacing: 0.03em !important;
+        font-size: clamp(0.62rem, 2.7vw, 0.78rem) !important;
+        padding: 5px 12px !important;
+        letter-spacing: 0.02em !important;
+        max-width: 95vw !important;
+        box-sizing: border-box !important;
       }
       .prop-owner-banner {
         grid-template-columns: minmax(0, 1fr) !important;
@@ -1210,6 +1213,8 @@
   function formatNaira(val) {
     if (val === null || val === undefined || val === '') return '';
     let s = String(val).trim();
+    // Normalize any stray question marks or legacy replacement markers
+    s = s.replace(/^\?+\s*/, '₦').replace(/(\s*[-–—]\s*)\?+/g, '$1₦');
     if (s.startsWith('₦') || s.startsWith('&#8358;') || s.toUpperCase().startsWith('NGN')) {
       return s;
     }
@@ -1223,6 +1228,13 @@
       const n2 = parseFloat(parts[1].replace(/,/g, '').trim());
       if (!isNaN(n1) && !isNaN(n2)) {
         return `₦${n1.toLocaleString()} – ₦${n2.toLocaleString()}`;
+      }
+    }
+    if (/^(\d[\d,.]*)\s*(\/.*)$/.test(s)) {
+      const num = parseFloat(RegExp.$1.replace(/,/g, ''));
+      const suffix = RegExp.$2.trim();
+      if (!isNaN(num)) {
+        return `₦${num.toLocaleString()} ${suffix}`;
       }
     }
     return '₦' + s;

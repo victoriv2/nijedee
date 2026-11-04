@@ -134,7 +134,7 @@ function renderProducts() {
           </span>
         </td>
         <td style="font-weight:800; color:var(--adm-navy); white-space:nowrap;">
-          ${escapeHtml(p.price_display || ('₦' + (p.price || 0).toLocaleString()))}
+          ${escapeHtml(formatNairaDisplayString(p.price_display || ('₦' + (p.price || 0).toLocaleString())))}
         </td>
         <td>
           ${variants.length > 0 ? `
@@ -306,6 +306,8 @@ function syncVariantDisplay(inputEl) {
 function formatNairaDisplayString(raw) {
   if (!raw) return '';
   raw = String(raw).trim();
+  // Normalize any stray question marks or legacy replacement markers
+  raw = raw.replace(/^\?+\s*/, '₦').replace(/(\s*[-–—]\s*)\?+/g, '$1₦');
   if (raw.startsWith('₦') || raw.startsWith('&#8358;') || raw.toUpperCase().startsWith('NGN')) {
     return raw;
   }
@@ -319,6 +321,13 @@ function formatNairaDisplayString(raw) {
     const n2 = parseFloat(parts[1].replace(/,/g, '').trim());
     if (!isNaN(n1) && !isNaN(n2)) {
       return `₦${n1.toLocaleString()} – ₦${n2.toLocaleString()}`;
+    }
+  }
+  if (/^(\d[\d,.]*)\s*(\/.*)$/.test(raw)) {
+    const num = parseFloat(RegExp.$1.replace(/,/g, ''));
+    const suffix = RegExp.$2.trim();
+    if (!isNaN(num)) {
+      return `₦${num.toLocaleString()} ${suffix}`;
     }
   }
   return '₦' + raw;
@@ -658,7 +667,7 @@ function renderProperties() {
         </td>
         <td>
           <div style="font-weight:800; color:var(--adm-navy); white-space:nowrap;">
-            ${escapeHtml(p.price_display || ('₦' + (p.price || 0).toLocaleString()))}
+            ${escapeHtml(formatNairaDisplayString(p.price_display || ('₦' + (p.price || 0).toLocaleString())))}
           </div>
           ${breakdown.total_package && breakdown.total_package !== p.price ? `
             <div style="font-size:11px; color:#16A34A; font-weight:700;">Package: ₦${parseInt(breakdown.total_package, 10).toLocaleString()}</div>
