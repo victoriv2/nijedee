@@ -119,7 +119,7 @@ function renderProducts() {
       <tr>
         <td style="width:60px;">
           <div style="position:relative; width:50px; height:50px; border-radius:6px; overflow:hidden; border:1px solid var(--adm-border); background:#fff;">
-            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(p.name)}" style="width:100%; height:100%; object-fit:contain;" onclick="openLightbox('${escapeHtml(thumb)}')">
+            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(p.name)}" style="width:100%; height:100%; object-fit:contain; cursor:zoom-in;" title="Click to view full photo" onclick="openLightbox('${escapeHtml(thumb)}')">
             ${images.length > 1 ? `<span style="position:absolute; bottom:2px; right:2px; background:rgba(7,34,79,0.85); color:#fff; font-size:9px; font-weight:800; padding:1px 4px; border-radius:3px;">${images.length}</span>` : ''}
           </div>
         </td>
@@ -641,7 +641,7 @@ function renderProperties() {
       <tr>
         <td style="width:64px;">
           <div style="position:relative; width:56px; height:50px; border-radius:6px; overflow:hidden; border:1px solid var(--adm-border); background:#f1f5f9;">
-            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(p.title)}" style="width:100%; height:100%; object-fit:cover;" onclick="openLightbox('${escapeHtml(thumb)}')">
+            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(p.title)}" style="width:100%; height:100%; object-fit:cover; cursor:zoom-in;" title="Click to view full photo" onclick="openLightbox('${escapeHtml(thumb)}')">
             ${images.length > 1 ? `<span style="position:absolute; bottom:2px; right:2px; background:rgba(7,34,79,0.85); color:#fff; font-size:9px; font-weight:800; padding:1px 4px; border-radius:3px;">${images.length}</span>` : ''}
           </div>
         </td>
