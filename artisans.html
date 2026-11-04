@@ -844,8 +844,7 @@
 
           <div class="spec-form-group">
             <label for="artisanFaultPhotos">Attach Photos of Problem / Equipment (Optional)</label>
-            <input type="file" id="artisanFaultPhotos" multiple accept="image/*" style="padding:8px; border:1px dashed var(--tk-border, #CBD5E1); border-radius:6px; width:100%; background:#FAFAFA;">
-            <small style="color:var(--tk-offwhite-dark); font-size:0.8rem; display:block; margin-top:4px;">Upload images of faulty plumbing, breaker panels, AC compressors, or furniture.</small>
+            <input type="file" id="artisanFaultPhotos" multiple accept="image/*" data-max-files="5">
           </div>
 
           <!-- Actions -->
@@ -1488,13 +1487,12 @@
         <textarea id="directIssueDesc" rows="3" required placeholder="Describe what plumbing issue you need Oluwasegun to handle (e.g. leaking sink, burst pipe, water heater installation)..." style="width:100%; max-width:100% !important; box-sizing:border-box !important; resize:vertical !important; padding:11px 13px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.92rem; min-height:80px;"></textarea>
       </div>
 
-      <!-- Image Upload (Auto-compressed to < 100KB) -->
+      <!-- Image Upload (Auto-compressed to < 100KB, up to 5 photos) -->
       <div class="spec-form-group" style="margin-bottom: 20px;">
         <label for="directFaultPhotos" style="display:block; font-size:0.85rem; font-weight:700; color:var(--tk-navy); margin-bottom:5px;">
-          Attach Fault Photos (Optional &bull; Auto-compressed &lt; 100KB)
+          Attach Fault Photos (Optional &bull; Max 5 photos &bull; Auto-compressed &lt; 100KB)
         </label>
-        <input type="file" id="directFaultPhotos" multiple accept="image/*" style="padding:8px 10px; border:1.5px dashed #CBD5E1; border-radius:8px; width:100%; max-width:100% !important; box-sizing:border-box !important; background:#F8FAFC; font-size:0.85rem;">
-        <div style="font-size:0.75rem; color:#64748B; margin-top:4px;">Upload camera photos of the pipes, leak points, or fittings. Photos are compressed automatically under 100KB.</div>
+        <input type="file" id="directFaultPhotos" multiple accept="image/*" data-max-files="5">
       </div>
 
       <!-- Action Buttons inside Modal -->
@@ -1721,7 +1719,8 @@
     const urgency = document.getElementById('directCustUrgency').value;
     const address = document.getElementById('directCustAddress').value.trim();
     const desc = document.getElementById('directIssueDesc').value.trim();
-    const photoFiles = document.getElementById('directFaultPhotos')?.files;
+    const photoInput = document.getElementById('directFaultPhotos');
+    const photoFiles = photoInput?.getSelectedFiles ? photoInput.getSelectedFiles() : photoInput?.files;
 
     const refNum = 'DSP-' + Math.floor(10000 + Math.random() * 90000);
 
@@ -1886,7 +1885,8 @@
     }
 
     // Record into Supabase Admin Dashboard
-    const photoFiles = document.getElementById('artisanFaultPhotos')?.files;
+    const photoInput = document.getElementById('artisanFaultPhotos');
+    const photoFiles = photoInput?.getSelectedFiles ? photoInput.getSelectedFiles() : photoInput?.files;
     const refNum = 'DSP-' + Math.floor(10000 + Math.random() * 90000);
     if (window.submitNijedeeRequest) {
       window.submitNijedeeRequest({
@@ -1940,6 +1940,7 @@
 <script src="assets/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/image-uploader.js"></script>
 <script src="assets/js/custom-picker.js"></script>
 </body>
 </html>
