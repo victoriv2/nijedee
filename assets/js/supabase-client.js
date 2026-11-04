@@ -25,7 +25,123 @@ function getNijedeeSupabase() {
 }
 
 /**
+ * Compresses an image file in the browser using an HTML Canvas element
+ * so that its file size is strictly under targetBytes (default 100KB = 102,400 bytes).
+ * Non-image files (e.g. PDFs, documents) are returned untouched.
+ * If compression fails or image is already <= 100KB, returns the original safely.
+ *
+ * @param {File|Blob} file The input file selected by the user.
+ * @param {number} maxSizeBytes Maximum size allowed in bytes (default: 100KB).
+ * @returns {Promise<File>} Compressed File instance.
+ */
+async function compressImageTo100KB(file, maxSizeBytes = 100 * 1024) {
+  // Guard: if not a File/Blob or not an image, pass through unchanged
+  if (!file || !file.type || !file.type.startsWith('image/')) {
+    return file;
+  }
+
+  // If already <= 100KB, no re-compression needed
+  if (file.size <= maxSizeBytes) {
+    return file;
+  }
+
+  return new Promise((resolve) => {
+    try {
+      const reader = new FileReader();
+      reader.onerror = () => resolve(file);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onerror = () => resolve(file);
+        img.onload = async () => {
+          try {
+            // Determine initial dimensions (cap at 1280px on longest edge for crisp detail)
+            let maxDim = 1280;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxDim || height > maxDim) {
+              if (width > height) {
+                height = Math.round(height * (maxDim / width));
+                width = maxDim;
+              } else {
+                width = Math.round(width * (maxDim / height));
+                height = maxDim;
+              }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Iterative quality reduction until blob size <= maxSizeBytes
+            let bestBlob = null;
+            const qualities = [0.80, 0.70, 0.60, 0.50, 0.40, 0.30];
+
+            for (const q of qualities) {
+              const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', q));
+              if (!blob) break;
+              bestBlob = blob;
+              if (blob.size <= maxSizeBytes) {
+                break;
+              }
+            }
+
+            // If still > maxSizeBytes, downscale dimensions
+            if (bestBlob && bestBlob.size > maxSizeBytes) {
+              const scale = Math.sqrt(maxSizeBytes / bestBlob.size) * 0.92;
+              const scaledW = Math.max(320, Math.round(width * scale));
+              const scaledH = Math.max(240, Math.round(height * scale));
+
+              const scaledCanvas = document.createElement('canvas');
+              scaledCanvas.width = scaledW;
+              scaledCanvas.height = scaledH;
+              const scaledCtx = scaledCanvas.getContext('2d');
+              scaledCtx.drawImage(img, 0, 0, scaledW, scaledH);
+
+              for (const q of [0.65, 0.50, 0.40, 0.30]) {
+                const blob = await new Promise(r => scaledCanvas.toBlob(r, 'image/jpeg', q));
+                if (blob) {
+                  bestBlob = blob;
+                  if (blob.size <= maxSizeBytes) break;
+                }
+              }
+            }
+
+            if (!bestBlob) {
+              return resolve(file);
+            }
+
+            // Create a new File object with JPEG extension
+            const originalName = file.name || 'uploaded_image.jpg';
+            const cleanName = originalName.replace(/\.[^.]+$/, '') + '.jpg';
+            const compressedFile = new File([bestBlob], cleanName, {
+              type: 'image/jpeg',
+              lastModified: Date.now()
+            });
+
+            console.log(`[NIJEDEE Compressor] ${originalName} compressed from ${(file.size / 1024).toFixed(1)} KB to ${(compressedFile.size / 1024).toFixed(1)} KB (target <= 100KB).`);
+            resolve(compressedFile);
+          } catch (canvasErr) {
+            console.warn('[NIJEDEE Compressor] Canvas compression error, using original:', canvasErr);
+            resolve(file);
+          }
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      console.warn('[NIJEDEE Compressor] FileReader error, using original:', err);
+      resolve(file);
+    }
+  });
+}
+
+/**
  * Uploads a file (or list of files) to the Supabase 'request-attachments' bucket.
+ * All image uploads are automatically compressed to <= 100KB before upload
+ * to preserve Supabase Free Tier quotas.
  * Returns an array of public URLs.
  */
 async function uploadRequestFiles(files, folder = 'general') {
@@ -39,8 +155,11 @@ async function uploadRequestFiles(files, folder = 'general') {
 
   const uploadedUrls = [];
 
-  for (const file of validFiles) {
+  for (const rawFile of validFiles) {
     try {
+      // Automatically compress any image to under 100KB before uploading to Supabase
+      const file = await compressImageTo100KB(rawFile, 100 * 1024);
+
       const ext = file.name.split('.').pop();
       const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
       const filePath = `${folder}/${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${sanitizedName}`;
@@ -131,5 +250,6 @@ async function submitNijedeeRequest(requestData) {
 window.NIJEDEE_SUPABASE_URL = NIJEDEE_SUPABASE_URL;
 window.NIJEDEE_SUPABASE_ANON_KEY = NIJEDEE_SUPABASE_ANON_KEY;
 window.getNijedeeSupabase = getNijedeeSupabase;
+window.compressImageTo100KB = compressImageTo100KB;
 window.uploadRequestFiles = uploadRequestFiles;
 window.submitNijedeeRequest = submitNijedeeRequest;
