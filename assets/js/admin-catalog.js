@@ -165,8 +165,9 @@ function renderProducts() {
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               <span>Edit</span>
             </button>
-            <button type="button" class="adm-btn adm-btn--danger adm-btn--sm" onclick="deleteProduct('${p.id}')" title="Delete Product">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <button type="button" class="adm-btn adm-btn--danger adm-btn--sm" onclick="deleteProduct('${p.id}')" title="Delete Product" style="display:inline-flex; align-items:center; gap:5px;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+              <span>Delete</span>
             </button>
           </div>
         </td>
@@ -281,21 +282,93 @@ function addVariantRow(v = null) {
   const row = document.createElement('div');
   row.className = 'adm-variant-row';
   row.innerHTML = `
-    <input type="text" class="adm-form-input variant-label" placeholder="e.g. 6W Glass POP LED" value="${escapeHtml(v?.label || '')}" required>
+    <input type="text" class="adm-form-input variant-label" placeholder="e.g. 6W Glass POP LED" value="${escapeHtml(v?.label || '')}" required oninput="syncVariantDisplay(this)">
     <input type="number" class="adm-form-input variant-price" placeholder="Price (₦)" value="${escapeHtml(v?.price || '')}" required oninput="syncVariantDisplay(this)">
-    <input type="text" class="adm-form-input variant-display" placeholder="Display e.g. 6W POP LED — ₦6,180" value="${escapeHtml(v?.display || '')}">
+    <input type="text" class="adm-form-input variant-display" placeholder="Display e.g. 6W POP LED — ₦6,180" value="${escapeHtml(v?.display || '')}" onblur="ensureNairaPrefix(this)">
     <button type="button" class="adm-btn adm-btn--danger adm-btn--sm" onclick="this.closest('.adm-variant-row').remove()" title="Remove variant" style="padding:6px 10px;">&times;</button>
   `;
   container.appendChild(row);
 }
 
-function syncVariantDisplay(priceInput) {
-  const row = priceInput.closest('.adm-variant-row');
-  const label = row.querySelector('.variant-label')?.value || 'Option';
+function syncVariantDisplay(inputEl) {
+  const row = inputEl.closest('.adm-variant-row');
+  if (!row) return;
+  const label = row.querySelector('.variant-label')?.value.trim() || 'Option';
+  const priceInput = row.querySelector('.variant-price');
   const display = row.querySelector('.variant-display');
-  const price = parseInt(priceInput.value, 10);
-  if (!isNaN(price) && display && !display.value) {
+  const price = parseInt(priceInput?.value, 10);
+  if (!isNaN(price) && display) {
     display.value = `${label} — ₦${price.toLocaleString()}`;
+  }
+}
+
+// Auto Naira Formatting Helpers
+function formatNairaDisplayString(raw) {
+  if (!raw) return '';
+  raw = String(raw).trim();
+  if (raw.startsWith('₦') || raw.startsWith('&#8358;') || raw.toUpperCase().startsWith('NGN')) {
+    return raw;
+  }
+  const clean = raw.replace(/,/g, '');
+  if (/^-?\d+(\.\d+)?$/.test(clean)) {
+    return '₦' + parseFloat(clean).toLocaleString();
+  }
+  if (/^\d+\s*[-–—]\s*\d+$/.test(raw)) {
+    const parts = raw.split(/[-–—]/);
+    const n1 = parseFloat(parts[0].replace(/,/g, '').trim());
+    const n2 = parseFloat(parts[1].replace(/,/g, '').trim());
+    if (!isNaN(n1) && !isNaN(n2)) {
+      return `₦${n1.toLocaleString()} – ₦${n2.toLocaleString()}`;
+    }
+  }
+  return '₦' + raw;
+}
+
+function autoSyncProductPriceDisplay() {
+  const priceInput = document.getElementById('prodFormPrice');
+  const priceMaxInput = document.getElementById('prodFormPriceMax');
+  const displayInput = document.getElementById('prodFormPriceDisplay');
+  if (!displayInput) return;
+
+  const price = parseFloat(priceInput?.value);
+  const maxPrice = parseFloat(priceMaxInput?.value);
+
+  if (!isNaN(price)) {
+    if (!isNaN(maxPrice) && maxPrice > price) {
+      displayInput.value = `₦${price.toLocaleString()} – ₦${maxPrice.toLocaleString()}`;
+    } else {
+      displayInput.value = `₦${price.toLocaleString()}`;
+    }
+  }
+}
+
+function ensureNairaPrefix(input) {
+  if (!input) return;
+  const val = input.value.trim();
+  if (val) {
+    input.value = formatNairaDisplayString(val);
+  }
+}
+
+function autoSyncPropertyPriceDisplay() {
+  const priceInput = document.getElementById('propFormPrice');
+  const periodInput = document.getElementById('propFormPeriod');
+  const displayInput = document.getElementById('propFormPriceDisplay');
+  if (!displayInput) return;
+
+  const price = parseFloat(priceInput?.value);
+  const period = periodInput?.value || 'year';
+
+  if (!isNaN(price)) {
+    if (period === 'year') {
+      displayInput.value = `₦${price.toLocaleString()} / year`;
+    } else if (period === 'night') {
+      displayInput.value = `₦${price.toLocaleString()} / night`;
+    } else if (period === 'month') {
+      displayInput.value = `₦${price.toLocaleString()} / month`;
+    } else {
+      displayInput.value = `₦${price.toLocaleString()}`;
+    }
   }
 }
 
@@ -360,7 +433,7 @@ function renderProductStagingImages() {
 
   strip.innerHTML = stagingProductImages.map((img, i) => `
     <div class="adm-img-strip-item">
-      <img src="${escapeHtml(img)}" alt="Product Photo ${i + 1}">
+      <img src="${escapeHtml(img)}" alt="Product Photo ${i + 1}" style="cursor:zoom-in;" title="Click to zoom in" onclick="openLightbox('${escapeHtml(img)}')">
       <button type="button" class="adm-img-strip-del" onclick="removeProductStagingImage(${i})" title="Remove image">&times;</button>
     </div>
   `).join('');
@@ -386,7 +459,9 @@ async function saveProduct(e) {
     const priceMaxVal = document.getElementById('prodFormPriceMax').value;
     const price_max = priceMaxVal ? parseFloat(priceMaxVal) : null;
     let price_display = document.getElementById('prodFormPriceDisplay').value.trim();
-    if (!price_display) {
+    if (price_display) {
+      price_display = formatNairaDisplayString(price_display);
+    } else {
       if (price_max) {
         price_display = `₦${price.toLocaleString()} – ₦${price_max.toLocaleString()}`;
       } else {
@@ -618,8 +693,9 @@ function renderProperties() {
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               <span>Edit</span>
             </button>
-            <button type="button" class="adm-btn adm-btn--danger adm-btn--sm" onclick="deleteProperty('${p.id}')" title="Delete Property">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <button type="button" class="adm-btn adm-btn--danger adm-btn--sm" onclick="deleteProperty('${p.id}')" title="Delete Property" style="display:inline-flex; align-items:center; gap:5px;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+              <span>Delete</span>
             </button>
           </div>
         </td>
@@ -866,7 +942,7 @@ function renderPropertyStagingImages() {
 
   strip.innerHTML = stagingPropertyImages.map((img, i) => `
     <div class="adm-img-strip-item">
-      <img src="${escapeHtml(img)}" alt="Property Photo ${i + 1}">
+      <img src="${escapeHtml(img)}" alt="Property Photo ${i + 1}" style="cursor:zoom-in;" title="Click to zoom in" onclick="openLightbox('${escapeHtml(img)}')">
       <button type="button" class="adm-img-strip-del" onclick="removePropertyStagingImage(${i})" title="Remove photo">&times;</button>
     </div>
   `).join('');
@@ -893,11 +969,15 @@ async function saveProperty(e) {
     const price = parseFloat(document.getElementById('propFormPrice').value);
     const price_period = document.getElementById('propFormPeriod').value;
     let price_display = document.getElementById('propFormPriceDisplay').value.trim();
-    if (!price_display) {
+    if (price_display) {
+      price_display = formatNairaDisplayString(price_display);
+    } else {
       if (price_period === 'year') {
         price_display = `₦${price.toLocaleString()} / year`;
       } else if (price_period === 'night') {
         price_display = `₦${price.toLocaleString()} / night`;
+      } else if (price_period === 'month') {
+        price_display = `₦${price.toLocaleString()} / month`;
       } else {
         price_display = `₦${price.toLocaleString()}`;
       }

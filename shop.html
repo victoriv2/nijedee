@@ -1157,6 +1157,25 @@
   </div>
 </footer>
 
+<!-- PRODUCT IMAGE ZOOM LIGHTBOX -->
+<div id="shopZoomLightbox" class="shop-zoom-overlay" onclick="closeShopImageZoom()" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(7,20,40,0.88); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px;">
+  <div style="position:relative; max-width:90vw; max-height:90vh; display:flex; flex-direction:column; align-items:center;" onclick="event.stopPropagation()">
+    <img id="shopZoomImg" src="" alt="Product photo" style="max-width:100%; max-height:80vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 40px rgba(0,0,0,0.4); background:#ffffff;">
+    <div id="shopZoomCaption" style="color:#ffffff; font-weight:700; margin-top:14px; font-size:1rem; text-align:center;"></div>
+    <button type="button" onclick="closeShopImageZoom()" style="margin-top:14px; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.4); color:#ffffff; padding:8px 24px; border-radius:30px; font-weight:700; cursor:pointer; font-size:0.88rem; transition:background 0.2s;">Close Photo</button>
+  </div>
+</div>
+
+<style>
+  .product-img-box img {
+    cursor: zoom-in !important;
+    transition: transform 0.25s ease;
+  }
+  .product-img-box:hover img {
+    transform: scale(1.04);
+  }
+</style>
+
 <script src="assets/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-client.js"></script>
@@ -1313,16 +1332,62 @@
     addToCart(label, price);
   }
 
+  // Product Image Zoom Lightbox Handlers
+  function openShopImageZoom(src, title) {
+    const modal = document.getElementById('shopZoomLightbox');
+    const img = document.getElementById('shopZoomImg');
+    const cap = document.getElementById('shopZoomCaption');
+    if (!modal || !img) return;
+    img.src = src;
+    if (cap) cap.textContent = title || '';
+    modal.style.display = 'flex';
+  }
+
+  function closeShopImageZoom() {
+    const modal = document.getElementById('shopZoomLightbox');
+    if (modal) modal.style.display = 'none';
+  }
+
+  // Global click delegate for any product image zoom
+  document.addEventListener('click', (e) => {
+    const img = e.target.closest('.product-img-box img');
+    if (img) {
+      openShopImageZoom(img.src, img.alt);
+    }
+  });
+
+  // Auto Naira formatting helper
+  function formatNaira(val) {
+    if (val === null || val === undefined || val === '') return '';
+    let s = String(val).trim();
+    if (s.startsWith('₦') || s.startsWith('&#8358;') || s.toUpperCase().startsWith('NGN')) {
+      return s;
+    }
+    const clean = s.replace(/,/g, '');
+    if (/^-?\d+(\.\d+)?$/.test(clean)) {
+      return '₦' + parseFloat(clean).toLocaleString();
+    }
+    if (/^\d+\s*[-–—]\s*\d+$/.test(s)) {
+      const parts = s.split(/[-–—]/);
+      const n1 = parseFloat(parts[0].replace(/,/g, '').trim());
+      const n2 = parseFloat(parts[1].replace(/,/g, '').trim());
+      if (!isNaN(n1) && !isNaN(n2)) {
+        return `₦${n1.toLocaleString()} – ₦${n2.toLocaleString()}`;
+      }
+    }
+    return '₦' + s;
+  }
+
   // Dynamic Product Variant Price & Cart Handlers
   function updateProdVariantPrice(selectEl, prodId) {
     const price = parseInt(selectEl.value, 10);
     const label = selectEl.options[selectEl.selectedIndex].getAttribute('data-label');
     const priceDisplay = document.getElementById(`prodPriceVal_${prodId}`);
-    if (priceDisplay) {
+    if (priceDisplay && !isNaN(price)) {
       priceDisplay.innerHTML = '&#8358;' + price.toLocaleString();
     }
     const waBtn = document.getElementById(`prodWaBtn_${prodId}`);
-    if (waBtn) {
+    if (waBtn && !isNaN(price)) {
       waBtn.href = `https://wa.me/2347085329909?text=${encodeURIComponent('I want to order ' + label + ' (NGN ' + price.toLocaleString() + ')')}`;
     }
   }
@@ -1395,16 +1460,24 @@
         `;
       }
 
-      const priceText = p.price_display || ('₦' + (p.price || 0).toLocaleString());
+      let priceText = formatNaira(p.price_display);
+      if (!priceText || priceText === '₦0') {
+        if (variants.length > 0) {
+          priceText = '₦' + (variants[0].price || 0).toLocaleString();
+        } else {
+          priceText = '₦' + (p.price || 0).toLocaleString();
+        }
+      }
+
       const waInitialText = variants.length > 0
-        ? `I want to order ${variants[0].label} (NGN ${variants[0].price.toLocaleString()})`
+        ? `I want to order ${variants[0].label} (NGN ${(variants[0].price || p.price || 0).toLocaleString()})`
         : `I want to order ${p.name} (${priceText})`;
 
       return `
         <div class="product-card-item" data-category="${escapeHtml(catClasses)}" data-keywords="${escapeHtml(kw)}">
           <div class="product-img-box">
             ${p.badge ? `<span class="product-badge-tag">${escapeHtml(p.badge)}</span>` : ''}
-            <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(p.name)}">
+            <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(p.name)}" style="cursor:zoom-in;" title="Click to zoom into photo" onclick="openShopImageZoom('${escapeHtml(mainImg)}', '${escapeHtml(p.name)}')">
           </div>
           <div class="product-details-body">
             <span class="product-cat-name">${escapeHtml(p.brand || p.category)}</span>
@@ -1413,6 +1486,13 @@
             ${variantsSelectHtml}
             <div class="product-price-val" id="prodPriceVal_${p.id}">${priceText}</div>
             <div class="product-actions-row">
+              <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="handleCardAddToCart('${p.id}')">Add to Cart</button>
+              <a id="prodWaBtn_${p.id}" href="https://wa.me/2347085329909?text=${encodeURIComponent(waInitialText)}" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;" title="Order via WhatsApp">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
               <button type="button" class="tk-btn tk-btn--primary tk-btn--sm" style="flex:1;" onclick="handleCardAddToCart('${p.id}')">Add to Cart</button>
               <a id="prodWaBtn_${p.id}" href="https://wa.me/2347085329909?text=${encodeURIComponent(waInitialText)}" target="_blank" rel="noopener" class="tk-btn tk-btn--outline tk-btn--sm" style="min-width:auto;padding-inline:10px;" title="Order via WhatsApp">WhatsApp</a>
             </div>

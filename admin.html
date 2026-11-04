@@ -873,26 +873,28 @@
       background: #CBD5E1;
       border-radius: 20px;
       position: relative;
-      transition: background 0.2s ease;
+      transition: background-color 0.2s ease;
       flex-shrink: 0;
+      display: inline-block;
     }
     .adm-switch-slider::before {
       content: "";
       position: absolute;
+      display: block;
       width: 16px;
       height: 16px;
       border-radius: 50%;
       background: #FFFFFF;
       top: 3px;
       left: 3px;
-      transition: transform 0.2s ease;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
     }
     .adm-switch input:checked + .adm-switch-slider {
-      background: #16A34A;
+      background: #16A34A !important;
     }
     .adm-switch input:checked + .adm-switch-slider::before {
-      transform: translateX(16px);
+      left: 19px !important;
     }
 
     /* Multi-image preview grid */
@@ -1979,17 +1981,17 @@
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px;">
           <div class="adm-form-group">
             <label class="adm-form-label" for="prodFormPrice">Base Price (₦) *</label>
-            <input type="number" id="prodFormPrice" class="adm-form-input" placeholder="e.g. 65000" required>
+            <input type="number" id="prodFormPrice" class="adm-form-input" placeholder="e.g. 65000" required oninput="autoSyncProductPriceDisplay()">
           </div>
 
           <div class="adm-form-group">
             <label class="adm-form-label" for="prodFormPriceMax">Max Price (₦) (Optional for ranges)</label>
-            <input type="number" id="prodFormPriceMax" class="adm-form-input" placeholder="e.g. 7448">
+            <input type="number" id="prodFormPriceMax" class="adm-form-input" placeholder="e.g. 7448" oninput="autoSyncProductPriceDisplay()">
           </div>
 
           <div class="adm-form-group">
-            <label class="adm-form-label" for="prodFormPriceDisplay">Price Display Override</label>
-            <input type="text" id="prodFormPriceDisplay" class="adm-form-input" placeholder="e.g. ₦5,548 – ₦7,448 or ₦1,200 / pair">
+            <label class="adm-form-label" for="prodFormPriceDisplay">Price Display Override (Auto-formats ₦)</label>
+            <input type="text" id="prodFormPriceDisplay" class="adm-form-input" placeholder="e.g. ₦5,548 – ₦7,448 or ₦1,200 / pair" onblur="ensureNairaPrefix(this)">
           </div>
         </div>
 
@@ -2128,12 +2130,12 @@
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px;">
           <div class="adm-form-group">
             <label class="adm-form-label" for="propFormPrice">Base Rent / Price (₦) *</label>
-            <input type="number" id="propFormPrice" class="adm-form-input" placeholder="e.g. 800000" required oninput="calculatePropertyFeeTotal()">
+            <input type="number" id="propFormPrice" class="adm-form-input" placeholder="e.g. 800000" required oninput="autoSyncPropertyPriceDisplay(); calculatePropertyFeeTotal();">
           </div>
 
           <div class="adm-form-group">
             <label class="adm-form-label" for="propFormPeriod">Pricing Period *</label>
-            <select id="propFormPeriod" class="adm-form-select" required>
+            <select id="propFormPeriod" class="adm-form-select" required onchange="autoSyncPropertyPriceDisplay()">
               <option value="year">Per Year (/ year)</option>
               <option value="night">Per Night (/ night)</option>
               <option value="stay">Per Stay</option>
@@ -2143,8 +2145,8 @@
           </div>
 
           <div class="adm-form-group">
-            <label class="adm-form-label" for="propFormPriceDisplay">Price Display Override</label>
-            <input type="text" id="propFormPriceDisplay" class="adm-form-input" placeholder="e.g. ₦800,000 / year">
+            <label class="adm-form-label" for="propFormPriceDisplay">Price Display Override (Auto-formats ₦)</label>
+            <input type="text" id="propFormPriceDisplay" class="adm-form-input" placeholder="e.g. ₦800,000 / year" onblur="ensureNairaPrefix(this)">
           </div>
 
           <div class="adm-form-group">

@@ -1186,6 +1186,25 @@
   </div>
 </footer>
 
+<!-- PROPERTY IMAGE ZOOM LIGHTBOX -->
+<div id="propZoomLightbox" class="shop-zoom-overlay" onclick="closePropertyImageZoom()" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(7,20,40,0.88); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px;">
+  <div style="position:relative; max-width:90vw; max-height:90vh; display:flex; flex-direction:column; align-items:center;" onclick="event.stopPropagation()">
+    <img id="propZoomImg" src="" alt="Property photo" style="max-width:100%; max-height:80vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 40px rgba(0,0,0,0.4); background:#ffffff;">
+    <div id="propZoomCaption" style="color:#ffffff; font-weight:700; margin-top:14px; font-size:1rem; text-align:center;"></div>
+    <button type="button" onclick="closePropertyImageZoom()" style="margin-top:14px; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.4); color:#ffffff; padding:8px 24px; border-radius:30px; font-weight:700; cursor:pointer; font-size:0.88rem; transition:background 0.2s;">Close Photo</button>
+  </div>
+</div>
+
+<style>
+  [id^="propMainImg_"] {
+    cursor: zoom-in !important;
+    transition: transform 0.25s ease;
+  }
+  [id^="propMainImg_"]:hover {
+    transform: scale(1.03);
+  }
+</style>
+
 <script src="assets/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-client.js"></script>
@@ -1286,6 +1305,44 @@
     closePropertyModal();
   }
 
+  // Property Image Zoom Lightbox Handlers
+  function openPropertyImageZoom(src, title) {
+    const modal = document.getElementById('propZoomLightbox');
+    const img = document.getElementById('propZoomImg');
+    const cap = document.getElementById('propZoomCaption');
+    if (!modal || !img) return;
+    img.src = src;
+    if (cap) cap.textContent = title || '';
+    modal.style.display = 'flex';
+  }
+
+  function closePropertyImageZoom() {
+    const modal = document.getElementById('propZoomLightbox');
+    if (modal) modal.style.display = 'none';
+  }
+
+  // Auto Naira formatting helper
+  function formatNaira(val) {
+    if (val === null || val === undefined || val === '') return '';
+    let s = String(val).trim();
+    if (s.startsWith('₦') || s.startsWith('&#8358;') || s.toUpperCase().startsWith('NGN')) {
+      return s;
+    }
+    const clean = s.replace(/,/g, '');
+    if (/^-?\d+(\.\d+)?$/.test(clean)) {
+      return '₦' + parseFloat(clean).toLocaleString();
+    }
+    if (/^\d+\s*[-–—]\s*\d+$/.test(s)) {
+      const parts = s.split(/[-–—]/);
+      const n1 = parseFloat(parts[0].replace(/,/g, '').trim());
+      const n2 = parseFloat(parts[1].replace(/,/g, '').trim());
+      if (!isNaN(n1) && !isNaN(n2)) {
+        return `₦${n1.toLocaleString()} – ₦${n2.toLocaleString()}`;
+      }
+    }
+    return '₦' + s;
+  }
+
   function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -1310,7 +1367,7 @@
         galleryStripHtml = `
           <div style="display:flex; gap:4px; padding:6px 12px; background:#f8fafc; border-bottom:1px solid #e2e8f0; overflow-x:auto;">
             ${images.map((img, i) => `
-              <img src="${escapeHtml(img)}" alt="Photo ${i + 1}" title="Photo ${i + 1}" style="width:48px; height:44px; object-fit:cover; border-radius:4px; cursor:pointer; flex-shrink:0;" onclick="document.getElementById('propMainImg_${p.id}').src=this.src;">
+              <img src="${escapeHtml(img)}" alt="Photo ${i + 1}" title="Click to view (double-click to zoom)" style="width:48px; height:44px; object-fit:cover; border-radius:4px; cursor:pointer; flex-shrink:0;" onclick="document.getElementById('propMainImg_${p.id}').src=this.src;">
             `).join('')}
           </div>
         `;
@@ -1343,13 +1400,17 @@
         `;
       }
 
-      const priceText = p.price_display || ('₦' + (p.price || 0).toLocaleString() + (p.price_period ? ` / ${p.price_period}` : ''));
+      let priceText = formatNaira(p.price_display);
+      if (!priceText || priceText === '₦0') {
+        priceText = '₦' + (p.price || 0).toLocaleString() + (p.price_period ? ` / ${p.price_period}` : '');
+      }
+
       const waText = p.whatsapp_msg || `Hello NIJEDEE Properties, I want to inspect ${p.title} in ${p.location} (${priceText})`;
 
       return `
         <div style="background:#ffffff; border:1px solid #E2E8F0; border-radius:16px; overflow:hidden; box-shadow:0 4px 16px rgba(7,34,79,0.05); display:flex; flex-direction:column;">
           <div style="position:relative; width:100%; height:220px; background:#f1f5f9; overflow:hidden;">
-            <img id="propMainImg_${p.id}" src="${escapeHtml(mainImg)}" alt="${escapeHtml(p.title)}" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <img id="propMainImg_${p.id}" src="${escapeHtml(mainImg)}" alt="${escapeHtml(p.title)}" style="width:100%; height:100%; object-fit:cover; display:block; cursor:zoom-in;" title="Click to zoom into photo" onclick="openPropertyImageZoom(this.src, '${escapeHtml(p.title)}')">
             <span style="position:absolute; top:12px; left:12px; background:var(--tk-primary); color:#ffffff; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:50px; text-transform:uppercase; letter-spacing:0.5px;">${escapeHtml(p.badge || 'For Rent')}</span>
             <span style="position:absolute; top:12px; right:12px; background:rgba(7,34,79,0.85); color:#ffffff; font-size:0.75rem; font-weight:600; padding:4px 10px; border-radius:50px;">${escapeHtml(p.location)}</span>
           </div>
