@@ -1466,23 +1466,29 @@ body.drawer-open {
 
 .tk-footer__social {
   display: flex;
-  gap: 14px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .tk-footer__social a {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--tk-white);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transform: none !important;
 }
 .tk-footer__social a:hover {
   background: var(--tk-primary);
+  border-color: var(--tk-primary);
   color: var(--tk-white);
+  transform: none !important;
 }
 
 .tk-footer__nav {
