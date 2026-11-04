@@ -1415,6 +1415,16 @@
           </form>
         </div>
 
+        <!-- Card 3: Database & Test Records Maintenance -->
+        <div class="adm-settings-card" style="border-left: 4px solid var(--adm-danger);">
+          <h3>Database &amp; Test Records Maintenance</h3>
+          <p>Remove all development test submissions from Supabase to start with a fresh zero slate for real incoming client requests.</p>
+          <button type="button" class="adm-btn adm-btn--danger" onclick="clearAllTestSubmissions()" style="display:inline-flex; align-items:center; gap:8px;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span>Purge All Test Submissions</span>
+          </button>
+        </div>
+
       </div>
     </section>
 
@@ -2198,6 +2208,26 @@
     alertBox.style.display = 'block';
     document.getElementById('newPasswordInput').value = '';
     document.getElementById('confirmPasswordInput').value = '';
+  }
+
+  // --- Purge All Test Submissions ---
+  async function clearAllTestSubmissions() {
+    if (!confirm('Are you sure you want to delete ALL submissions in the database? This will clear all test records and reset counters to 0.')) return;
+    const sb = getNijedeeSupabase();
+    if (!sb) {
+      alert('Supabase client not initialized.');
+      return;
+    }
+
+    const { error } = await sb.from('requests').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    if (error) {
+      alert('Failed to clear submissions: ' + error.message);
+      return;
+    }
+
+    alert('All test submissions have been successfully cleared. The database is now at a clean zero-state.');
+    switchTab('requests');
+    loadRequests();
   }
 
   // --- Helper Functions ---
