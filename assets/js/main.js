@@ -1059,6 +1059,8 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
         // Check if image belongs to a card container with multiple photos (like properties or products)
         let group = [];
         const cardContainer = this.closest('.product-card-item') ||
+                              this.closest('[data-prod-id]') ||
+                              this.closest('[data-prop-id]') ||
                               this.closest('.prop-cat-card') ||
                               this.closest('#available-listings > div > div') ||
                               this.closest('.tk-flyer-card') ||
@@ -1066,11 +1068,13 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
                               this.closest('.properties-gallery');
 
         if (cardContainer) {
+          const cardHeading = cardContainer.querySelector('h4') || cardContainer.querySelector('h3');
+          const cardTitle = cardHeading ? cardHeading.textContent.trim() : caption;
           const siblings = cardContainer.querySelectorAll('img');
           siblings.forEach(sImg => {
             if (isEligibleImage(sImg)) {
               const sSrc = sImg.getAttribute('data-full-src') || sImg.currentSrc || sImg.src;
-              const sCaption = sImg.getAttribute('alt') || sImg.getAttribute('title') || caption;
+              const sCaption = sImg.getAttribute('alt') || sImg.getAttribute('title') || cardTitle;
               if (sSrc && !group.some(item => item.src === sSrc)) {
                 group.push({ src: sSrc, caption: sCaption });
               }

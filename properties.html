@@ -1374,20 +1374,46 @@
 
   // Full Image Lightbox with Multi-Image Gallery & Single View
   function openPropertyGallery(propId, startIdx = 0) {
-    const p = (window._loadedProperties || []).find(item => String(item.id) === String(propId));
-    if (!p) {
-      if (typeof propId === 'string' && (propId.startsWith('http') || propId.startsWith('assets') || propId.startsWith('data:'))) {
-        if (window.openGlobalLightbox) window.openGlobalLightbox(propId, startIdx, 'Property Image');
-      }
-      return;
+    let p = (window._loadedProperties || []).find(item => String(item.id) === String(propId));
+    let images = [];
+    let title = 'Property Inspection Photos';
+
+    if (p) {
+      images = parsePropertyImagesList(p, p.image_url);
+      title = `${p.title} \u2022 ${p.location}`;
     }
-    const images = parsePropertyImagesList(p, p.image_url);
+
+    // Unbreakable DOM Fallback: Find the card element by [data-prop-id]
+    if (!images || !images.length) {
+      const card = document.querySelector(`[data-prop-id="${propId}"]`);
+      if (card) {
+        const titleEl = card.querySelector('h4');
+        if (titleEl) title = titleEl.textContent.trim();
+        const mainImgEl = card.querySelector(`img#propMainImg_${propId}`) || card.querySelector('img');
+        if (mainImgEl && mainImgEl.src) images.push(mainImgEl.src);
+        const thumbs = card.querySelectorAll('.prop-gallery-strip-thumb');
+        thumbs.forEach(t => {
+          const s = t.currentSrc || t.src;
+          if (s && !images.includes(s)) images.push(s);
+        });
+      }
+    }
+
+    if (!images || !images.length) {
+      if (typeof propId === 'string' && (propId.startsWith('http') || propId.startsWith('assets') || propId.startsWith('data:'))) {
+        images = [propId];
+      }
+    }
+
+    if (!images || !images.length) return;
+
     const galleryItems = images.map((img, idx) => ({
       src: img,
-      caption: `${p.title} \u2022 ${p.location} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
+      caption: `${title} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
     }));
+
     if (window.openGlobalLightbox) {
-      window.openGlobalLightbox(galleryItems, startIdx, `${p.title} \u2022 ${p.location}`);
+      window.openGlobalLightbox(galleryItems, startIdx, title);
     }
   }
 
@@ -1476,8 +1502,10 @@
     const container = document.getElementById('propertiesListingsContainer');
     if (!container) return;
 
+    window._loadedProperties = properties || [];
+
     container.innerHTML = properties.map(p => {
-      const images = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image_url ? [p.image_url] : []);
+      const images = parsePropertyImagesList(p, p.image_url);
       const mainImg = images[0] || 'assets/images/logo.png';
       const breakdown = p.fee_breakdown || {};
       const features = Array.isArray(p.features) ? p.features : [];
@@ -1588,6 +1616,7 @@
       }
 
       if (props && props.length > 0) {
+        window._loadedProperties = props;
         renderDynamicProperties(props);
       }
     } catch (err) {

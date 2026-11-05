@@ -1098,38 +1098,56 @@ function parseCatalogImagesList(obj, fallbackUrl) {
 
 // Full view gallery helpers for admin
 window.openAdminProductGallery = function(prodId, startIdx = 0) {
-  const p = (allProducts || []).find(item => String(item.id) === String(prodId));
-  if (!p) {
-    if (typeof prodId === 'string' && (prodId.startsWith('http') || prodId.startsWith('assets') || prodId.startsWith('data:'))) {
-      if (window.openGlobalLightbox) window.openGlobalLightbox(prodId, startIdx, 'Product Image');
-    }
-    return;
+  let p = (allProducts || []).find(item => String(item.id) === String(prodId));
+  let images = [];
+  let name = 'Product Photos';
+
+  if (p) {
+    images = parseCatalogImagesList(p, p.image_url);
+    name = p.name;
   }
-  const images = parseCatalogImagesList(p, p.image_url);
+
+  if (!images.length) {
+    if (typeof prodId === 'string' && (prodId.startsWith('http') || prodId.startsWith('assets') || prodId.startsWith('data:'))) {
+      images = [prodId];
+    }
+  }
+
+  if (!images.length) return;
+
   const galleryItems = images.map((img, idx) => ({
     src: img,
-    caption: `${p.name} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
+    caption: `${name} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
   }));
   if (window.openGlobalLightbox) {
-    window.openGlobalLightbox(galleryItems, startIdx, p.name);
+    window.openGlobalLightbox(galleryItems, startIdx, name);
   }
 };
 
 window.openAdminPropertyGallery = function(propId, startIdx = 0) {
-  const p = (allProperties || []).find(item => String(item.id) === String(propId));
-  if (!p) {
-    if (typeof propId === 'string' && (propId.startsWith('http') || propId.startsWith('assets') || propId.startsWith('data:'))) {
-      if (window.openGlobalLightbox) window.openGlobalLightbox(propId, startIdx, 'Property Image');
-    }
-    return;
+  let p = (allProperties || []).find(item => String(item.id) === String(propId));
+  let images = [];
+  let title = 'Property Inspection Photos';
+
+  if (p) {
+    images = parseCatalogImagesList(p, p.image_url);
+    title = `${p.title} \u2022 ${p.location}`;
   }
-  const images = parseCatalogImagesList(p, p.image_url);
+
+  if (!images.length) {
+    if (typeof propId === 'string' && (propId.startsWith('http') || propId.startsWith('assets') || propId.startsWith('data:'))) {
+      images = [propId];
+    }
+  }
+
+  if (!images.length) return;
+
   const galleryItems = images.map((img, idx) => ({
     src: img,
-    caption: `${p.title} \u2022 ${p.location} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
+    caption: `${title} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
   }));
   if (window.openGlobalLightbox) {
-    window.openGlobalLightbox(galleryItems, startIdx, `${p.title} \u2022 ${p.location}`);
+    window.openGlobalLightbox(galleryItems, startIdx, title);
   }
 };
 

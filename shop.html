@@ -953,20 +953,46 @@
 
   // Full Image Lightbox with Multi-Image Gallery & Single View
   function openProductGallery(productId, startIdx = 0) {
-    const p = (window._loadedShopProducts || []).find(item => String(item.id) === String(productId));
-    if (!p) {
-      if (typeof productId === 'string' && (productId.startsWith('http') || productId.startsWith('assets') || productId.startsWith('data:'))) {
-        if (window.openGlobalLightbox) window.openGlobalLightbox(productId, startIdx, 'Product Image');
-      }
-      return;
+    let p = (window._loadedShopProducts || []).find(item => String(item.id) === String(productId));
+    let images = [];
+    let title = 'Product Photos';
+
+    if (p) {
+      images = parseProductImagesList(p, p.image_url);
+      title = p.name;
     }
-    const images = parseProductImagesList(p, p.image_url);
+
+    // Unbreakable DOM Fallback: Find card by [data-prod-id]
+    if (!images || !images.length) {
+      const card = document.querySelector(`[data-prod-id="${productId}"]`);
+      if (card) {
+        const titleEl = card.querySelector('.product-title-text') || card.querySelector('h4');
+        if (titleEl) title = titleEl.textContent.trim();
+        const mainImgEl = card.querySelector(`img#prodMainImg_${productId}`) || card.querySelector('img');
+        if (mainImgEl && mainImgEl.src) images.push(mainImgEl.src);
+        const thumbs = card.querySelectorAll('.product-gallery-strip-thumb');
+        thumbs.forEach(t => {
+          const s = t.currentSrc || t.src;
+          if (s && !images.includes(s)) images.push(s);
+        });
+      }
+    }
+
+    if (!images || !images.length) {
+      if (typeof productId === 'string' && (productId.startsWith('http') || productId.startsWith('assets') || productId.startsWith('data:'))) {
+        images = [productId];
+      }
+    }
+
+    if (!images || !images.length) return;
+
     const galleryItems = images.map((img, idx) => ({
       src: img,
-      caption: `${p.name} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
+      caption: `${title} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
     }));
+
     if (window.openGlobalLightbox) {
-      window.openGlobalLightbox(galleryItems, startIdx, p.name);
+      window.openGlobalLightbox(galleryItems, startIdx, title);
     }
   }
 
