@@ -949,6 +949,68 @@
       <p style="font-size: 0.95rem; color: var(--tk-offwhite-dark); max-width: 660px; margin: 0 auto; line-height: 1.6;">Meet identity-checked, NIN-authenticated, and trade-tested professionals registered on the NIJEDEE platform and on active service dispatch across Lagos.</p>
     </div>
 
+    <!-- Sort & Filter Bar -->
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px; margin-bottom:32px; padding:16px 22px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; box-shadow:0 2px 10px rgba(0,0,0,0.02);">
+      
+      <!-- Counter & Status Badge -->
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:0.92rem; font-weight:800; color:var(--tk-navy);" id="artisanRosterCount">Showing active technicians</span>
+        <span style="font-size:0.75rem; background:#ECFDF5; color:#059669; font-weight:800; padding:3px 9px; border-radius:4px; border:1px solid #A7F3D0; display:inline-flex; align-items:center; gap:4px;">
+          &bull; Verified On-Duty
+        </span>
+      </div>
+
+      <!-- Filter & Sort Controls Row -->
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:12px; flex:1; justify-content:flex-end;">
+        
+        <!-- Search Box -->
+        <div style="position:relative; min-width:210px; flex:1; max-width:280px;">
+          <input type="text" id="artisanSearchInput" placeholder="Search technician or skill..." oninput="handleArtisanFilterChange()" style="width:100%; max-width:100% !important; box-sizing:border-box !important; padding:8px 12px 8px 34px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.86rem; color:#0F172A; background:#ffffff; outline:none;">
+          <svg width="15" height="15" fill="none" stroke="#64748B" stroke-width="2.2" viewBox="0 0 24 24" style="position:absolute; left:11px; top:50%; transform:translateY(-50%); pointer-events:none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+
+        <!-- Trade Filter Dropdown -->
+        <div style="display:flex; align-items:center; gap:6px;">
+          <label for="artisanTradeFilter" style="font-size:0.82rem; font-weight:700; color:#475569; white-space:nowrap;">Trade:</label>
+          <select id="artisanTradeFilter" onchange="handleArtisanFilterChange()" style="max-width:100% !important; box-sizing:border-box !important; padding:8px 12px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.86rem; font-weight:600; color:#0F172A; background:#ffffff; cursor:pointer;">
+            <option value="all">All Trades</option>
+            <option value="plumb">Plumbing &amp; Pipefitting</option>
+            <option value="elect">Electrical &amp; Wiring</option>
+            <option value="ac">AC &amp; Refrigeration</option>
+            <option value="paint">Painting &amp; Screeding</option>
+            <option value="carp">Carpentry &amp; Woodwork</option>
+            <option value="tile">Tiling &amp; Flooring</option>
+            <option value="clean">Deep Cleaning &amp; Janitorial</option>
+          </select>
+        </div>
+
+        <!-- Corridor Filter Dropdown -->
+        <div style="display:flex; align-items:center; gap:6px;">
+          <label for="artisanCorridorFilter" style="font-size:0.82rem; font-weight:700; color:#475569; white-space:nowrap;">Corridor:</label>
+          <select id="artisanCorridorFilter" onchange="handleArtisanFilterChange()" style="max-width:100% !important; box-sizing:border-box !important; padding:8px 12px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.86rem; font-weight:600; color:#0F172A; background:#ffffff; cursor:pointer;">
+            <option value="all">All Lagos Corridors</option>
+            <option value="badore">Badore Axis</option>
+            <option value="ajah">Ajah Central</option>
+            <option value="sangotedo">Sangotedo</option>
+            <option value="lekki">Lekki Corridor</option>
+          </select>
+        </div>
+
+        <!-- Sort By Dropdown -->
+        <div style="display:flex; align-items:center; gap:6px;">
+          <label for="artisanSortOrder" style="font-size:0.82rem; font-weight:700; color:#475569; white-space:nowrap;">Sort by:</label>
+          <select id="artisanSortOrder" onchange="handleArtisanFilterChange()" style="max-width:100% !important; box-sizing:border-box !important; padding:8px 14px; border:1.5px solid #0B5ED7; border-radius:8px; font-size:0.86rem; font-weight:700; color:#0B5ED7; background:#EFF6FF; cursor:pointer;">
+            <option value="recommended">Recommended (Master First)</option>
+            <option value="name_asc">Name: A to Z</option>
+            <option value="name_desc">Name: Z to A</option>
+            <option value="trade_asc">Trade: A to Z</option>
+            <option value="location_asc">Corridor / Location</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
     <div class="artisan-profiles-grid" id="artisanProfilesGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 440px)); justify-content: center; gap: 28px;">
       
       <!-- Profile Card: Oluwasegun David Balodin (Plumber, Badore) -->
@@ -2209,6 +2271,22 @@
     }
   }
 
+  window.handleArtisanFilterChange = function() {
+    renderVerifiedArtisansDirectory();
+  };
+
+  window.resetArtisanFilters = function() {
+    const search = document.getElementById('artisanSearchInput');
+    const trade = document.getElementById('artisanTradeFilter');
+    const corridor = document.getElementById('artisanCorridorFilter');
+    const sort = document.getElementById('artisanSortOrder');
+    if (search) search.value = '';
+    if (trade) trade.value = 'all';
+    if (corridor) corridor.value = 'all';
+    if (sort) sort.value = 'recommended';
+    renderVerifiedArtisansDirectory();
+  };
+
   function renderVerifiedArtisansDirectory() {
     const grid = document.getElementById('artisanProfilesGrid');
     if (!grid) return;
@@ -2217,18 +2295,79 @@
     // Filter out any artisan where is_hidden === true or is_on_duty === false
     const visibleProfiles = allProfiles.filter(p => p.is_hidden !== true && p.is_on_duty !== false);
 
-    if (visibleProfiles.length === 0) {
+    let list = visibleProfiles.slice();
+
+    // 1. Search Query Filter
+    const searchVal = (document.getElementById('artisanSearchInput')?.value || '').trim().toLowerCase();
+    if (searchVal) {
+      list = list.filter(art => {
+        const text = `${art.name || ''} ${art.trade || ''} ${art.base || ''} ${art.corridor || ''} ${art.skills || ''} ${art.id || ''}`.toLowerCase();
+        return text.includes(searchVal);
+      });
+    }
+
+    // 2. Trade Filter
+    const tradeVal = document.getElementById('artisanTradeFilter')?.value || 'all';
+    if (tradeVal !== 'all') {
+      list = list.filter(art => {
+        const t = (art.trade || '').toLowerCase();
+        if (tradeVal === 'plumb') return t.includes('plumb') || t.includes('pipe');
+        if (tradeVal === 'elect') return t.includes('elect') || t.includes('power') || t.includes('wir');
+        if (tradeVal === 'ac') return t.includes('ac') || t.includes('cool') || t.includes('refrig');
+        if (tradeVal === 'paint') return t.includes('paint') || t.includes('finish') || t.includes('screed');
+        if (tradeVal === 'carp') return t.includes('carp') || t.includes('wood') || t.includes('roof');
+        if (tradeVal === 'tile') return t.includes('tile') || t.includes('floor') || t.includes('mason');
+        if (tradeVal === 'clean') return t.includes('clean') || t.includes('janitor');
+        return t.includes(tradeVal);
+      });
+    }
+
+    // 3. Corridor Filter
+    const corridorVal = document.getElementById('artisanCorridorFilter')?.value || 'all';
+    if (corridorVal !== 'all') {
+      list = list.filter(art => {
+        const loc = `${art.base || ''} ${art.corridor || ''}`.toLowerCase();
+        return loc.includes(corridorVal.toLowerCase());
+      });
+    }
+
+    // 4. Sort Order
+    const sortVal = document.getElementById('artisanSortOrder')?.value || 'recommended';
+    if (sortVal === 'name_asc') {
+      list.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    } else if (sortVal === 'name_desc') {
+      list.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
+    } else if (sortVal === 'trade_asc') {
+      list.sort((a, b) => (a.trade || '').localeCompare(b.trade || ''));
+    } else if (sortVal === 'location_asc') {
+      list.sort((a, b) => (a.base || '').localeCompare(b.base || ''));
+    } else {
+      // Recommended: Master Artisan first, then alphabetical
+      list.sort((a, b) => {
+        if (a.id === 'NJD-PLM-4561') return -1;
+        if (b.id === 'NJD-PLM-4561') return 1;
+        return (a.name || '').localeCompare(b.name || '');
+      });
+    }
+
+    // Update Counter
+    const countEl = document.getElementById('artisanRosterCount');
+    if (countEl) {
+      countEl.textContent = `Showing ${list.length} active technician${list.length === 1 ? '' : 's'}`;
+    }
+
+    if (list.length === 0) {
       grid.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #F8FAFC; border: 1.5px dashed #CBD5E1; border-radius: 16px;">
-          <div style="font-size: 1.1rem; font-weight: 700; color: var(--tk-navy); margin-bottom: 6px;">All Assigned Field Technicians Are Currently Engaged</div>
-          <p style="font-size: 0.9rem; color: #64748B; max-width: 520px; margin: 0 auto 16px;">Our operations desk is actively assigning incoming requests. Submit your repair or maintenance scope below for prompt allocation.</p>
-          <a href="#artisan-request-form" class="tk-btn tk-btn--primary">Request Service Action &rarr;</a>
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--tk-navy); margin-bottom: 6px;">No Technicians Found Matching Filters</div>
+          <p style="font-size: 0.9rem; color: #64748B; max-width: 520px; margin: 0 auto 16px;">Try adjusting your search keywords, trade filter, or corridor selection to view more available technicians.</p>
+          <button type="button" class="tk-btn tk-btn--outline" onclick="resetArtisanFilters()">Clear Filters &rarr;</button>
         </div>
       `;
       return;
     }
 
-    grid.innerHTML = visibleProfiles.map(art => {
+    grid.innerHTML = list.map(art => {
       const avatarSrc = art.avatar || 'assets/images/artisans/oluwasegun-balodin.jpg';
       const cleanPhone = (art.phone || '').replace(/\D/g, '');
       const waText = encodeURIComponent(`Hello NIJEDEE, I want to request dispatch for verified artisan ${art.name} (${art.trade}) in ${art.base || 'Lagos'}`);
