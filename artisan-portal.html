@@ -1219,18 +1219,7 @@
               </div>
 
               <div class="art-chat-messages" id="chatList_${job.id}">
-                ${messages.map(m => {
-                  let bubbleClass = 'art-chat-bubble--artisan';
-                  if (m.sender === 'client') bubbleClass = 'art-chat-bubble--client';
-                  if (m.sender === 'admin' || m.sender === 'system') bubbleClass = 'art-chat-bubble--admin';
-                  return `
-                    <div class="art-chat-bubble ${bubbleClass}">
-                      <span class="art-chat-sender">${escapeHtml(m.sender_name || m.sender)}</span>
-                      <div>${escapeHtml(m.text)}</div>
-                      <span class="art-chat-time">${escapeHtml(m.timestamp || '')}</span>
-                    </div>
-                  `;
-                }).join('')}
+                ${renderArtisanChatMessages(messages, job.id)}
               </div>
 
               <!-- Quick response chips -->
@@ -1256,6 +1245,167 @@
       }).join('');
     }
 
+    function renderArtisanChatMessages(messages, jobId) {
+      if (!Array.isArray(messages) || messages.length === 0) {
+        return '<div style="text-align:center; padding:12px; color:var(--art-muted); font-size:0.8rem;">No messages sent yet. Send a status note or arrival estimate to your client above.</div>';
+      }
+
+      const filtered = messages.filter(m => !(m.deleted_for && m.deleted_for.includes('artisan')));
+      if (filtered.length === 0) {
+        return '<div style="text-align:center; padding:12px; color:var(--art-muted); font-size:0.8rem;">All messages in this view were deleted.</div>';
+      }
+
+      return filtered.map((m, idx) => {
+        const msgId = m.id || ('msg_idx_' + idx);
+        const isDeleted = m.is_deleted_everyone === true;
+        const isMine = m.sender === 'artisan';
+        let bubbleClass = 'art-chat-bubble--artisan';
+        if (m.sender === 'client') bubbleClass = 'art-chat-bubble--client';
+        if (m.sender === 'admin' || m.sender === 'system') bubbleClass = 'art-chat-bubble--admin';
+
+        const editedTag = m.edited ? '<span style="font-size:0.68rem; opacity:0.65; margin-left:4px;">(edited)</span>' : '';
+
+        return `
+          <div class="art-chat-bubble ${bubbleClass}" data-msg-id="${escapeHtml(msgId)}">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:2px;">
+              <span class="art-chat-sender">${escapeHtml(m.sender_name || m.sender)}</span>
+              ${!isDeleted ? `
+                <div style="display:inline-flex; align-items:center; gap:4px;">
+                  ${isMine ? `
+                    <button type="button" onclick="handleArtisanEditMessage('${jobId}', '${escapeHtml(msgId)}')" title="Edit message" style="background:none; border:none; padding:1px 3px; cursor:pointer; color:inherit; opacity:0.75; font-size:0.7rem; font-weight:700;">Edit</button>
+                    <span style="opacity:0.4; font-size:0.65rem;">&bull;</span>
+                    <button type="button" onclick="handleArtisanDeleteMessageEveryone('${jobId}', '${escapeHtml(msgId)}')" title="Delete for all" style="background:none; border:none; padding:1px 3px; cursor:pointer; color:#EF4444; font-size:0.7rem; font-weight:700;">Delete for All</button>
+                    <span style="opacity:0.4; font-size:0.65rem;">&bull;</span>
+                  ` : ''}
+                  <button type="button" onclick="handleArtisanDeleteMessageForMe('${jobId}', '${escapeHtml(msgId)}')" title="Delete for me" style="background:none; border:none; padding:1px 3px; cursor:pointer; color:inherit; opacity:0.75; font-size:0.7rem;">Delete for Me</button>
+                </div>
+              ` : ''}
+            </div>
+            <div style="${isDeleted ? 'font-style:italic; opacity:0.65;' : 'word-break:break-word;'}">${escapeHtml(m.text)}</div>
+            <div style="display:flex; justify-content:flex-end; align-items:center;">
+              <span class="art-chat-time">${escapeHtml(m.timestamp || '')}</span>
+              ${editedTag}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.handleArtisanEditMessage = async function(jobId, msgId) {
+      const job = assignedDispatches.find(j => j.id === jobId);
+      if (!job || !job.details || !Array.isArray(job.details.messages)) return;
+      const msg = job.details.messages.find((m, i) => (m.id === msgId) || ('msg_idx_' + i === msgId));
+      if (!msg) return;
+
+      let newText = '';
+      if (window.showCustomPrompt) {
+        newText = await window.showCustomPrompt({
+          title: 'Edit Message',
+          message: 'Update your message in this dispatch conversation:',
+          defaultValue: msg.text,
+          confirmText: 'Save Edit',
+          type: 'info'
+        });
+      } else {
+        newText = prompt('Modify message:', msg.text);
+      }
+
+      if (!newText || !newText.trim() || newText.trim() === msg.text) return;
+
+      msg.text = newText.trim();
+      msg.edited = true;
+      refreshArtisanChatDOM(jobId);
+
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (sb) {
+        try {
+          await sb.from('requests').update({ details: job.details }).eq('id', jobId);
+        } catch (e) {
+          console.warn('Sync edit msg to Supabase err:', e);
+        }
+      }
+    };
+
+    window.handleArtisanDeleteMessageEveryone = async function(jobId, msgId) {
+      const job = assignedDispatches.find(j => j.id === jobId);
+      if (!job || !job.details || !Array.isArray(job.details.messages)) return;
+      const msg = job.details.messages.find((m, i) => (m.id === msgId) || ('msg_idx_' + i === msgId));
+      if (!msg) return;
+
+      let ok = false;
+      if (window.showCustomConfirm) {
+        ok = await window.showCustomConfirm({
+          title: 'Delete for Everyone?',
+          message: 'This message will be permanently deleted for all parties in this dispatch thread.',
+          confirmText: 'Delete for Everyone',
+          cancelText: 'Cancel',
+          type: 'danger'
+        });
+      } else {
+        ok = confirm('Delete message for everyone?');
+      }
+
+      if (!ok) return;
+
+      msg.is_deleted_everyone = true;
+      msg.text = 'This message was deleted';
+      refreshArtisanChatDOM(jobId);
+
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (sb) {
+        try {
+          await sb.from('requests').update({ details: job.details }).eq('id', jobId);
+        } catch (e) {
+          console.warn('Sync delete msg to Supabase err:', e);
+        }
+      }
+    };
+
+    window.handleArtisanDeleteMessageForMe = async function(jobId, msgId) {
+      const job = assignedDispatches.find(j => j.id === jobId);
+      if (!job || !job.details || !Array.isArray(job.details.messages)) return;
+      const msg = job.details.messages.find((m, i) => (m.id === msgId) || ('msg_idx_' + i === msgId));
+      if (!msg) return;
+
+      let ok = false;
+      if (window.showCustomConfirm) {
+        ok = await window.showCustomConfirm({
+          title: 'Delete for Me?',
+          message: 'This message will only be hidden from your dashboard screen.',
+          confirmText: 'Delete for Me',
+          cancelText: 'Cancel',
+          type: 'warning'
+        });
+      } else {
+        ok = confirm('Delete for me?');
+      }
+
+      if (!ok) return;
+
+      if (!Array.isArray(msg.deleted_for)) msg.deleted_for = [];
+      if (!msg.deleted_for.includes('artisan')) msg.deleted_for.push('artisan');
+      refreshArtisanChatDOM(jobId);
+
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (sb) {
+        try {
+          await sb.from('requests').update({ details: job.details }).eq('id', jobId);
+        } catch (e) {
+          console.warn('Sync delete for me to Supabase err:', e);
+        }
+      }
+    };
+
+    function refreshArtisanChatDOM(jobId) {
+      const job = assignedDispatches.find(j => j.id === jobId);
+      if (!job || !job.details) return;
+      const list = document.getElementById(`chatList_${jobId}`);
+      if (list) {
+        list.innerHTML = renderArtisanChatMessages(job.details.messages || [], jobId);
+        list.scrollTop = list.scrollHeight;
+      }
+    }
+
     function applyQuickReply(jobId, text) {
       const input = document.getElementById(`chatInput_${jobId}`);
       if (input) {
@@ -1279,27 +1429,17 @@
       if (!Array.isArray(job.details.messages)) job.details.messages = [];
 
       const newMsg = {
+        id: 'msg_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
         sender: 'artisan',
         sender_name: currentArtisan.name,
         text: text,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        edited: false,
+        deleted_for: []
       };
 
       job.details.messages.push(newMsg);
-
-      // Append immediately to DOM
-      const list = document.getElementById(`chatList_${jobId}`);
-      if (list) {
-        const bubble = document.createElement('div');
-        bubble.className = 'art-chat-bubble art-chat-bubble--artisan';
-        bubble.innerHTML = `
-          <span class="art-chat-sender">${escapeHtml(newMsg.sender_name)}</span>
-          <div>${escapeHtml(newMsg.text)}</div>
-          <span class="art-chat-time">${escapeHtml(newMsg.timestamp)}</span>
-        `;
-        list.appendChild(bubble);
-        list.scrollTop = list.scrollHeight;
-      }
+      refreshArtisanChatDOM(jobId);
 
       // Sync to Supabase
       const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;

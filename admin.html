@@ -2823,9 +2823,16 @@
           <td>${imgCell}</td>
           <td style="color:var(--adm-muted); font-size:0.8rem; white-space:nowrap;">${dateStr}</td>
           <td>
-            <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="event.stopPropagation(); openDetailModal('${req.id}')">
-              View
-            </button>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="event.stopPropagation(); openDetailModal('${req.id}')">
+                View
+              </button>
+              ${req.type === 'artisan_dispatch' ? `
+                <button type="button" class="adm-btn adm-btn--sm" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; font-weight:700;" onclick="event.stopPropagation(); openDetailModal('${req.id}'); setTimeout(() => document.getElementById('modalDispatchChatSection')?.scrollIntoView({behavior:'smooth'}), 150);">
+                  Live Chat
+                </button>
+              ` : ''}
+            </div>
           </td>
         </tr>`;
     }).join('');
@@ -2928,29 +2935,12 @@
     }
 
     // Render Live Dispatch Chat if artisan dispatch
-    let adminChatPollTimer = null;
     const chatSec = document.getElementById('modalDispatchChatSection');
-    const chatMsgs = document.getElementById('modalDispatchChatMessages');
-    if (chatSec && chatMsgs) {
+    if (chatSec) {
       if (req.type === 'artisan_dispatch') {
         chatSec.style.display = 'block';
         const messages = Array.isArray(details.messages) ? details.messages : [];
-        if (messages.length === 0) {
-          chatMsgs.innerHTML = '<span style="color:var(--adm-muted); font-size:0.8rem; text-align:center; padding:10px;">No messages sent yet. Technicians and customers can exchange direct updates here.</span>';
-        } else {
-          chatMsgs.innerHTML = messages.map(m => {
-            let style = 'align-self:flex-start; background:#F1F5F9; color:#0F172A;';
-            if (m.sender === 'artisan') style = 'align-self:flex-end; background:#EFF6FF; color:#1D4ED8; font-weight:600;';
-            if (m.sender === 'admin' || m.sender === 'system') style = 'align-self:center; background:#FEF3C7; color:#92400E; font-size:0.8rem; text-align:center;';
-            return `
-              <div style="${style} padding:8px 12px; border-radius:10px; max-width:85%; font-size:0.84rem; display:flex; flex-direction:column; margin-bottom:4px;">
-                <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; margin-bottom:2px; opacity:0.85;">${escapeHtml(m.sender_name || m.sender)}</span>
-                <div>${escapeHtml(m.text)}</div>
-                <span style="font-size:0.68rem; opacity:0.75; align-self:flex-end; margin-top:2px;">${escapeHtml(m.timestamp || '')}</span>
-              </div>
-            `;
-          }).join('');
-        }
+        renderAdminChatThread(messages);
 
         if (window.adminChatInterval) clearInterval(window.adminChatInterval);
         window.adminChatInterval = setInterval(async () => {
@@ -2964,21 +2954,7 @@
             const { data } = await sb.from('requests').select('*').eq('id', currentActiveRequest.id).single();
             if (data && data.details && Array.isArray(data.details.messages)) {
               currentActiveRequest.details = data.details;
-              const cm = document.getElementById('modalDispatchChatMessages');
-              if (cm) {
-                cm.innerHTML = data.details.messages.map(m => {
-                  let s = 'align-self:flex-start; background:#F1F5F9; color:#0F172A;';
-                  if (m.sender === 'artisan') s = 'align-self:flex-end; background:#EFF6FF; color:#1D4ED8; font-weight:600;';
-                  if (m.sender === 'admin' || m.sender === 'system') s = 'align-self:center; background:#FEF3C7; color:#92400E; font-size:0.8rem; text-align:center;';
-                  return `
-                    <div style="${s} padding:8px 12px; border-radius:10px; max-width:85%; font-size:0.84rem; display:flex; flex-direction:column; margin-bottom:4px;">
-                      <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; margin-bottom:2px; opacity:0.85;">${escapeHtml(m.sender_name || m.sender)}</span>
-                      <div>${escapeHtml(m.text)}</div>
-                      <span style="font-size:0.68rem; opacity:0.75; align-self:flex-end; margin-top:2px;">${escapeHtml(m.timestamp || '')}</span>
-                    </div>
-                  `;
-                }).join('');
-              }
+              renderAdminChatThread(data.details.messages);
             }
           } catch (e) {}
         }, 4000);
@@ -2994,6 +2970,192 @@
     if (!req.is_read) {
       markAsRead(req.id);
     }
+  }
+
+  function renderAdminChatThread(messages) {
+    const chatMsgs = document.getElementById('modalDispatchChatMessages');
+    if (!chatMsgs) return;
+    if (!Array.isArray(messages) || messages.length === 0) {
+      chatMsgs.innerHTML = '<span style="color:var(--adm-muted); font-size:0.8rem; text-align:center; padding:10px;">No messages sent yet. Technicians and customers can exchange direct updates here.</span>';
+      return;
+    }
+
+    const filtered = messages.filter(m => !(m.deleted_for && m.deleted_for.includes('admin')));
+    if (filtered.length === 0) {
+      chatMsgs.innerHTML = '<span style="color:var(--adm-muted); font-size:0.8rem; text-align:center; padding:10px;">All messages in this view were deleted.</span>';
+      return;
+    }
+
+    chatMsgs.innerHTML = filtered.map((m, idx) => {
+      const msgId = m.id || ('msg_idx_' + idx);
+      const isDeleted = m.is_deleted_everyone === true;
+      let style = 'align-self:flex-start; background:#F1F5F9; color:#0F172A; border:1px solid #E2E8F0;';
+      if (m.sender === 'artisan') style = 'align-self:flex-end; background:#EFF6FF; color:#1D4ED8; font-weight:600; border:1px solid #BFDBFE;';
+      if (m.sender === 'admin' || m.sender === 'system') style = 'align-self:center; background:#FEF3C7; color:#92400E; font-size:0.82rem; text-align:center; border:1px solid #FDE68A;';
+
+      const editedTag = m.edited ? '<span style="font-size:0.68rem; opacity:0.65; margin-left:4px;">(edited)</span>' : '';
+
+      return `
+        <div class="admin-chat-bubble" data-msg-id="${escapeHtml(msgId)}" style="${style} padding:8px 12px; border-radius:10px; max-width:88%; font-size:0.84rem; display:flex; flex-direction:column; margin-bottom:6px; position:relative;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:2px;">
+            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; opacity:0.85;">${escapeHtml(m.sender_name || m.sender)}</span>
+            ${!isDeleted ? `
+              <div style="display:inline-flex; align-items:center; gap:4px;">
+                <button type="button" onclick="handleAdminEditMessage('${escapeHtml(msgId)}')" title="Edit message" style="background:none; border:none; padding:2px; cursor:pointer; color:#64748B; font-size:0.72rem; font-weight:700;">Edit</button>
+                <span style="color:#CBD5E1; font-size:0.7rem;">&bull;</span>
+                <button type="button" onclick="handleAdminDeleteMessageEveryone('${escapeHtml(msgId)}')" title="Delete for all" style="background:none; border:none; padding:2px; cursor:pointer; color:#DC2626; font-size:0.72rem; font-weight:700;">Delete for All</button>
+                <span style="color:#CBD5E1; font-size:0.7rem;">&bull;</span>
+                <button type="button" onclick="handleAdminDeleteMessageForMe('${escapeHtml(msgId)}')" title="Delete for me" style="background:none; border:none; padding:2px; cursor:pointer; color:#64748B; font-size:0.72rem;">Delete for Me</button>
+              </div>
+            ` : ''}
+          </div>
+          <div style="${isDeleted ? 'font-style:italic; opacity:0.6;' : 'word-break:break-word;'}">${escapeHtml(m.text)}</div>
+          <div style="font-size:0.68rem; opacity:0.75; align-self:flex-end; margin-top:2px;">
+            <span>${escapeHtml(m.timestamp || '')}</span>
+            ${editedTag}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }
+
+  async function handleAdminSendDispatchMessage(e) {
+    e.preventDefault();
+    const input = document.getElementById('adminDispatchChatInput');
+    if (!input || !input.value.trim() || !currentActiveRequest) return;
+
+    const text = input.value.trim();
+    input.value = '';
+
+    if (!currentActiveRequest.details) currentActiveRequest.details = {};
+    if (!Array.isArray(currentActiveRequest.details.messages)) currentActiveRequest.details.messages = [];
+
+    const newMsg = {
+      id: 'msg_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+      sender: 'admin',
+      sender_name: 'NIJEDEE Ops Supervisor',
+      text: text,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      edited: false,
+      deleted_for: []
+    };
+
+    currentActiveRequest.details.messages.push(newMsg);
+    renderAdminChatThread(currentActiveRequest.details.messages);
+
+    const sb = getNijedeeSupabase();
+    if (sb) {
+      try {
+        await sb.from('requests').update({ details: currentActiveRequest.details }).eq('id', currentActiveRequest.id);
+      } catch (err) {
+        console.warn('Failed to sync admin dispatch message:', err);
+      }
+    }
+  }
+
+  async function handleAdminEditMessage(msgId) {
+    if (!currentActiveRequest || !currentActiveRequest.details || !Array.isArray(currentActiveRequest.details.messages)) return;
+    const msg = currentActiveRequest.details.messages.find((m, i) => (m.id === msgId) || ('msg_idx_' + i === msgId));
+    if (!msg) return;
+
+    let newText = '';
+    if (window.showCustomPrompt) {
+      newText = await window.showCustomPrompt({
+        title: 'Edit Supervisor Message',
+        message: 'Modify message text for this dispatch thread:',
+        defaultValue: msg.text,
+        confirmText: 'Save Edit',
+        type: 'info'
+      });
+    } else {
+      newText = prompt('Modify message:', msg.text);
+    }
+
+    if (!newText || !newText.trim() || newText.trim() === msg.text) return;
+
+    msg.text = newText.trim();
+    msg.edited = true;
+    renderAdminChatThread(currentActiveRequest.details.messages);
+
+    const sb = getNijedeeSupabase();
+    if (sb) {
+      try {
+        await sb.from('requests').update({ details: currentActiveRequest.details }).eq('id', currentActiveRequest.id);
+      } catch (e) {
+        console.warn('Sync edited message err:', e);
+      }
+    }
+  }
+
+  async function handleAdminDeleteMessageEveryone(msgId) {
+    if (!currentActiveRequest || !currentActiveRequest.details || !Array.isArray(currentActiveRequest.details.messages)) return;
+    const msg = currentActiveRequest.details.messages.find((m, i) => (m.id === msgId) || ('msg_idx_' + i === msgId));
+    if (!msg) return;
+
+    let ok = false;
+    if (window.showCustomConfirm) {
+      ok = await window.showCustomConfirm({
+        title: 'Delete for Everyone?',
+        message: 'This message will be permanently removed for all participants.',
+        confirmText: 'Delete for Everyone',
+        cancelText: 'Cancel',
+        type: 'danger'
+      });
+    } else {
+      ok = confirm('Delete message for everyone?');
+    }
+
+    if (!ok) return;
+
+    msg.is_deleted_everyone = true;
+    msg.text = 'This message was deleted';
+    renderAdminChatThread(currentActiveRequest.details.messages);
+
+    const sb = getNijedeeSupabase();
+    if (sb) {
+      try {
+        await sb.from('requests').update({ details: currentActiveRequest.details }).eq('id', currentActiveRequest.id);
+      } catch (e) {
+        console.warn('Sync delete everyone message err:', e);
+      }
+    }
+  }
+
+  async function handleAdminDeleteMessageForMe(msgId) {
+    if (!currentActiveRequest || !currentActiveRequest.details || !Array.isArray(currentActiveRequest.details.messages)) return;
+    const msg = currentActiveRequest.details.messages.find((m, i) => (m.id === msgId) || ('msg_idx_' + i === msgId));
+    if (!msg) return;
+
+    let ok = false;
+    if (window.showCustomConfirm) {
+      ok = await window.showCustomConfirm({
+        title: 'Delete for Me?',
+        message: 'This message will only be hidden from the admin monitor screen.',
+        confirmText: 'Delete for Me',
+        cancelText: 'Cancel',
+        type: 'warning'
+      });
+    } else {
+      ok = confirm('Delete for me?');
+    }
+
+    if (!ok) return;
+
+    if (!Array.isArray(msg.deleted_for)) msg.deleted_for = [];
+    if (!msg.deleted_for.includes('admin')) msg.deleted_for.push('admin');
+    renderAdminChatThread(currentActiveRequest.details.messages);
+
+    const sb = getNijedeeSupabase();
+    if (sb) {
+      try {
+        await sb.from('requests').update({ details: currentActiveRequest.details }).eq('id', currentActiveRequest.id);
+      } catch (e) {
+        console.warn('Sync delete for me err:', e);
+      }
+    }
+  }
   }
 
   function closeDetailModal() {
