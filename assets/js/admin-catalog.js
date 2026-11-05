@@ -1074,11 +1074,38 @@ async function saveProperty(e) {
   }
 }
 
+// Helper to safely parse images array from various formats
+function parseCatalogImagesList(obj, fallbackUrl) {
+  if (!obj) return fallbackUrl ? [fallbackUrl] : [];
+  let raw = obj.images;
+  if (!raw && obj.image_url) raw = [obj.image_url];
+  if (Array.isArray(raw)) return raw.filter(Boolean);
+  if (typeof raw === 'string') {
+    raw = raw.trim();
+    if (raw.startsWith('[') && raw.endsWith(']')) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed.filter(Boolean);
+      } catch (e) {}
+    }
+    if (raw.includes(',')) {
+      return raw.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    if (raw) return [raw];
+  }
+  return obj.image_url ? [obj.image_url] : (fallbackUrl ? [fallbackUrl] : []);
+}
+
 // Full view gallery helpers for admin
 window.openAdminProductGallery = function(prodId, startIdx = 0) {
-  const p = (allProducts || []).find(item => item.id === prodId);
-  if (!p) return;
-  const images = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image_url ? [p.image_url] : []);
+  const p = (allProducts || []).find(item => String(item.id) === String(prodId));
+  if (!p) {
+    if (typeof prodId === 'string' && (prodId.startsWith('http') || prodId.startsWith('assets') || prodId.startsWith('data:'))) {
+      if (window.openGlobalLightbox) window.openGlobalLightbox(prodId, startIdx, 'Product Image');
+    }
+    return;
+  }
+  const images = parseCatalogImagesList(p, p.image_url);
   const galleryItems = images.map((img, idx) => ({
     src: img,
     caption: `${p.name} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
@@ -1089,9 +1116,14 @@ window.openAdminProductGallery = function(prodId, startIdx = 0) {
 };
 
 window.openAdminPropertyGallery = function(propId, startIdx = 0) {
-  const p = (allProperties || []).find(item => item.id === propId);
-  if (!p) return;
-  const images = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image_url ? [p.image_url] : []);
+  const p = (allProperties || []).find(item => String(item.id) === String(propId));
+  if (!p) {
+    if (typeof propId === 'string' && (propId.startsWith('http') || propId.startsWith('assets') || propId.startsWith('data:'))) {
+      if (window.openGlobalLightbox) window.openGlobalLightbox(propId, startIdx, 'Property Image');
+    }
+    return;
+  }
+  const images = parseCatalogImagesList(p, p.image_url);
   const galleryItems = images.map((img, idx) => ({
     src: img,
     caption: `${p.title} \u2022 ${p.location} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`

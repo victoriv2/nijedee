@@ -1350,11 +1350,38 @@
     closePropertyModal();
   }
 
+  // Helper to parse images safely
+  function parsePropertyImagesList(obj, fallbackUrl) {
+    if (!obj) return fallbackUrl ? [fallbackUrl] : [];
+    let raw = obj.images;
+    if (!raw && obj.image_url) raw = [obj.image_url];
+    if (Array.isArray(raw)) return raw.filter(Boolean);
+    if (typeof raw === 'string') {
+      raw = raw.trim();
+      if (raw.startsWith('[') && raw.endsWith(']')) {
+        try {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) return parsed.filter(Boolean);
+        } catch (e) {}
+      }
+      if (raw.includes(',')) {
+        return raw.split(',').map(s => s.trim()).filter(Boolean);
+      }
+      if (raw) return [raw];
+    }
+    return obj.image_url ? [obj.image_url] : (fallbackUrl ? [fallbackUrl] : []);
+  }
+
   // Full Image Lightbox with Multi-Image Gallery & Single View
   function openPropertyGallery(propId, startIdx = 0) {
-    const p = (window._loadedProperties || []).find(item => item.id === propId);
-    if (!p) return;
-    const images = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image_url ? [p.image_url] : []);
+    const p = (window._loadedProperties || []).find(item => String(item.id) === String(propId));
+    if (!p) {
+      if (typeof propId === 'string' && (propId.startsWith('http') || propId.startsWith('assets') || propId.startsWith('data:'))) {
+        if (window.openGlobalLightbox) window.openGlobalLightbox(propId, startIdx, 'Property Image');
+      }
+      return;
+    }
+    const images = parsePropertyImagesList(p, p.image_url);
     const galleryItems = images.map((img, idx) => ({
       src: img,
       caption: `${p.title} \u2022 ${p.location} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`

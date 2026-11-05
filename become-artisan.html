@@ -798,6 +798,61 @@
                 </select>
               </div>
 
+              <!-- Profile Avatar / Headshot Upload -->
+              <div class="form-group" style="margin-top:22px; padding:18px; background:#F8FAFC; border:1.5px dashed #CBD5E1; border-radius:12px;">
+                <label style="font-weight:700; color:#0F172A; display:block; margin-bottom:6px;">
+                  Profile Picture / Avatar <span class="req">*</span>
+                </label>
+                <div style="display:flex; align-items:center; gap:16px;">
+                  <div id="avatarPreviewContainer" style="width:76px; height:76px; border-radius:50%; background:#E2E8F0; overflow:hidden; border:2.5px solid #2563EB; flex-shrink:0; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                    <img id="avatarPreviewImg" src="" alt="Avatar Preview" style="width:100%; height:100%; object-fit:cover; display:none;">
+                    <svg id="avatarDefaultSvg" width="34" height="34" fill="none" stroke="#64748B" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  </div>
+                  <div style="flex:1;">
+                    <input type="file" id="artisanAvatarInput" name="artisan_avatar" accept="image/png, image/jpeg, image/jpg, image/webp" style="display:none;" onchange="handleAvatarSelected(event)">
+                    <button type="button" class="btn" style="background:#0B5ED7; color:#fff; font-size:0.86rem; padding:9px 16px; border-radius:7px; border:none; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:7px;" onclick="document.getElementById('artisanAvatarInput').click()">
+                      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                      Choose Profile Photo
+                    </button>
+                    <div id="avatarFileName" style="font-size:0.78rem; color:#475569; margin-top:5px;">Clear portrait/headshot for your public verified artisan card on NIJEDEE.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Create Account Password & Confirm Password (Min 6 Characters) -->
+              <div style="margin-top:20px; padding:18px; background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:12px;">
+                <div style="font-weight:800; font-size:0.95rem; color:#1E3A8A; margin-bottom:4px; display:flex; align-items:center; gap:7px;">
+                  <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  Create Artisan Portal Password
+                </div>
+                <div style="font-size:0.8rem; color:#1E40AF; margin-bottom:14px;">Set the login password for your personal artisan dashboard (Minimum 6 characters).</div>
+                
+                <div class="form-row">
+                  <div class="form-group" style="position:relative;">
+                    <label for="artisanPassword">Password (Min 6 characters) <span class="req">*</span></label>
+                    <div style="position:relative;">
+                      <input type="password" id="artisanPassword" name="artisan_password" placeholder="At least 6 characters" minlength="6" required style="padding-right:42px; width:100%; box-sizing:border-box;">
+                      <button type="button" onclick="togglePassField('artisanPassword', this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:#64748B; padding:4px;" title="Show or Hide Password">
+                        <svg class="eye-open" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="eye-closed" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="form-group" style="position:relative;">
+                    <label for="artisanPasswordConfirm">Retype Password <span class="req">*</span></label>
+                    <div style="position:relative;">
+                      <input type="password" id="artisanPasswordConfirm" name="artisan_password_confirm" placeholder="Retype password" minlength="6" required style="padding-right:42px; width:100%; box-sizing:border-box;" oninput="checkPasswordMatchRealtime()">
+                      <button type="button" onclick="togglePassField('artisanPasswordConfirm', this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:#64748B; padding:4px;" title="Show or Hide Password">
+                        <svg class="eye-open" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="eye-closed" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div id="passwordMatchStatus" style="font-size:0.78rem; font-weight:700; margin-top:6px; display:none;"></div>
+              </div>
+
               <div class="form-btn-row">
                 <button type="button" class="btn-next" onclick="nextStep(1)">Next Step &rarr;</button>
               </div>
@@ -961,11 +1016,19 @@
               <div class="form-step-desc">Please review your information before submitting. You can go back to make changes.</div>
 
               <div class="review-panel" id="review-panel">
-                <h4>Personal Details</h4>
+                <h4>Personal Details &amp; Portal Account</h4>
+                <div class="review-row" style="align-items:center;">
+                  <span>Profile Photo</span>
+                  <span>
+                    <img id="rev-avatar" src="" alt="Avatar" style="width:40px; height:40px; border-radius:50%; object-fit:cover; display:none; border:2px solid #2563EB;">
+                    <span id="rev-avatar-text">—</span>
+                  </span>
+                </div>
                 <div class="review-row"><span>Full Name</span><span id="rev-name">—</span></div>
                 <div class="review-row"><span>Phone</span><span id="rev-phone">—</span></div>
                 <div class="review-row"><span>Email</span><span id="rev-email">—</span></div>
                 <div class="review-row"><span>Area</span><span id="rev-area">—</span></div>
+                <div class="review-row"><span>Portal Password</span><span id="rev-pass" style="color:#059669; font-weight:700;">•••••• (Configured)</span></div>
               </div>
               <div class="review-panel">
                 <h4>Skills &amp; Experience</h4>
@@ -1175,6 +1238,109 @@
   // Multi-step form logic
   let currentStep = 1;
   const totalSteps = 4;
+  let selectedAvatarData = null;
+
+  function handleAvatarSelected(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const nameEl = document.getElementById('avatarFileName');
+    if (nameEl) nameEl.textContent = `Selected: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      selectedAvatarData = e.target.result;
+      const previewImg = document.getElementById('avatarPreviewImg');
+      const defaultSvg = document.getElementById('avatarDefaultSvg');
+      if (previewImg && defaultSvg) {
+        previewImg.src = selectedAvatarData;
+        previewImg.style.display = 'block';
+        defaultSvg.style.display = 'none';
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function togglePassField(fieldId, btn) {
+    const input = document.getElementById(fieldId);
+    if (!input) return;
+    const isPass = input.type === 'password';
+    input.type = isPass ? 'text' : 'password';
+    const openEye = btn.querySelector('.eye-open');
+    const closedEye = btn.querySelector('.eye-closed');
+    if (openEye && closedEye) {
+      openEye.style.display = isPass ? 'none' : 'block';
+      closedEye.style.display = isPass ? 'block' : 'none';
+    }
+  }
+
+  function checkPasswordMatchRealtime() {
+    const p1 = (document.getElementById('artisanPassword')?.value || '').trim();
+    const p2 = (document.getElementById('artisanPasswordConfirm')?.value || '').trim();
+    const status = document.getElementById('passwordMatchStatus');
+    if (!status) return;
+
+    if (!p2) {
+      status.style.display = 'none';
+      return;
+    }
+    status.style.display = 'block';
+    if (p1 === p2 && p1.length >= 6) {
+      status.style.color = '#059669';
+      status.textContent = '\u2713 Passwords match perfectly (Min. 6 characters met)';
+    } else if (p1.length < 6) {
+      status.style.color = '#DC2626';
+      status.textContent = 'Password must be at least 6 characters long.';
+    } else {
+      status.style.color = '#DC2626';
+      status.textContent = 'Passwords do not match yet.';
+    }
+  }
+
+  function validateStep1() {
+    const name = (document.getElementById('fullname')?.value || '').trim();
+    const phone = (document.getElementById('phone')?.value || '').trim();
+    const email = (document.getElementById('email')?.value || '').trim();
+    const address = (document.getElementById('address')?.value || '').trim();
+    const area = document.getElementById('area')?.value;
+    const pass = (document.getElementById('artisanPassword')?.value || '').trim();
+    const passConfirm = (document.getElementById('artisanPasswordConfirm')?.value || '').trim();
+
+    if (!name) {
+      alert('Please enter your full name.');
+      document.getElementById('fullname').focus();
+      return false;
+    }
+    if (!phone || phone.length < 10) {
+      alert('Please enter a valid phone number (at least 10 digits).');
+      document.getElementById('phone').focus();
+      return false;
+    }
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      document.getElementById('email').focus();
+      return false;
+    }
+    if (!address) {
+      alert('Please enter your home address.');
+      document.getElementById('address').focus();
+      return false;
+    }
+    if (!area) {
+      alert('Please select your area of residence.');
+      document.getElementById('area').focus();
+      return false;
+    }
+    if (!pass || pass.length < 6) {
+      alert('Please create a portal login password with at least 6 characters.');
+      document.getElementById('artisanPassword').focus();
+      return false;
+    }
+    if (pass !== passConfirm) {
+      alert('Passwords do not match. Please retype to confirm your password.');
+      document.getElementById('artisanPasswordConfirm').focus();
+      return false;
+    }
+    return true;
+  }
 
   function showStep(step) {
     document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
@@ -1204,6 +1370,7 @@
   }
 
   function nextStep(from) {
+    if (from === 1 && !validateStep1()) return;
     if (from === 4) return;
     // Populate review on step 4
     if (from === 3) populateReview();
@@ -1232,6 +1399,15 @@
     document.getElementById('rev-exp').textContent = getValue('experience');
     const toolsEl = document.querySelector('input[name="has_tools"]:checked');
     document.getElementById('rev-tools').textContent = toolsEl ? toolsEl.parentElement.textContent.trim() : '—';
+
+    // Show avatar thumbnail in review
+    const revAvatarImg = document.getElementById('rev-avatar');
+    const revAvatarTxt = document.getElementById('rev-avatar-text');
+    if (selectedAvatarData && revAvatarImg && revAvatarTxt) {
+      revAvatarImg.src = selectedAvatarData;
+      revAvatarImg.style.display = 'inline-block';
+      revAvatarTxt.style.display = 'none';
+    }
   }
 
   function generateRef() {
@@ -1254,6 +1430,7 @@
     const area = document.getElementById('area')?.value || 'Badore/Ajah';
     const trade = document.getElementById('trade')?.value || 'General Artisan';
     const experience = document.getElementById('experience')?.value || 'Not specified';
+    const pass = (document.getElementById('artisanPassword')?.value || '').trim();
     const toolsEl = document.querySelector('input[name="has_tools"]:checked');
     const toolStatus = toolsEl ? toolsEl.parentElement.textContent.trim() : 'Equipped';
     
@@ -1288,11 +1465,14 @@
 
     window.scrollTo({ top: document.getElementById('artisan-form-card').offsetTop - 100, behavior: 'smooth' });
 
-    // Dispatch to Supabase Admin Dashboard
+    // Gather uploaded files, placing the profile avatar first
     const filesToUpload = [];
+    const fAvatar = document.getElementById('artisanAvatarInput')?.files;
     const f1 = document.querySelector('input[name="valid_id"]')?.files;
     const f2 = document.querySelector('input[name="profile_photo"]')?.files;
     const f3 = document.querySelector('input[name="certification"]')?.files;
+
+    if (fAvatar && fAvatar[0]) filesToUpload.push(fAvatar[0]);
     if (f1 && f1[0]) filesToUpload.push(f1[0]);
     if (f2 && f2[0]) filesToUpload.push(f2[0]);
     if (f3 && f3[0]) filesToUpload.push(f3[0]);
@@ -1314,6 +1494,9 @@
           experience,
           toolStatus,
           areasList,
+          password: pass,
+          assignedPassword: pass,
+          avatar: selectedAvatarData || '',
           bank: document.getElementById('bank_name')?.value || '',
           account: document.getElementById('account')?.value || '',
           accountName: document.getElementById('account_name')?.value || ''
@@ -1321,6 +1504,10 @@
         files: filesToUpload
       });
     }
+
+    // Open WhatsApp in new tab
+    window.open(waUrl, '_blank');
+  });
 
     // Open WhatsApp in new tab
     window.open(waUrl, '_blank');

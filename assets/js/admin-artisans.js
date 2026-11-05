@@ -57,6 +57,7 @@
     const profiles = getProfiles();
     tbody.innerHTML = profiles.map(art => {
       const isSegun = art.id === 'NJD-PLM-4561';
+      const isHidden = art.is_hidden === true;
 
       // Compute authentic dispatch metrics from live database requests
       const artisanReqs = (window.allRequests || []).filter(r => {
@@ -71,7 +72,7 @@
       return `
         <tr>
           <td style="width:60px;">
-            <img src="${art.avatar || 'assets/images/artisans/oluwasegun-balodin.jpg'}" alt="${escapeHtml(art.name)}" style="width:48px; height:52px; border-radius:8px; object-fit:cover; border:1px solid #CBD5E1;">
+            <img src="${art.avatar || 'assets/images/artisans/oluwasegun-balodin.jpg'}" alt="${escapeHtml(art.name)}" style="width:48px; height:52px; border-radius:8px; object-fit:cover; border:1px solid #CBD5E1; cursor:zoom-in;" title="Click to view full photo" onclick="window.openGlobalLightbox ? window.openGlobalLightbox('${escapeHtml(art.avatar || 'assets/images/artisans/oluwasegun-balodin.jpg')}', 0, '${escapeHtml(art.name)}') : null">
           </td>
           <td>
             <div style="font-weight:800; color:var(--adm-navy);">${escapeHtml(art.name)}</div>
@@ -86,21 +87,26 @@
             <div style="font-size:0.86rem; font-weight:700; color:var(--adm-navy);">
               <a href="tel:${escapeHtml(art.phone)}" style="color:#0B5ED7; text-decoration:none;">${escapeHtml(art.phone)}</a>
             </div>
-            <div style="font-size:0.75rem; color:#059669; font-weight:700;">Account Active</div>
+            <div style="font-size:0.75rem; color:#059669; font-weight:700;">Password Configured</div>
           </td>
           <td>
             <div style="font-weight:700; color:var(--adm-navy); font-size:0.86rem;">${completedCount} completed</div>
             <div style="font-size:0.75rem; color:#059669; font-weight:600;">${activeCount} active</div>
           </td>
           <td>
-            <span style="padding:3px 8px; border-radius:4px; font-size:0.75rem; font-weight:800; ${art.is_on_duty !== false ? 'background:#ECFDF5; color:#059669;' : 'background:#F1F5F9; color:#64748B;'}">
-              ${art.is_on_duty !== false ? 'On-Duty Dispatch' : 'Off-Duty'}
+            <span style="padding:4px 9px; border-radius:4px; font-size:0.75rem; font-weight:800; display:inline-flex; align-items:center; gap:5px; ${isHidden ? 'background:#FEE2E2; color:#B91C1C;' : 'background:#ECFDF5; color:#059669;'}">
+              ${isHidden ? '&bull; Hidden from Public' : '&bull; Visible on Directory'}
             </span>
           </td>
           <td style="white-space:nowrap;">
-            <a href="artisan-portal.html" target="_blank" class="adm-btn adm-btn--outline adm-btn--sm" title="Log into dashboard as this artisan">
-              Open Portal &rarr;
-            </a>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <button type="button" class="adm-btn adm-btn--sm" style="${isHidden ? 'background:#ECFDF5; color:#059669; border:1px solid #A7F3D0; font-weight:700;' : 'background:#FFF1F2; color:#E11D48; border:1px solid #FECDD3; font-weight:700;'}" onclick="toggleArtisanDirectoryVisibility('${art.id}', ${!isHidden})" title="${isHidden ? 'Show this artisan on public directory' : 'Hide this artisan from public directory'}">
+                ${isHidden ? 'Show on Directory' : 'Hide from Directory'}
+              </button>
+              <a href="artisan-portal.html" target="_blank" class="adm-btn adm-btn--outline adm-btn--sm" title="Log into dashboard as this artisan">
+                Open Portal &rarr;
+              </a>
+            </div>
           </td>
         </tr>
       `;
@@ -114,6 +120,21 @@
     if (kpiCountEl) kpiCountEl.textContent = profiles.length;
   }
 
+  // Gallery viewer for candidate documents / pictures
+  window.openCandidateDocsGallery = function(appId, startIdx = 0) {
+    const app = (window.allRequests || []).find(r => String(r.id) === String(appId));
+    if (!app) return;
+    const images = Array.isArray(app.images) ? app.images : [];
+    if (!images.length) return;
+    const items = images.map((img, i) => ({
+      src: img,
+      caption: `${app.client_name || 'Artisan Application'} \u2022 Document ${i + 1} of ${images.length}`
+    }));
+    if (window.openGlobalLightbox) {
+      window.openGlobalLightbox(items, startIdx, app.client_name || 'Artisan Application Documents');
+    }
+  };
+
   // Render Pending Applications
   function renderArtisanApplications(requests) {
     const tbody = document.getElementById('pendingArtisansTableBody');
@@ -121,17 +142,21 @@
 
     const apps = (requests || []).filter(r => r.type === 'artisan_application');
     const kpiPending = document.getElementById('kpiPendingArtisansCount');
-    if (kpiPending) kpiPending.textContent = apps.filter(a => a.status !== 'completed').length;
+    if (kpiPending) kpiPending.textContent = apps.filter(a => a.status !== 'completed' && a.status !== 'accredited').length;
 
     if (apps.length === 0) {
       tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--adm-muted);">No artisan applications submitted yet.</td></tr>';
       return;
     }
 
+    const profiles = getProfiles();
+
     tbody.innerHTML = apps.map(app => {
       const d = app.details || {};
-      const isApproved = app.status === 'completed';
+      const isApproved = app.status === 'completed' || app.status === 'accredited';
       const images = Array.isArray(app.images) ? app.images : [];
+      const matchedProfile = profiles.find(p => p.phone === app.client_phone || p.id === app.id || (p.details && p.details.artisan_id === app.id));
+      const isHidden = matchedProfile ? (matchedProfile.is_hidden === true) : (d.is_hidden === true);
 
       return `
         <tr>
@@ -155,32 +180,84 @@
           </td>
           <td>
             ${images.length > 0 ? `
-              <div style="display:flex; gap:4px;">
-                ${images.slice(0, 2).map(img => `
-                  <img src="${escapeHtml(img)}" alt="Doc" style="width:36px; height:36px; object-fit:cover; border-radius:4px; border:1px solid #CBD5E1; cursor:zoom-in;" onclick="openLightbox('${escapeHtml(img)}')">
+              <div style="display:flex; gap:4px; align-items:center; cursor:pointer;" onclick="openCandidateDocsGallery('${app.id}', 0)" title="Click to view full photo gallery">
+                ${images.slice(0, 2).map((img, i) => `
+                  <img src="${escapeHtml(img)}" alt="Doc ${i + 1}" style="width:36px; height:36px; object-fit:cover; border-radius:4px; border:1px solid #CBD5E1; cursor:zoom-in;">
                 `).join('')}
-                ${images.length > 2 ? `<span style="font-size:10px; font-weight:700; color:var(--adm-muted); align-self:center;">+${images.length - 2}</span>` : ''}
+                ${images.length > 2 ? `<span style="font-size:11px; font-weight:700; color:#0B5ED7; background:#EFF6FF; padding:2px 5px; border-radius:4px;">+${images.length - 2}</span>` : ''}
               </div>
             ` : '<span style="color:var(--adm-muted); font-size:0.75rem;">None</span>'}
           </td>
           <td>
-            <span style="padding:3px 8px; border-radius:4px; font-size:0.75rem; font-weight:800; ${isApproved ? 'background:#ECFDF5; color:#059669;' : 'background:#FEF3C7; color:#D97706;'}">
-              ${isApproved ? 'Accredited' : 'Pending Review'}
+            <span style="padding:3px 8px; border-radius:4px; font-size:0.75rem; font-weight:800; ${isApproved ? (isHidden ? 'background:#FEE2E2; color:#B91C1C;' : 'background:#ECFDF5; color:#059669;') : 'background:#FEF3C7; color:#D97706;'}">
+              ${isApproved ? (isHidden ? 'Accredited (Hidden)' : 'Accredited (Active)') : 'Pending Review'}
             </span>
           </td>
           <td style="white-space:nowrap;">
-            ${!isApproved ? `
-              <button type="button" class="adm-btn adm-btn--primary adm-btn--sm" onclick="approveArtisanApplication('${app.id}')">
-                Approve &amp; Activate &rarr;
-              </button>
-            ` : `
-              <span style="font-size:0.8rem; color:#059669; font-weight:700;">&check; Profile Active</span>
-            `}
+            <div style="display:flex; gap:6px; align-items:center;">
+              ${!isApproved ? `
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--sm" style="background:#15803D; border-color:#15803D; font-weight:700;" onclick="approveArtisanApplication('${app.id}')">
+                  &check; Approve &amp; Activate &rarr;
+                </button>
+              ` : `
+                <button type="button" class="adm-btn adm-btn--sm" style="${isHidden ? 'background:#ECFDF5; color:#059669; border:1px solid #A7F3D0; font-weight:700;' : 'background:#FFF1F2; color:#E11D48; border:1px solid #FECDD3; font-weight:700;'}" onclick="toggleArtisanDirectoryVisibility('${matchedProfile ? matchedProfile.id : app.id}', ${!isHidden})" title="${isHidden ? 'Show on public directory' : 'Hide from public directory'}">
+                  ${isHidden ? 'Show on Directory' : 'Hide from Directory'}
+                </button>
+                <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="approveArtisanApplication('${app.id}')" title="Re-sync or re-accredit account profile">
+                  Re-Approve
+                </button>
+              `}
+            </div>
           </td>
         </tr>
       `;
     }).join('');
   }
+
+  // Toggle hiding / unhiding artisan from public directory
+  window.toggleArtisanDirectoryVisibility = async function(artId, hide) {
+    const profiles = getProfiles();
+    let art = profiles.find(p => p.id === artId || p.phone === artId);
+    if (!art) {
+      const app = (window.allRequests || []).find(r => String(r.id) === String(artId));
+      if (app) {
+        art = profiles.find(p => p.phone === app.client_phone);
+      }
+    }
+    if (art) {
+      art.is_hidden = hide;
+      saveProfiles(profiles);
+    }
+
+    // Sync to Supabase
+    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+    if (sb) {
+      try {
+        const { data } = await sb.from('requests').select('*').eq('type', 'artisan_application');
+        if (data) {
+          const match = data.find(r => String(r.id) === String(artId) || (art && r.client_phone === art.phone));
+          if (match) {
+            const d = match.details || {};
+            d.is_hidden = hide;
+            await sb.from('requests').update({ details: d }).eq('id', match.id);
+          }
+        }
+      } catch (e) {
+        console.warn('Sync hide to Supabase err:', e);
+      }
+    }
+
+    renderAccreditedArtisans();
+    renderArtisanApplications(window.allRequests || []);
+
+    if (window.showCustomAlert) {
+      window.showCustomAlert({
+        title: hide ? 'Artisan Hidden' : 'Artisan Visible',
+        message: `${art ? art.name : 'Artisan'} is now ${hide ? 'HIDDEN from' : 'VISIBLE on'} the public directory (artisans.html).`,
+        type: hide ? 'warning' : 'success'
+      });
+    }
+  };
 
   // Approve artisan application and generate account profile
   async function approveArtisanApplication(appId) {
@@ -190,7 +267,7 @@
     const { data: req, error } = await sb.from('requests').select('*').eq('id', appId).single();
     if (error || !req) {
       if (window.showCustomAlert) {
-        window.showCustomAlert('Could not find application record.', 'Error', 'danger');
+        window.showCustomAlert({ title: 'Application Record Not Found', message: 'Could not find application record.', type: 'danger' });
       }
       return;
     }
@@ -199,18 +276,29 @@
     const name = req.client_name;
     const phone = req.client_phone || req.client_whatsapp || '08000000000';
     const trade = d.trade ? (d.trade.charAt(0).toUpperCase() + d.trade.slice(1)) : 'Certified Artisan';
-    const newId = 'NJD-' + (d.trade ? d.trade.slice(0, 3).toUpperCase() : 'ART') + '-' + Math.floor(1000 + Math.random() * 9000);
-    const assignedPassword = 'Oluwasegun123';
+    const newId = d.artisan_id || ('NJD-' + (d.trade ? d.trade.slice(0, 3).toUpperCase() : 'ART') + '-' + Math.floor(1000 + Math.random() * 9000));
+    
+    // Pick the artisan's chosen password or default
+    const assignedPassword = d.password || d.assignedPassword || 'Oluwasegun123';
 
-    // 1. Update request status to completed
+    // Pick chosen avatar
+    const chosenAvatar = d.avatar || (req.images && req.images[0]) || 'assets/images/artisans/oluwasegun-balodin.jpg';
+
+    // 1. Update request status to accredited in Supabase
+    d.artisan_id = newId;
+    d.status = 'accredited';
+    d.assignedPassword = assignedPassword;
+    d.is_hidden = false;
+
     await sb.from('requests').update({
-      status: 'completed',
-      notes: `Approved & accredited by Admin on ${new Date().toLocaleDateString()}. ID: ${newId}. Initial password assigned.`
+      status: 'accredited',
+      details: d,
+      notes: `Approved & accredited by Admin on ${new Date().toLocaleDateString()}. ID: ${newId}. Chosen password configured.`
     }).eq('id', appId);
 
-    // 2. Add profile to local profiles
+    // 2. Add or update profile in local storage
     const profiles = getProfiles();
-    const existingIdx = profiles.findIndex(p => p.phone === phone);
+    const existingIdx = profiles.findIndex(p => p.phone === phone || p.id === newId);
     const newProfile = {
       id: newId,
       name: name,
@@ -220,16 +308,17 @@
       trade: trade,
       base: req.location || 'Badore Axis • Ajah',
       corridor: d.areasList || req.location || 'Badore, Ajah, Sangotedo',
-      avatar: (req.images && req.images[0]) || 'assets/images/artisans/oluwasegun-balodin.jpg',
+      avatar: chosenAvatar,
       skills: d.experience ? `${d.experience} years practical experience. Equipped: ${d.toolStatus || 'Yes'}` : 'Accredited trade specialist.',
       bank: d.bank || '',
       accountNum: d.account || '',
       accountName: d.accountName || name,
-      is_on_duty: true
+      is_on_duty: true,
+      is_hidden: false
     };
 
     if (existingIdx !== -1) {
-      profiles[existingIdx] = newProfile;
+      profiles[existingIdx] = Object.assign(profiles[existingIdx], newProfile);
     } else {
       profiles.push(newProfile);
     }
@@ -243,7 +332,7 @@
     if (window.showCustomAlert) {
       await window.showCustomAlert({
         title: 'Artisan Accredited & Activated',
-        message: `Artisan "${name}" has been successfully approved and added to the NIJEDEE network!\n\n• Login Phone: ${phone}\n• Login Password: ${assignedPassword}\n• Artisan ID: ${newId}\n\nThe technician can now log in to the Artisan Portal (artisan-portal.html) and receive direct customer dispatches.`,
+        message: `Artisan "${name}" is now approved and active on NIJEDEE!\n\n• Login Phone: ${phone}\n• Login Password: ${assignedPassword}\n• Artisan ID: ${newId}\n• Directory Status: Visible on artisans.html\n\nThe artisan can now log in to the Artisan Portal (artisan-portal.html) with their phone number and chosen password.`,
         type: 'success'
       });
     }

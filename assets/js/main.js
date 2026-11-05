@@ -964,32 +964,30 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     currentIdx = Math.max(0, Math.min(startIndex, currentGallery.length - 1));
     thumbElements = [];
 
-    // Populate thumbnail strip under the "X" if multiple images
-    if (currentGallery.length > 1) {
-      thumbsWrapper.style.display = 'block';
-      hintEl.style.display = 'block';
-      counterEl.style.display = 'inline-block';
-      thumbsContainer.innerHTML = '';
+    // Always populate full gallery layout (thumbnails, counter, caption, close bar)
+    thumbsWrapper.style.display = 'block';
+    counterEl.style.display = 'inline-block';
+    thumbsContainer.innerHTML = '';
 
-      currentGallery.forEach((item, idx) => {
-        const thumb = document.createElement('button');
-        thumb.type = 'button';
-        thumb.className = 'tk-lightbox__thumb-item' + (idx === currentIdx ? ' is-active' : '');
-        thumb.setAttribute('aria-label', `Photo ${idx + 1}`);
-        thumb.innerHTML = `<img src="${item.src}" alt="${item.caption || 'Photo'} ${idx + 1}" loading="lazy">`;
-        thumb.addEventListener('click', (e) => {
-          e.stopPropagation();
-          goToSlide(idx);
-        });
-        thumbsContainer.appendChild(thumb);
-        thumbElements.push(thumb);
-      });
+    if (currentGallery.length > 1) {
+      hintEl.style.display = 'block';
     } else {
-      // Single image: hide thumbnails strip and hint
-      thumbsWrapper.style.display = 'none';
       hintEl.style.display = 'none';
-      counterEl.style.display = 'none';
     }
+
+    currentGallery.forEach((item, idx) => {
+      const thumb = document.createElement('button');
+      thumb.type = 'button';
+      thumb.className = 'tk-lightbox__thumb-item' + (idx === currentIdx ? ' is-active' : '');
+      thumb.setAttribute('aria-label', `Photo ${idx + 1}`);
+      thumb.innerHTML = `<img src="${item.src}" alt="${item.caption || 'Photo'} ${idx + 1}" loading="lazy">`;
+      thumb.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToSlide(idx);
+      });
+      thumbsContainer.appendChild(thumb);
+      thumbElements.push(thumb);
+    });
 
     goToSlide(currentIdx);
 
