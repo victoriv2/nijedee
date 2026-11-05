@@ -22,16 +22,19 @@
     corridor: 'Badore, Addo, Langbasa, Ajah Central',
     avatar: 'assets/images/artisans/oluwasegun-balodin.jpg',
     skills: 'Concealed leak detection, burst pipes, PPR/PEX heat fusion, borehole plumbing, booster pumps.',
-    is_on_duty: true,
-    rating: '4.95 ★★★★★',
-    active_jobs: 1,
-    completed_jobs: 12
+    is_on_duty: true
   };
 
   function getProfiles() {
     try {
       const raw = localStorage.getItem(ARTISAN_PROFILE_STORE);
-      return raw ? JSON.parse(raw) : [DEFAULT_MASTER];
+      const profiles = raw ? JSON.parse(raw) : [DEFAULT_MASTER];
+      return profiles.map(p => {
+        delete p.rating;
+        delete p.completed_jobs;
+        delete p.active_jobs;
+        return p;
+      });
     } catch (e) {
       return [DEFAULT_MASTER];
     }
@@ -54,6 +57,17 @@
     const profiles = getProfiles();
     tbody.innerHTML = profiles.map(art => {
       const isSegun = art.id === 'NJD-PLM-4561';
+
+      // Compute authentic dispatch metrics from live database requests
+      const artisanReqs = (window.allRequests || []).filter(r => {
+        const d = r.details || {};
+        return d.artisan_id === art.id ||
+               (d.assigned_artisan && d.assigned_artisan.includes(art.name)) ||
+               (r.title && r.title.includes(art.name));
+      });
+      const completedCount = artisanReqs.filter(r => r.status === 'completed').length;
+      const activeCount = artisanReqs.filter(r => r.status !== 'completed').length;
+
       return `
         <tr>
           <td style="width:60px;">
@@ -72,11 +86,11 @@
             <div style="font-size:0.86rem; font-weight:700; color:var(--adm-navy);">
               <a href="tel:${escapeHtml(art.phone)}" style="color:#0B5ED7; text-decoration:none;">${escapeHtml(art.phone)}</a>
             </div>
-            <div style="font-size:0.75rem; color:#059669; font-weight:700;">Account Credentials Active</div>
+            <div style="font-size:0.75rem; color:#059669; font-weight:700;">Account Active</div>
           </td>
           <td>
-            <span style="font-size:0.8rem; font-weight:700; color:#D97706;">${art.rating || '4.95 ★'}</span>
-            <div style="font-size:0.72rem; color:var(--adm-muted);">${art.completed_jobs || 12} completed</div>
+            <div style="font-weight:700; color:var(--adm-navy); font-size:0.86rem;">${completedCount} completed</div>
+            <div style="font-size:0.75rem; color:#059669; font-weight:600;">${activeCount} active</div>
           </td>
           <td>
             <span style="padding:3px 8px; border-radius:4px; font-size:0.75rem; font-weight:800; ${art.is_on_duty !== false ? 'background:#ECFDF5; color:#059669;' : 'background:#F1F5F9; color:#64748B;'}">
@@ -211,10 +225,7 @@
       bank: d.bank || '',
       accountNum: d.account || '',
       accountName: d.accountName || name,
-      is_on_duty: true,
-      rating: '5.0 ★★★★★',
-      active_jobs: 0,
-      completed_jobs: 0
+      is_on_duty: true
     };
 
     if (existingIdx !== -1) {

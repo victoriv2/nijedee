@@ -694,18 +694,18 @@
       <div class="art-kpi-grid">
         <div class="art-kpi-card">
           <span class="art-kpi-label">Active Assigned Dispatches</span>
-          <span class="art-kpi-value" id="kpiActiveJobs">1</span>
+          <span class="art-kpi-value" id="kpiActiveJobs">0</span>
           <span class="art-kpi-sub">Ready for service action</span>
         </div>
         <div class="art-kpi-card">
           <span class="art-kpi-label">Completed Dispatches</span>
-          <span class="art-kpi-value" id="kpiCompletedJobs">12</span>
+          <span class="art-kpi-value" id="kpiCompletedJobs">0</span>
           <span class="art-kpi-sub" style="color:#0B5ED7;">Customer signed off</span>
         </div>
         <div class="art-kpi-card">
-          <span class="art-kpi-label">Customer Satisfaction</span>
-          <span class="art-kpi-value" style="color:#D97706;">4.95 &#9733;</span>
-          <span class="art-kpi-sub" style="color:#475569;">Based on 14 ratings</span>
+          <span class="art-kpi-label">Total Dispatches Logged</span>
+          <span class="art-kpi-value" id="kpiTotalJobs" style="color:#059669;">0</span>
+          <span class="art-kpi-sub" style="color:#15803D;">Database records</span>
         </div>
         <div class="art-kpi-card">
           <span class="art-kpi-label">Assigned Coverage Axis</span>
@@ -717,7 +717,7 @@
       <!-- Tab Navigation -->
       <div class="art-tabs-bar">
         <button type="button" class="art-tab-btn active" id="tabBtnJobs" onclick="switchArtisanTab('jobs')">
-          Assigned Dispatches &amp; Messages <span class="art-tab-badge" id="jobsCountBadge">1</span>
+          Assigned Dispatches &amp; Messages <span class="art-tab-badge" id="jobsCountBadge">0</span>
         </button>
         <button type="button" class="art-tab-btn" id="tabBtnProfile" onclick="switchArtisanTab('profile')">
           Profile &amp; Account Settings
@@ -889,7 +889,13 @@
     function getStoredProfiles() {
       try {
         const raw = localStorage.getItem(ARTISAN_PROFILE_STORE);
-        return raw ? JSON.parse(raw) : [DEFAULT_MASTER_ARTISAN];
+        const profiles = raw ? JSON.parse(raw) : [DEFAULT_MASTER_ARTISAN];
+        return profiles.map(p => {
+          delete p.rating;
+          delete p.completed_jobs;
+          delete p.active_jobs;
+          return p;
+        });
       } catch (e) {
         return [DEFAULT_MASTER_ARTISAN];
       }
@@ -1090,52 +1096,21 @@
         }
       }
 
-      // If empty in DB, inject initial active dispatch record so artisan always has immediate workflow
-      if (dispatches.length === 0) {
-        dispatches = [{
-          id: 'mock-dsp-53421',
-          ref_code: 'DSP-53421',
-          title: 'Direct Dispatch - Oluwasegun David Balodin (Master Plumber & Pipefitter)',
-          client_name: 'Ola Jon',
-          client_phone: '08055555698',
-          location: 'Badore Axis',
-          address: 'Block 4, Flat 2, New Road, Badore',
-          urgency: 'Immediate (30-45 mins)',
-          status: 'new',
-          created_at: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
-          details: {
-            trade: 'Master Plumber & Pipefitter',
-            artisan_id: 'NJD-PLM-4561',
-            assigned_artisan: 'Oluwasegun David Balodin',
-            faultDescription: 'Burst water pipe under kitchen sink with high pressure leakage into cabinet. Requires PPR cut and socket replacement.',
-            messages: [
-              {
-                sender: 'client',
-                sender_name: 'Ola Jon',
-                text: 'Hello Oluwasegun, water is spraying under our sink and we had to turn off the main pumping line. Can you come quickly?',
-                timestamp: new Date(Date.now() - 1000 * 60 * 30).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-              },
-              {
-                sender: 'artisan',
-                sender_name: 'Oluwasegun David Balodin',
-                text: 'Hello Ola, I have received the dispatch. Picked up the 25mm PPR sockets and pipe fusing iron. I am 15 mins away from New Road Badore.',
-                timestamp: new Date(Date.now() - 1000 * 60 * 18).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-              },
-              {
-                sender: 'admin',
-                sender_name: 'NIJEDEE Ops Supervisor',
-                text: 'Dispatch confirmed by Operations Desk. Standard warranty inspection applies upon completion.',
-                timestamp: new Date(Date.now() - 1000 * 60 * 10).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-              }
-            ]
-          }
-        }];
-      }
-
       assignedDispatches = dispatches;
       renderArtisanJobs(dispatches);
-      document.getElementById('kpiActiveJobs').textContent = dispatches.filter(d => d.status !== 'completed').length;
-      document.getElementById('jobsCountBadge').textContent = dispatches.filter(d => d.status !== 'completed').length;
+
+      const activeJobs = dispatches.filter(d => d.status !== 'completed').length;
+      const completedJobs = dispatches.filter(d => d.status === 'completed').length;
+      const totalJobs = dispatches.length;
+
+      const kpiActive = document.getElementById('kpiActiveJobs');
+      if (kpiActive) kpiActive.textContent = activeJobs;
+      const kpiComp = document.getElementById('kpiCompletedJobs');
+      if (kpiComp) kpiComp.textContent = completedJobs;
+      const kpiTot = document.getElementById('kpiTotalJobs');
+      if (kpiTot) kpiTot.textContent = totalJobs;
+      const badgeEl = document.getElementById('jobsCountBadge');
+      if (badgeEl) badgeEl.textContent = activeJobs;
 
       if (notify && window.showCustomAlert) {
         window.showCustomAlert({
@@ -1149,7 +1124,15 @@
     function renderArtisanJobs(jobs) {
       const container = document.getElementById('artisanJobsContainer');
       if (!jobs || jobs.length === 0) {
-        container.innerHTML = '<div style="background:#fff; padding:36px; border-radius:14px; text-align:center; border:1px solid #E2E8F0; color:var(--art-muted);">No active dispatches right now. When a customer hires you, the job and live chat will appear here.</div>';
+        container.innerHTML = `
+          <div style="background:#fff; padding:48px 24px; border-radius:14px; text-align:center; border:1px solid #E2E8F0; color:var(--art-muted); box-shadow:0 4px 12px rgba(0,0,0,0.03);">
+            <div style="font-size:2rem; margin-bottom:12px; color:#94A3B8;">
+              <svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" style="margin:0 auto; display:block;"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.5L19 7.5V19a2 2 0 0 1-2 2z"/></svg>
+            </div>
+            <div style="font-size:1.05rem; font-weight:700; color:var(--art-navy); margin-bottom:6px;">No Dispatches Assigned Yet</div>
+            <div style="font-size:0.88rem; max-width:440px; margin:0 auto; line-height:1.5;">When a customer submits a verified dispatch request on the platform, new assignments and live customer chat will appear here automatically.</div>
+          </div>
+        `;
         return;
       }
 
@@ -1319,7 +1302,7 @@
 
       // Sync to Supabase
       const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
-      if (sb && !jobId.startsWith('mock-')) {
+      if (sb) {
         try {
           await sb.from('requests').update({ details: job.details }).eq('id', jobId);
         } catch (err) {
@@ -1346,8 +1329,22 @@
 
       renderArtisanJobs(assignedDispatches);
 
+      // Refresh KPI counts dynamically
+      const activeJobs = assignedDispatches.filter(d => d.status !== 'completed').length;
+      const completedJobs = assignedDispatches.filter(d => d.status === 'completed').length;
+      const totalJobs = assignedDispatches.length;
+
+      const kpiActive = document.getElementById('kpiActiveJobs');
+      if (kpiActive) kpiActive.textContent = activeJobs;
+      const kpiComp = document.getElementById('kpiCompletedJobs');
+      if (kpiComp) kpiComp.textContent = completedJobs;
+      const kpiTot = document.getElementById('kpiTotalJobs');
+      if (kpiTot) kpiTot.textContent = totalJobs;
+      const badgeEl = document.getElementById('jobsCountBadge');
+      if (badgeEl) badgeEl.textContent = activeJobs;
+
       const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
-      if (sb && !jobId.startsWith('mock-')) {
+      if (sb) {
         try {
           await sb.from('requests').update({ status: newStatus, details: job.details }).eq('id', jobId);
         } catch (err) {
