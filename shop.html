@@ -843,7 +843,9 @@
 
   function openCheckoutModal() {
     if (cart.length === 0) {
-      alert('Your cart is empty. Add products before proceeding.');
+      if (window.showCustomAlert) {
+        window.showCustomAlert({ title: 'Cart Empty', message: 'Your shopping cart is currently empty. Add products before proceeding to checkout.', type: 'info' });
+      }
       return;
     }
     const modal = document.getElementById('checkoutModal');

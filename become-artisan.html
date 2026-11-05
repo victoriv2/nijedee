@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/custom-dialog.js"></script>
   <style>
     /* ===== BECOME ARTISAN PAGE STYLES ===== */
     .artisan-hero {
@@ -1305,37 +1306,37 @@
     const passConfirm = (document.getElementById('artisanPasswordConfirm')?.value || '').trim();
 
     if (!name) {
-      alert('Please enter your full name.');
+      if (window.showCustomAlert) window.showCustomAlert({ title: 'Full Name Required', message: 'Please enter your full name.', type: 'warning' });
       document.getElementById('fullname').focus();
       return false;
     }
     if (!phone || phone.length < 10) {
-      alert('Please enter a valid phone number (at least 10 digits).');
+      if (window.showCustomAlert) window.showCustomAlert({ title: 'Valid Phone Required', message: 'Please enter a valid phone number (at least 10 digits).', type: 'warning' });
       document.getElementById('phone').focus();
       return false;
     }
     if (!email || !email.includes('@')) {
-      alert('Please enter a valid email address.');
+      if (window.showCustomAlert) window.showCustomAlert({ title: 'Valid Email Required', message: 'Please enter a valid email address.', type: 'warning' });
       document.getElementById('email').focus();
       return false;
     }
     if (!address) {
-      alert('Please enter your home address.');
+      if (window.showCustomAlert) window.showCustomAlert({ title: 'Address Required', message: 'Please enter your home address.', type: 'warning' });
       document.getElementById('address').focus();
       return false;
     }
     if (!area) {
-      alert('Please select your area of residence.');
+      if (window.showCustomAlert) window.showCustomAlert({ title: 'Area Required', message: 'Please select your area of residence.', type: 'warning' });
       document.getElementById('area').focus();
       return false;
     }
     if (!pass || pass.length < 6) {
-      alert('Please create a portal login password with at least 6 characters.');
+      if (window.showCustomAlert) window.showCustomAlert({ title: 'Password Security', message: 'Please create a portal login password with at least 6 characters.', type: 'warning' });
       document.getElementById('artisanPassword').focus();
       return false;
     }
     if (pass !== passConfirm) {
-      alert('Passwords do not match. Please retype to confirm your password.');
+      if (window.showCustomAlert) window.showCustomAlert({ title: 'Password Mismatch', message: 'Passwords do not match. Please retype to confirm your password.', type: 'danger' });
       document.getElementById('artisanPasswordConfirm').focus();
       return false;
     }
@@ -1419,7 +1420,7 @@
     e.preventDefault();
     const terms = document.getElementById('terms');
     if (!terms.checked) {
-      alert('Please accept the terms and conditions to proceed.');
+      if (window.showCustomAlert) window.showCustomAlert({ title: 'Terms & Conditions', message: 'Please accept the terms and conditions to proceed with your accreditation application.', type: 'info' });
       return;
     }
 

@@ -176,6 +176,9 @@
             <p class="njd-dialog-message" id="njdDialogMessage"></p>
           </div>
         </div>
+        <div style="padding: 0 24px 16px; display: none;" id="njdDialogInputWrap">
+          <input type="text" id="njdDialogInput" style="width: 100%; max-width: 100% !important; box-sizing: border-box !important; padding: 10px 14px; border: 1.5px solid #CBD5E1; border-radius: 8px; font-size: 0.92rem; color: #0F172A; outline: none; font-family: inherit;">
+        </div>
         <div class="njd-dialog-actions" id="njdDialogActions">
           <button type="button" class="njd-dialog-btn njd-dialog-btn--cancel" id="njdDialogCancelBtn" style="display:none;">Cancel</button>
           <button type="button" class="njd-dialog-btn njd-dialog-btn--primary" id="njdDialogConfirmBtn">OK</button>
@@ -370,11 +373,106 @@
     });
   }
 
+  /**
+   * Shows a custom modal prompt with text input.
+   * @param {Object|string} options
+   * @param {string} [defaultTitle]
+   * @returns {Promise<string|null>}
+   */
+  function showCustomPrompt(options, defaultTitle) {
+    initCustomDialog();
+    let opts = {};
+    if (typeof options === 'string') {
+      opts = {
+        message: options,
+        title: defaultTitle || 'Input Required',
+        defaultValue: arguments[2] || '',
+        placeholder: 'Enter value...'
+      };
+    } else {
+      opts = options || {};
+    }
+
+    const {
+      title = 'Input Required',
+      message = '',
+      defaultValue = '',
+      placeholder = 'Type here...',
+      confirmText = 'Submit',
+      cancelText = 'Cancel',
+      type = 'info'
+    } = opts;
+
+    return new Promise((resolve) => {
+      const overlay = document.getElementById('njdCustomDialogOverlay');
+      const titleEl = document.getElementById('njdDialogTitle');
+      const msgEl = document.getElementById('njdDialogMessage');
+      const iconEl = document.getElementById('njdDialogIcon');
+      const confirmBtn = document.getElementById('njdDialogConfirmBtn');
+      const cancelBtn = document.getElementById('njdDialogCancelBtn');
+      const inputWrap = document.getElementById('njdDialogInputWrap');
+      const inputEl = document.getElementById('njdDialogInput');
+
+      titleEl.textContent = title;
+      msgEl.textContent = message;
+      iconEl.className = `njd-dialog-icon njd-dialog-icon--${type}`;
+      iconEl.innerHTML = ICONS[type] || ICONS.info;
+
+      if (inputWrap && inputEl) {
+        inputWrap.style.display = 'block';
+        inputEl.value = defaultValue;
+        inputEl.placeholder = placeholder;
+      }
+
+      confirmBtn.textContent = confirmText;
+      confirmBtn.className = `njd-dialog-btn njd-dialog-btn--primary`;
+      cancelBtn.textContent = cancelText;
+      cancelBtn.style.display = 'inline-flex';
+
+      const cleanup = () => {
+        overlay.classList.remove('open');
+        if (inputWrap) inputWrap.style.display = 'none';
+        confirmBtn.onclick = null;
+        cancelBtn.onclick = null;
+        document.removeEventListener('keydown', onKey);
+      };
+
+      const onKey = (e) => {
+        if (e.key === 'Escape') {
+          cleanup();
+          resolve(null);
+        } else if (e.key === 'Enter') {
+          cleanup();
+          resolve(inputEl ? inputEl.value : '');
+        }
+      };
+
+      confirmBtn.onclick = () => {
+        const val = inputEl ? inputEl.value : '';
+        cleanup();
+        resolve(val);
+      };
+
+      cancelBtn.onclick = () => {
+        cleanup();
+        resolve(null);
+      };
+
+      document.addEventListener('keydown', onKey);
+      overlay.classList.add('open');
+      if (inputEl) {
+        setTimeout(() => inputEl.focus(), 60);
+      }
+    });
+  }
+
   // Sitewide overrides and global registration
   window.showCustomAlert = showCustomAlert;
   window.showCustomConfirm = showCustomConfirm;
+  window.showCustomPrompt = showCustomPrompt;
   window.njdAlert = showCustomAlert;
   window.njdConfirm = showCustomConfirm;
+  window.njdPrompt = showCustomPrompt;
 
   // Intercept window.alert so ANY caller automatically displays the on-brand custom dialog
   window.alert = function (message) {
