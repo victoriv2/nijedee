@@ -936,12 +936,32 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     });
   }
 
-  function openLightbox(items, startIndex = 0) {
+  function openLightbox(items, startIndex = 0, defaultTitle = '') {
     ensureLightbox();
-    if (!items || !items.length) return;
+    if (!items) return;
 
-    currentGallery = items;
-    currentIdx = startIndex;
+    let normalized = [];
+    if (typeof items === 'string') {
+      normalized = [{ src: items, caption: defaultTitle || 'NIJEDEE Verified Item' }];
+    } else if (Array.isArray(items)) {
+      if (!items.length) return;
+      normalized = items.map((it, idx) => {
+        if (typeof it === 'string') {
+          return { src: it, caption: defaultTitle || `Photo ${idx + 1}` };
+        }
+        return {
+          src: it.src || '',
+          caption: it.caption || defaultTitle || `Photo ${idx + 1}`
+        };
+      });
+    } else if (typeof items === 'object' && items.src) {
+      normalized = [items];
+    } else {
+      return;
+    }
+
+    currentGallery = normalized;
+    currentIdx = Math.max(0, Math.min(startIndex, currentGallery.length - 1));
     thumbElements = [];
 
     // Populate thumbnail strip under the "X" if multiple images
@@ -979,9 +999,12 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   }
 
   function closeLightbox() {
-    if (!lightbox) return;
-    lightbox.classList.remove('is-open');
-    lightbox.setAttribute('aria-hidden', 'true');
+    if (lightbox) {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+    }
+    const admLb = document.getElementById('admLightbox');
+    if (admLb) admLb.classList.remove('open');
     document.body.style.overflow = '';
   }
 
@@ -1078,6 +1101,9 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     observer.observe(document.body, { childList: true, subtree: true });
   }
 
-  window.openGlobalLightbox = (items, startIdx) => openLightbox(items, startIdx);
+  window.openGlobalLightbox = (items, startIdx, title) => openLightbox(items, startIdx, title);
+  window.openUniversalGallery = (items, startIdx, title) => openLightbox(items, startIdx, title);
+  window.openLightbox = (items, startIdx, title) => openLightbox(items, startIdx, title);
+  window.closeLightbox = closeLightbox;
   window.refreshGlobalLightbox = scanAndBind;
 })();

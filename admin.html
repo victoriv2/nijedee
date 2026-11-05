@@ -2429,6 +2429,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/custom-dialog.js"></script>
+<script src="assets/js/main.js"></script>
 <script src="assets/js/supabase-client.js"></script>
 <script src="assets/js/admin-catalog.js"></script>
 <script src="assets/js/admin-artisans.js"></script>
@@ -2796,7 +2797,7 @@
       const firstImg = imagesCount > 0 ? images[0] : null;
 
       const imgCell = firstImg 
-        ? `<div style="display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation(); openLightbox('${escapeHtml(firstImg)}')">
+        ? `<div style="display:flex;align-items:center;gap:6px;" onclick="event.stopPropagation(); openRequestImagesGallery('${req.id}', 0)">
              <img src="${escapeHtml(firstImg)}" class="adm-img-thumb" alt="Attachment" onerror="this.onerror=null; this.src='assets/images/logo.png'; this.style.objectFit='contain';">
              ${imagesCount > 1 ? `<span class="adm-img-badge">+${imagesCount - 1}</span>` : ''}
            </div>`
@@ -2898,8 +2899,8 @@
     if (images.length === 0) {
       imgContainer.innerHTML = '<span style="color:var(--adm-muted); font-size:0.85rem;">No photos attached with this submission.</span>';
     } else {
-      imgContainer.innerHTML = images.map(imgUrl => `
-        <div class="adm-gallery-item" onclick="openLightbox('${escapeHtml(imgUrl)}')">
+      imgContainer.innerHTML = images.map((imgUrl, idx) => `
+        <div class="adm-gallery-item" onclick="openRequestImagesGallery('${req.id}', ${idx})">
           <img src="${escapeHtml(imgUrl)}" alt="Request attachment" onerror="this.onerror=null; this.src='assets/images/logo.png'; this.style.objectFit='contain';">
         </div>`).join('');
     }
@@ -3068,14 +3069,40 @@
     updateKPIs();
   }
 
-  // --- Lightbox ---
-  function openLightbox(url) {
-    document.getElementById('lightboxImg').src = url;
-    document.getElementById('admLightbox').classList.add('open');
+  // --- Lightbox & Full View Gallery ---
+  function openRequestImagesGallery(reqId, startIdx = 0) {
+    const req = allRequests.find(r => r.id === reqId);
+    if (!req) return;
+    const images = getNormalizedImages(req);
+    const galleryItems = images.map((img, i) => ({
+      src: img,
+      caption: `${req.client_name} \u2022 ${req.ref_code || 'Attachment'} (${i + 1}/${images.length})`
+    }));
+    if (window.openGlobalLightbox) {
+      window.openGlobalLightbox(galleryItems, startIdx, req.client_name);
+    }
+  }
+
+  function openLightbox(url, startIdx = 0, title = '') {
+    if (window.openGlobalLightbox) {
+      window.openGlobalLightbox(url, startIdx, title);
+      return;
+    }
+    const lb = document.getElementById('admLightbox');
+    const img = document.getElementById('lightboxImg');
+    if (lb && img) {
+      img.src = url;
+      lb.classList.add('open');
+    }
   }
 
   function closeLightbox() {
-    document.getElementById('admLightbox').classList.remove('open');
+    if (window.closeLightbox && window.closeLightbox !== closeLightbox) {
+      window.closeLightbox();
+      return;
+    }
+    const lb = document.getElementById('admLightbox');
+    if (lb) lb.classList.remove('open');
   }
 
   // --- Toast Alerts ---

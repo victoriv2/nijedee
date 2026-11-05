@@ -929,19 +929,32 @@
     addToCart(label, price);
   }
 
-  // Full Image Lightbox with Under-Photo "X" Close Button
-  function openLightbox(url) {
+  // Full Image Lightbox with Multi-Image Gallery & Single View
+  function openProductGallery(productId, startIdx = 0) {
+    const p = (window._loadedShopProducts || []).find(item => item.id === productId);
+    if (!p) return;
+    const images = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image_url ? [p.image_url] : []);
+    const galleryItems = images.map((img, idx) => ({
+      src: img,
+      caption: `${p.name} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
+    }));
+    if (window.openGlobalLightbox) {
+      window.openGlobalLightbox(galleryItems, startIdx, p.name);
+    }
+  }
+
+  function openLightbox(url, startIdx = 0, title = '') {
     if (!url) return;
-    const lb = document.getElementById('admLightbox');
-    const img = document.getElementById('lightboxImg');
-    if (lb && img) {
-      img.src = url;
-      lb.classList.add('open');
-      document.body.style.overflow = 'hidden';
+    if (window.openGlobalLightbox) {
+      window.openGlobalLightbox(url, startIdx, title);
     }
   }
 
   function closeLightbox() {
+    if (window.closeLightbox && window.closeLightbox !== closeLightbox) {
+      window.closeLightbox();
+      return;
+    }
     const lb = document.getElementById('admLightbox');
     if (lb) {
       lb.classList.remove('open');
@@ -957,7 +970,13 @@
       target.closest('.product-card-item') ||
       target.dataset.zoomable === 'true'
     )) {
-      openLightbox(target.src);
+      const card = target.closest('.product-card-item');
+      const prodId = card ? card.dataset.prodId : null;
+      if (prodId) {
+        openProductGallery(prodId, 0);
+      } else {
+        openLightbox(target.src);
+      }
     }
   });
 
@@ -1091,12 +1110,24 @@
         ? `I want to order ${variants[0].label} (NGN ${(variants[0].price || p.price || 0).toLocaleString()})`
         : `I want to order ${p.name} (${priceText})`;
 
+      let galleryStripHtml = '';
+      if (images.length > 1) {
+        galleryStripHtml = `
+          <div style="display:flex; gap:5px; padding:6px 10px; background:#f8fafc; border-bottom:1px solid #e2e8f0; overflow-x:auto;">
+            ${images.map((img, i) => `
+              <img src="${escapeHtml(img)}" class="product-gallery-strip-thumb" alt="Photo ${i + 1}" title="Click to view full photo" style="width:40px; height:38px; object-fit:cover; border-radius:4px; flex-shrink:0; cursor:pointer;" onclick="event.stopPropagation(); document.getElementById('prodMainImg_${p.id}').src=this.src; openProductGallery('${p.id}', ${i});">
+            `).join('')}
+          </div>
+        `;
+      }
+
       return `
-        <div class="product-card-item" data-category="${escapeHtml(catClasses)}" data-keywords="${escapeHtml(kw)}">
+        <div class="product-card-item" data-prod-id="${p.id}" data-category="${escapeHtml(catClasses)}" data-keywords="${escapeHtml(kw)}">
           <div class="product-img-box">
             ${p.badge ? `<span class="product-badge-tag">${escapeHtml(p.badge)}</span>` : ''}
-            <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(p.name)}" style="cursor:zoom-in;" title="Click to view full photo" onclick="openLightbox('${escapeHtml(mainImg)}')">
+            <img id="prodMainImg_${p.id}" src="${escapeHtml(mainImg)}" alt="${escapeHtml(p.name)}" style="cursor:zoom-in;" title="Click to view full photo" onclick="openProductGallery('${p.id}', 0)">
           </div>
+          ${galleryStripHtml}
           <div class="product-details-body">
             <span class="product-cat-name">${escapeHtml(p.brand || p.category)}</span>
             <h4 class="product-title-text">${escapeHtml(p.name)}</h4>

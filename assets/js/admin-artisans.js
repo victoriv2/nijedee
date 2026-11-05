@@ -72,7 +72,7 @@
             <div style="font-size:0.86rem; font-weight:700; color:var(--adm-navy);">
               <a href="tel:${escapeHtml(art.phone)}" style="color:#0B5ED7; text-decoration:none;">${escapeHtml(art.phone)}</a>
             </div>
-            <div style="font-size:0.75rem; color:var(--adm-muted);">Password: <code>${escapeHtml(art.password || 'Oluwasegun123')}</code></div>
+            <div style="font-size:0.75rem; color:#059669; font-weight:700;">Account Credentials Active</div>
           </td>
           <td>
             <span style="font-size:0.8rem; font-weight:700; color:#D97706;">${art.rating || '4.95 ★'}</span>

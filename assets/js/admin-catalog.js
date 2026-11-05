@@ -119,7 +119,7 @@ function renderProducts() {
       <tr>
         <td style="width:60px;">
           <div style="position:relative; width:50px; height:50px; border-radius:6px; overflow:hidden; border:1px solid var(--adm-border); background:#fff;">
-            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(p.name)}" style="width:100%; height:100%; object-fit:contain; cursor:zoom-in;" title="Click to view full photo" onclick="openLightbox('${escapeHtml(thumb)}')">
+            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(p.name)}" style="width:100%; height:100%; object-fit:contain; cursor:zoom-in;" title="Click to view full photo" onclick="openAdminProductGallery('${p.id}', 0)">
             ${images.length > 1 ? `<span style="position:absolute; bottom:2px; right:2px; background:rgba(7,34,79,0.85); color:#fff; font-size:9px; font-weight:800; padding:1px 4px; border-radius:3px;">${images.length}</span>` : ''}
           </div>
         </td>
@@ -445,7 +445,7 @@ function renderProductStagingImages() {
 
   strip.innerHTML = stagingProductImages.map((img, i) => `
     <div class="adm-img-strip-item">
-      <img src="${escapeHtml(img)}" alt="Product Photo ${i + 1}" style="cursor:zoom-in;" title="Click to zoom in" onclick="openLightbox('${escapeHtml(img)}')">
+      <img src="${escapeHtml(img)}" alt="Product Photo ${i + 1}" style="cursor:zoom-in;" title="Click to zoom in" onclick="openStagingProductGallery(${i})">
       <button type="button" class="adm-img-strip-del" onclick="removeProductStagingImage(${i})" title="Remove image">&times;</button>
     </div>
   `).join('');
@@ -653,7 +653,7 @@ function renderProperties() {
       <tr>
         <td style="width:64px;">
           <div style="position:relative; width:56px; height:50px; border-radius:6px; overflow:hidden; border:1px solid var(--adm-border); background:#f1f5f9;">
-            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(p.title)}" style="width:100%; height:100%; object-fit:cover; cursor:zoom-in;" title="Click to view full photo" onclick="openLightbox('${escapeHtml(thumb)}')">
+            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(p.title)}" style="width:100%; height:100%; object-fit:cover; cursor:zoom-in;" title="Click to view full photo" onclick="openAdminPropertyGallery('${p.id}', 0)">
             ${images.length > 1 ? `<span style="position:absolute; bottom:2px; right:2px; background:rgba(7,34,79,0.85); color:#fff; font-size:9px; font-weight:800; padding:1px 4px; border-radius:3px;">${images.length}</span>` : ''}
           </div>
         </td>
@@ -957,7 +957,7 @@ function renderPropertyStagingImages() {
 
   strip.innerHTML = stagingPropertyImages.map((img, i) => `
     <div class="adm-img-strip-item">
-      <img src="${escapeHtml(img)}" alt="Property Photo ${i + 1}" style="cursor:zoom-in;" title="Click to zoom in" onclick="openLightbox('${escapeHtml(img)}')">
+      <img src="${escapeHtml(img)}" alt="Property Photo ${i + 1}" style="cursor:zoom-in;" title="Click to zoom in" onclick="openStagingPropertyGallery(${i})">
       <button type="button" class="adm-img-strip-del" onclick="removePropertyStagingImage(${i})" title="Remove photo">&times;</button>
     </div>
   `).join('');
@@ -1073,3 +1073,52 @@ async function saveProperty(e) {
     btn.innerHTML = originalText;
   }
 }
+
+// Full view gallery helpers for admin
+window.openAdminProductGallery = function(prodId, startIdx = 0) {
+  const p = (allProducts || []).find(item => item.id === prodId);
+  if (!p) return;
+  const images = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image_url ? [p.image_url] : []);
+  const galleryItems = images.map((img, idx) => ({
+    src: img,
+    caption: `${p.name} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
+  }));
+  if (window.openGlobalLightbox) {
+    window.openGlobalLightbox(galleryItems, startIdx, p.name);
+  }
+};
+
+window.openAdminPropertyGallery = function(propId, startIdx = 0) {
+  const p = (allProperties || []).find(item => item.id === propId);
+  if (!p) return;
+  const images = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image_url ? [p.image_url] : []);
+  const galleryItems = images.map((img, idx) => ({
+    src: img,
+    caption: `${p.title} \u2022 ${p.location} ${images.length > 1 ? `(${idx + 1}/${images.length})` : ''}`
+  }));
+  if (window.openGlobalLightbox) {
+    window.openGlobalLightbox(galleryItems, startIdx, `${p.title} \u2022 ${p.location}`);
+  }
+};
+
+window.openStagingProductGallery = function(startIdx = 0) {
+  if (!stagingProductImages.length) return;
+  const items = stagingProductImages.map((img, i) => ({
+    src: img,
+    caption: `Staged Product Image (${i + 1}/${stagingProductImages.length})`
+  }));
+  if (window.openGlobalLightbox) {
+    window.openGlobalLightbox(items, startIdx, 'Staged Product Image');
+  }
+};
+
+window.openStagingPropertyGallery = function(startIdx = 0) {
+  if (!stagingPropertyImages.length) return;
+  const items = stagingPropertyImages.map((img, i) => ({
+    src: img,
+    caption: `Staged Property Image (${i + 1}/${stagingPropertyImages.length})`
+  }));
+  if (window.openGlobalLightbox) {
+    window.openGlobalLightbox(items, startIdx, 'Staged Property Image');
+  }
+};
