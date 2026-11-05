@@ -779,6 +779,12 @@
         padding: 11px !important;
         box-sizing: border-box !important;
       }
+      .artisan-controls-right-wrap .tk-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 11px !important;
+        box-sizing: border-box !important;
+      }
 
       /* Horizontal Touch-Scrollable Filter Chips */
       .custom-filter-pills,
@@ -994,6 +1000,260 @@
   </div>
 </section>
 
+<!-- SECTION: ACTIVE VERIFIED ARTISANS ROSTER (PROMINENT TOP POSITION) -->
+<section class="verified-artisans-section" id="verified-artisans" style="padding: 56px 0; background: #ffffff; border-top: 1px solid var(--tk-neutral-100);">
+  <div class="container">
+    
+    <div class="section-header-center" style="margin-bottom: 36px; text-align: center;">
+      <span class="section-label" style="background:#EBF3FE;color:var(--tk-primary);margin-bottom:8px;display:inline-block;padding:5px 14px;border-radius:20px;font-size:0.82rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Identity Vetted &bull; Corridor On-Duty</span>
+      <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--tk-navy); margin-bottom: 10px;">Active Verified Field Artisans</h2>
+      <p style="font-size: 0.95rem; color: var(--tk-offwhite-dark); max-width: 660px; margin: 0 auto; line-height: 1.6;">Meet identity-checked, NIN-authenticated, and trade-tested professionals registered on the NIJEDEE platform and on active service dispatch across Lagos.</p>
+    </div>
+
+    <!-- Custom Modular Sort & Filter Suite (No Native Selects) -->
+    <div class="artisan-directory-controls" style="margin-bottom: 32px; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 16px; padding: 20px 22px; box-shadow: 0 4px 18px rgba(7, 34, 79, 0.03);">
+      
+      <!-- Top Row: Counter, Live Search, Custom Sort Popover, Artisan Edit Profile & Reset -->
+      <div class="artisan-controls-top-row" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px;">
+        
+        <!-- Left: Status Indicator & Counter -->
+        <div class="artisan-controls-counter-wrap" style="display: flex; align-items: center; gap: 10px;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 10px; height: 10px; border-radius: 50%; background: #10B981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);"></span>
+          <span style="font-size: 0.96rem; font-weight: 800; color: var(--tk-navy);" id="artisanRosterCount">Showing active technicians</span>
+          <span style="font-size: 0.75rem; background: #ECFDF5; color: #059669; font-weight: 800; padding: 3px 9px; border-radius: 4px; border: 1px solid #A7F3D0;">
+            Verified On-Duty
+          </span>
+        </div>
+
+        <!-- Right: Search Box + Custom Sort Dropdown Popover + Edit Profile Button + Reset Button -->
+        <div class="artisan-controls-right-wrap" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; flex: 1; justify-content: flex-end; min-width: 280px;">
+          
+          <!-- Custom Search Bar -->
+          <div class="artisan-search-wrap" style="position: relative; flex: 1; max-width: 290px; min-width: 190px;">
+            <input type="text" id="artisanSearchInput" placeholder="Search technician or skill..." oninput="handleArtisanFilterSearch(this.value)" style="width: 100%; max-width: 100% !important; box-sizing: border-box !important; padding: 9px 34px 9px 36px; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.86rem; color: #0F172A; background: #ffffff; outline: none;">
+            <svg width="15" height="15" fill="none" stroke="#64748B" stroke-width="2.2" viewBox="0 0 24 24" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <button type="button" id="artisanSearchClearBtn" onclick="clearArtisanSearch()" style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 2px; cursor: pointer; color: #94A3B8;" aria-label="Clear search">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+
+          <!-- Custom Modular Sort Dropdown Popover (NO NATIVE SELECT!) -->
+          <div class="custom-sort-dropdown" style="position: relative;">
+            <button type="button" id="artisanSortTriggerBtn" onclick="toggleArtisanSortMenu()" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; background: #EFF6FF; border: 1.5px solid #0B5ED7; border-radius: 10px; font-size: 0.86rem; font-weight: 700; color: #0B5ED7; cursor: pointer; outline: none;">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12m-9 6h6"/></svg>
+              <span id="artisanSortCurrentLabel">Sort: Recommended</span>
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" id="artisanSortChevron" style="transition: transform 0.2s ease;"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+
+            <!-- Floating Popover Card -->
+            <div id="artisanSortDropdownMenu" style="display: none; position: absolute; right: 0; top: calc(100% + 6px); background: #ffffff; border: 1px solid #CBD5E1; border-radius: 12px; box-shadow: 0 10px 25px rgba(7,34,79,0.12); width: 250px; z-index: 100; overflow: hidden; padding: 6px 0;">
+              <button type="button" class="artisan-sort-item active" onclick="selectArtisanSort('recommended', 'Recommended (Master First)')">
+                <span>Recommended (Master First)</span>
+                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+              <button type="button" class="artisan-sort-item" onclick="selectArtisanSort('name_asc', 'Name: A to Z')">
+                <span>Name: A to Z</span>
+                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+              <button type="button" class="artisan-sort-item" onclick="selectArtisanSort('name_desc', 'Name: Z to A')">
+                <span>Name: Z to A</span>
+                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+              <button type="button" class="artisan-sort-item" onclick="selectArtisanSort('trade_asc', 'Trade: A to Z')">
+                <span>Trade: A to Z</span>
+                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+              <button type="button" class="artisan-sort-item" onclick="selectArtisanSort('location_asc', 'Corridor / Location')">
+                <span>Corridor / Location</span>
+                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Artisan Quick Edit Profile Action Button -->
+          <button type="button" onclick="openArtisanProfileEditModal()" class="tk-btn" style="display: inline-flex; align-items: center; gap: 7px; padding: 9px 15px; background: #EFF6FF; border: 1.5px solid #0B5ED7; border-radius: 10px; font-size: 0.86rem; font-weight: 700; color: #0B5ED7; cursor: pointer; outline: none;" title="Edit your public artisan profile">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span>Artisan? Edit Profile</span>
+          </button>
+
+          <!-- Reset All Filters Button -->
+          <button type="button" id="artisanResetBtn" onclick="resetArtisanFilters()" style="display: none; align-items: center; gap: 5px; padding: 9px 14px; background: #ffffff; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.84rem; font-weight: 700; color: #475569; cursor: pointer;">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            Reset Filters
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Row 2: Custom Trade Filter Pills (NO NATIVE SELECT!) -->
+      <div style="margin-bottom: 14px;">
+        <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #64748B; margin-bottom: 8px;">Filter by Trade:</div>
+        <div class="custom-filter-pills" id="artisanTradePillsContainer" style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <button type="button" class="custom-filter-pill active" data-trade="all" onclick="selectArtisanTradeFilter('all', this)">
+            <span>All Trades</span>
+            <span class="pill-count" id="countTradeAll">1</span>
+          </button>
+          <button type="button" class="custom-filter-pill" data-trade="plumb" onclick="selectArtisanTradeFilter('plumb', this)">
+            <span>Plumbing &amp; Water</span>
+            <span class="pill-count" id="countTradePlumb">1</span>
+          </button>
+          <button type="button" class="custom-filter-pill" data-trade="elect" onclick="selectArtisanTradeFilter('elect', this)">
+            <span>Electrical &amp; Power</span>
+            <span class="pill-count" id="countTradeElect">0</span>
+          </button>
+          <button type="button" class="custom-filter-pill" data-trade="ac" onclick="selectArtisanTradeFilter('ac', this)">
+            <span>AC &amp; Cooling</span>
+            <span class="pill-count" id="countTradeAc">0</span>
+          </button>
+          <button type="button" class="custom-filter-pill" data-trade="paint" onclick="selectArtisanTradeFilter('paint', this)">
+            <span>Painting &amp; Screeding</span>
+            <span class="pill-count" id="countTradePaint">0</span>
+          </button>
+          <button type="button" class="custom-filter-pill" data-trade="carp" onclick="selectArtisanTradeFilter('carp', this)">
+            <span>Carpentry &amp; Wood</span>
+            <span class="pill-count" id="countTradeCarp">0</span>
+          </button>
+          <button type="button" class="custom-filter-pill" data-trade="tile" onclick="selectArtisanTradeFilter('tile', this)">
+            <span>Tiling &amp; Flooring</span>
+            <span class="pill-count" id="countTradeTile">0</span>
+          </button>
+          <button type="button" class="custom-filter-pill" data-trade="clean" onclick="selectArtisanTradeFilter('clean', this)">
+            <span>Deep Cleaning</span>
+            <span class="pill-count" id="countTradeClean">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Row 3: Custom Corridor Filter Chips (NO NATIVE SELECT!) -->
+      <div>
+        <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #64748B; margin-bottom: 8px;">Operational Corridor:</div>
+        <div class="custom-corridor-chips" id="artisanCorridorChipsContainer" style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <button type="button" class="custom-corridor-chip active" data-corridor="all" onclick="selectArtisanCorridorFilter('all', this)">
+            All Corridors
+          </button>
+          <button type="button" class="custom-corridor-chip" data-corridor="badore" onclick="selectArtisanCorridorFilter('badore', this)">
+            Badore Axis
+          </button>
+          <button type="button" class="custom-corridor-chip" data-corridor="ajah" onclick="selectArtisanCorridorFilter('ajah', this)">
+            Ajah Central
+          </button>
+          <button type="button" class="custom-corridor-chip" data-corridor="sangotedo" onclick="selectArtisanCorridorFilter('sangotedo', this)">
+            Sangotedo
+          </button>
+          <button type="button" class="custom-corridor-chip" data-corridor="lekki" onclick="selectArtisanCorridorFilter('lekki', this)">
+            Lekki Corridor
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="artisan-profiles-grid" id="artisanProfilesGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 440px)); justify-content: center; gap: 28px;">
+      
+      <!-- Profile Card: Oluwasegun David Balodin (Plumber, Badore) -->
+      <div class="artisan-profile-card" data-artisan-id="NJD-PLM-4561" style="background: #ffffff; border: 1.5px solid #E2E8F0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(7, 34, 79, 0.06); display: flex; flex-direction: column;">
+        
+        <!-- Header Ribbon with Live Status & ID -->
+        <div style="background: linear-gradient(135deg, var(--tk-navy) 0%, #0F3775 100%); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; color: #ffffff;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #10B981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);"></span>
+            <span style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #A7F3D0;">Active &bull; On-Duty Dispatch</span>
+          </div>
+          <span style="font-size: 0.75rem; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); padding: 3px 10px; border-radius: 999px; font-weight: 600;">ID: NJD-PLM-4561</span>
+        </div>
+
+        <!-- Main Body -->
+        <div style="padding: 24px 22px 22px; display: flex; flex-direction: column; flex: 1;">
+          
+          <!-- Avatar + Identity Header -->
+          <div style="display: flex; gap: 18px; align-items: flex-start; margin-bottom: 20px;">
+            <div style="position: relative; flex-shrink: 0; cursor: zoom-in;" onclick="window.openGlobalLightbox ? window.openGlobalLightbox('assets/images/artisans/oluwasegun-balodin.jpg', 0, 'Oluwasegun David Balodin') : null">
+              <img src="assets/images/artisans/oluwasegun-balodin.jpg" alt="Oluwasegun David Balodin - Verified Plumber" style="width: 86px; height: 100px; border-radius: 12px; object-fit: cover; border: 2px solid #E2E8F0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+              <span style="position: absolute; bottom: -6px; right: -6px; background: #10B981; color: #ffffff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border: 2px solid #ffffff;" title="NIN Verified Identity">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+            </div>
+
+            <div style="flex: 1; min-width: 0;">
+              <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--tk-navy); margin: 0 0 4px; line-height: 1.3;">Oluwasegun David Balodin</h3>
+              <div style="display: inline-flex; align-items: center; gap: 6px; background: #EBF3FE; color: var(--tk-primary); padding: 3px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                Master Plumber &amp; Pipefitter
+              </div>
+              <div style="font-size: 0.84rem; color: #475569; display: flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Primary Base: <strong>Badore Axis</strong> &bull; Ajah</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Official Vetting & Verification Data Matrix -->
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.82rem;">
+            <div>
+              <span style="display: block; color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Identity Check</span>
+              <strong style="color: #0F172A; display: inline-flex; align-items: center; gap: 4px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                NIN Slip Verified
+              </strong>
+            </div>
+            <div>
+              <span style="display: block; color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Dispatch Window</span>
+              <strong style="color: #0F172A;">30&ndash;45 mins</strong>
+            </div>
+            <div>
+              <span style="display: block; color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Coverage Corridor</span>
+              <strong style="color: #0F172A;">Badore &bull; Addo &bull; Langbasa</strong>
+            </div>
+            <div>
+              <span style="display: block; color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Vetting Grade</span>
+              <strong style="color: #0F172A;">Grade A Trade Tested</strong>
+            </div>
+          </div>
+
+          <!-- Core Specializations -->
+          <div style="margin-bottom: 22px;">
+            <span style="display: block; font-size: 0.78rem; font-weight: 700; color: var(--tk-navy); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em;">Verified Service Capabilities:</span>
+            <ul style="margin: 0; padding: 0; list-style: none; font-size: 0.83rem; color: #334155; line-height: 1.55;">
+              <li style="padding: 3px 0; display: flex; align-items: center; gap: 7px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--tk-primary)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                Concealed leak detection, burst pipes &amp; PPR/PEX heat fusion
+              </li>
+              <li style="padding: 3px 0; display: flex; align-items: center; gap: 7px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--tk-primary)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                Borehole plumbing, overhead tank hookups &amp; pressure booster pumps
+              </li>
+              <li style="padding: 3px 0; display: flex; align-items: center; gap: 7px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--tk-primary)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                Water heater installation, bathroom cisterns, taps &amp; shower mixers
+              </li>
+            </ul>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; gap: 10px;">
+              <button type="button" onclick="openArtisanDispatchModal('Oluwasegun David Balodin', 'Master Plumber & Pipefitter', 'Badore Axis', 'assets/images/artisans/oluwasegun-balodin.jpg', 'NJD-PLM-4561')" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.88rem; padding: 12px 14px; font-weight: 700; cursor: pointer; border: none;">
+                Dispatch Oluwasegun &rarr;
+              </button>
+              <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE%2C%20I%20want%20to%20request%20dispatch%20for%20verified%20Plumber%20Oluwasegun%20David%20Balodin%20in%20Badore" target="_blank" rel="noopener" class="tk-btn" style="padding: 12px 18px; display: inline-flex; align-items: center; justify-content: center; background: #ffffff; border: 1.5px solid #25D366; border-radius: 8px; transition: background 0.2s, border-color 0.2s;" title="Direct WhatsApp Dispatch with Oluwasegun">
+                <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="22" height="22" style="display: block; width: 22px; height: 22px;">
+              </a>
+            </div>
+            <button type="button" onclick="openArtisanProfileEditModal('NJD-PLM-4561')" class="tk-btn" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 8px 12px; font-weight: 700; cursor: pointer; background: #F8FAFC; border: 1.5px solid #CBD5E1; color: var(--tk-navy); border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <span>Edit Profile</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
 <!-- MAIN SPECIFICATION & DISPATCH REQUEST SECTION -->
 <section class="artisan-request-section" id="artisan-request-form">
   <div class="container">
@@ -1163,248 +1423,6 @@
             Direct Desk: <a href="tel:08167469581">Call: 08167469581</a> &bull; <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE" target="_blank" rel="noopener">WhatsApp: 07085329909</a>
           </div>
         </div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-<!-- SECTION: ACTIVE VERIFIED ARTISANS ROSTER -->
-<section class="verified-artisans-section" id="verified-artisans" style="padding: 56px 0; background: #ffffff; border-top: 1px solid var(--tk-neutral-100);">
-  <div class="container">
-    
-    <div class="section-header-center" style="margin-bottom: 36px; text-align: center;">
-      <span class="section-label" style="background:#EBF3FE;color:var(--tk-primary);margin-bottom:8px;display:inline-block;padding:5px 14px;border-radius:20px;font-size:0.82rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Identity Vetted &bull; Corridor On-Duty</span>
-      <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: var(--tk-navy); margin-bottom: 10px;">Active Verified Field Artisans</h2>
-      <p style="font-size: 0.95rem; color: var(--tk-offwhite-dark); max-width: 660px; margin: 0 auto; line-height: 1.6;">Meet identity-checked, NIN-authenticated, and trade-tested professionals registered on the NIJEDEE platform and on active service dispatch across Lagos.</p>
-    </div>
-
-    <!-- Custom Modular Sort & Filter Suite (No Native Selects) -->
-    <div class="artisan-directory-controls" style="margin-bottom: 32px; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 16px; padding: 20px 22px; box-shadow: 0 4px 18px rgba(7, 34, 79, 0.03);">
-      
-      <!-- Top Row: Counter, Live Search, Custom Sort Popover & Reset -->
-      <div class="artisan-controls-top-row" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px;">
-        
-        <!-- Left: Status Indicator & Counter -->
-        <div class="artisan-controls-counter-wrap" style="display: flex; align-items: center; gap: 10px;">
-          <span style="display: inline-flex; align-items: center; justify-content: center; width: 10px; height: 10px; border-radius: 50%; background: #10B981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);"></span>
-          <span style="font-size: 0.96rem; font-weight: 800; color: var(--tk-navy);" id="artisanRosterCount">Showing active technicians</span>
-          <span style="font-size: 0.75rem; background: #ECFDF5; color: #059669; font-weight: 800; padding: 3px 9px; border-radius: 4px; border: 1px solid #A7F3D0;">
-            Verified On-Duty
-          </span>
-        </div>
-
-        <!-- Right: Search Box + Custom Sort Dropdown Popover + Reset Button -->
-        <div class="artisan-controls-right-wrap" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; flex: 1; justify-content: flex-end; min-width: 280px;">
-          
-          <!-- Custom Search Bar -->
-          <div class="artisan-search-wrap" style="position: relative; flex: 1; max-width: 290px; min-width: 190px;">
-            <input type="text" id="artisanSearchInput" placeholder="Search technician or skill..." oninput="handleArtisanFilterSearch(this.value)" style="width: 100%; max-width: 100% !important; box-sizing: border-box !important; padding: 9px 34px 9px 36px; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.86rem; color: #0F172A; background: #ffffff; outline: none;">
-            <svg width="15" height="15" fill="none" stroke="#64748B" stroke-width="2.2" viewBox="0 0 24 24" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <button type="button" id="artisanSearchClearBtn" onclick="clearArtisanSearch()" style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 2px; cursor: pointer; color: #94A3B8;" aria-label="Clear search">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-          </div>
-
-          <!-- Custom Modular Sort Dropdown Popover (NO NATIVE SELECT!) -->
-          <div class="custom-sort-dropdown" style="position: relative;">
-            <button type="button" id="artisanSortTriggerBtn" onclick="toggleArtisanSortMenu()" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; background: #EFF6FF; border: 1.5px solid #0B5ED7; border-radius: 10px; font-size: 0.86rem; font-weight: 700; color: #0B5ED7; cursor: pointer; outline: none;">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12m-9 6h6"/></svg>
-              <span id="artisanSortCurrentLabel">Sort: Recommended</span>
-              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" id="artisanSortChevron" style="transition: transform 0.2s ease;"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-
-            <!-- Floating Popover Card -->
-            <div id="artisanSortDropdownMenu" style="display: none; position: absolute; right: 0; top: calc(100% + 6px); background: #ffffff; border: 1px solid #CBD5E1; border-radius: 12px; box-shadow: 0 10px 25px rgba(7,34,79,0.12); width: 250px; z-index: 100; overflow: hidden; padding: 6px 0;">
-              <button type="button" class="artisan-sort-item active" onclick="selectArtisanSort('recommended', 'Recommended (Master First)')">
-                <span>Recommended (Master First)</span>
-                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </button>
-              <button type="button" class="artisan-sort-item" onclick="selectArtisanSort('name_asc', 'Name: A to Z')">
-                <span>Name: A to Z</span>
-                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-              </button>
-              <button type="button" class="artisan-sort-item" onclick="selectArtisanSort('name_desc', 'Name: Z to A')">
-                <span>Name: Z to A</span>
-                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-              </button>
-              <button type="button" class="artisan-sort-item" onclick="selectArtisanSort('trade_asc', 'Trade: A to Z')">
-                <span>Trade: A to Z</span>
-                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-              </button>
-              <button type="button" class="artisan-sort-item" onclick="selectArtisanSort('location_asc', 'Corridor / Location')">
-                <span>Corridor / Location</span>
-                <svg class="sort-check-icon" width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2.5" viewBox="0 0 24 24" style="display:none;"><polyline points="20 6 9 17 4 12"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Reset All Filters Button -->
-          <button type="button" id="artisanResetBtn" onclick="resetArtisanFilters()" style="display: none; align-items: center; gap: 5px; padding: 9px 14px; background: #ffffff; border: 1.5px solid #CBD5E1; border-radius: 10px; font-size: 0.84rem; font-weight: 700; color: #475569; cursor: pointer;">
-            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            Reset Filters
-          </button>
-
-        </div>
-      </div>
-
-      <!-- Row 2: Custom Trade Filter Pills (NO NATIVE SELECT!) -->
-      <div style="margin-bottom: 14px;">
-        <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #64748B; margin-bottom: 8px;">Filter by Trade:</div>
-        <div class="custom-filter-pills" id="artisanTradePillsContainer" style="display: flex; flex-wrap: wrap; gap: 8px;">
-          <button type="button" class="custom-filter-pill active" data-trade="all" onclick="selectArtisanTradeFilter('all', this)">
-            <span>All Trades</span>
-            <span class="pill-count" id="countTradeAll">1</span>
-          </button>
-          <button type="button" class="custom-filter-pill" data-trade="plumb" onclick="selectArtisanTradeFilter('plumb', this)">
-            <span>Plumbing &amp; Water</span>
-            <span class="pill-count" id="countTradePlumb">1</span>
-          </button>
-          <button type="button" class="custom-filter-pill" data-trade="elect" onclick="selectArtisanTradeFilter('elect', this)">
-            <span>Electrical &amp; Power</span>
-            <span class="pill-count" id="countTradeElect">0</span>
-          </button>
-          <button type="button" class="custom-filter-pill" data-trade="ac" onclick="selectArtisanTradeFilter('ac', this)">
-            <span>AC &amp; Cooling</span>
-            <span class="pill-count" id="countTradeAc">0</span>
-          </button>
-          <button type="button" class="custom-filter-pill" data-trade="paint" onclick="selectArtisanTradeFilter('paint', this)">
-            <span>Painting &amp; Screeding</span>
-            <span class="pill-count" id="countTradePaint">0</span>
-          </button>
-          <button type="button" class="custom-filter-pill" data-trade="carp" onclick="selectArtisanTradeFilter('carp', this)">
-            <span>Carpentry &amp; Wood</span>
-            <span class="pill-count" id="countTradeCarp">0</span>
-          </button>
-          <button type="button" class="custom-filter-pill" data-trade="tile" onclick="selectArtisanTradeFilter('tile', this)">
-            <span>Tiling &amp; Flooring</span>
-            <span class="pill-count" id="countTradeTile">0</span>
-          </button>
-          <button type="button" class="custom-filter-pill" data-trade="clean" onclick="selectArtisanTradeFilter('clean', this)">
-            <span>Deep Cleaning</span>
-            <span class="pill-count" id="countTradeClean">0</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Row 3: Custom Corridor Filter Chips (NO NATIVE SELECT!) -->
-      <div>
-        <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #64748B; margin-bottom: 8px;">Operational Corridor:</div>
-        <div class="custom-corridor-chips" id="artisanCorridorChipsContainer" style="display: flex; flex-wrap: wrap; gap: 8px;">
-          <button type="button" class="custom-corridor-chip active" data-corridor="all" onclick="selectArtisanCorridorFilter('all', this)">
-            All Corridors
-          </button>
-          <button type="button" class="custom-corridor-chip" data-corridor="badore" onclick="selectArtisanCorridorFilter('badore', this)">
-            Badore Axis
-          </button>
-          <button type="button" class="custom-corridor-chip" data-corridor="ajah" onclick="selectArtisanCorridorFilter('ajah', this)">
-            Ajah Central
-          </button>
-          <button type="button" class="custom-corridor-chip" data-corridor="sangotedo" onclick="selectArtisanCorridorFilter('sangotedo', this)">
-            Sangotedo
-          </button>
-          <button type="button" class="custom-corridor-chip" data-corridor="lekki" onclick="selectArtisanCorridorFilter('lekki', this)">
-            Lekki Corridor
-          </button>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="artisan-profiles-grid" id="artisanProfilesGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 440px)); justify-content: center; gap: 28px;">
-      
-      <!-- Profile Card: Oluwasegun David Balodin (Plumber, Badore) -->
-      <div class="artisan-profile-card" style="background: #ffffff; border: 1.5px solid #E2E8F0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(7, 34, 79, 0.06); display: flex; flex-direction: column;">
-        
-        <!-- Header Ribbon with Live Status & ID -->
-        <div style="background: linear-gradient(135deg, var(--tk-navy) 0%, #0F3775 100%); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; color: #ffffff;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #10B981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);"></span>
-            <span style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #A7F3D0;">Active &bull; On-Duty Dispatch</span>
-          </div>
-          <span style="font-size: 0.75rem; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); padding: 3px 10px; border-radius: 999px; font-weight: 600;">ID: NJD-PLM-4561</span>
-        </div>
-
-        <!-- Main Body -->
-        <div style="padding: 24px 22px 22px; display: flex; flex-direction: column; flex: 1;">
-          
-          <!-- Avatar + Identity Header -->
-          <div style="display: flex; gap: 18px; align-items: flex-start; margin-bottom: 20px;">
-            <div style="position: relative; flex-shrink: 0;">
-              <img src="assets/images/artisans/oluwasegun-balodin.jpg" alt="Oluwasegun David Balodin - Verified Plumber" style="width: 86px; height: 100px; border-radius: 12px; object-fit: cover; border: 2px solid #E2E8F0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-              <span style="position: absolute; bottom: -6px; right: -6px; background: #10B981; color: #ffffff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border: 2px solid #ffffff;" title="NIN Verified Identity">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-            </div>
-
-            <div style="flex: 1; min-width: 0;">
-              <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--tk-navy); margin: 0 0 4px; line-height: 1.3;">Oluwasegun David Balodin</h3>
-              <div style="display: inline-flex; align-items: center; gap: 6px; background: #EBF3FE; color: var(--tk-primary); padding: 3px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px;">
-                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-                Master Plumber &amp; Pipefitter
-              </div>
-              <div style="font-size: 0.84rem; color: #475569; display: flex; align-items: center; gap: 6px;">
-                <svg width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>Primary Base: <strong>Badore Axis</strong> &bull; Ajah</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Official Vetting & Verification Data Matrix -->
-          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.82rem;">
-            <div>
-              <span style="display: block; color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Identity Check</span>
-              <strong style="color: #0F172A; display: inline-flex; align-items: center; gap: 4px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                NIN Slip Verified
-              </strong>
-            </div>
-            <div>
-              <span style="display: block; color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Dispatch Window</span>
-              <strong style="color: #0F172A;">30&ndash;45 mins</strong>
-            </div>
-            <div>
-              <span style="display: block; color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Coverage Corridor</span>
-              <strong style="color: #0F172A;">Badore &bull; Addo &bull; Langbasa</strong>
-            </div>
-            <div>
-              <span style="display: block; color: #64748B; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Vetting Grade</span>
-              <strong style="color: #0F172A;">Grade A Trade Tested</strong>
-            </div>
-          </div>
-
-          <!-- Core Specializations -->
-          <div style="margin-bottom: 22px;">
-            <span style="display: block; font-size: 0.78rem; font-weight: 700; color: var(--tk-navy); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em;">Verified Service Capabilities:</span>
-            <ul style="margin: 0; padding: 0; list-style: none; font-size: 0.83rem; color: #334155; line-height: 1.55;">
-              <li style="padding: 3px 0; display: flex; align-items: center; gap: 7px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--tk-primary)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                Concealed leak detection, burst pipes &amp; PPR/PEX heat fusion
-              </li>
-              <li style="padding: 3px 0; display: flex; align-items: center; gap: 7px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--tk-primary)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                Borehole plumbing, overhead tank hookups &amp; pressure booster pumps
-              </li>
-              <li style="padding: 3px 0; display: flex; align-items: center; gap: 7px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--tk-primary)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                Water heater installation, bathroom cisterns, taps &amp; shower mixers
-              </li>
-            </ul>
-          </div>
-
-          <!-- Action Buttons -->
-          <div style="margin-top: auto; display: flex; gap: 10px;">
-            <button type="button" onclick="openArtisanDispatchModal('Oluwasegun David Balodin', 'Master Plumber & Pipefitter', 'Badore Axis', 'assets/images/artisans/oluwasegun-balodin.jpg', 'NJD-PLM-4561')" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.88rem; padding: 12px 14px; font-weight: 700; cursor: pointer; border: none;">
-              Dispatch Oluwasegun &rarr;
-            </button>
-            <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE%2C%20I%20want%20to%20request%20dispatch%20for%20verified%20Plumber%20Oluwasegun%20David%20Balodin%20in%20Badore" target="_blank" rel="noopener" class="tk-btn" style="padding: 12px 18px; display: inline-flex; align-items: center; justify-content: center; background: #ffffff; border: 1.5px solid #25D366; border-radius: 8px; transition: background 0.2s, border-color 0.2s;" title="Direct WhatsApp Dispatch with Oluwasegun">
-              <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="22" height="22" style="display: block; width: 22px; height: 22px;">
-            </a>
-          </div>
-
-        </div>
-
       </div>
 
     </div>
@@ -1972,6 +1990,132 @@
         Send
       </button>
     </form>
+  </div>
+</div>
+
+<!-- ===================== ARTISAN PROFILE EDITOR MODAL ===================== -->
+<div class="request-modal-overlay" id="artisanEditProfileModal" style="display:none; align-items:center; justify-content:center; z-index:999999; padding: 16px;">
+  <div class="request-modal-box" style="max-width: 580px; width: 100%; max-height: 92vh; overflow-y: auto; text-align: left; padding: 0; border-radius: 18px; border: 1.5px solid #E2E8F0; position: relative; box-shadow: 0 25px 60px rgba(7,34,79,0.3); background: #ffffff;">
+    
+    <!-- Modal Header -->
+    <div style="background: linear-gradient(135deg, var(--tk-navy) 0%, #0F3775 100%); padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; color: #ffffff;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: #ffffff;" id="artisanEditModalHeaderTitle">Artisan Profile Editor</h3>
+          <p style="font-size: 0.78rem; margin: 2px 0 0; color: #CBD5E1;">Update your public listing, trade skills, and contact details</p>
+        </div>
+      </div>
+      <button type="button" onclick="closeArtisanProfileEditModal()" style="background: rgba(255,255,255,0.15); border: none; color: #ffffff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; line-height: 1;" aria-label="Close modal">&times;</button>
+    </div>
+
+    <!-- Security Gate (shown if artisan is not authenticated) -->
+    <div id="artisanEditAuthGate" style="padding: 24px; display: none;">
+      <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; font-size: 0.85rem; color: #1E40AF; line-height: 1.5;">
+        <strong>Identity Security Verification:</strong> Enter the registered phone number and password created during your onboarding to unlock and edit your verified directory profile.
+      </div>
+      <form onsubmit="handleArtisanAuthForEdit(event)">
+        <div class="spec-form-group" style="margin-bottom: 16px;">
+          <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--tk-navy); margin-bottom:6px;">Registered Phone Number *</label>
+          <input type="tel" id="artisanAuthPhone" required placeholder="e.g. 07085329909" style="width:100%; box-sizing:border-box; padding:11px 14px; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem; outline:none;">
+        </div>
+        <div class="spec-form-group" style="margin-bottom: 20px;">
+          <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--tk-navy); margin-bottom:6px;">Account Password / PIN *</label>
+          <div style="position: relative;">
+            <input type="password" id="artisanAuthPassword" required placeholder="Minimum 6 characters" minlength="6" style="width:100%; box-sizing:border-box; padding:11px 42px 11px 14px; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem; outline:none;">
+            <button type="button" onclick="toggleArtisanPasswordVisibility('artisanAuthPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748B; padding: 4px;" aria-label="Toggle password visibility">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="10" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.92rem; padding: 12px; font-weight: 700; cursor: pointer; border: none;">
+            Unlock Profile &rarr;
+          </button>
+          <button type="button" onclick="closeArtisanProfileEditModal()" class="tk-btn tk-btn--outline" style="padding: 12px 18px; font-size: 0.92rem; cursor: pointer;">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Edit Profile Form (shown once authenticated) -->
+    <div id="artisanEditFormWrap" style="padding: 24px; display: block;">
+      <form id="artisanProfileEditForm" onsubmit="handleSaveArtisanProfileModal(event)">
+        <input type="hidden" id="editArtisanId" value="">
+
+        <!-- Top Avatar Preview & Change Area -->
+        <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 22px; padding: 14px; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px;">
+          <div style="position: relative; width: 76px; height: 86px; border-radius: 10px; overflow: hidden; border: 2px solid #CBD5E1; flex-shrink: 0; background: #ffffff;">
+            <img id="editArtisanAvatarPreview" src="assets/images/artisans/oluwasegun-balodin.jpg" alt="Profile Preview" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="flex: 1;">
+            <div style="font-size: 0.88rem; font-weight: 800; color: var(--tk-navy); margin-bottom: 4px;">Profile Photo / Avatar</div>
+            <p style="font-size: 0.78rem; color: #64748B; margin: 0 0 8px;">Upload a clear headshot or work photo to establish trust with property clients.</p>
+            <label class="tk-btn tk-btn--outline" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 0.78rem; font-weight: 700; cursor: pointer; border-radius: 6px;">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Upload New Photo</span>
+              <input type="file" id="editArtisanAvatarFile" accept="image/*" style="display: none;" onchange="handleArtisanAvatarPreview(this)">
+            </label>
+          </div>
+        </div>
+
+        <!-- Full Name & Phone -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+          <div class="spec-form-group">
+            <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--tk-navy); margin-bottom:5px;">Full Name *</label>
+            <input type="text" id="editArtisanName" required placeholder="e.g. Oluwasegun David Balodin" style="width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.88rem;">
+          </div>
+          <div class="spec-form-group">
+            <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--tk-navy); margin-bottom:5px;">Phone Number *</label>
+            <input type="tel" id="editArtisanPhone" required placeholder="e.g. 07085329909" style="width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.88rem;">
+          </div>
+        </div>
+
+        <!-- Trade Specialization & Operational Corridor -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+          <div class="spec-form-group">
+            <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--tk-navy); margin-bottom:5px;">Primary Trade *</label>
+            <input type="text" id="editArtisanTrade" required placeholder="e.g. Master Plumber & Pipefitter" style="width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.88rem;">
+          </div>
+          <div class="spec-form-group">
+            <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--tk-navy); margin-bottom:5px;">Operational Corridor *</label>
+            <input type="text" id="editArtisanCorridor" required placeholder="e.g. Badore Axis • Ajah" style="width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.88rem;">
+          </div>
+        </div>
+
+        <!-- Service Capabilities / Skills -->
+        <div class="spec-form-group" style="margin-bottom: 16px;">
+          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--tk-navy); margin-bottom:5px;">Service Capabilities / Specializations *</label>
+          <textarea id="editArtisanSkills" rows="3" required placeholder="Describe technical repairs, tools, and installations you handle..." style="width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.88rem; line-height:1.45; resize:vertical;"></textarea>
+        </div>
+
+        <!-- Password Change (Optional) -->
+        <div class="spec-form-group" style="margin-bottom: 22px;">
+          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--tk-navy); margin-bottom:5px;">Update Password / PIN (Leave blank to keep current)</label>
+          <div style="position: relative;">
+            <input type="password" id="editArtisanNewPassword" placeholder="Minimum 6 characters if changing" minlength="6" style="width:100%; box-sizing:border-box; padding:10px 42px 10px 12px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.88rem;">
+            <button type="button" onclick="toggleArtisanPasswordVisibility('editArtisanNewPassword', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748B; padding: 4px;" aria-label="Toggle password visibility">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Buttons Row -->
+        <div style="display: flex; gap: 12px;">
+          <button type="submit" id="btnSaveArtisanEdit" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.92rem; padding: 13px; font-weight: 700; cursor: pointer; border: none;">
+            Save Profile Changes &rarr;
+          </button>
+          <button type="button" onclick="closeArtisanProfileEditModal()" class="tk-btn tk-btn--outline" style="padding: 13px 20px; font-size: 0.92rem; cursor: pointer;">
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    </div>
+
   </div>
 </div>
 
@@ -3067,13 +3211,19 @@
             </div>
 
             <!-- Action Buttons -->
-            <div style="margin-top: auto; display: flex; gap: 10px;">
-              <button type="button" onclick="openArtisanDispatchModal('${escapeHtml(art.name)}', '${escapeHtml(art.trade)}', '${escapeHtml(art.base || 'Badore Axis')}', '${escapeHtml(avatarSrc)}', '${escapeHtml(art.id)}')" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.88rem; padding: 12px 14px; font-weight: 700; cursor: pointer; border: none;">
-                Dispatch ${escapeHtml(art.name.split(' ')[0])} &rarr;
+            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; gap: 10px;">
+                <button type="button" onclick="openArtisanDispatchModal('${escapeHtml(art.name)}', '${escapeHtml(art.trade)}', '${escapeHtml(art.base || 'Badore Axis')}', '${escapeHtml(avatarSrc)}', '${escapeHtml(art.id)}')" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.88rem; padding: 12px 14px; font-weight: 700; cursor: pointer; border: none;">
+                  Dispatch ${escapeHtml(art.name.split(' ')[0])} &rarr;
+                </button>
+                <a href="${waUrl}" target="_blank" rel="noopener" class="tk-btn" style="padding: 12px 18px; display: inline-flex; align-items: center; justify-content: center; background: #ffffff; border: 1.5px solid #25D366; border-radius: 8px; transition: background 0.2s, border-color 0.2s;" title="Direct WhatsApp Dispatch with ${escapeHtml(art.name)}">
+                  <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="22" height="22" style="display: block; width: 22px; height: 22px;">
+                </a>
+              </div>
+              <button type="button" onclick="openArtisanProfileEditModal('${escapeHtml(art.id)}')" class="tk-btn" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 8px 12px; font-weight: 700; cursor: pointer; background: #F8FAFC; border: 1.5px solid #CBD5E1; color: var(--tk-navy); border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <span>Edit Profile</span>
               </button>
-              <a href="${waUrl}" target="_blank" rel="noopener" class="tk-btn" style="padding: 12px 18px; display: inline-flex; align-items: center; justify-content: center; background: #ffffff; border: 1.5px solid #25D366; border-radius: 8px; transition: background 0.2s, border-color 0.2s;" title="Direct WhatsApp Dispatch with ${escapeHtml(art.name)}">
-                <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="22" height="22" style="display: block; width: 22px; height: 22px;">
-              </a>
             </div>
 
           </div>
@@ -3082,6 +3232,214 @@
       `;
     }).join('');
   }
+
+  // ===================== ARTISAN PROFILE EDITOR LOGIC =====================
+  window.openArtisanProfileEditModal = function(targetArtisanId) {
+    const modal = document.getElementById('artisanEditProfileModal');
+    if (!modal) return;
+
+    let activeArt = null;
+    try {
+      const stored = localStorage.getItem('nijedee_active_artisan');
+      if (stored) activeArt = JSON.parse(stored);
+    } catch(e) {}
+
+    const authGate = document.getElementById('artisanEditAuthGate');
+    const formWrap = document.getElementById('artisanEditFormWrap');
+
+    if (activeArt && (!targetArtisanId || activeArt.id === targetArtisanId || activeArt.phone === targetArtisanId)) {
+      populateArtisanEditForm(activeArt);
+      authGate.style.display = 'none';
+      formWrap.style.display = 'block';
+    } else {
+      const profiles = getActiveArtisans();
+      const target = profiles.find(p => p.id === targetArtisanId || p.phone === targetArtisanId);
+      
+      const phoneInput = document.getElementById('artisanAuthPhone');
+      if (phoneInput) {
+        phoneInput.value = target ? (target.phone || '') : (activeArt ? activeArt.phone : '');
+      }
+      const passInput = document.getElementById('artisanAuthPassword');
+      if (passInput) passInput.value = '';
+
+      authGate.style.display = 'block';
+      formWrap.style.display = 'none';
+      modal.dataset.targetArtisanId = targetArtisanId || '';
+    }
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeArtisanProfileEditModal = function() {
+    const modal = document.getElementById('artisanEditProfileModal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  function populateArtisanEditForm(profile) {
+    if (!profile) return;
+    document.getElementById('editArtisanId').value = profile.id || '';
+    document.getElementById('editArtisanName').value = profile.name || '';
+    document.getElementById('editArtisanPhone').value = profile.phone || '';
+    document.getElementById('editArtisanTrade').value = profile.trade || '';
+    document.getElementById('editArtisanCorridor').value = profile.corridor || profile.base || 'Badore Axis';
+    document.getElementById('editArtisanSkills').value = profile.skills || '';
+    document.getElementById('editArtisanNewPassword').value = '';
+
+    const avatarSrc = profile.avatar || 'assets/images/artisans/oluwasegun-balodin.jpg';
+    const preview = document.getElementById('editArtisanAvatarPreview');
+    if (preview) preview.src = avatarSrc;
+  }
+
+  window.handleArtisanAuthForEdit = function(e) {
+    e.preventDefault();
+    const phoneVal = (document.getElementById('artisanAuthPhone')?.value || '').trim();
+    const passVal = (document.getElementById('artisanAuthPassword')?.value || '').trim();
+
+    if (!phoneVal || !passVal) {
+      if (window.showCustomAlert) {
+        window.showCustomAlert({ title: 'Credentials Required', message: 'Please enter both your registered phone number and password.', type: 'warning' });
+      }
+      return;
+    }
+
+    const profiles = getActiveArtisans();
+    const cleanInput = phoneVal.replace(/\D/g, '');
+
+    const matched = profiles.find(p => {
+      const p1 = (p.phone || '').replace(/\D/g, '');
+      const p2 = (p.alt_phone || '').replace(/\D/g, '');
+      const phoneMatch = p1.endsWith(cleanInput.slice(-10)) || p2.endsWith(cleanInput.slice(-10)) || p.phone === phoneVal;
+      const passMatch = p.password === passVal || (p.details && p.details.assignedPassword === passVal);
+      return phoneMatch && passMatch;
+    });
+
+    if (!matched) {
+      if (window.showCustomAlert) {
+        window.showCustomAlert({
+          title: 'Verification Failed',
+          message: 'The phone number or password entered does not match your registered artisan credentials. Please check your details and try again.',
+          type: 'danger'
+        });
+      }
+      return;
+    }
+
+    try {
+      localStorage.setItem('nijedee_active_artisan', JSON.stringify(matched));
+    } catch(e) {}
+
+    populateArtisanEditForm(matched);
+    document.getElementById('artisanEditAuthGate').style.display = 'none';
+    document.getElementById('artisanEditFormWrap').style.display = 'block';
+  };
+
+  window.handleArtisanAvatarPreview = function(input) {
+    if (!input || !input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const preview = document.getElementById('editArtisanAvatarPreview');
+      if (preview) preview.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  window.toggleArtisanPasswordVisibility = function(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const isPass = input.type === 'password';
+    input.type = isPass ? 'text' : 'password';
+  };
+
+  window.handleSaveArtisanProfileModal = async function(e) {
+    e.preventDefault();
+    const saveBtn = document.getElementById('btnSaveArtisanEdit');
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving Changes...';
+    }
+
+    const id = document.getElementById('editArtisanId').value;
+    const name = document.getElementById('editArtisanName').value.trim();
+    const phone = document.getElementById('editArtisanPhone').value.trim();
+    const trade = document.getElementById('editArtisanTrade').value.trim();
+    const corridor = document.getElementById('editArtisanCorridor').value.trim();
+    const skills = document.getElementById('editArtisanSkills').value.trim();
+    const newPass = document.getElementById('editArtisanNewPassword').value.trim();
+    const avatarSrc = document.getElementById('editArtisanAvatarPreview')?.src || '';
+
+    const profiles = getActiveArtisans();
+    const idx = profiles.findIndex(p => p.id === id || p.phone === phone);
+    
+    let updatedProfile = null;
+    if (idx >= 0) {
+      profiles[idx].name = name;
+      profiles[idx].phone = phone;
+      profiles[idx].trade = trade;
+      profiles[idx].corridor = corridor;
+      profiles[idx].base = corridor;
+      profiles[idx].skills = skills;
+      if (avatarSrc) profiles[idx].avatar = avatarSrc;
+      if (newPass && newPass.length >= 6) profiles[idx].password = newPass;
+      updatedProfile = profiles[idx];
+    } else {
+      updatedProfile = {
+        id: id || ('NJD-ART-' + Math.floor(1000 + Math.random() * 9000)),
+        name,
+        phone,
+        trade,
+        corridor,
+        base: corridor,
+        skills,
+        avatar: avatarSrc || 'assets/images/artisans/oluwasegun-balodin.jpg',
+        password: newPass || '123456',
+        is_on_duty: true,
+        is_hidden: false
+      };
+      profiles.push(updatedProfile);
+    }
+
+    try {
+      localStorage.setItem('nijedee_artisan_profiles', JSON.stringify(profiles));
+      localStorage.setItem('nijedee_active_artisan', JSON.stringify(updatedProfile));
+    } catch(err) {}
+
+    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+    if (sb) {
+      try {
+        await sb.from('requests').update({
+          client_name: name,
+          client_phone: phone,
+          location: corridor,
+          details: {
+            trade,
+            corridor,
+            skills,
+            avatar: avatarSrc,
+            assignedPassword: newPass || updatedProfile.password
+          }
+        }).eq('client_phone', phone);
+      } catch(sbErr) {}
+    }
+
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Save Profile Changes \u2192';
+    }
+
+    closeArtisanProfileEditModal();
+    renderVerifiedArtisansDirectory();
+
+    if (window.showCustomAlert) {
+      window.showCustomAlert({
+        title: 'Profile Updated Successfully',
+        message: 'Your field artisan profile has been saved and is now live on the verified directory.',
+        type: 'success'
+      });
+    }
+  };
 
   // Pre-select trade if passed via URL parameter e.g. artisans.html?trade=plumbing
   window.addEventListener('DOMContentLoaded', () => {

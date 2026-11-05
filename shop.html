@@ -964,13 +964,20 @@
       title = p.name;
     }
 
-    // Unbreakable DOM Fallback: Find card by [data-prod-id]
+    // Unbreakable DOM Fallback: Find card by data-prod-id
     if (!images || !images.length) {
-      const card = document.querySelector(`[data-prod-id="${productId}"]`);
+      const allCards = document.querySelectorAll('[data-prod-id]');
+      let card = null;
+      for (let i = 0; i < allCards.length; i++) {
+        if (allCards[i].getAttribute('data-prod-id') === String(productId)) {
+          card = allCards[i];
+          break;
+        }
+      }
       if (card) {
         const titleEl = card.querySelector('.product-title-text') || card.querySelector('h4');
         if (titleEl) title = titleEl.textContent.trim();
-        const mainImgEl = card.querySelector(`img#prodMainImg_${productId}`) || card.querySelector('img');
+        const mainImgEl = document.getElementById('prodMainImg_' + productId) || card.querySelector('img');
         if (mainImgEl && mainImgEl.src) images.push(mainImgEl.src);
         const thumbs = card.querySelectorAll('.product-gallery-strip-thumb');
         thumbs.forEach(t => {

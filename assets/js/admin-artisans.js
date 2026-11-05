@@ -124,7 +124,10 @@
   window.openCandidateDocsGallery = function(appId, startIdx = 0) {
     const app = (window.allRequests || []).find(r => String(r.id) === String(appId));
     if (!app) return;
-    const images = Array.isArray(app.images) ? app.images : [];
+    let images = Array.isArray(app.images) ? [...app.images] : [];
+    if (!images.length && app.details && app.details.avatar) {
+      images.push(app.details.avatar);
+    }
     if (!images.length) return;
     const items = images.map((img, i) => ({
       src: img,
@@ -132,6 +135,8 @@
     }));
     if (window.openGlobalLightbox) {
       window.openGlobalLightbox(items, startIdx, app.client_name || 'Artisan Application Documents');
+    } else if (window.openLightbox) {
+      window.openLightbox(items, startIdx, app.client_name || 'Artisan Application Documents');
     }
   };
 
@@ -180,11 +185,11 @@
           </td>
           <td>
             ${images.length > 0 ? `
-              <div style="display:flex; gap:4px; align-items:center; cursor:pointer;" onclick="openCandidateDocsGallery('${app.id}', 0)" title="Click to view full photo gallery">
+              <div style="display:flex; gap:6px; align-items:center; cursor:pointer;" onclick="openCandidateDocsGallery('${app.id}', 0)" title="Click to view full photo gallery">
                 ${images.slice(0, 2).map((img, i) => `
-                  <img src="${escapeHtml(img)}" alt="Doc ${i + 1}" style="width:36px; height:36px; object-fit:cover; border-radius:4px; border:1px solid #CBD5E1; cursor:zoom-in;">
+                  <img src="${escapeHtml(img)}" alt="Doc ${i + 1}" style="width:38px; height:38px; object-fit:cover; border-radius:6px; border:1px solid #CBD5E1; cursor:zoom-in; transition:transform 0.15s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" onclick="event.stopPropagation(); openCandidateDocsGallery('${app.id}', ${i});">
                 `).join('')}
-                ${images.length > 2 ? `<span style="font-size:11px; font-weight:700; color:#0B5ED7; background:#EFF6FF; padding:2px 5px; border-radius:4px;">+${images.length - 2}</span>` : ''}
+                ${images.length > 2 ? `<span style="font-size:11px; font-weight:700; color:#0B5ED7; background:#EFF6FF; padding:3px 6px; border-radius:4px; border:1px solid #BFDBFE;">+${images.length - 2}</span>` : ''}
               </div>
             ` : '<span style="color:var(--adm-muted); font-size:0.75rem;">None</span>'}
           </td>

@@ -1086,7 +1086,7 @@
     position: fixed;
     inset: 0;
     background: rgba(4, 20, 47, 0.94);
-    z-index: 999999;
+    z-index: 9999999;
     display: none;
     align-items: center;
     justify-content: center;
@@ -1383,13 +1383,20 @@
       title = `${p.title} \u2022 ${p.location}`;
     }
 
-    // Unbreakable DOM Fallback: Find the card element by [data-prop-id]
+    // Unbreakable DOM Fallback: Find the card element by data-prop-id
     if (!images || !images.length) {
-      const card = document.querySelector(`[data-prop-id="${propId}"]`);
+      const allCards = document.querySelectorAll('[data-prop-id]');
+      let card = null;
+      for (let i = 0; i < allCards.length; i++) {
+        if (allCards[i].getAttribute('data-prop-id') === String(propId)) {
+          card = allCards[i];
+          break;
+        }
+      }
       if (card) {
         const titleEl = card.querySelector('h4');
         if (titleEl) title = titleEl.textContent.trim();
-        const mainImgEl = card.querySelector(`img#propMainImg_${propId}`) || card.querySelector('img');
+        const mainImgEl = document.getElementById('propMainImg_' + propId) || card.querySelector('img');
         if (mainImgEl && mainImgEl.src) images.push(mainImgEl.src);
         const thumbs = card.querySelectorAll('.prop-gallery-strip-thumb');
         thumbs.forEach(t => {
@@ -1414,6 +1421,8 @@
 
     if (window.openGlobalLightbox) {
       window.openGlobalLightbox(galleryItems, startIdx, title);
+    } else if (window.openLightbox) {
+      window.openLightbox(galleryItems, startIdx, title);
     }
   }
 
