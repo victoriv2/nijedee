@@ -201,7 +201,10 @@ async function toggleProductActive(id, newActive) {
 async function deleteProduct(id) {
   const p = allProducts.find(item => item.id === id);
   const name = p ? p.name : 'this product';
-  if (!confirm(`Are you sure you want to permanently delete "${name}"? This cannot be undone.`)) return;
+  const ok = window.showCustomConfirm 
+    ? await window.showCustomConfirm(`Are you sure you want to permanently delete "${name}"? This cannot be undone.`, 'Delete Product', 'Delete Permanently', 'Cancel', 'danger')
+    : confirm(`Are you sure you want to permanently delete "${name}"?`);
+  if (!ok) return;
 
   const sb = getNijedeeSupabase();
   if (!sb) return;
@@ -738,7 +741,10 @@ async function togglePropertyActive(id, newActive) {
 async function deleteProperty(id) {
   const p = allProperties.find(item => item.id === id);
   const title = p ? p.title : 'this property';
-  if (!confirm(`Are you sure you want to permanently delete "${title}"? This cannot be undone.`)) return;
+  const ok = window.showCustomConfirm 
+    ? await window.showCustomConfirm(`Are you sure you want to permanently delete "${title}"? This cannot be undone.`, 'Delete Property', 'Delete Permanently', 'Cancel', 'danger')
+    : confirm(`Are you sure you want to permanently delete "${title}"?`);
+  if (!ok) return;
 
   const sb = getNijedeeSupabase();
   if (!sb) return;

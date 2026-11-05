@@ -493,7 +493,7 @@
     <p>Extending NIJEDEE from services into real estate. Connecting verified property owners, tenants, and shortlet guests with integrated maintenance across Lekki, Ajah, Badore, and Sangotedo.</p>
     <div class="prop-hero-actions">
       <a href="#available-listings" class="tk-btn tk-btn--primary">View Available Listings</a>
-      <a href="#property-inquiry" class="tk-btn tk-btn--outline" style="color:#ffffff;border-color:rgba(255,255,255,0.6);">Request a Property</a>
+      <button type="button" class="tk-btn tk-btn--outline" onclick="openPropertyInquiryModal()" style="color:#ffffff;border-color:rgba(255,255,255,0.6);cursor:pointer;">Request a Property</button>
       <button type="button" class="tk-btn tk-btn--outline" onclick="openPropertyModal()" style="color:#ffffff;border-color:rgba(255,255,255,0.6);">List Your Property</button>
       <a href="#facility-management" class="tk-btn tk-btn--ghost" style="background:#ffffff; color:var(--tk-navy); font-weight:700;">Property Management</a>
     </div>
@@ -538,7 +538,7 @@
             24/7 on-call maintenance support
           </li>
         </ul>
-        <a href="#property-inquiry" class="tk-btn tk-btn--outline" onclick="selectInquiryType('Shortlet Apartments')">Inquire for Shortlets</a>
+        <button type="button" class="tk-btn tk-btn--outline" onclick="openPropertyInquiryModal('Shortlet Apartments')" style="cursor:pointer;width:100%;justify-content:center;">Inquire for Shortlets</button>
       </div>
 
       <!-- Category 2: Properties for Rent -->
@@ -565,7 +565,7 @@
             Vetted landlord &amp; lease agreements
           </li>
         </ul>
-        <a href="#property-inquiry" class="tk-btn tk-btn--outline" onclick="selectInquiryType('Properties for Rent')">Inquire for Rentals</a>
+        <button type="button" class="tk-btn tk-btn--outline" onclick="openPropertyInquiryModal('Properties for Rent')" style="cursor:pointer;width:100%;justify-content:center;">Inquire for Rentals</button>
       </div>
 
       <!-- Category 3: Properties for Sale -->
@@ -591,7 +591,7 @@
             Physical site inspections with engineers
           </li>
         </ul>
-        <a href="#property-inquiry" class="tk-btn tk-btn--outline" onclick="selectInquiryType('Properties for Sale')">Inquire for Purchases</a>
+        <button type="button" class="tk-btn tk-btn--outline" onclick="openPropertyInquiryModal('Properties for Sale')" style="cursor:pointer;width:100%;justify-content:center;">Inquire for Purchases</button>
       </div>
 
       <!-- Category 4: Property Owners -->
@@ -888,6 +888,81 @@
   </div>
 </div>
 
+<!-- CLIENT PROPERTY INQUIRY & INSPECTION MODAL (No auto-scrolling) -->
+<div class="modal-backdrop" id="propertyInquiryModal">
+  <div class="modal-box" style="max-width:580px;">
+    <div class="modal-header">
+      <div>
+        <h3 style="margin:0 0 4px; color:var(--tk-navy); font-size:1.25rem; font-weight:800;">Property Request &amp; Inquiry</h3>
+        <p style="margin:0; font-size:0.83rem; color:var(--tk-neutral-500);">Fill this quick form to dispatch your request directly to the NIJEDEE property desk.</p>
+      </div>
+      <button type="button" class="modal-close-x" onclick="closePropertyInquiryModal()">&times;</button>
+    </div>
+    <div class="modal-content" style="padding-top:16px;">
+      <form id="propInquiryForm" onsubmit="handlePropertyInquiryModalSubmit(event)">
+        <input type="hidden" id="inqModalPropTitle" value="">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inqModalCategory">Inquiry Type</label>
+            <select id="inqModalCategory" class="tk-input" style="width:100%;" required>
+              <option value="Properties for Rent">Properties for Rent</option>
+              <option value="Shortlet Apartments">Shortlet Apartments</option>
+              <option value="Properties for Sale">Properties for Sale</option>
+              <option value="Commercial Lease">Commercial Lease</option>
+              <option value="Facility Management">Facility Management</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inqModalLocation">Target Location / Axis</label>
+            <select id="inqModalLocation" class="tk-input" style="width:100%;" required>
+              <option value="Badore, Ajah">Badore, Ajah</option>
+              <option value="Ajah Central">Ajah Central</option>
+              <option value="Addo Road, Ajah">Addo Road, Ajah</option>
+              <option value="Langbasa, Ajah">Langbasa, Ajah</option>
+              <option value="Sangotedo">Sangotedo</option>
+              <option value="Chevron / Orchid">Chevron / Orchid</option>
+              <option value="Lekki Phase 1">Lekki Phase 1</option>
+              <option value="Other Lagos Location">Other Lagos Location</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inqModalName">Your Full Name</label>
+            <input type="text" id="inqModalName" class="tk-input" placeholder="e.g. David Adeleke" style="width:100%;" required>
+          </div>
+          <div class="form-group">
+            <label for="inqModalPhone">Phone / WhatsApp Number</label>
+            <input type="tel" id="inqModalPhone" class="tk-input" placeholder="e.g. 08167469581" style="width:100%;" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inqModalBudget">Target Budget / Price Range (Optional)</label>
+            <input type="text" id="inqModalBudget" class="tk-input" placeholder="e.g. ₦800k - ₦1.5M / year or ₦35k / night" style="width:100%;">
+          </div>
+          <div class="form-group">
+            <label for="inqModalMoveInDate">Target Inspection / Move-in Date</label>
+            <input type="date" id="inqModalMoveInDate" class="tk-input" style="width:100%;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inqModalRequirements">Specific Requirements / Notes</label>
+          <textarea id="inqModalRequirements" class="tk-input" rows="3" placeholder="Tell us what you are looking for (e.g. 2-bedroom mini flat, upstairs, secure compound with constant water, or shortlet stay duration)..." style="width:100%; resize:vertical; min-height:80px;"></textarea>
+        </div>
+
+        <div class="modal-footer" style="padding:16px 0 0; margin-top:16px; border-top:1px solid #E2E8F0; display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn btn-outline" onclick="closePropertyInquiryModal()">Cancel</button>
+          <button type="submit" id="propInqSubmitBtn" class="btn btn-primary" style="padding:10px 22px; font-weight:700;">Submit Property Request &rarr;</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <!-- ===================== FOOTER ===================== -->
 <footer class="tk-footer">
@@ -1075,6 +1150,7 @@
 
 <script src="assets/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/custom-dialog.js"></script>
 <script src="assets/js/supabase-client.js"></script>
 <script src="assets/js/image-uploader.js"></script>
 <script src="assets/js/custom-picker.js"></script>
@@ -1088,6 +1164,107 @@
           break;
         }
       }
+    }
+  }
+
+  function openPropertyInquiryModal(category, propTitle, location) {
+    const modal = document.getElementById('propertyInquiryModal');
+    if (!modal) return;
+    if (category) {
+      const catSelect = document.getElementById('inqModalCategory');
+      if (catSelect) {
+        for (let i = 0; i < catSelect.options.length; i++) {
+          if (catSelect.options[i].value === category || catSelect.options[i].text.includes(category)) {
+            catSelect.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    }
+    if (location) {
+      const locSelect = document.getElementById('inqModalLocation');
+      if (locSelect) {
+        for (let i = 0; i < locSelect.options.length; i++) {
+          if (location.includes(locSelect.options[i].value) || locSelect.options[i].value.includes(location)) {
+            locSelect.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    }
+    if (propTitle) {
+      const titleInput = document.getElementById('inqModalPropTitle');
+      if (titleInput) titleInput.value = propTitle;
+      const reqField = document.getElementById('inqModalRequirements');
+      if (reqField && !reqField.value) {
+        reqField.value = `Inquiry regarding: ${propTitle} (${location || 'Badore/Ajah'}).`;
+      }
+    }
+    modal.classList.add('open');
+  }
+
+  function closePropertyInquiryModal() {
+    const modal = document.getElementById('propertyInquiryModal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  async function handlePropertyInquiryModalSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('propInqSubmitBtn');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Submitting Request...';
+    }
+
+    const category = document.getElementById('inqModalCategory').value;
+    const location = document.getElementById('inqModalLocation').value;
+    const name = document.getElementById('inqModalName').value.trim();
+    const phone = document.getElementById('inqModalPhone').value.trim();
+    const budget = document.getElementById('inqModalBudget').value.trim();
+    const moveInDate = document.getElementById('inqModalMoveInDate').value;
+    const notes = document.getElementById('inqModalRequirements').value.trim();
+    const propTitle = document.getElementById('inqModalPropTitle').value;
+
+    const refNum = 'PROP-' + Math.floor(10000 + Math.random() * 90000);
+
+    if (window.submitNijedeeRequest) {
+      await window.submitNijedeeRequest({
+        ref_code: refNum,
+        type: 'property_inquiry',
+        title: `Property Inquiry - ${category} (${location})`,
+        client_name: name,
+        client_phone: phone,
+        client_whatsapp: phone,
+        location: location,
+        urgency: 'Normal',
+        details: {
+          category,
+          location,
+          budget,
+          moveInDate,
+          propertyTitle: propTitle || '',
+          notes,
+          source: 'modal_popup'
+        }
+      });
+    }
+
+    closePropertyInquiryModal();
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Submit Property Request \u2192';
+    }
+
+    const waMsg = `Hello NIJEDEE Properties, I just submitted an inquiry (Ref: ${refNum}):\n\n• Name: ${name}\n• Category: ${category}\n• Axis: ${location}\n• Budget: ${budget || 'Standard'}\n• Details: ${notes || 'Inspection inquiry'}`;
+    const waUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(waMsg)}`;
+
+    if (window.showCustomAlert) {
+      await window.showCustomAlert({
+        title: 'Property Request Recorded',
+        message: `Thank you, ${name}!\n\nYour request has been dispatched directly to the NIJEDEE Property Desk with Reference Code:\n${refNum}\n\nOur team is reviewing available properties matching your criteria in ${location}.`,
+        type: 'success',
+        confirmText: 'Done'
+      });
     }
   }
 
@@ -1334,7 +1511,7 @@
                 <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="16" height="16">
                 <span>Book Inspection</span>
               </a>
-              <a href="#property-inquiry" class="tk-btn tk-btn--outline tk-btn--sm" onclick="selectInquiryType('${escapeHtml(p.category === 'shortlet' ? 'Shortlet Apartments' : 'Properties for Rent')}'); document.getElementById('inqLocation').value='${escapeHtml(p.location.includes('Badore') ? 'Badore' : 'Ajah')}';" style="padding-inline:14px;">Inquire</a>
+              <button type="button" class="tk-btn tk-btn--outline tk-btn--sm" onclick="openPropertyInquiryModal('${escapeHtml(p.category === 'shortlet' ? 'Shortlet Apartments' : 'Properties for Rent')}', '${escapeHtml(p.title)}', '${escapeHtml(p.location)}')" style="padding-inline:14px; cursor:pointer;">Inquire</button>
             </div>
           </div>
         </div>

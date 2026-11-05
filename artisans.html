@@ -666,6 +666,9 @@
         <span>Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo</span>
       </div>
       <div class="tk-topbar__right">
+        <a href="artisan-portal.html" class="tk-topbar__link" style="background:rgba(255,255,255,0.18); padding:3px 10px; border-radius:4px; font-weight:700;" title="Login to Artisan Portal">
+          <span>Artisan Portal Login &rarr;</span>
+        </a>
         <a href="tel:08167469581" class="tk-topbar__link" title="Call NIJEDEE Direct">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           <span>Call: <strong>08167469581</strong></span>
@@ -743,6 +746,19 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         NIJEDEE Supervised &amp; Guaranteed
       </div>
+    </div>
+
+    <!-- Quick Actions: Book, Live Chat & Portal -->
+    <div style="display:flex; justify-content:center; gap:12px; margin-top:24px; flex-wrap:wrap;">
+      <a href="#artisan-request-form" class="tk-btn tk-btn--primary" style="padding:11px 24px; font-size:0.92rem; font-weight:700;">
+        Request Artisan Now
+      </a>
+      <button type="button" onclick="promptTrackDispatchChat()" class="tk-btn tk-btn--outline" style="color:#ffffff; border-color:rgba(255,255,255,0.7); padding:11px 22px; font-size:0.92rem; font-weight:700; cursor:pointer;">
+        Live Chat / Track Dispatch
+      </button>
+      <a href="artisan-portal.html" class="tk-btn tk-btn--ghost" style="background:rgba(255,255,255,0.16); color:#ffffff; padding:11px 22px; font-size:0.92rem; font-weight:700; text-decoration:none;">
+        Artisan Dashboard Login &rarr;
+      </a>
     </div>
   </div>
 </section>
@@ -1533,12 +1549,66 @@
       Your request has been logged. Our property dispatch team will call or WhatsApp you within 15 minutes to confirm technician assignment.
     </p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button type="button" id="modalOpenChatBtn" class="btn-online-submit" onclick="openCustomerDispatchChatFromLastSubmission()" style="background:#07224F; color:#ffffff; width:auto; padding:10px 20px; display:inline-flex; align-items:center; gap:6px; cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Open Live Artisan Chat</span>
+      </button>
       <a id="modalWaDispatchBtn" href="https://wa.me/2347085329909" target="_blank" rel="noopener" class="btn-wa-submit" style="width:auto;padding:10px 20px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-size:0.9rem;">
         <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="16" height="16">
         <span>Proceed to WhatsApp Dispatch</span>
       </a>
-      <button type="button" class="btn-online-submit" onclick="closeSubmissionModal()" style="width:auto;padding:10px 22px;">Close</button>
+      <button type="button" class="btn-online-submit" onclick="closeSubmissionModal()" style="width:auto;padding:10px 22px; background:#F1F5F9; color:#475569; border:1px solid #CBD5E1;">Close</button>
     </div>
+  </div>
+</div>
+
+<!-- CUSTOMER LIVE DISPATCH CHAT MODAL (Customer <-> Artisan Two-Way Messaging) -->
+<div class="request-modal-overlay" id="customerDispatchChatModal" style="display:none; align-items:center; justify-content:center; z-index:99999;">
+  <div class="request-modal-box" style="max-width:580px; width:94%; padding:0; overflow:hidden; border-radius:18px; text-align:left; box-shadow:0 20px 45px rgba(7,34,79,0.25);">
+    <!-- Chat Header -->
+    <div style="background:#07224F; color:#ffffff; padding:16px 20px; display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img id="custChatAvatar" src="assets/images/artisans/oluwasegun-balodin.jpg" alt="Artisan" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid #10B981;">
+        <div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <strong id="custChatArtisanName" style="font-size:1rem; color:#ffffff;">Oluwasegun David Balodin</strong>
+            <span style="font-size:0.68rem; background:#10B981; color:#ffffff; font-weight:800; padding:1px 6px; border-radius:4px; text-transform:uppercase;">Verified</span>
+          </div>
+          <div style="font-size:0.75rem; color:#93C5FD;" id="custChatSubtext">Ref: DSP-00000 &bull; Master Plumber</div>
+        </div>
+      </div>
+      <button type="button" onclick="closeCustomerDispatchChat()" style="background:rgba(255,255,255,0.15); border:none; color:#ffffff; width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:1.3rem; line-height:1; display:flex; align-items:center; justify-content:center;" aria-label="Close Chat">&times;</button>
+    </div>
+
+    <!-- Security & Ops Monitor notice -->
+    <div style="background:#F0FDF4; border-bottom:1px solid #BBF7D0; padding:8px 18px; display:flex; align-items:center; justify-content:space-between; font-size:0.76rem; color:#166534;">
+      <span>NIJEDEE Ops Supervision &bull; Direct Two-Way Artisan Communication</span>
+      <span style="display:inline-flex; align-items:center; gap:4px; font-weight:700;">
+        <span style="width:7px; height:7px; border-radius:50%; background:#16A34A; display:inline-block;"></span>
+        Live Connected
+      </span>
+    </div>
+
+    <!-- Messages Container -->
+    <div id="custChatMessages" style="padding:16px 18px; max-height:280px; height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; background:#F8FAFC;">
+      <!-- Populated dynamically -->
+    </div>
+
+    <!-- Quick Prompt Chips for Customer -->
+    <div style="padding:8px 16px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; gap:6px; overflow-x:auto; white-space:nowrap;">
+      <span onclick="applyCustQuickReply('Are you currently on your way?')" style="font-size:0.75rem; background:#F1F5F9; color:#0F172A; padding:4px 10px; border-radius:50px; cursor:pointer; border:1px solid #CBD5E1; user-select:none;">On your way?</span>
+      <span onclick="applyCustQuickReply('What is your current estimated arrival time (ETA)?')" style="font-size:0.75rem; background:#F1F5F9; color:#0F172A; padding:4px 10px; border-radius:50px; cursor:pointer; border:1px solid #CBD5E1; user-select:none;">What is your ETA?</span>
+      <span onclick="applyCustQuickReply('I am at the property waiting for you.')" style="font-size:0.75rem; background:#F1F5F9; color:#0F172A; padding:4px 10px; border-radius:50px; cursor:pointer; border:1px solid #CBD5E1; user-select:none;">I am at the property</span>
+      <span onclick="applyCustQuickReply('Please call my phone once you reach the gate or estate security.')" style="font-size:0.75rem; background:#F1F5F9; color:#0F172A; padding:4px 10px; border-radius:50px; cursor:pointer; border:1px solid #CBD5E1; user-select:none;">Call at gate</span>
+    </div>
+
+    <!-- Message Input Bar -->
+    <form id="custChatForm" onsubmit="handleCustomerSendDispatchMessage(event)" style="padding:12px 16px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; gap:8px;">
+      <input type="text" id="custChatInput" placeholder="Type a message to your artisan..." required style="flex:1; padding:10px 14px; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.88rem; outline:none; max-width:100% !important; box-sizing:border-box !important;">
+      <button type="submit" id="custChatSendBtn" style="background:#07224F; color:#ffffff; border:none; border-radius:10px; padding:10px 20px; font-weight:700; font-size:0.88rem; cursor:pointer; flex-shrink:0;">
+        Send
+      </button>
+    </form>
   </div>
 </div>
 
@@ -1785,11 +1855,20 @@
     }
 
     // Show confirmation modal with WhatsApp button
+    lastSubmittedDispatch = {
+      ref: refNum,
+      client_name: name,
+      client_phone: phone,
+      artisan_name: currentModalArtisan ? currentModalArtisan.name : 'Oluwasegun David Balodin',
+      trade: currentModalArtisan ? currentModalArtisan.trade : 'Master Plumber',
+      location: currentModalArtisan ? currentModalArtisan.location : 'Badore Axis'
+    };
+
     const feedbackModal = document.getElementById('submissionModal');
     const feedbackText = document.getElementById('modalFeedbackText');
     const waBtn = document.getElementById('modalWaDispatchBtn');
     if (feedbackText) {
-      feedbackText.innerHTML = `Your direct dispatch request for <strong>${currentModalArtisan.name}</strong> has been logged under Ref: <strong>${refNum}</strong>. Click below to continue on WhatsApp.`;
+      feedbackText.innerHTML = `Your direct dispatch request for <strong>${currentModalArtisan.name}</strong> has been logged under Ref: <strong>${refNum}</strong>. You can open live chat with the artisan below or continue on WhatsApp.`;
     }
     if (waBtn) {
       waBtn.href = waUrl;
@@ -1883,12 +1962,26 @@
     const encoded = encodeURIComponent(message);
     const waUrl = `https://wa.me/2347085329909?text=${encoded}`;
     
+    // Record into Supabase Admin Dashboard
+    const photoInput = document.getElementById('artisanFaultPhotos');
+    const photoFiles = photoInput?.getSelectedFiles ? photoInput.getSelectedFiles() : photoInput?.files;
+    const refNum = 'DSP-' + Math.floor(10000 + Math.random() * 90000);
+
+    lastSubmittedDispatch = {
+      ref: refNum,
+      client_name: custName,
+      client_phone: custPhone,
+      artisan_name: 'Assigned Technician',
+      trade: trade,
+      location: location
+    };
+
     const waBtn = document.getElementById('modalWaDispatchBtn');
     if (waBtn) waBtn.href = waUrl;
 
     const feedback = document.getElementById('modalFeedbackText');
     if (feedback) {
-      feedback.textContent = `Thank you, ${custName}. Your request for a verified "${trade}" technician in ${location} has been received. You can proceed directly to WhatsApp dispatch to connect with your assigned artisan immediately.`;
+      feedback.innerHTML = `Thank you, <strong>${custName}</strong>. Your request for a verified "${trade}" technician in ${location} has been received (Ref: <strong>${refNum}</strong>). You can open live chat with the artisan below or continue on WhatsApp.`;
     }
     
     const modal = document.getElementById('submissionModal');
@@ -1896,10 +1989,6 @@
       modal.style.display = 'flex';
     }
 
-    // Record into Supabase Admin Dashboard
-    const photoInput = document.getElementById('artisanFaultPhotos');
-    const photoFiles = photoInput?.getSelectedFiles ? photoInput.getSelectedFiles() : photoInput?.files;
-    const refNum = 'DSP-' + Math.floor(10000 + Math.random() * 90000);
     if (window.submitNijedeeRequest) {
       window.submitNijedeeRequest({
         ref_code: refNum,
@@ -1932,6 +2021,171 @@
     document.body.style.overflow = '';
   }
 
+  // ==========================================
+  // CUSTOMER LIVE DISPATCH CHAT CONTROLLER
+  // ==========================================
+  let activeCustChatRef = null;
+  let activeCustClientName = '';
+  let activeCustArtisanName = '';
+  let custChatPollTimer = null;
+  let lastSubmittedDispatch = null;
+
+  function openCustomerDispatchChatFromLastSubmission() {
+    closeSubmissionModal();
+    if (!lastSubmittedDispatch) {
+      if (window.showCustomAlert) {
+        window.showCustomAlert({ title: 'No Active Dispatch', message: 'No recent dispatch record found. You can enter your Reference Code to track.', type: 'info' });
+      } else {
+        alert('No recent dispatch found.');
+      }
+      return;
+    }
+    openCustomerDispatchChat(lastSubmittedDispatch.ref, lastSubmittedDispatch.client_name, lastSubmittedDispatch.artisan_name, lastSubmittedDispatch.trade);
+  }
+
+  async function promptTrackDispatchChat() {
+    const existingRef = (lastSubmittedDispatch && lastSubmittedDispatch.ref) || '';
+    const ref = prompt('Enter your Dispatch Reference Code (e.g. DSP-53421):', existingRef);
+    if (!ref || !ref.trim()) return;
+    openCustomerDispatchChat(ref.trim(), 'Client', 'Assigned Artisan', 'Technical Specialist');
+  }
+
+  async function openCustomerDispatchChat(refCode, clientName, artisanName, tradeName) {
+    activeCustChatRef = refCode;
+    activeCustClientName = clientName || 'Client';
+    activeCustArtisanName = artisanName || 'Assigned Artisan';
+
+    const modal = document.getElementById('customerDispatchChatModal');
+    if (!modal) return;
+
+    document.getElementById('custChatArtisanName').textContent = activeCustArtisanName;
+    document.getElementById('custChatSubtext').textContent = `Ref: ${activeCustChatRef} \u2022 ${tradeName || 'Certified Technician'}`;
+    
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    await refreshCustomerDispatchMessages();
+
+    if (custChatPollTimer) clearInterval(custChatPollTimer);
+    custChatPollTimer = setInterval(refreshCustomerDispatchMessages, 4000);
+  }
+
+  function closeCustomerDispatchChat() {
+    const modal = document.getElementById('customerDispatchChatModal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+    if (custChatPollTimer) {
+      clearInterval(custChatPollTimer);
+      custChatPollTimer = null;
+    }
+  }
+
+  async function refreshCustomerDispatchMessages() {
+    if (!activeCustChatRef) return;
+    const msgContainer = document.getElementById('custChatMessages');
+    if (!msgContainer) return;
+
+    let messages = [];
+    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+    if (sb) {
+      try {
+        const { data, error } = await sb.from('requests').select('*').eq('ref_code', activeCustChatRef).single();
+        if (!error && data) {
+          const d = data.details || {};
+          messages = Array.isArray(d.messages) ? d.messages : [];
+          if (data.client_name) activeCustClientName = data.client_name;
+          if (d.assigned_artisan) {
+            activeCustArtisanName = d.assigned_artisan;
+            document.getElementById('custChatArtisanName').textContent = d.assigned_artisan;
+          }
+        }
+      } catch (err) {
+        console.warn('Cust chat refresh err:', err);
+      }
+    }
+
+    if (messages.length === 0) {
+      msgContainer.innerHTML = `
+        <div style="text-align:center; padding:24px 16px; color:#64748B; font-size:0.83rem;">
+          <div style="font-weight:700; color:var(--tk-navy); margin-bottom:4px;">Direct Artisan Thread Initialized</div>
+          Your dispatch has been registered under Ref: <strong>${escapeHtml(activeCustChatRef)}</strong>. Type a message below to coordinate with your technician.
+        </div>
+      `;
+      return;
+    }
+
+    msgContainer.innerHTML = messages.map(m => {
+      let bubbleStyle = 'align-self:flex-start; background:#FFFFFF; color:#0F172A; border:1px solid #E2E8F0; border-radius:12px 12px 12px 2px;';
+      let senderLabel = m.sender_name || 'Artisan';
+      let isClient = m.sender === 'client';
+      let isAdmin = m.sender === 'admin' || m.sender === 'system';
+
+      if (isClient) {
+        bubbleStyle = 'align-self:flex-end; background:#07224F; color:#FFFFFF; border-radius:12px 12px 2px 12px;';
+        senderLabel = 'You (' + (m.sender_name || 'Client') + ')';
+      } else if (isAdmin) {
+        bubbleStyle = 'align-self:center; background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; border-radius:10px; font-size:0.8rem; text-align:center; max-width:90%;';
+        senderLabel = 'NIJEDEE Ops Supervisor';
+      }
+
+      return `
+        <div style="${bubbleStyle} padding:9px 13px; max-width:84%; font-size:0.85rem; display:flex; flex-direction:column; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+          <span style="font-size:0.7rem; font-weight:800; opacity:0.8; text-transform:uppercase; margin-bottom:2px;">${escapeHtml(senderLabel)}</span>
+          <div style="word-break:break-word;">${escapeHtml(m.text)}</div>
+          <span style="font-size:0.68rem; opacity:0.7; align-self:flex-end; margin-top:3px;">${escapeHtml(m.timestamp || '')}</span>
+        </div>
+      `;
+    }).join('');
+
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+  }
+
+  function applyCustQuickReply(text) {
+    const input = document.getElementById('custChatInput');
+    if (input) {
+      input.value = text;
+      input.focus();
+    }
+  }
+
+  async function handleCustomerSendDispatchMessage(e) {
+    e.preventDefault();
+    const input = document.getElementById('custChatInput');
+    if (!input || !input.value.trim() || !activeCustChatRef) return;
+
+    const text = input.value.trim();
+    input.value = '';
+
+    const newMsg = {
+      sender: 'client',
+      sender_name: activeCustClientName || 'Client',
+      text: text,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+    if (sb) {
+      try {
+        const { data } = await sb.from('requests').select('*').eq('ref_code', activeCustChatRef).single();
+        if (data) {
+          const details = data.details || {};
+          if (!Array.isArray(details.messages)) details.messages = [];
+          details.messages.push(newMsg);
+          await sb.from('requests').update({ details: details }).eq('id', data.id);
+        }
+      } catch (err) {
+        console.warn('Failed to persist customer dispatch message:', err);
+      }
+    }
+
+    await refreshCustomerDispatchMessages();
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   // Pre-select trade if passed via URL parameter e.g. artisans.html?trade=plumbing
   window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
@@ -1951,6 +2205,7 @@
 </script>
 <script src="assets/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/custom-dialog.js"></script>
 <script src="assets/js/supabase-client.js"></script>
 <script src="assets/js/image-uploader.js"></script>
 <script src="assets/js/custom-picker.js"></script>

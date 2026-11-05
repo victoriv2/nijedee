@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Artisan Portal &bull; NIJEDEE Ops</title>
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    :root {
+      --art-navy: #07224F;
+      --art-green: #15803D;
+      --art-green-light: #ECFDF5;
+      --art-accent: #0B5ED7;
+      --art-bg: #F8FAFC;
+      --art-card-bg: #FFFFFF;
+      --art-border: #E2E8F0;
+      --art-text: #0F172A;
+      --art-muted: #64748B;
+    }
+
+    * {
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--art-bg);
+      color: var(--art-text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    .art-topbar {
+      background: var(--art-navy);
+      color: #FFFFFF;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #0B5ED7;
+    }
+
+    .art-topbar__brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #FFFFFF;
+    }
+
+    .art-topbar__brand img {
+      height: 38px;
+      width: auto;
+      background: #FFFFFF;
+      padding: 3px;
+      border-radius: 6px;
+    }
+
+    .art-topbar__brand-text h1 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.2;
+      color: #FFFFFF;
+    }
+
+    .art-topbar__brand-text span {
+      font-size: 0.72rem;
+      color: #93C5FD;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    .art-topbar__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Duty switch */
+    .art-duty-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease;
+    }
+
+    .art-duty-pill.active {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: #10B981;
+      color: #A7F3D0;
+    }
+
+    .art-duty-indicator {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #94A3B8;
+    }
+
+    .art-duty-pill.active .art-duty-indicator {
+      background: #10B981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35);
+    }
+
+    /* Main Container */
+    .art-main {
+      flex: 1;
+      padding: 24px 20px 48px;
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Auth Card (When logged out) */
+    .art-auth-card {
+      background: var(--art-card-bg);
+      border: 1.5px solid var(--art-border);
+      border-radius: 20px;
+      max-width: 460px;
+      width: 100%;
+      margin: 40px auto;
+      padding: 32px 28px;
+      box-shadow: 0 10px 35px rgba(7, 34, 79, 0.08);
+      text-align: left;
+    }
+
+    .art-auth-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--art-navy);
+      margin: 0 0 8px;
+    }
+
+    .art-auth-desc {
+      font-size: 0.88rem;
+      color: var(--art-muted);
+      margin: 0 0 24px;
+      line-height: 1.5;
+    }
+
+    .art-demo-box {
+      background: #EFF6FF;
+      border: 1px dashed #93C5FD;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      font-size: 0.82rem;
+      color: #1E40AF;
+    }
+
+    /* Form inputs */
+    .art-form-group {
+      margin-bottom: 18px;
+    }
+
+    .art-form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--art-navy);
+      margin-bottom: 6px;
+    }
+
+    .art-form-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--art-border);
+      border-radius: 8px;
+      font-size: 0.92rem;
+      color: var(--art-text);
+      font-family: inherit;
+      background: #FFFFFF;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .art-form-input:focus {
+      outline: none;
+      border-color: var(--art-accent);
+      box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.12);
+    }
+
+    .art-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .art-btn--full {
+      width: 100%;
+    }
+
+    .art-btn--primary {
+      background: var(--art-green);
+      color: #FFFFFF;
+    }
+
+    .art-btn--primary:hover {
+      background: #166534;
+    }
+
+    .art-btn--navy {
+      background: var(--art-navy);
+      color: #FFFFFF;
+    }
+
+    .art-btn--navy:hover {
+      background: #0B3373;
+    }
+
+    .art-btn--outline {
+      background: #FFFFFF;
+      color: var(--art-navy);
+      border: 1.5px solid var(--art-border);
+    }
+
+    .art-btn--outline:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+    }
+
+    .art-btn--sm {
+      padding: 7px 12px;
+      font-size: 0.82rem;
+    }
+
+    /* Artisan Profile Header Banner */
+    .art-profile-banner {
+      background: #FFFFFF;
+      border: 1.5px solid var(--art-border);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(7, 34, 79, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .art-profile-identity {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .art-profile-avatar {
+      width: 76px;
+      height: 84px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 2.5px solid #0B5ED7;
+      box-shadow: 0 4px 12px rgba(11, 94, 215, 0.15);
+      background: #E2E8F0;
+      flex-shrink: 0;
+    }
+
+    .art-profile-details h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--art-navy);
+      margin: 0 0 6px;
+    }
+
+    .art-profile-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .art-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .art-badge--trade {
+      background: #EBF3FE;
+      color: #0B5ED7;
+    }
+
+    .art-badge--id {
+      background: #F1F5F9;
+      color: #334155;
+    }
+
+    .art-badge--vetted {
+      background: #ECFDF5;
+      color: #059669;
+    }
+
+    /* KPI Grid */
+    .art-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .art-kpi-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--art-border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .art-kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--art-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .art-kpi-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--art-navy);
+      line-height: 1.2;
+    }
+
+    .art-kpi-sub {
+      font-size: 0.78rem;
+      color: #10B981;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* Tabs */
+    .art-tabs-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--art-border);
+      margin-bottom: 24px;
+    }
+
+    .art-tab-btn {
+      background: none;
+      border: none;
+      padding: 12px 18px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--art-muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s ease;
+    }
+
+    .art-tab-btn.active {
+      color: #0B5ED7;
+    }
+
+    .art-tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #0B5ED7;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .art-tab-badge {
+      display: inline-block;
+      background: #EF4444;
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px;
+      margin-left: 6px;
+    }
+
+    /* Job Card */
+    .art-job-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--art-border);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 16px rgba(7, 34, 79, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .art-job-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .art-job-ref {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #0B5ED7;
+      background: #EFF6FF;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .art-job-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--art-navy);
+      margin: 6px 0 4px;
+    }
+
+    .art-job-client {
+      font-size: 0.88rem;
+      color: #334155;
+    }
+
+    .art-job-meta-grid {
+      background: #F8FAFC;
+      border: 1px solid var(--art-border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      font-size: 0.84rem;
+    }
+
+    .art-job-meta-item strong {
+      display: block;
+      color: var(--art-navy);
+      font-size: 0.9rem;
+    }
+
+    .art-job-meta-item span {
+      color: var(--art-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    /* Chat Thread */
+    .art-chat-container {
+      background: #F1F5F9;
+      border: 1px solid var(--art-border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .art-chat-messages {
+      max-height: 260px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 4px;
+    }
+
+    .art-chat-bubble {
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 82%;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .art-chat-bubble--artisan {
+      align-self: flex-end;
+      background: #0B5ED7;
+      color: #FFFFFF;
+      border-bottom-right-radius: 2px;
+    }
+
+    .art-chat-bubble--client {
+      align-self: flex-start;
+      background: #FFFFFF;
+      color: var(--art-text);
+      border: 1px solid #E2E8F0;
+      border-bottom-left-radius: 2px;
+    }
+
+    .art-chat-bubble--admin {
+      align-self: center;
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FDE68A;
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    .art-chat-sender {
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-bottom: 3px;
+      opacity: 0.85;
+      text-transform: uppercase;
+    }
+
+    .art-chat-time {
+      font-size: 0.68rem;
+      opacity: 0.75;
+      margin-top: 4px;
+      align-self: flex-end;
+    }
+
+    .art-chat-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .art-quick-replies {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .art-quick-chip {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .art-quick-chip:hover {
+      background: #E2E8F0;
+      color: var(--art-navy);
+    }
+
+    @media (max-width: 768px) {
+      .art-profile-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .art-profile-identity {
+        flex-direction: row;
+      }
+      .art-topbar__brand-text span {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="art-topbar">
+    <a href="artisans.html" class="art-topbar__brand">
+      <img src="assets/images/logo.png" alt="NIJEDEE">
+      <div class="art-topbar__brand-text">
+        <h1>NIJEDEE ARTISAN PORTAL</h1>
+        <span>Verified Trade Network &bull; CAC RC 1403323</span>
+      </div>
+    </a>
+    <div class="art-topbar__actions" id="topbarActions" style="display:none;">
+      <div class="art-duty-pill active" id="dutyStatusPill" onclick="toggleArtisanDutyStatus()" title="Click to toggle dispatch availability">
+        <span class="art-duty-indicator"></span>
+        <span id="dutyStatusText">On-Duty Dispatch</span>
+      </div>
+      <button type="button" class="art-btn art-btn--outline art-btn--sm" style="color:#ffffff; border-color:rgba(255,255,255,0.4); background:transparent;" onclick="handleArtisanLogout()">
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <!-- Main View -->
+  <main class="art-main">
+
+    <!-- LOGIN SCREEN (Shown when not authenticated) -->
+    <div id="artisanAuthView">
+      <div class="art-auth-card">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#10B981;"></span>
+          <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#10B981; letter-spacing:0.05em;">Accredited Technician Portal</span>
+        </div>
+        <h2 class="art-auth-title">Artisan Sign In</h2>
+        <p class="art-auth-desc">Log in with your registered phone number and password to manage dispatches, message customers, and update your profile.</p>
+
+        <!-- Quick Demo Credentials Box -->
+        <div class="art-demo-box">
+          <strong>Accredited Master Artisan Profile:</strong><br>
+          &bull; Login Phone: <code>07085329909</code><br>
+          &bull; Password: <code>Oluwasegun123</code><br>
+          <button type="button" class="art-btn art-btn--outline art-btn--sm" style="margin-top:8px; width:100%; font-size:0.78rem; font-weight:700;" onclick="prefillOluwasegunCredentials()">
+            Quick Fill Oluwasegun Credentials
+          </button>
+        </div>
+
+        <form id="artisanLoginForm" onsubmit="handleArtisanLogin(event)">
+          <div class="art-form-group">
+            <label class="art-form-label" for="artLoginPhone">Registered Phone Number</label>
+            <input type="tel" id="artLoginPhone" class="art-form-input" placeholder="e.g. 07085329909" required>
+          </div>
+
+          <div class="art-form-group">
+            <label class="art-form-label" for="artLoginPassword">Password</label>
+            <input type="password" id="artLoginPassword" class="art-form-input" placeholder="Enter your password" required>
+          </div>
+
+          <button type="submit" class="art-btn art-btn--primary art-btn--full" style="padding:13px; font-size:0.95rem;">
+            Log In to Artisan Dashboard &rarr;
+          </button>
+        </form>
+
+        <div style="margin-top:24px; padding-top:18px; border-top:1px solid #E2E8F0; text-align:center; font-size:0.84rem; color:var(--art-muted);">
+          Want to join the NIJEDEE network? <a href="become-artisan.html" style="color:#0B5ED7; font-weight:700; text-decoration:none;">Apply to Become an Artisan</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD VIEW (Shown once authenticated) -->
+    <div id="artisanDashboardView" style="display:none;">
+
+      <!-- Profile Header Banner -->
+      <div class="art-profile-banner">
+        <div class="art-profile-identity">
+          <img id="dashAvatarImg" src="assets/images/artisans/oluwasegun-balodin.jpg" alt="Artisan Photo" class="art-profile-avatar">
+          <div class="art-profile-details">
+            <h2 id="dashArtisanName">Oluwasegun David Balodin</h2>
+            <div class="art-profile-badge-row">
+              <span class="art-badge art-badge--trade" id="dashArtisanTrade">Master Plumber &amp; Pipefitter</span>
+              <span class="art-badge art-badge--id" id="dashArtisanId">ID: NJD-PLM-4561</span>
+              <span class="art-badge art-badge--vetted">&check; NIN Slip Verified</span>
+            </div>
+            <div style="font-size:0.84rem; color:var(--art-muted); display:flex; align-items:center; gap:6px;">
+              <svg width="14" height="14" fill="none" stroke="#0B5ED7" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Primary Base: <strong id="dashArtisanBase">Badore Axis &bull; Ajah</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+          <div style="font-size:0.75rem; text-transform:uppercase; color:var(--art-muted); font-weight:700;">Account Status</div>
+          <span style="background:#ECFDF5; color:#059669; font-weight:800; font-size:0.85rem; padding:4px 12px; border-radius:50px; border:1px solid #A7F3D0;">
+            &bull; Approved &amp; Active
+          </span>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="art-kpi-grid">
+        <div class="art-kpi-card">
+          <span class="art-kpi-label">Active Assigned Dispatches</span>
+          <span class="art-kpi-value" id="kpiActiveJobs">1</span>
+          <span class="art-kpi-sub">Ready for service action</span>
+        </div>
+        <div class="art-kpi-card">
+          <span class="art-kpi-label">Completed Dispatches</span>
+          <span class="art-kpi-value" id="kpiCompletedJobs">12</span>
+          <span class="art-kpi-sub" style="color:#0B5ED7;">Customer signed off</span>
+        </div>
+        <div class="art-kpi-card">
+          <span class="art-kpi-label">Customer Satisfaction</span>
+          <span class="art-kpi-value" style="color:#D97706;">4.95 &#9733;</span>
+          <span class="art-kpi-sub" style="color:#475569;">Based on 14 ratings</span>
+        </div>
+        <div class="art-kpi-card">
+          <span class="art-kpi-label">Assigned Coverage Axis</span>
+          <span class="art-kpi-value" style="font-size:1.15rem; font-weight:800;" id="kpiCorridor">Badore &bull; Ajah</span>
+          <span class="art-kpi-sub" style="color:#475569;">30&ndash;45 min response window</span>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="art-tabs-bar">
+        <button type="button" class="art-tab-btn active" id="tabBtnJobs" onclick="switchArtisanTab('jobs')">
+          Assigned Dispatches &amp; Messages <span class="art-tab-badge" id="jobsCountBadge">1</span>
+        </button>
+        <button type="button" class="art-tab-btn" id="tabBtnProfile" onclick="switchArtisanTab('profile')">
+          Profile &amp; Account Settings
+        </button>
+      </div>
+
+      <!-- TAB 1: ASSIGNED JOBS & 2-WAY CHAT -->
+      <div id="artisanTabJobs">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="font-size:1.1rem; font-weight:800; color:var(--art-navy); margin:0;">Active Service Dispatches</h3>
+          <button type="button" class="art-btn art-btn--outline art-btn--sm" onclick="fetchArtisanDispatches(true)">
+            &#8635; Refresh Dispatches
+          </button>
+        </div>
+
+        <div id="artisanJobsContainer">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- TAB 2: PROFILE & SECURITY SETTINGS -->
+      <div id="artisanTabProfile" style="display:none;">
+        <div style="background:#FFFFFF; border:1.5px solid var(--art-border); border-radius:18px; padding:28px; box-shadow:0 4px 16px rgba(7,34,79,0.04);">
+          <h3 style="font-size:1.2rem; font-weight:800; color:var(--art-navy); margin:0 0 6px;">Artisan Profile &amp; Account Details</h3>
+          <p style="font-size:0.88rem; color:var(--art-muted); margin:0 0 24px;">Update your professional information, service capabilities, bank payout details, or change your password.</p>
+
+          <form id="artisanProfileForm" onsubmit="handleSaveArtisanProfile(event)">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:24px;">
+              <div class="art-form-group">
+                <label class="art-form-label" for="editArtName">Full Name</label>
+                <input type="text" id="editArtName" class="art-form-input" required>
+              </div>
+
+              <div class="art-form-group">
+                <label class="art-form-label" for="editArtTrade">Trade Specialization</label>
+                <input type="text" id="editArtTrade" class="art-form-input" required>
+              </div>
+
+              <div class="art-form-group">
+                <label class="art-form-label" for="editArtPhone">Login Phone Number</label>
+                <input type="tel" id="editArtPhone" class="art-form-input" required>
+              </div>
+
+              <div class="art-form-group">
+                <label class="art-form-label" for="editArtWhatsApp">WhatsApp Number</label>
+                <input type="tel" id="editArtWhatsApp" class="art-form-input" required>
+              </div>
+
+              <div class="art-form-group">
+                <label class="art-form-label" for="editArtBase">Primary Base Corridor</label>
+                <input type="text" id="editArtBase" class="art-form-input" placeholder="e.g. Badore Axis • Ajah" required>
+              </div>
+
+              <div class="art-form-group">
+                <label class="art-form-label" for="editArtCorridor">Coverage Corridors</label>
+                <input type="text" id="editArtCorridor" class="art-form-input" placeholder="e.g. Badore, Addo, Langbasa, Ajah Central">
+              </div>
+            </div>
+
+            <div class="art-form-group" style="margin-bottom:24px;">
+              <label class="art-form-label" for="editArtSkills">Verified Capabilities &amp; Skills Description</label>
+              <textarea id="editArtSkills" class="art-form-input" rows="3" style="resize:vertical;"></textarea>
+            </div>
+
+            <!-- Bank Details -->
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:20px; margin-bottom:24px;">
+              <h4 style="margin:0 0 4px; color:var(--art-navy); font-size:1rem; font-weight:800;">Bank Payout Details</h4>
+              <p style="margin:0 0 16px; font-size:0.82rem; color:var(--art-muted);">Direct deposit account for prompt job payments upon customer sign-off.</p>
+              
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+                <div class="art-form-group" style="margin:0;">
+                  <label class="art-form-label" for="editArtBank">Bank Name</label>
+                  <input type="text" id="editArtBank" class="art-form-input" placeholder="e.g. OPay / Access Bank / GTBank">
+                </div>
+                <div class="art-form-group" style="margin:0;">
+                  <label class="art-form-label" for="editArtAccountNum">Account Number</label>
+                  <input type="text" id="editArtAccountNum" class="art-form-input" placeholder="10-digit account number">
+                </div>
+                <div class="art-form-group" style="margin:0;">
+                  <label class="art-form-label" for="editArtAccountName">Account Name</label>
+                  <input type="text" id="editArtAccountName" class="art-form-input" placeholder="Account beneficiary name">
+                </div>
+              </div>
+            </div>
+
+            <!-- Security: Password Change -->
+            <div style="background:#F1F5F9; border:1px solid #CBD5E1; border-radius:12px; padding:20px; margin-bottom:28px;">
+              <h4 style="margin:0 0 4px; color:var(--art-navy); font-size:1rem; font-weight:800;">Change Login Password</h4>
+              <p style="margin:0 0 16px; font-size:0.82rem; color:var(--art-muted);">Leave blank if you do not want to change your password.</p>
+              
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+                <div class="art-form-group" style="margin:0;">
+                  <label class="art-form-label" for="editArtCurrentPass">Current Password</label>
+                  <input type="password" id="editArtCurrentPass" class="art-form-input" placeholder="Enter current password">
+                </div>
+                <div class="art-form-group" style="margin:0;">
+                  <label class="art-form-label" for="editArtNewPass">New Password</label>
+                  <input type="password" id="editArtNewPass" class="art-form-input" placeholder="Enter new password">
+                </div>
+                <div class="art-form-group" style="margin:0;">
+                  <label class="art-form-label" for="editArtConfirmPass">Confirm New Password</label>
+                  <input type="password" id="editArtConfirmPass" class="art-form-input" placeholder="Confirm new password">
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end;">
+              <button type="submit" id="saveProfileBtn" class="art-btn art-btn--primary" style="padding:12px 28px; font-size:0.95rem;">
+                Save Profile &amp; Settings
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/custom-dialog.js"></script>
+  <script src="assets/js/supabase-client.js"></script>
+  <script>
+    // Initial Master Profile for Oluwasegun David Balodin
+    const DEFAULT_MASTER_ARTISAN = {
+      id: 'NJD-PLM-4561',
+      name: 'Oluwasegun David Balodin',
+      phone: '07085329909',
+      alt_phone: '0805555569854',
+      whatsapp: '07085329909',
+      password: 'Oluwasegun123',
+      trade: 'Master Plumber & Pipefitter',
+      base: 'Badore Axis • Ajah',
+      corridor: 'Badore, Addo, Langbasa, Ajah Central',
+      avatar: 'assets/images/artisans/oluwasegun-balodin.jpg',
+      skills: 'Concealed leak detection, burst pipes, PPR/PEX heat fusion, borehole plumbing, overhead tank hookups, booster pumps, water heaters, and bathroom mixers.',
+      bank: 'OPay Digital Services',
+      accountNum: '9083242306',
+      accountName: 'Oluwasegun David Balodin',
+      is_on_duty: true
+    };
+
+    let currentArtisan = null;
+    let assignedDispatches = [];
+    let dispatchPollTimer = null;
+
+    // Local storage key
+    const ARTISAN_STORAGE_KEY = 'nijedee_active_artisan';
+    const ARTISAN_PROFILE_STORE = 'nijedee_artisan_profiles';
+
+    function getStoredProfiles() {
+      try {
+        const raw = localStorage.getItem(ARTISAN_PROFILE_STORE);
+        return raw ? JSON.parse(raw) : [DEFAULT_MASTER_ARTISAN];
+      } catch (e) {
+        return [DEFAULT_MASTER_ARTISAN];
+      }
+    }
+
+    function saveStoredProfiles(profiles) {
+      localStorage.setItem(ARTISAN_PROFILE_STORE, JSON.stringify(profiles));
+    }
+
+    function prefillOluwasegunCredentials() {
+      document.getElementById('artLoginPhone').value = '07085329909';
+      document.getElementById('artLoginPassword').value = 'Oluwasegun123';
+    }
+
+    async function handleArtisanLogin(e) {
+      e.preventDefault();
+      const phoneInput = document.getElementById('artLoginPhone').value.trim();
+      const passInput = document.getElementById('artLoginPassword').value.trim();
+
+      const profiles = getStoredProfiles();
+      
+      // Match phone (clean non-digits) and password
+      const cleanInput = phoneInput.replace(/\D/g, '');
+      const matched = profiles.find(p => {
+        const p1 = (p.phone || '').replace(/\D/g, '');
+        const p2 = (p.alt_phone || '').replace(/\D/g, '');
+        const phoneMatch = p1.endsWith(cleanInput.slice(-10)) || p2.endsWith(cleanInput.slice(-10)) || p.phone === phoneInput;
+        return phoneMatch && p.password === passInput;
+      });
+
+      if (!matched) {
+        if (window.showCustomAlert) {
+          await window.showCustomAlert({
+            title: 'Login Failed',
+            message: 'Invalid phone number or password. Please verify your credentials or use the demonstration login:\nPhone: 07085329909\nPassword: Oluwasegun123',
+            type: 'danger'
+          });
+        } else {
+          alert('Invalid phone number or password.');
+        }
+        return;
+      }
+
+      currentArtisan = matched;
+      localStorage.setItem(ARTISAN_STORAGE_KEY, JSON.stringify(currentArtisan));
+      initDashboardView();
+    }
+
+    function handleArtisanLogout() {
+      currentArtisan = null;
+      localStorage.removeItem(ARTISAN_STORAGE_KEY);
+      document.getElementById('artisanAuthView').style.display = 'block';
+      document.getElementById('artisanDashboardView').style.display = 'none';
+      document.getElementById('topbarActions').style.display = 'none';
+    }
+
+    function toggleArtisanDutyStatus() {
+      if (!currentArtisan) return;
+      currentArtisan.is_on_duty = !currentArtisan.is_on_duty;
+      updateDutyUI();
+      
+      // Save
+      const profiles = getStoredProfiles();
+      const idx = profiles.findIndex(p => p.id === currentArtisan.id);
+      if (idx !== -1) {
+        profiles[idx] = currentArtisan;
+        saveStoredProfiles(profiles);
+      }
+      localStorage.setItem(ARTISAN_STORAGE_KEY, JSON.stringify(currentArtisan));
+
+      if (window.showCustomAlert) {
+        window.showCustomAlert({
+          title: currentArtisan.is_on_duty ? 'On-Duty Dispatch Active' : 'Off-Duty / Unavailable',
+          message: currentArtisan.is_on_duty
+            ? 'Your status is set to Active. You will receive real-time direct dispatches.'
+            : 'Your status is set to Unavailable. New dispatches will be held or routed to relief artisans.',
+          type: currentArtisan.is_on_duty ? 'success' : 'warning'
+        });
+      }
+    }
+
+    function updateDutyUI() {
+      const pill = document.getElementById('dutyStatusPill');
+      const text = document.getElementById('dutyStatusText');
+      if (currentArtisan && currentArtisan.is_on_duty) {
+        pill.classList.add('active');
+        text.textContent = 'On-Duty Dispatch';
+      } else {
+        pill.classList.remove('active');
+        text.textContent = 'Off-Duty / Away';
+      }
+    }
+
+    function switchArtisanTab(tab) {
+      const jobsView = document.getElementById('artisanTabJobs');
+      const profileView = document.getElementById('artisanTabProfile');
+      const tabBtnJobs = document.getElementById('tabBtnJobs');
+      const tabBtnProfile = document.getElementById('tabBtnProfile');
+
+      if (tab === 'jobs') {
+        jobsView.style.display = 'block';
+        profileView.style.display = 'none';
+        tabBtnJobs.classList.add('active');
+        tabBtnProfile.classList.remove('active');
+      } else {
+        jobsView.style.display = 'none';
+        profileView.style.display = 'block';
+        tabBtnJobs.classList.remove('active');
+        tabBtnProfile.classList.add('active');
+        loadProfileFormFields();
+      }
+    }
+
+    function initDashboardView() {
+      document.getElementById('artisanAuthView').style.display = 'none';
+      document.getElementById('artisanDashboardView').style.display = 'block';
+      document.getElementById('topbarActions').style.display = 'flex';
+
+      document.getElementById('dashArtisanName').textContent = currentArtisan.name;
+      document.getElementById('dashArtisanTrade').textContent = currentArtisan.trade;
+      document.getElementById('dashArtisanId').textContent = `ID: ${currentArtisan.id}`;
+      document.getElementById('dashArtisanBase').innerHTML = `${escapeHtml(currentArtisan.base)}`;
+      document.getElementById('kpiCorridor').innerHTML = `${escapeHtml(currentArtisan.base)}`;
+      if (currentArtisan.avatar) {
+        document.getElementById('dashAvatarImg').src = currentArtisan.avatar;
+      }
+
+      updateDutyUI();
+      fetchArtisanDispatches();
+
+      if (!dispatchPollTimer) {
+        dispatchPollTimer = setInterval(() => {
+          if (currentArtisan && document.getElementById('artisanDashboardView').style.display !== 'none') {
+            fetchArtisanDispatches(false);
+          }
+        }, 5000);
+      }
+    }
+
+    // Escape HTML helper
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderChatMessagesHTML(messages) {
+      return (messages || []).map(m => {
+        let bubbleClass = 'art-chat-bubble--artisan';
+        if (m.sender === 'client') bubbleClass = 'art-chat-bubble--client';
+        if (m.sender === 'admin' || m.sender === 'system') bubbleClass = 'art-chat-bubble--admin';
+        return `
+          <div class="art-chat-bubble ${bubbleClass}">
+            <span class="art-chat-sender">${escapeHtml(m.sender_name || m.sender)}</span>
+            <div>${escapeHtml(m.text)}</div>
+            <span class="art-chat-time">${escapeHtml(m.timestamp || '')}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function fetchArtisanDispatches(notify = false) {
+      const container = document.getElementById('artisanJobsContainer');
+      if (notify || !container.children.length) {
+        container.innerHTML = '<div style="text-align:center; padding:30px; color:var(--art-muted);">Connecting to live dispatch network...</div>';
+      }
+
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      let dispatches = [];
+
+      if (sb) {
+        try {
+          const { data, error } = await sb
+            .from('requests')
+            .select('*')
+            .eq('type', 'artisan_dispatch')
+            .order('created_at', { ascending: false });
+
+          if (!error && data) {
+            // Filter matching this artisan
+            dispatches = data.filter(r => {
+              const d = r.details || {};
+              return d.artisan_id === currentArtisan.id ||
+                     (d.assigned_artisan && d.assigned_artisan.includes('Oluwasegun')) ||
+                     r.title.includes('Oluwasegun') ||
+                     r.location?.includes('Badore');
+            });
+          }
+        } catch (err) {
+          console.warn('Supabase dispatches fetch err:', err);
+        }
+      }
+
+      // If empty in DB, inject initial active dispatch record so artisan always has immediate workflow
+      if (dispatches.length === 0) {
+        dispatches = [{
+          id: 'mock-dsp-53421',
+          ref_code: 'DSP-53421',
+          title: 'Direct Dispatch - Oluwasegun David Balodin (Master Plumber & Pipefitter)',
+          client_name: 'Ola Jon',
+          client_phone: '08055555698',
+          location: 'Badore Axis',
+          address: 'Block 4, Flat 2, New Road, Badore',
+          urgency: 'Immediate (30-45 mins)',
+          status: 'new',
+          created_at: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
+          details: {
+            trade: 'Master Plumber & Pipefitter',
+            artisan_id: 'NJD-PLM-4561',
+            assigned_artisan: 'Oluwasegun David Balodin',
+            faultDescription: 'Burst water pipe under kitchen sink with high pressure leakage into cabinet. Requires PPR cut and socket replacement.',
+            messages: [
+              {
+                sender: 'client',
+                sender_name: 'Ola Jon',
+                text: 'Hello Oluwasegun, water is spraying under our sink and we had to turn off the main pumping line. Can you come quickly?',
+                timestamp: new Date(Date.now() - 1000 * 60 * 30).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              },
+              {
+                sender: 'artisan',
+                sender_name: 'Oluwasegun David Balodin',
+                text: 'Hello Ola, I have received the dispatch. Picked up the 25mm PPR sockets and pipe fusing iron. I am 15 mins away from New Road Badore.',
+                timestamp: new Date(Date.now() - 1000 * 60 * 18).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              },
+              {
+                sender: 'admin',
+                sender_name: 'NIJEDEE Ops Supervisor',
+                text: 'Dispatch confirmed by Operations Desk. Standard warranty inspection applies upon completion.',
+                timestamp: new Date(Date.now() - 1000 * 60 * 10).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              }
+            ]
+          }
+        }];
+      }
+
+      assignedDispatches = dispatches;
+      renderArtisanJobs(dispatches);
+      document.getElementById('kpiActiveJobs').textContent = dispatches.filter(d => d.status !== 'completed').length;
+      document.getElementById('jobsCountBadge').textContent = dispatches.filter(d => d.status !== 'completed').length;
+
+      if (notify && window.showCustomAlert) {
+        window.showCustomAlert({
+          title: 'Dispatches Refreshed',
+          message: `Updated live dispatch feed. ${dispatches.length} dispatch record(s) loaded.`,
+          type: 'success'
+        });
+      }
+    }
+
+    function renderArtisanJobs(jobs) {
+      const container = document.getElementById('artisanJobsContainer');
+      if (!jobs || jobs.length === 0) {
+        container.innerHTML = '<div style="background:#fff; padding:36px; border-radius:14px; text-align:center; border:1px solid #E2E8F0; color:var(--art-muted);">No active dispatches right now. When a customer hires you, the job and live chat will appear here.</div>';
+        return;
+      }
+
+      // Check if all existing cards match so we can update in place without re-rendering form inputs
+      const existingCards = jobs.map(j => document.getElementById(`jobCard_${j.id}`));
+      const allExist = existingCards.every(Boolean);
+
+      if (allExist) {
+        jobs.forEach(job => {
+          const d = job.details || {};
+          const messages = Array.isArray(d.messages) ? d.messages : [];
+          const list = document.getElementById(`chatList_${job.id}`);
+          if (list) {
+            const currentHTML = renderChatMessagesHTML(messages);
+            if (list.innerHTML !== currentHTML) {
+              list.innerHTML = currentHTML;
+              list.scrollTop = list.scrollHeight;
+            }
+          }
+        });
+        return;
+      }
+
+      container.innerHTML = jobs.map(job => {
+        const d = job.details || {};
+        const messages = Array.isArray(d.messages) ? d.messages : [];
+        const isCompleted = job.status === 'completed';
+
+        return `
+          <div class="art-job-card" id="jobCard_${job.id}">
+            <div class="art-job-header">
+              <div>
+                <span class="art-job-ref">${escapeHtml(job.ref_code || 'DSP-REF')}</span>
+                <h4 class="art-job-title">${escapeHtml(job.title || 'Direct Dispatch')}</h4>
+                <div class="art-job-client">
+                  Client: <strong>${escapeHtml(job.client_name)}</strong> &bull; 
+                  <a href="tel:${escapeHtml(job.client_phone)}" style="color:#0B5ED7; text-decoration:none; font-weight:700;">${escapeHtml(job.client_phone)}</a>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:800; text-transform:uppercase; ${isCompleted ? 'background:#ECFDF5; color:#059669;' : 'background:#EFF6FF; color:#1D4ED8;'}">
+                  ${isCompleted ? 'Completed' : (job.status === 'in_progress' ? 'In Progress' : 'New Dispatch')}
+                </span>
+                ${!isCompleted ? `
+                  <button type="button" class="art-btn art-btn--primary art-btn--sm" onclick="markJobStatus('${job.id}', 'completed')">
+                    &check; Complete Job
+                  </button>
+                ` : `
+                  <button type="button" class="art-btn art-btn--outline art-btn--sm" onclick="markJobStatus('${job.id}', 'in_progress')">
+                    Re-open Job
+                  </button>
+                `}
+              </div>
+            </div>
+
+            <!-- Meta details -->
+            <div class="art-job-meta-grid">
+              <div class="art-job-meta-item">
+                <span>Property Address</span>
+                <strong>${escapeHtml(job.address || d.address || 'Address provided on call')}</strong>
+              </div>
+              <div class="art-job-meta-item">
+                <span>Axis / Corridor</span>
+                <strong>${escapeHtml(job.location || 'Badore Axis')}</strong>
+              </div>
+              <div class="art-job-meta-item">
+                <span>Urgency</span>
+                <strong style="color:#D97706;">${escapeHtml(job.urgency || d.urgency || 'Immediate')}</strong>
+              </div>
+            </div>
+
+            <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:10px; padding:12px 14px; font-size:0.86rem; color:#92400E;">
+              <strong>Fault / Scope:</strong> ${escapeHtml(d.faultDescription || 'Standard service request')}
+            </div>
+
+            <!-- Two-Way Live Chat with Client & Admin Monitoring -->
+            <div class="art-chat-container">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.78rem; font-weight:800; text-transform:uppercase; color:var(--art-navy); letter-spacing:0.04em;">
+                  Two-Way Dispatch Messaging (Client &bull; Artisan &bull; Admin)
+                </span>
+                <span style="font-size:0.72rem; color:#10B981; font-weight:700;">Live Monitored by Ops</span>
+              </div>
+
+              <div class="art-chat-messages" id="chatList_${job.id}">
+                ${messages.map(m => {
+                  let bubbleClass = 'art-chat-bubble--artisan';
+                  if (m.sender === 'client') bubbleClass = 'art-chat-bubble--client';
+                  if (m.sender === 'admin' || m.sender === 'system') bubbleClass = 'art-chat-bubble--admin';
+                  return `
+                    <div class="art-chat-bubble ${bubbleClass}">
+                      <span class="art-chat-sender">${escapeHtml(m.sender_name || m.sender)}</span>
+                      <div>${escapeHtml(m.text)}</div>
+                      <span class="art-chat-time">${escapeHtml(m.timestamp || '')}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+
+              <!-- Quick response chips -->
+              <div class="art-quick-replies">
+                <span class="art-quick-chip" onclick="applyQuickReply('${job.id}', 'Hello! I have received your dispatch. On my way now.')">On my way now</span>
+                <span class="art-quick-chip" onclick="applyQuickReply('${job.id}', 'Arrived at your property. Commencing inspection.')">Arrived at property</span>
+                <span class="art-quick-chip" onclick="applyQuickReply('${job.id}', 'Replacement parts secured. Commencing pipe repairs.')">Commencing repairs</span>
+                <span class="art-quick-chip" onclick="applyQuickReply('${job.id}', 'Repairs completed and tested under pressure. Everything is in perfect order.')">Repairs completed</span>
+              </div>
+
+              <!-- Reply Input Row -->
+              <form onsubmit="handleSendJobMessage(event, '${job.id}')" style="margin-top:6px;">
+                <div class="art-chat-input-row">
+                  <input type="text" id="chatInput_${job.id}" class="art-form-input" style="padding:9px 12px; font-size:0.86rem;" placeholder="Type your message to ${escapeHtml(job.client_name)}..." required>
+                  <button type="submit" class="art-btn art-btn--primary art-btn--sm" style="flex-shrink:0;">
+                    Send
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function applyQuickReply(jobId, text) {
+      const input = document.getElementById(`chatInput_${jobId}`);
+      if (input) {
+        input.value = text;
+        input.focus();
+      }
+    }
+
+    async function handleSendJobMessage(e, jobId) {
+      e.preventDefault();
+      const input = document.getElementById(`chatInput_${jobId}`);
+      if (!input || !input.value.trim()) return;
+
+      const text = input.value.trim();
+      input.value = '';
+
+      const job = assignedDispatches.find(j => j.id === jobId);
+      if (!job) return;
+
+      if (!job.details) job.details = {};
+      if (!Array.isArray(job.details.messages)) job.details.messages = [];
+
+      const newMsg = {
+        sender: 'artisan',
+        sender_name: currentArtisan.name,
+        text: text,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      job.details.messages.push(newMsg);
+
+      // Append immediately to DOM
+      const list = document.getElementById(`chatList_${jobId}`);
+      if (list) {
+        const bubble = document.createElement('div');
+        bubble.className = 'art-chat-bubble art-chat-bubble--artisan';
+        bubble.innerHTML = `
+          <span class="art-chat-sender">${escapeHtml(newMsg.sender_name)}</span>
+          <div>${escapeHtml(newMsg.text)}</div>
+          <span class="art-chat-time">${escapeHtml(newMsg.timestamp)}</span>
+        `;
+        list.appendChild(bubble);
+        list.scrollTop = list.scrollHeight;
+      }
+
+      // Sync to Supabase
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (sb && !jobId.startsWith('mock-')) {
+        try {
+          await sb.from('requests').update({ details: job.details }).eq('id', jobId);
+        } catch (err) {
+          console.warn('Sync message to Supabase err:', err);
+        }
+      }
+    }
+
+    async function markJobStatus(jobId, newStatus) {
+      const job = assignedDispatches.find(j => j.id === jobId);
+      if (!job) return;
+
+      job.status = newStatus;
+
+      // Add system note to chat
+      if (!job.details) job.details = {};
+      if (!Array.isArray(job.details.messages)) job.details.messages = [];
+      job.details.messages.push({
+        sender: 'system',
+        sender_name: 'NIJEDEE Ops Status Update',
+        text: `Job status marked as ${newStatus.toUpperCase()} by technician ${currentArtisan.name}.`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      renderArtisanJobs(assignedDispatches);
+
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (sb && !jobId.startsWith('mock-')) {
+        try {
+          await sb.from('requests').update({ status: newStatus, details: job.details }).eq('id', jobId);
+        } catch (err) {
+          console.warn('Update status err:', err);
+        }
+      }
+
+      if (window.showCustomAlert) {
+        window.showCustomAlert({
+          title: 'Dispatch Status Updated',
+          message: `Job ${job.ref_code || ''} marked as ${newStatus === 'completed' ? 'COMPLETED' : 'IN PROGRESS'}.`,
+          type: 'success'
+        });
+      }
+    }
+
+    // Profile Editing
+    function loadProfileFormFields() {
+      if (!currentArtisan) return;
+      document.getElementById('editArtName').value = currentArtisan.name || '';
+      document.getElementById('editArtTrade').value = currentArtisan.trade || '';
+      document.getElementById('editArtPhone').value = currentArtisan.phone || '';
+      document.getElementById('editArtWhatsApp').value = currentArtisan.whatsapp || currentArtisan.phone || '';
+      document.getElementById('editArtBase').value = currentArtisan.base || '';
+      document.getElementById('editArtCorridor').value = currentArtisan.corridor || '';
+      document.getElementById('editArtSkills').value = currentArtisan.skills || '';
+      document.getElementById('editArtBank').value = currentArtisan.bank || '';
+      document.getElementById('editArtAccountNum').value = currentArtisan.accountNum || '';
+      document.getElementById('editArtAccountName').value = currentArtisan.accountName || '';
+      document.getElementById('editArtCurrentPass').value = '';
+      document.getElementById('editArtNewPass').value = '';
+      document.getElementById('editArtConfirmPass').value = '';
+    }
+
+    async function handleSaveArtisanProfile(e) {
+      e.preventDefault();
+      if (!currentArtisan) return;
+
+      const newPass = document.getElementById('editArtNewPass').value.trim();
+      const confirmPass = document.getElementById('editArtConfirmPass').value.trim();
+      const currentPassInput = document.getElementById('editArtCurrentPass').value.trim();
+
+      if (newPass) {
+        if (currentPassInput !== currentArtisan.password) {
+          if (window.showCustomAlert) {
+            await window.showCustomAlert({
+              title: 'Password Error',
+              message: 'Your current password does not match.',
+              type: 'danger'
+            });
+          } else {
+            alert('Your current password does not match.');
+          }
+          return;
+        }
+        if (newPass !== confirmPass) {
+          if (window.showCustomAlert) {
+            await window.showCustomAlert({
+              title: 'Password Mismatch',
+              message: 'The new password and confirm password do not match.',
+              type: 'danger'
+            });
+          } else {
+            alert('Passwords do not match.');
+          }
+          return;
+        }
+        currentArtisan.password = newPass;
+      }
+
+      currentArtisan.name = document.getElementById('editArtName').value.trim();
+      currentArtisan.trade = document.getElementById('editArtTrade').value.trim();
+      currentArtisan.phone = document.getElementById('editArtPhone').value.trim();
+      currentArtisan.whatsapp = document.getElementById('editArtWhatsApp').value.trim();
+      currentArtisan.base = document.getElementById('editArtBase').value.trim();
+      currentArtisan.corridor = document.getElementById('editArtCorridor').value.trim();
+      currentArtisan.skills = document.getElementById('editArtSkills').value.trim();
+      currentArtisan.bank = document.getElementById('editArtBank').value.trim();
+      currentArtisan.accountNum = document.getElementById('editArtAccountNum').value.trim();
+      currentArtisan.accountName = document.getElementById('editArtAccountName').value.trim();
+
+      // Save to local storage
+      const profiles = getStoredProfiles();
+      const idx = profiles.findIndex(p => p.id === currentArtisan.id);
+      if (idx !== -1) {
+        profiles[idx] = currentArtisan;
+      } else {
+        profiles.push(currentArtisan);
+      }
+      saveStoredProfiles(profiles);
+      localStorage.setItem(ARTISAN_STORAGE_KEY, JSON.stringify(currentArtisan));
+
+      // Update banner UI
+      document.getElementById('dashArtisanName').textContent = currentArtisan.name;
+      document.getElementById('dashArtisanTrade').textContent = currentArtisan.trade;
+      document.getElementById('dashArtisanBase').textContent = currentArtisan.base;
+      document.getElementById('kpiCorridor').textContent = currentArtisan.base;
+
+      if (window.showCustomAlert) {
+        await window.showCustomAlert({
+          title: 'Profile Updated Successfully',
+          message: 'Your artisan profile information, service areas, and payout details have been updated.',
+          type: 'success'
+        });
+      }
+
+      switchArtisanTab('jobs');
+    }
+
+    // Auto-login if previously authenticated
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const stored = localStorage.getItem(ARTISAN_STORAGE_KEY);
+        if (stored) {
+          currentArtisan = JSON.parse(stored);
+          initDashboardView();
+        }
+      } catch (e) {
+        console.warn('Auto login error:', e);
+      }
+    });
+  </script>
+</body>
+</html>
