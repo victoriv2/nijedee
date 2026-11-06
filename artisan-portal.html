@@ -628,16 +628,16 @@
         <h2 class="art-auth-title">Artisan Sign In</h2>
         <p class="art-auth-desc">Log in with your registered phone number and password to manage dispatches, message customers, and update your profile.</p>
 
-        <form id="artisanLoginForm" onsubmit="handleArtisanLogin(event)">
+        <form id="artisanLoginForm" action="javascript:void(0);" onsubmit="event.preventDefault(); handleArtisanLogin(event); return false;">
           <div class="art-form-group">
             <label class="art-form-label" for="artLoginPhone">Registered Phone Number</label>
-            <input type="tel" id="artLoginPhone" class="art-form-input" placeholder="e.g. 07085329909" required>
+            <input type="tel" id="artLoginPhone" class="art-form-input" placeholder="e.g. 07085329909" required autocapitalize="none" autocorrect="off" spellcheck="false">
           </div>
 
           <div class="art-form-group">
             <label class="art-form-label" for="artLoginPassword">Password</label>
             <div style="position:relative; display:flex; align-items:center;">
-              <input type="password" id="artLoginPassword" class="art-form-input" placeholder="Enter your password" required style="padding-right:44px;">
+              <input type="password" id="artLoginPassword" class="art-form-input" placeholder="Enter your password" required style="padding-right:44px;" autocapitalize="none" autocorrect="off" spellcheck="false">
               <button type="button" onclick="togglePasswordVisibility('artLoginPassword', this)" style="position:absolute; right:8px; background:none; border:none; color:var(--art-muted); cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center;" aria-label="Toggle password visibility">
                 <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -651,7 +651,7 @@
             </div>
           </div>
 
-          <button type="submit" class="art-btn art-btn--primary art-btn--full" style="padding:13px; font-size:0.95rem;">
+          <button type="button" onclick="handleArtisanLogin(event)" class="art-btn art-btn--primary art-btn--full" style="padding:13px; font-size:0.95rem; cursor:pointer; touch-action:manipulation;">
             Log In to Artisan Dashboard &rarr;
           </button>
         </form>
@@ -1101,9 +1101,12 @@
         const authView = document.getElementById('artisanAuthView');
         const dashView = document.getElementById('artisanDashboardView');
         const topActions = document.getElementById('topbarActions');
-        if (authView) authView.style.display = 'none';
-        if (dashView) dashView.style.display = 'block';
-        if (topActions) topActions.style.display = 'flex';
+        if (authView) authView.style.setProperty('display', 'none', 'important');
+        if (dashView) dashView.style.setProperty('display', 'block', 'important');
+        if (topActions) topActions.style.setProperty('display', 'flex', 'important');
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
       } catch (e) {
         console.warn('Dashboard view display toggle error:', e);
       }
@@ -1691,8 +1694,8 @@
       switchArtisanTab('jobs');
     }
 
-    // Auto-login if previously authenticated
-    document.addEventListener('DOMContentLoaded', () => {
+    // Auto-login if previously authenticated with bulletproof mobile support
+    function checkArtisanAutoLogin() {
       try {
         const stored = localStorage.getItem(ARTISAN_STORAGE_KEY);
         if (stored) {
@@ -1702,7 +1705,13 @@
       } catch (e) {
         console.warn('Auto login error:', e);
       }
-    });
+    }
+    if (document.readyState !== 'loading') {
+      checkArtisanAutoLogin();
+    } else {
+      document.addEventListener('DOMContentLoaded', checkArtisanAutoLogin);
+    }
+    window.addEventListener('pageshow', checkArtisanAutoLogin);
   </script>
 </body>
 </html>

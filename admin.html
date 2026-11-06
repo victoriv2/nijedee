@@ -1247,22 +1247,22 @@
 
     <div id="authAlert" class="adm-alert adm-alert--error"></div>
 
-    <form id="admLoginForm" onsubmit="handleAdminLogin(event)">
+    <form id="admLoginForm" action="javascript:void(0);" onsubmit="event.preventDefault(); handleAdminLogin(event); return false;">
       <div class="adm-form-group">
         <label class="adm-form-label" for="loginEmail">Admin Email</label>
-        <input type="email" id="loginEmail" class="adm-form-input" placeholder="admin@nijedee.com" required value="admin@nijedee.com">
+        <input type="email" id="loginEmail" class="adm-form-input" placeholder="admin@nijedee.com" required value="admin@nijedee.com" autocapitalize="none" autocorrect="off" spellcheck="false">
       </div>
       <div class="adm-form-group">
         <label class="adm-form-label" for="loginPassword">Password</label>
         <div class="adm-input-toggle-wrap">
-          <input type="password" id="loginPassword" class="adm-form-input" placeholder="Enter password" required style="padding-right:44px;">
+          <input type="password" id="loginPassword" class="adm-form-input" placeholder="Enter password" required style="padding-right:44px;" autocapitalize="none" autocorrect="off" spellcheck="false">
           <button type="button" class="adm-pw-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)" aria-label="Toggle password visibility">
             <svg class="eye-open" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             <svg class="eye-closed" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
           </button>
         </div>
       </div>
-      <button type="submit" id="loginSubmitBtn" class="adm-btn adm-btn--primary adm-btn--full" style="padding:14px;">
+      <button type="button" id="loginSubmitBtn" onclick="handleAdminLogin(event)" class="adm-btn adm-btn--primary adm-btn--full" style="padding:14px; cursor:pointer; touch-action:manipulation;">
         <span>Sign In to Dashboard</span>
       </button>
     </form>
@@ -2600,8 +2600,11 @@
     try {
       const authView = document.getElementById('admAuthView');
       const dashView = document.getElementById('admDashView');
-      if (authView) authView.style.display = 'none';
-      if (dashView) dashView.style.display = 'flex';
+      if (authView) authView.style.setProperty('display', 'none', 'important');
+      if (dashView) dashView.style.setProperty('display', 'flex', 'important');
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     } catch (e) {
       console.warn('Dashboard view toggle error:', e);
     }
@@ -3543,10 +3546,13 @@
       .replace(/"/g, '&quot;');
   }
 
-  // Initialize
-  window.addEventListener('DOMContentLoaded', () => {
+  // Initialize immediately and also on standard lifecycle events for bulletproof mobile support
+  if (document.readyState !== 'loading') {
     checkAuthSession();
-  });
+  } else {
+    window.addEventListener('DOMContentLoaded', checkAuthSession);
+  }
+  window.addEventListener('pageshow', checkAuthSession);
 </script>
 </body>
 </html>

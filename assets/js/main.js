@@ -993,6 +993,10 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
+    lightbox.style.setProperty('display', 'flex', 'important');
+    lightbox.style.setProperty('visibility', 'visible', 'important');
+    lightbox.style.setProperty('opacity', '1', 'important');
+    lightbox.style.setProperty('pointer-events', 'auto', 'important');
     document.body.style.overflow = 'hidden';
   }
 
@@ -1000,6 +1004,10 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     if (lightbox) {
       lightbox.classList.remove('is-open');
       lightbox.setAttribute('aria-hidden', 'true');
+      lightbox.style.removeProperty('display');
+      lightbox.style.removeProperty('visibility');
+      lightbox.style.removeProperty('opacity');
+      lightbox.style.removeProperty('pointer-events');
     }
     const admLb = document.getElementById('admLightbox');
     if (admLb) admLb.classList.remove('open');

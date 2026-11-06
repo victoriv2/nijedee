@@ -2016,22 +2016,22 @@
       <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; font-size: 0.85rem; color: #1E40AF; line-height: 1.5;">
         <strong>Identity Security Verification:</strong> Enter the registered phone number and password created during your onboarding to unlock and edit your verified directory profile.
       </div>
-      <form onsubmit="handleArtisanAuthForEdit(event)">
+      <form action="javascript:void(0);" onsubmit="event.preventDefault(); handleArtisanAuthForEdit(event); return false;">
         <div class="spec-form-group" style="margin-bottom: 16px;">
           <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--tk-navy); margin-bottom:6px;">Registered Phone Number *</label>
-          <input type="tel" id="artisanAuthPhone" required placeholder="e.g. 07085329909" style="width:100%; box-sizing:border-box; padding:11px 14px; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem; outline:none;">
+          <input type="tel" id="artisanAuthPhone" required placeholder="e.g. 07085329909" style="width:100%; box-sizing:border-box; padding:11px 14px; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem; outline:none;" autocapitalize="none" autocorrect="off" spellcheck="false">
         </div>
         <div class="spec-form-group" style="margin-bottom: 20px;">
           <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--tk-navy); margin-bottom:6px;">Account Password / PIN *</label>
           <div style="position: relative;">
-            <input type="password" id="artisanAuthPassword" required placeholder="Minimum 6 characters" minlength="6" style="width:100%; box-sizing:border-box; padding:11px 42px 11px 14px; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem; outline:none;">
+            <input type="password" id="artisanAuthPassword" required placeholder="Minimum 6 characters" minlength="6" style="width:100%; box-sizing:border-box; padding:11px 42px 11px 14px; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem; outline:none;" autocapitalize="none" autocorrect="off" spellcheck="false">
             <button type="button" onclick="toggleArtisanPasswordVisibility('artisanAuthPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748B; padding: 4px;" aria-label="Toggle password visibility">
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="10" r="3"/></svg>
             </button>
           </div>
         </div>
         <div style="display: flex; gap: 10px;">
-          <button type="submit" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.92rem; padding: 12px; font-weight: 700; cursor: pointer; border: none;">
+          <button type="button" onclick="handleArtisanAuthForEdit(event)" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.92rem; padding: 12px; font-weight: 700; cursor: pointer; border: none; touch-action: manipulation;">
             Unlock Profile &rarr;
           </button>
           <button type="button" onclick="closeArtisanProfileEditModal()" class="tk-btn tk-btn--outline" style="padding: 12px 18px; font-size: 0.92rem; cursor: pointer;">
