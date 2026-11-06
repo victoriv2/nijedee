@@ -1247,7 +1247,7 @@
 
     <div id="authAlert" class="adm-alert adm-alert--error"></div>
 
-    <form id="admLoginForm" action="javascript:void(0);" onsubmit="event.preventDefault(); handleAdminLogin(event); return false;">
+    <form id="admLoginForm" onsubmit="handleAdminLogin(event); return false;">
       <div class="adm-form-group">
         <label class="adm-form-label" for="loginEmail">Admin Email</label>
         <input type="email" id="loginEmail" class="adm-form-input" placeholder="admin@nijedee.com" required value="admin@nijedee.com" autocapitalize="none" autocorrect="off" spellcheck="false">
@@ -1262,7 +1262,7 @@
           </button>
         </div>
       </div>
-      <button type="button" id="loginSubmitBtn" onclick="handleAdminLogin(event)" class="adm-btn adm-btn--primary adm-btn--full" style="padding:14px; cursor:pointer; touch-action:manipulation;">
+      <button type="submit" id="loginSubmitBtn" class="adm-btn adm-btn--primary adm-btn--full" style="padding:14px; cursor:pointer; touch-action:manipulation;">
         <span>Sign In to Dashboard</span>
       </button>
     </form>
@@ -2653,7 +2653,7 @@
     if (alertBox) alertBox.style.display = 'none';
     if (btn) {
       btn.disabled = true;
-      btn.textContent = 'Authenticating...';
+      btn.innerHTML = '<span>Authenticating...</span>';
     }
 
     let authenticated = false;
@@ -2689,7 +2689,7 @@
 
     if (btn) {
       btn.disabled = false;
-      btn.textContent = 'Sign In to Dashboard';
+      btn.innerHTML = '<span>Sign In to Dashboard</span>';
     }
 
     currentUser = authUser;

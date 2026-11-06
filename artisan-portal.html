@@ -628,7 +628,7 @@
         <h2 class="art-auth-title">Artisan Sign In</h2>
         <p class="art-auth-desc">Log in with your registered phone number and password to manage dispatches, message customers, and update your profile.</p>
 
-        <form id="artisanLoginForm" action="javascript:void(0);" onsubmit="event.preventDefault(); handleArtisanLogin(event); return false;">
+        <form id="artisanLoginForm" onsubmit="handleArtisanLogin(event); return false;">
           <div class="art-form-group">
             <label class="art-form-label" for="artLoginPhone">Registered Phone Number</label>
             <input type="tel" id="artLoginPhone" class="art-form-input" placeholder="e.g. 07085329909" required autocapitalize="none" autocorrect="off" spellcheck="false">
@@ -651,7 +651,7 @@
             </div>
           </div>
 
-          <button type="button" onclick="handleArtisanLogin(event)" class="art-btn art-btn--primary art-btn--full" style="padding:13px; font-size:0.95rem; cursor:pointer; touch-action:manipulation;">
+          <button type="submit" id="artisanLoginSubmitBtn" class="art-btn art-btn--primary art-btn--full" style="padding:13px; font-size:0.95rem; cursor:pointer; touch-action:manipulation;">
             Log In to Artisan Dashboard &rarr;
           </button>
         </form>
@@ -923,7 +923,7 @@
       if (e && e.preventDefault) e.preventDefault();
       const phoneInput = (document.getElementById('artLoginPhone')?.value || '').trim();
       const passInput = (document.getElementById('artLoginPassword')?.value || '').trim();
-      const submitBtn = e.target.querySelector ? e.target.querySelector('button[type="submit"]') : null;
+      const submitBtn = document.getElementById('artisanLoginSubmitBtn') || (e && e.target && e.target.querySelector ? e.target.querySelector('button[type="submit"]') : null);
 
       if (submitBtn) {
         submitBtn.disabled = true;
