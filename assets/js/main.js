@@ -1013,6 +1013,7 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     if (admLb) admLb.classList.remove('open');
     document.body.style.overflow = '';
   }
+
   function isEligibleImage(img) {
     if (!img) return false;
     const src = (img.getAttribute('src') || '').toLowerCase();

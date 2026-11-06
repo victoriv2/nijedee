@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1846,7 +1846,7 @@
         <div>
           <div style="display: flex; align-items: center; gap: 6px;">
             <h3 id="modalArtisanName" style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin: 0;">Oluwasegun David Balodin</h3>
-            <span style="background: #10B981; color: #ffffff; border-radius: 50%; width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px;">✓</span>
+            <span style="background: #10B981; color: #ffffff; border-radius: 50%; width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
           </div>
           <div style="font-size: 0.78rem; color: #BAE6FD;" id="modalArtisanSubtitle">Master Plumber &bull; Badore Axis</div>
         </div>
@@ -2016,7 +2016,7 @@
       <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; font-size: 0.85rem; color: #1E40AF; line-height: 1.5;">
         <strong>Identity Security Verification:</strong> Enter the registered phone number and password created during your onboarding to unlock and edit your verified directory profile.
       </div>
-      <form onsubmit="handleArtisanAuthForEdit(event); return false;">
+      <form action="javascript:void(0);" onsubmit="event.preventDefault(); handleArtisanAuthForEdit(event); return false;">
         <div class="spec-form-group" style="margin-bottom: 16px;">
           <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--tk-navy); margin-bottom:6px;">Registered Phone Number *</label>
           <input type="tel" id="artisanAuthPhone" required placeholder="e.g. 07085329909" style="width:100%; box-sizing:border-box; padding:11px 14px; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem; outline:none;" autocapitalize="none" autocorrect="off" spellcheck="false">
@@ -2031,7 +2031,7 @@
           </div>
         </div>
         <div style="display: flex; gap: 10px;">
-          <button type="submit" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.92rem; padding: 12px; font-weight: 700; cursor: pointer; border: none; touch-action: manipulation;">
+          <button type="button" onclick="handleArtisanAuthForEdit(event)" class="tk-btn tk-btn--primary" style="flex: 1; justify-content: center; font-size: 0.92rem; padding: 12px; font-weight: 700; cursor: pointer; border: none; touch-action: manipulation;">
             Unlock Profile &rarr;
           </button>
           <button type="button" onclick="closeArtisanProfileEditModal()" class="tk-btn tk-btn--outline" style="padding: 12px 18px; font-size: 0.92rem; cursor: pointer;">

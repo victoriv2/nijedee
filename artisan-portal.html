@@ -10,6 +10,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/custom-dialog.js"></script>
+  <script>
+    function togglePasswordVisibility(inputId, btn) {
+      var input = document.getElementById(inputId);
+      if (!input) return;
+      var isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      var eyeOpen = btn.querySelector('.eye-open');
+      var eyeClosed = btn.querySelector('.eye-closed');
+      if (eyeOpen && eyeClosed) {
+        eyeOpen.style.display = isPassword ? 'none' : 'block';
+        eyeClosed.style.display = isPassword ? 'block' : 'none';
+      }
+    }
+  </script>
   <style>
     :root {
       --art-navy: #07224F;
@@ -628,7 +642,7 @@
         <h2 class="art-auth-title">Artisan Sign In</h2>
         <p class="art-auth-desc">Log in with your registered phone number and password to manage dispatches, message customers, and update your profile.</p>
 
-        <form id="artisanLoginForm" onsubmit="handleArtisanLogin(event); return false;">
+        <form id="artisanLoginForm" action="javascript:void(0);" onsubmit="event.preventDefault(); handleArtisanLogin(event); return false;">
           <div class="art-form-group">
             <label class="art-form-label" for="artLoginPhone">Registered Phone Number</label>
             <input type="tel" id="artLoginPhone" class="art-form-input" placeholder="e.g. 07085329909" required autocapitalize="none" autocorrect="off" spellcheck="false">
@@ -651,7 +665,7 @@
             </div>
           </div>
 
-          <button type="submit" id="artisanLoginSubmitBtn" class="art-btn art-btn--primary art-btn--full" style="padding:13px; font-size:0.95rem; cursor:pointer; touch-action:manipulation;">
+          <button type="button" id="artisanLoginSubmitBtn" onclick="handleArtisanLogin(event)" class="art-btn art-btn--primary art-btn--full" style="padding:13px; font-size:0.95rem; cursor:pointer; touch-action:manipulation;">
             Log In to Artisan Dashboard &rarr;
           </button>
         </form>
@@ -945,6 +959,13 @@
         matched = { ...DEFAULT_MASTER_ARTISAN };
         profiles.push(matched);
         saveStoredProfiles(profiles);
+      }
+
+      if (matched) {
+        currentArtisan = matched;
+        try { localStorage.setItem(ARTISAN_STORAGE_KEY, JSON.stringify(currentArtisan)); } catch(e) {}
+        initDashboardView();
+        return;
       }
 
       // 3. Fallback check: Search Supabase artisan_application records (fast 1.5s timeout)

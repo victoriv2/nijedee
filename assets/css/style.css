@@ -733,7 +733,7 @@ body.drawer-open {
 .tk-hero__faded-bg {
   position: absolute;
   inset: -14px -18px;
-  background-image: url('../images/hero-team-banner.jpg');
+  background-image: url('../images/hero-team-banner.jpg?v=20261106');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
