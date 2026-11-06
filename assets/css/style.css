@@ -1,4 +1,4 @@
-/* =============================================================
+﻿/* =============================================================
    NIJEDEE Property Maintenance & Artisan Services
    Design System: Replicating Taskie.ng UI Architecture
    Palette: Harmonized with NIJEDEE Flyers & Logo
@@ -722,39 +722,34 @@ body.drawer-open {
   gap: 28px;
 }
 
-.tk-hero__text-block {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.tk-hero__faded-bg {
+.sr-only {
   position: absolute;
-  inset: -14px -18px;
-  background-image: url('../images/hero-team-banner.jpg?v=20261106');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  opacity: 0.22;
-  border-radius: 18px;
-  z-index: -1;
-  pointer-events: none;
-  filter: saturate(1.1) contrast(1.05);
-  -webkit-mask-image: radial-gradient(ellipse 98% 98% at 50% 50%, #000 70%, transparent 100%);
-  mask-image: radial-gradient(ellipse 98% 98% at 50% 50%, #000 70%, transparent 100%);
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
-@media (max-width: 768px) {
-  .tk-hero__text-block {
-    padding: 6px 2px;
-  }
-  .tk-hero__faded-bg {
-    inset: -10px -12px;
-    opacity: 0.24;
-    background-position: center center;
-  }
+.tk-hero__banner-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(7, 34, 79, 0.10);
+  border: 1px solid rgba(7, 34, 79, 0.08);
+  background: #ffffff;
+}
+
+.tk-hero__banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 18px;
 }
 
 .tk-hero__badge-trust {
