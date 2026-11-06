@@ -1,4 +1,4 @@
-/**
+﻿/**
  * NIJEDEE Admin Console - Artisan Management & Dispatch Monitoring
  * Handles artisan accreditation, profile credentials, application reviews,
  * and supervisor oversight of customer-artisan communication threads.
@@ -25,19 +25,69 @@
     is_on_duty: true
   };
 
-  function getProfiles() {
-    try {
-      const raw = localStorage.getItem(ARTISAN_PROFILE_STORE);
-      const profiles = raw ? JSON.parse(raw) : [DEFAULT_MASTER];
-      return profiles.map(p => {
-        delete p.rating;
-        delete p.completed_jobs;
-        delete p.active_jobs;
-        return p;
+  function syncProfilesFromRequests(profiles) {
+    if (!Array.isArray(window.allRequests)) return profiles;
+    const accreditedApps = window.allRequests.filter(function(r) {
+      return r.type === 'artisan_application' && (r.status === 'accredited' || r.status === 'completed' || (r.details && r.details.status === 'accredited'));
+    });
+    var changed = false;
+    accreditedApps.forEach(function(app) {
+      var d = app.details || {};
+      var phone = app.client_phone || app.client_whatsapp || '';
+      var cleanPhone = phone.replace(/\D/g, '');
+      var artId = d.artisan_id || ('NJD-ART-' + (app.id ? app.id.slice(0, 4) : 'app'));
+      var existing = profiles.find(function(p) {
+        var pClean = (p.phone || '').replace(/\D/g, '');
+        return (cleanPhone && pClean && pClean.endsWith(cleanPhone.slice(-8))) || p.id === artId || p.id === app.id;
       });
-    } catch (e) {
-      return [DEFAULT_MASTER];
+
+      if (!existing) {
+        profiles.push({
+          id: artId,
+          name: app.client_name,
+          phone: phone,
+          whatsapp: app.client_whatsapp || phone,
+          password: d.assignedPassword || d.password || '123456',
+          trade: d.trade ? (d.trade.charAt(0).toUpperCase() + d.trade.slice(1)) : 'Certified Artisan',
+          base: app.location || 'Badore Axis - Ajah',
+          corridor: d.areasList || app.location || 'Badore, Ajah, Sangotedo',
+          avatar: d.avatar || (app.images && app.images[0]) || 'assets/images/artisans/oluwasegun-balodin.jpg',
+          skills: d.experience ? (d.experience + ' years practical experience. Equipped: ' + (d.toolStatus || 'Yes')) : 'Accredited trade specialist.',
+          bank: d.bank || '',
+          accountNum: d.account || '',
+          accountName: d.accountName || app.client_name,
+          is_on_duty: true,
+          is_hidden: d.is_hidden === true
+        });
+        changed = true;
+      }
+    });
+
+    if (changed) {
+      saveProfiles(profiles);
     }
+    return profiles;
+  }
+
+  function getProfiles() {
+    var profiles = [DEFAULT_MASTER];
+    try {
+      var raw = localStorage.getItem(ARTISAN_PROFILE_STORE);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) profiles = parsed;
+      }
+    } catch (e) {}
+
+    // Synchronize with live Supabase requests so mobile, tablet and desktop never diverge
+    profiles = syncProfilesFromRequests(profiles);
+
+    return profiles.map(function(p) {
+      delete p.rating;
+      delete p.completed_jobs;
+      delete p.active_jobs;
+      return p;
+    });
   }
 
   function saveProfiles(profiles) {

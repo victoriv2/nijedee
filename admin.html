@@ -2792,6 +2792,9 @@
     allRequests = data || [];
     renderRequests();
     updateKPIs();
+    if (typeof window.renderAccreditedArtisans === 'function') {
+      window.renderAccreditedArtisans();
+    }
     if (typeof window.renderArtisanApplications === 'function') {
       window.renderArtisanApplications(allRequests);
     }
