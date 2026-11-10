@@ -472,10 +472,10 @@
         authWrap.className = 'tk-header-user-wrap';
         authWrap.style.display = 'inline-flex';
         authWrap.style.alignItems = 'center';
-        // Insert right before Book a Service or at the beginning
-        const bookBtn = container.querySelector('a[href*="book.html"]');
-        if (bookBtn) {
-          container.insertBefore(authWrap, bookBtn);
+        // Insert right before Errand / Book a Service button or at the beginning
+        const targetBtn = container.querySelector('.header-errand-btn') || container.querySelector('a[href*="book.html"]');
+        if (targetBtn) {
+          container.insertBefore(authWrap, targetBtn);
         } else {
           container.prepend(authWrap);
         }

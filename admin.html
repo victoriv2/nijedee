@@ -1498,6 +1498,7 @@
         <!-- Filter by Category/Type -->
         <select id="filterType" class="adm-filter-select" onchange="renderRequests()">
           <option value="all">All Channels / Types</option>
+          <option value="errand_request">Errand &amp; Delivery Services</option>
           <option value="service_booking">Service Booking (book.html)</option>
           <option value="artisan_dispatch">Artisan Dispatch (artisans.html)</option>
           <option value="artisan_application">Artisan Network Application</option>
@@ -3674,6 +3675,7 @@
 
   function getTypeLabel(type) {
     switch (type) {
+      case 'errand_request': return 'Errand & Delivery';
       case 'service_booking': return 'Service Booking';
       case 'artisan_dispatch': return 'Artisan Dispatch';
       case 'artisan_application': return 'Artisan Application';
