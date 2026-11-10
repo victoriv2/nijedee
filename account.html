@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard &middot; NIJEDEE</title>
+  <meta name="description" content="Manage your NIJEDEE customer account, edit profile, view live chat with Admin operations, and oversee materials orders.">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/custom-dialog.js"></script>
+  <script src="assets/js/nigerian-states-lgas.js"></script>
+  <style>
+    .acc-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 28px;
+      margin: 36px auto;
+    }
+    @media (max-width: 860px) {
+      .acc-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+    .acc-sidebar {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 4px 18px rgba(7, 34, 79, 0.05);
+      height: fit-content;
+    }
+    .acc-main {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 26px 28px;
+      box-shadow: 0 4px 18px rgba(7, 34, 79, 0.05);
+      min-height: 540px;
+    }
+    .acc-nav-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: none;
+      background: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--tk-navy, #07224F);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .acc-nav-btn:hover {
+      background: #F1F5F9;
+    }
+    .acc-nav-btn.active {
+      background: var(--tk-primary, #0B5ED7);
+      color: #FFFFFF;
+    }
+    .acc-nav-btn svg {
+      flex-shrink: 0;
+    }
+    .acc-field-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--tk-navy, #07224F);
+      margin-bottom: 5px;
+    }
+    .acc-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 11px 13px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      outline: none;
+      background: #FFFFFF;
+      transition: border-color 0.2s ease;
+    }
+    .acc-input:focus {
+      border-color: var(--tk-primary, #0B5ED7);
+    }
+    /* Live Chat Stream */
+    .acc-chat-bubble {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      position: relative;
+      word-break: break-word;
+    }
+    .acc-chat-bubble--user {
+      margin-left: auto;
+      background: var(--tk-primary, #0B5ED7);
+      color: #FFFFFF;
+      border-bottom-right-radius: 3px;
+    }
+    .acc-chat-bubble--admin {
+      margin-right: auto;
+      background: #F1F5F9;
+      color: var(--tk-navy, #07224F);
+      border: 1px solid #E2E8F0;
+      border-bottom-left-radius: 3px;
+    }
+    .acc-chat-time {
+      font-size: 0.72rem;
+      opacity: 0.75;
+      margin-top: 4px;
+      display: block;
+      text-align: right;
+    }
+  </style>
+</head>
+<body class="tk-body">
+
+<!-- ===================== HEADER ===================== -->
+<header class="tk-header">
+  <div class="tk-header__inner">
+    <a class="tk-header__logo" href="index.html" aria-label="NIJEDEE Home">
+      <img src="assets/images/logo.png" alt="NIJEDEE Logo" style="height:64px; max-height:64px; width:auto; object-fit:contain;">
+    </a>
+    <nav class="tk-header__nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="shop.html">Shop</a>
+      <a href="properties.html">Properties</a>
+      <a href="artisans.html">Artisans</a>
+      <a href="academy.html">Academy</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="tk-header__actions">
+      <button class="tk-btn tk-btn--ghost tk-btn--sm" data-open-cart style="min-width:auto;padding-inline:12px;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span id="cartCountBadge" style="background:var(--tk-primary);color:var(--tk-white);border-radius:10px;padding:1px 6px;font-size:11px;font-weight:800;display:none;">0</span>
+      </button>
+      <a class="tk-btn tk-btn--primary tk-btn--sm" href="book.html">Book a Service</a>
+    </div>
+  </div>
+</header>
+
+<main style="min-height: calc(100vh - 350px); padding: 24px 16px; background: #F8FAFC;">
+  <div class="tk-container" style="max-width: 1140px;">
+    
+    <!-- Breadcrumb & Status -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
+      <div style="display:flex; align-items:center; gap:8px; font-size:0.86rem; color:#64748B;">
+        <a href="index.html" style="color:#0B5ED7; text-decoration:none;">Home</a>
+        <span>&rsaquo;</span>
+        <span style="font-weight:700; color:var(--tk-navy);">Customer Dashboard</span>
+      </div>
+      <div id="accAuthPill" style="display:none; font-size:0.8rem; background:#ECFDF5; color:#065F46; padding:4px 12px; border-radius:20px; font-weight:800; border:1px solid #A7F3D0;">
+        &bull; Verified Customer Account
+      </div>
+    </div>
+
+    <!-- Not Signed In Fallback -->
+    <div id="accNotSignedInView" style="display:none; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:18px; padding:60px 24px; text-align:center; max-width:540px; margin:40px auto; box-shadow:0 12px 30px rgba(7,34,79,0.06);">
+      <div style="width:64px; height:64px; border-radius:50%; background:#EFF6FF; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px;">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#0B5ED7" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <h2 style="font-size:1.35rem; font-weight:800; color:var(--tk-navy); margin:0 0 8px 0;">Sign In to Your Account</h2>
+      <p style="font-size:0.9rem; color:#64748B; line-height:1.5; margin:0 0 24px 0;">Access your personal profile, chat live with our Operations Support Admin, track orders, and manage dispatch history.</p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <button type="button" class="tk-btn tk-btn--primary" onclick="window.openUserAuthModal('signin')" style="padding:12px 24px; font-weight:800;">
+          Sign In Now &rarr;
+        </button>
+        <button type="button" class="tk-btn tk-btn--outline" onclick="window.openUserAuthModal('register')" style="padding:12px 24px; font-weight:700;">
+          Create New Account
+        </button>
+      </div>
+    </div>
+
+    <!-- Signed In Dashboard Layout -->
+    <div id="accSignedInView" class="acc-layout" style="display:none;">
+      
+      <!-- Left Sidebar -->
+      <aside class="acc-sidebar">
+        <div style="text-align:center; padding-bottom:18px; border-bottom:1px solid #F1F5F9; margin-bottom:18px;">
+          <div id="accAvatarCircle" style="width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg, var(--tk-navy) 0%, #0F3775 100%); color:#FFFFFF; font-size:1.6rem; font-weight:800; display:inline-flex; align-items:center; justify-content:center; margin-bottom:10px; border:2px solid #BAE6FD;">
+            U
+          </div>
+          <h3 id="accSidebarFullName" style="font-size:1.05rem; font-weight:800; color:var(--tk-navy); margin:0 0 3px 0;">Customer Name</h3>
+          <p id="accSidebarPhone" style="font-size:0.8rem; color:#64748B; margin:0;"></p>
+          <p id="accSidebarEmail" style="font-size:0.75rem; color:#0B5ED7; margin:2px 0 0 0; font-weight:600;"></p>
+        </div>
+
+        <nav>
+          <button type="button" class="acc-nav-btn active" id="navBtnProfile" onclick="switchAccountTab('profile')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>My Account Info</span>
+          </button>
+          <button type="button" class="acc-nav-btn" id="navBtnChat" onclick="switchAccountTab('chat')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>Live Admin Chat</span>
+            <span id="accChatBadge" style="background:#EF4444; color:#FFFFFF; border-radius:10px; padding:1px 6px; font-size:10px; font-weight:800; margin-left:auto; display:none;">New</span>
+          </button>
+          <button type="button" class="acc-nav-btn" id="navBtnOrders" onclick="switchAccountTab('orders')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <span>Materials &amp; Cart</span>
+          </button>
+          <a href="change-password.html" class="acc-nav-btn" style="text-decoration:none;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Change Password</span>
+          </a>
+        </nav>
+
+        <div style="border-top:1px solid #F1F5F9; margin-top:18px; padding-top:16px;">
+          <button type="button" class="acc-nav-btn" onclick="window.logoutUser()" style="color:#EF4444;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Right Main Panel -->
+      <section class="acc-main">
+        
+        <!-- ================= TAB 1: EDIT PROFILE ================= -->
+        <div id="accTabProfile">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #F1F5F9; padding-bottom:16px; margin-bottom:22px; flex-wrap:wrap; gap:10px;">
+            <div>
+              <h2 style="font-size:1.25rem; font-weight:800; color:var(--tk-navy); margin:0 0 4px 0;">Account Information &amp; Address</h2>
+              <p style="font-size:0.84rem; color:#64748B; margin:0;">Update your personal details, verified phone number, and delivery location across Nigeria.</p>
+            </div>
+            <a href="change-password.html" class="tk-btn tk-btn--outline tk-btn--sm" style="font-weight:700;">
+              Change Password &rarr;
+            </a>
+          </div>
+
+          <form id="accEditProfileForm" onsubmit="handleSaveProfileForm(event); return false;">
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+              <div>
+                <label class="acc-field-label" for="editFirstName">First Name *</label>
+                <input type="text" id="editFirstName" class="acc-input" required placeholder="First Name">
+              </div>
+              <div>
+                <label class="acc-field-label" for="editLastName">Last Name *</label>
+                <input type="text" id="editLastName" class="acc-input" required placeholder="Last Name">
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+              <div>
+                <label class="acc-field-label" for="editEmail">Email Address (Read-only)</label>
+                <input type="email" id="editEmail" class="acc-input" readonly style="background:#F8FAFC; color:#64748B; cursor:not-allowed;">
+              </div>
+              <div>
+                <label class="acc-field-label" for="editPhone">Phone Number *</label>
+                <input type="tel" id="editPhone" class="acc-input" required placeholder="e.g. 08031234567">
+              </div>
+            </div>
+
+            <!-- Nigerian State & LGA (No default state selected) -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+              <div>
+                <label class="acc-field-label" for="editStateSelect">State (Nigeria) *</label>
+                <select id="editStateSelect" class="acc-input" required onchange="handleEditStateChange(this.value)" style="cursor:pointer;">
+                  <option value="" disabled selected>-- Select State --</option>
+                </select>
+              </div>
+              <div>
+                <label class="acc-field-label" for="editLgaSelect">L.G.A. (Local Government Area) *</label>
+                <select id="editLgaSelect" class="acc-input" required style="cursor:pointer;">
+                  <option value="" disabled selected>-- Select L.G.A. --</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="margin-bottom:24px;">
+              <label class="acc-field-label" for="editStreetAddress">Full Street / Residential / Delivery Address *</label>
+              <input type="text" id="editStreetAddress" class="acc-input" required placeholder="e.g. Plot 14, Admiralty Way, Lekki Phase 1, Lagos">
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:12px;">
+              <button type="submit" id="saveProfileBtn" class="tk-btn tk-btn--primary" style="padding:12px 24px; font-weight:800; cursor:pointer;">
+                Save Profile Changes &rarr;
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ================= TAB 2: LIVE ADMIN CHAT ================= -->
+        <div id="accTabChat" style="display:none; flex-direction:column; height:100%;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #F1F5F9; padding-bottom:14px; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="width:10px; height:10px; border-radius:50%; background:#10B981; display:inline-block;"></span>
+                <h2 style="font-size:1.15rem; font-weight:800; color:var(--tk-navy); margin:0;">Live Support &amp; Operations Chat</h2>
+              </div>
+              <p style="font-size:0.8rem; color:#64748B; margin:2px 0 0 0;">Direct two-way channel with NIJEDEE Administrators &amp; Dispatch Ops.</p>
+            </div>
+            <button type="button" onclick="fetchLiveSupportMessages(true)" class="tk-btn tk-btn--outline tk-btn--sm" style="font-weight:700;">
+              Refresh Feed
+            </button>
+          </div>
+
+          <!-- Quick Prompts Chips -->
+          <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:12px;">
+            <button type="button" onclick="insertQuickChatMsg('Hello Admin, I need an accredited plumber dispatched to my address.')" style="border:1px solid #CBD5E1; border-radius:16px; background:#F8FAFC; padding:5px 12px; font-size:0.78rem; font-weight:700; color:var(--tk-navy); cursor:pointer; white-space:nowrap;">Dispatch Plumber</button>
+            <button type="button" onclick="insertQuickChatMsg('Hello Admin, what is the current delivery status of my building materials order?')" style="border:1px solid #CBD5E1; border-radius:16px; background:#F8FAFC; padding:5px 12px; font-size:0.78rem; font-weight:700; color:var(--tk-navy); cursor:pointer; white-space:nowrap;">Track Materials Order</button>
+            <button type="button" onclick="insertQuickChatMsg('I would like to inquire about facility management packages for my property.')" style="border:1px solid #CBD5E1; border-radius:16px; background:#F8FAFC; padding:5px 12px; font-size:0.78rem; font-weight:700; color:var(--tk-navy); cursor:pointer; white-space:nowrap;">Facility Management</button>
+          </div>
+
+          <!-- Chat Messages Container -->
+          <div id="accChatStream" style="flex:1; min-height:300px; max-height:420px; overflow-y:auto; padding:16px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; margin-bottom:16px;">
+            <div style="text-align:center; padding:40px; color:#94A3B8; font-size:0.88rem;">Connecting to NIJEDEE live operations channel...</div>
+          </div>
+
+          <!-- Input Bar -->
+          <form onsubmit="handleSendSupportChat(event); return false;" style="display:flex; gap:10px;">
+            <input type="text" id="accChatInput" required placeholder="Type a message to NIJEDEE Admin..." style="flex:1; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem; outline:none;">
+            <button type="submit" id="accChatSendBtn" class="tk-btn tk-btn--primary" style="padding:12px 20px; font-weight:800; cursor:pointer;">
+              Send &rarr;
+            </button>
+          </form>
+        </div>
+
+        <!-- ================= TAB 3: MATERIALS & ORDERS ================= -->
+        <div id="accTabOrders" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #F1F5F9; padding-bottom:14px; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+            <div>
+              <h2 style="font-size:1.2rem; font-weight:800; color:var(--tk-navy); margin:0 0 4px 0;">Materials Cart &amp; Direct Orders</h2>
+              <p style="font-size:0.82rem; color:#64748B; margin:0;">View materials saved in your active cart or place a new order.</p>
+            </div>
+            <a href="shop.html" class="tk-btn tk-btn--outline tk-btn--sm" style="font-weight:700;">
+              Browse Shop &rarr;
+            </a>
+          </div>
+
+          <div id="accOrdersContainer">
+            <!-- Dynamic Cart Items List -->
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+  </div>
+</main>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/user-auth.js"></script>
+<script>
+  let activeSupportChatRef = '';
+  let supportChatPollTimer = null;
+
+  function initAccountDashboard() {
+    const user = window.getCurrentUser ? window.getCurrentUser() : null;
+    const notSignedIn = document.getElementById('accNotSignedInView');
+    const signedIn = document.getElementById('accSignedInView');
+    const pill = document.getElementById('accAuthPill');
+
+    if (!user) {
+      if (notSignedIn) notSignedIn.style.display = 'block';
+      if (signedIn) signedIn.style.display = 'none';
+      if (pill) pill.style.display = 'none';
+      return;
+    }
+
+    if (notSignedIn) notSignedIn.style.display = 'none';
+    if (signedIn) signedIn.style.display = 'grid';
+    if (pill) pill.style.display = 'inline-block';
+
+    // Populate Sidebar
+    const fullName = user.full_name || 'Customer';
+    const email = user.email || '';
+    const phone = user.phone || '';
+    const firstName = user.addresses?.first_name || fullName.split(' ')[0] || 'Customer';
+    const lastName = user.addresses?.last_name || fullName.split(' ').slice(1).join(' ') || '';
+
+    const nameEl = document.getElementById('accSidebarFullName');
+    const emailEl = document.getElementById('accSidebarEmail');
+    const phoneEl = document.getElementById('accSidebarPhone');
+    const avCircle = document.getElementById('accAvatarCircle');
+
+    if (nameEl) nameEl.textContent = fullName;
+    if (emailEl) emailEl.textContent = email;
+    if (phoneEl) phoneEl.textContent = phone;
+    if (avCircle) avCircle.textContent = firstName.charAt(0).toUpperCase();
+
+    // Populate Edit Form
+    const fnInput = document.getElementById('editFirstName');
+    const lnInput = document.getElementById('editLastName');
+    const emInput = document.getElementById('editEmail');
+    const phInput = document.getElementById('editPhone');
+    const stSelect = document.getElementById('editStateSelect');
+    const lgaSelect = document.getElementById('editLgaSelect');
+    const addrInput = document.getElementById('editStreetAddress');
+
+    if (fnInput) fnInput.value = firstName;
+    if (lnInput) lnInput.value = lastName;
+    if (emInput) emInput.value = email;
+    if (phInput) phInput.value = phone;
+    if (addrInput) addrInput.value = user.street || user.addresses?.full_address || '';
+
+    // Populate States (all 36 + FCT; no default state)
+    if (stSelect && window.populateStateSelect) {
+      window.populateStateSelect(stSelect, user.state || '', 'Select State');
+      if (user.state && lgaSelect && window.populateLgaSelect) {
+        window.populateLgaSelect(lgaSelect, user.state, user.lga || '', 'Select L.G.A.');
+      }
+    }
+
+    // Check query params for tab=chat or tab=orders
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam === 'chat') {
+      switchAccountTab('chat');
+    } else if (tabParam === 'orders') {
+      switchAccountTab('orders');
+    }
+
+    renderOrdersTab();
+  }
+
+  function handleEditStateChange(stateName) {
+    const lgaSelect = document.getElementById('editLgaSelect');
+    if (lgaSelect && window.populateLgaSelect) {
+      window.populateLgaSelect(lgaSelect, stateName, null, 'Select L.G.A.');
+    }
+  }
+
+  function switchAccountTab(tab) {
+    const tabProf = document.getElementById('accTabProfile');
+    const tabChat = document.getElementById('accTabChat');
+    const tabOrders = document.getElementById('accTabOrders');
+
+    const btnProf = document.getElementById('navBtnProfile');
+    const btnChat = document.getElementById('navBtnChat');
+    const btnOrders = document.getElementById('navBtnOrders');
+
+    [btnProf, btnChat, btnOrders].forEach(b => { if (b) b.classList.remove('active'); });
+
+    if (tab === 'chat') {
+      if (tabProf) tabProf.style.display = 'none';
+      if (tabChat) tabChat.style.display = 'flex';
+      if (tabOrders) tabOrders.style.display = 'none';
+      if (btnChat) btnChat.classList.add('active');
+      fetchLiveSupportMessages(true);
+
+      if (!supportChatPollTimer) {
+        supportChatPollTimer = setInterval(() => {
+          if (document.getElementById('accTabChat')?.style.display === 'flex') {
+            fetchLiveSupportMessages(false);
+          }
+        }, 4000);
+      }
+    } else if (tab === 'orders') {
+      if (tabProf) tabProf.style.display = 'none';
+      if (tabChat) tabChat.style.display = 'none';
+      if (tabOrders) tabOrders.style.display = 'block';
+      if (btnOrders) btnOrders.classList.add('active');
+      renderOrdersTab();
+    } else {
+      if (tabProf) tabProf.style.display = 'block';
+      if (tabChat) tabChat.style.display = 'none';
+      if (tabOrders) tabOrders.style.display = 'none';
+      if (btnProf) btnProf.classList.add('active');
+    }
+  }
+
+  async function handleSaveProfileForm(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const btn = document.getElementById('saveProfileBtn');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Saving Changes...';
+    }
+
+    const data = {
+      firstName: document.getElementById('editFirstName')?.value || '',
+      lastName: document.getElementById('editLastName')?.value || '',
+      phone: document.getElementById('editPhone')?.value || '',
+      state: document.getElementById('editStateSelect')?.value || '',
+      lga: document.getElementById('editLgaSelect')?.value || '',
+      street: document.getElementById('editStreetAddress')?.value || ''
+    };
+
+    try {
+      await window.handleUpdateUserProfile(data);
+      initAccountDashboard();
+    } catch (err) {
+      if (window.showCustomAlert) {
+        window.showCustomAlert({ title: 'Update Notice', message: err.message, type: 'danger' });
+      } else if (window.showCustomToast) {
+        window.showCustomToast(err.message, 'danger');
+      }
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Save Profile Changes \u2192';
+      }
+    }
+  }
+
+  function insertQuickChatMsg(text) {
+    const input = document.getElementById('accChatInput');
+    if (input) {
+      input.value = text;
+      input.focus();
+    }
+  }
+
+  // --- Live Support Chat Realtime Engine ---
+  async function fetchLiveSupportMessages(showSpinner = false) {
+    const user = window.getCurrentUser ? window.getCurrentUser() : null;
+    if (!user) return;
+
+    const stream = document.getElementById('accChatStream');
+    if (showSpinner && stream && !stream.children.length) {
+      stream.innerHTML = '<div style="text-align:center; padding:30px; color:#94A3B8;">Syncing conversation with Admin Operations...</div>';
+    }
+
+    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+    if (!sb) return;
+
+    activeSupportChatRef = 'SUP-USR-' + user.id.slice(0, 8);
+
+    try {
+      const { data, error } = await sb
+        .from('requests')
+        .select('*')
+        .eq('ref_code', activeSupportChatRef)
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') {
+        console.warn('Fetch support chat error:', error);
+        return;
+      }
+
+      let messages = [];
+      if (data && data.details && Array.isArray(data.details.messages)) {
+        messages = data.details.messages;
+      }
+
+      renderSupportChatStream(messages);
+    } catch (err) {
+      console.warn('Support chat error:', err);
+    }
+  }
+
+  function renderSupportChatStream(messages) {
+    const stream = document.getElementById('accChatStream');
+    if (!stream) return;
+
+    if (!messages.length) {
+      stream.innerHTML = `
+        <div style="text-align:center; padding:40px 20px; color:#64748B;">
+          <div style="font-weight:700; font-size:0.95rem; color:var(--tk-navy); margin-bottom:6px;">No conversation history yet</div>
+          <p style="font-size:0.84rem; margin:0;">Send a message below. A verified NIJEDEE Operations Officer will respond to you directly in this channel.</p>
+        </div>
+      `;
+      return;
+    }
+
+    stream.innerHTML = messages.map(m => {
+      const isUser = m.sender === 'user' || m.sender === 'customer';
+      return `
+        <div class="acc-chat-bubble ${isUser ? 'acc-chat-bubble--user' : 'acc-chat-bubble--admin'}">
+          <div style="font-weight:800; font-size:0.75rem; margin-bottom:3px; opacity:0.9;">
+            ${escapeHtml(isUser ? 'You' : (m.sender_name || 'NIJEDEE Operations Admin'))}
+          </div>
+          <div>${escapeHtml(m.text)}</div>
+          <span class="acc-chat-time">${escapeHtml(m.timestamp || '')}</span>
+        </div>
+      `;
+    }).join('');
+
+    stream.scrollTop = stream.scrollHeight;
+  }
+
+  async function handleSendSupportChat(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const input = document.getElementById('accChatInput');
+    const text = (input?.value || '').trim();
+    if (!text) return;
+
+    const user = window.getCurrentUser ? window.getCurrentUser() : null;
+    if (!user) return;
+
+    const btn = document.getElementById('accChatSendBtn');
+    if (btn) btn.disabled = true;
+
+    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+    if (!sb) {
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    const ref = 'SUP-USR-' + user.id.slice(0, 8);
+    const newMsg = {
+      id: 'msg_' + Date.now(),
+      sender: 'user',
+      sender_name: user.full_name || 'Customer',
+      text: text,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    try {
+      // Find or create request
+      const { data: existing } = await sb.from('requests').select('*').eq('ref_code', ref).maybeSingle();
+
+      if (existing) {
+        const details = existing.details || {};
+        if (!Array.isArray(details.messages)) details.messages = [];
+        details.messages.push(newMsg);
+        details.last_sender = 'user';
+        details.last_message_at = new Date().toISOString();
+
+        await sb.from('requests').update({
+          details: details,
+          is_read: false
+        }).eq('id', existing.id);
+      } else {
+        await sb.from('requests').insert([{
+          ref_code: ref,
+          type: 'customer_support',
+          title: `Customer Support Chat - ${user.full_name}`,
+          client_name: user.full_name,
+          client_phone: user.phone,
+          client_email: user.email,
+          location: `${user.lga || ''}, ${user.state || ''}`.trim() || 'Nigeria',
+          address: user.street || '',
+          status: 'new',
+          is_read: false,
+          details: {
+            user_id: user.id,
+            messages: [newMsg],
+            last_sender: 'user',
+            last_message_at: new Date().toISOString()
+          }
+        }]);
+      }
+
+      if (input) input.value = '';
+      fetchLiveSupportMessages(false);
+    } catch (err) {
+      console.warn('Send support message error:', err);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function renderOrdersTab() {
+    const container = document.getElementById('accOrdersContainer');
+    if (!container) return;
+
+    const cart = window.loadCart ? window.loadCart() : [];
+    if (!cart.length) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:50px 20px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px;">
+          <h3 style="font-size:1.1rem; font-weight:800; color:var(--tk-navy); margin-bottom:6px;">Your Materials Cart is Empty</h3>
+          <p style="font-size:0.86rem; color:#64748B; margin-bottom:20px;">Browse paints, electrical wires, pipes, cements, and site building supplies.</p>
+          <a href="shop.html" class="tk-btn tk-btn--primary tk-btn--sm" style="font-weight:700;">Explore Materials Shop &rarr;</a>
+        </div>
+      `;
+      return;
+    }
+
+    const { totalQty, subtotal } = window.getCartSummary ? window.getCartSummary() : { totalQty: 0, subtotal: 0 };
+
+    container.innerHTML = `
+      <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:20px; margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h4 style="margin:0; font-size:1rem; font-weight:800; color:var(--tk-navy);">Active Cart Items (${totalQty})</h4>
+          <span style="font-weight:800; font-size:1.05rem; color:var(--tk-primary);">&#8358;${subtotal.toLocaleString()}</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:18px;">
+          ${cart.map((item, idx) => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:#F8FAFC; border-radius:8px; border:1px solid #E2E8F0;">
+              <div>
+                <div style="font-weight:700; font-size:0.88rem; color:var(--tk-navy);">${escapeHtml(item.name)}</div>
+                <div style="font-size:0.78rem; color:#64748B;">&#8358;${(Number(item.price) || 0).toLocaleString()} &times; ${item.qty}</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-weight:800; font-size:0.9rem; color:var(--tk-navy);">&#8358;${((Number(item.price) || 0) * (Number(item.qty) || 0)).toLocaleString()}</span>
+                <button type="button" onclick="window.removeCartItem(${idx}); renderOrdersTab();" style="border:none; background:none; color:#EF4444; cursor:pointer; font-size:12px; font-weight:700;">Remove</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap;">
+          <button type="button" onclick="window.openCartDrawer()" class="tk-btn tk-btn--outline tk-btn--sm">Open Cart Drawer</button>
+          <a href="shop.html?checkout=1" class="tk-btn tk-btn--primary tk-btn--sm">Proceed to Checkout &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  document.addEventListener('DOMContentLoaded', initAccountDashboard);
+</script>
+
+</body>
+</html>

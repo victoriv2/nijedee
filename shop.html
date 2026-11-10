@@ -777,16 +777,26 @@
 <script src="assets/js/custom-dialog.js"></script>
 <script src="assets/js/supabase-client.js"></script>
 <script src="assets/js/custom-picker.js"></script>
+<script src="assets/js/nigerian-states-lgas.js"></script>
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/user-auth.js"></script>
 <script>
-  let cart = [];
+  let cart = window.loadCart ? window.loadCart() : [];
 
-  function addToCart(name, price) {
+  function addToCart(name, price, img, cat) {
+    if (window.addToCart && window.addToCart !== addToCart) {
+      window.addToCart(name, price, img, cat);
+      cart = window.loadCart ? window.loadCart() : [];
+      updateCartUI();
+      return;
+    }
     const existing = cart.find(i => i.name === name);
     if (existing) {
       existing.qty++;
     } else {
-      cart.push({ name, price, qty: 1 });
+      cart.push({ name, price: Number(price) || 0, qty: 1 });
     }
+    if (window.saveCart) window.saveCart(cart);
     updateCartUI();
     const drawer = document.querySelector('.cart-drawer');
     const overlay = document.querySelector('.cart-overlay');
@@ -795,13 +805,14 @@
   }
 
   function updateCartUI() {
+    if (window.loadCart) cart = window.loadCart();
     const countBadge = document.getElementById('cartCountBadge');
     const itemsContainer = document.getElementById('cartDrawerItems');
     const subtotalEl = document.getElementById('cartSubtotalAmount');
     const modalTotal = document.getElementById('modalOrderTotal');
 
-    const totalQty = cart.reduce((acc, i) => acc + i.qty, 0);
-    const subtotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+    const totalQty = cart.reduce((acc, i) => acc + (Number(i.qty) || 1), 0);
+    const subtotal = cart.reduce((acc, i) => acc + ((Number(i.price) || 0) * (Number(i.qty) || 1)), 0);
 
     if (countBadge) countBadge.textContent = totalQty;
     if (subtotalEl) subtotalEl.innerHTML = '&#8358;' + subtotal.toLocaleString();
@@ -820,7 +831,7 @@
         <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--tk-neutral-100);border-radius:var(--tk-radius-sm);background:var(--tk-page);">
           <div>
             <div style="font-weight:700;font-size:14px;color:var(--tk-navy);">${item.name}</div>
-            <div style="font-size:12px;color:var(--tk-offwhite-dark);">&#8358;${item.price.toLocaleString()} &times; ${item.qty}</div>
+            <div style="font-size:12px;color:var(--tk-offwhite-dark);">&#8358;${(Number(item.price) || 0).toLocaleString()} &times; ${item.qty}</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <button type="button" style="padding:2px 8px;border:1px solid var(--tk-neutral-100);border-radius:4px;cursor:pointer;" onclick="changeQty(${index}, -1)">-</button>
@@ -834,19 +845,30 @@
   }
 
   function changeQty(index, delta) {
+    if (window.changeCartQty) {
+      window.changeCartQty(index, delta);
+      cart = window.loadCart ? window.loadCart() : [];
+      updateCartUI();
+      return;
+    }
     cart[index].qty += delta;
     if (cart[index].qty <= 0) {
       cart.splice(index, 1);
     }
+    if (window.saveCart) window.saveCart(cart);
     updateCartUI();
   }
 
   function openCheckoutModal() {
+    if (window.loadCart) cart = window.loadCart();
     if (cart.length === 0) {
       if (window.showCustomAlert) {
         window.showCustomAlert({ title: 'Cart Empty', message: 'Your shopping cart is currently empty. Add products before proceeding to checkout.', type: 'info' });
       }
       return;
+    }
+    if (window.autofillCheckoutFields) {
+      window.autofillCheckoutFields();
     }
     const modal = document.getElementById('checkoutModal');
     if (modal) modal.classList.add('open');
@@ -904,6 +926,9 @@
       });
     }
 
+    if (window.clearCart) {
+      window.clearCart();
+    }
     cart = [];
     updateCartUI();
     document.getElementById('checkoutModal').classList.remove('open');
