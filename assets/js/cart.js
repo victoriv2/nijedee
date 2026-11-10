@@ -151,7 +151,7 @@
     const { totalQty, subtotal, formattedSubtotal } = getCartSummary();
 
     // Update all badges
-    document.querySelectorAll('#cartCountBadge, .cart-count-badge, [data-cart-badge]').forEach(el => {
+    document.querySelectorAll('#cartCountBadge, .cart-count-badge, .cart-badge-count, .tk-header-cart-badge, [data-cart-badge]').forEach(el => {
       el.textContent = totalQty;
       el.style.display = totalQty > 0 ? 'inline-flex' : 'none';
     });
@@ -262,7 +262,7 @@
           </button>
         </div>
       </div>
-      <div class="cart-overlay tk-drawer-overlay" onclick="window.closeCartDrawer()"></div>
+      <div class="cart-overlay" onclick="window.closeCartDrawer()"></div>
     `;
 
     document.body.insertAdjacentHTML('beforeend', drawerHTML);

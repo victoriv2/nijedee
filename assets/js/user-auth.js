@@ -595,8 +595,8 @@
     if (document.getElementById('userAuthModalBackdrop')) return;
 
     const modalHTML = `
-      <div id="userAuthModalBackdrop" class="modal-backdrop" style="display:none; position:fixed; inset:0; background:rgba(7,34,79,0.65); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px; overflow-y:auto;">
-        <div class="user-auth-modal-card" style="background:#FFFFFF; border-radius:18px; width:100%; max-width:520px; box-shadow:0 20px 45px rgba(7,34,79,0.25); border:1px solid #E2E8F0; overflow:hidden; position:relative; margin:auto;">
+      <div id="userAuthModalBackdrop" class="modal-backdrop user-auth-modal-backdrop" onclick="if(event.target === this) window.closeUserAuthModal()" style="display:none; position:fixed; inset:0; background:rgba(7,34,79,0.7); backdrop-filter:blur(4px); z-index:99999; align-items:center; justify-content:center; padding:16px; overflow-y:auto;">
+        <div class="user-auth-modal-card" onclick="event.stopPropagation()" style="background:#FFFFFF; border-radius:18px; width:100%; max-width:520px; box-shadow:0 20px 45px rgba(7,34,79,0.25); border:1px solid #E2E8F0; overflow:hidden; position:relative; margin:auto;">
           
           <!-- Modal Header -->
           <div style="background:linear-gradient(135deg, var(--tk-navy, #07224F) 0%, #0F3775 100%); padding:20px 24px; color:#FFFFFF; display:flex; align-items:center; justify-content:space-between;">
@@ -753,14 +753,36 @@
   function openUserAuthModal(tab) {
     ensureAuthModalInDOM();
     const backdrop = document.getElementById('userAuthModalBackdrop');
-    if (backdrop) backdrop.style.display = 'flex';
+    if (backdrop) {
+      backdrop.classList.add('open');
+      backdrop.style.setProperty('display', 'flex', 'important');
+      backdrop.style.setProperty('opacity', '1', 'important');
+      backdrop.style.setProperty('visibility', 'visible', 'important');
+      backdrop.style.setProperty('pointer-events', 'auto', 'important');
+    }
+    // Also close mobile drawer if open
+    const drawer = document.querySelector('.tk-header__drawer, .tk-drawer');
+    if (drawer) {
+      drawer.classList.remove('is-open', 'open');
+    }
+    const drawerOverlay = document.querySelector('.tk-header__drawer-overlay, .tk-drawer__overlay');
+    if (drawerOverlay) {
+      drawerOverlay.classList.remove('is-open', 'open');
+      drawerOverlay.style.display = 'none';
+    }
     document.body.style.overflow = 'hidden';
     switchUserAuthTab(tab || 'signin');
   }
 
   function closeUserAuthModal() {
     const backdrop = document.getElementById('userAuthModalBackdrop');
-    if (backdrop) backdrop.style.display = 'none';
+    if (backdrop) {
+      backdrop.classList.remove('open');
+      backdrop.style.setProperty('display', 'none', 'important');
+      backdrop.style.setProperty('opacity', '0', 'important');
+      backdrop.style.setProperty('visibility', 'hidden', 'important');
+      backdrop.style.setProperty('pointer-events', 'none', 'important');
+    }
     document.body.style.overflow = '';
     const alertBox = document.getElementById('userAuthAlertBox');
     if (alertBox) alertBox.style.display = 'none';
@@ -916,8 +938,12 @@
   window.submitUserRegisterForm = submitUserRegisterForm;
 
   // Initialize on load
-  document.addEventListener('DOMContentLoaded', () => {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      updateHeaderAuthUI();
+    });
+  } else {
     updateHeaderAuthUI();
-  });
+  }
 
 })();

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * NIJEDEE Admin Console - Artisan Management & Dispatch Monitoring
  * Handles artisan accreditation, profile credentials, application reviews,
  * and supervisor oversight of customer-artisan communication threads.
@@ -14,11 +14,11 @@
     id: 'NJD-PLM-4561',
     name: 'Oluwasegun David Balodin',
     phone: '07085329909',
-    alt_phone: '0805555569854',
+    alt_phone: '',
     whatsapp: '07085329909',
     password: 'Oluwasegun123',
     trade: 'Master Plumber & Pipefitter',
-    base: 'Badore Axis • Ajah',
+    base: 'Badore Axis - Ajah',
     corridor: 'Badore, Addo, Langbasa, Ajah Central',
     avatar: 'assets/images/artisans/oluwasegun-balodin.jpg',
     skills: 'Concealed leak detection, burst pipes, PPR/PEX heat fusion, borehole plumbing, booster pumps.',
@@ -191,22 +191,57 @@
   };
 
   // Render Pending Applications
+  let _showAllCandidateApps = false;
+  window.toggleCandidateAppsView = function() {
+    _showAllCandidateApps = !_showAllCandidateApps;
+    renderArtisanApplications(window.allRequests || []);
+  };
+
   function renderArtisanApplications(requests) {
     const tbody = document.getElementById('pendingArtisansTableBody');
     if (!tbody) return;
 
-    const apps = (requests || []).filter(r => r.type === 'artisan_application');
+    const allApps = (requests || []).filter(r => r.type === 'artisan_application');
+    const pendingApps = allApps.filter(a => a.status !== 'completed' && a.status !== 'accredited');
     const kpiPending = document.getElementById('kpiPendingArtisansCount');
-    if (kpiPending) kpiPending.textContent = apps.filter(a => a.status !== 'completed' && a.status !== 'accredited').length;
+    if (kpiPending) kpiPending.textContent = pendingApps.length;
 
-    if (apps.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--adm-muted);">No artisan applications submitted yet.</td></tr>';
+    // Determine which applications to show
+    const displayApps = _showAllCandidateApps ? allApps : pendingApps;
+
+    // Header action button toggle text
+    const toggleBtn = document.getElementById('toggleCandidateViewBtn');
+    if (toggleBtn) {
+      toggleBtn.textContent = _showAllCandidateApps ? `Show Pending Only (${pendingApps.length})` : `View All History (${allApps.length})`;
+    }
+
+    if (displayApps.length === 0) {
+      if (allApps.length > 0 && !_showAllCandidateApps) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center; padding:32px 20px; color:var(--adm-muted);">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#059669" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <div style="font-weight:800; color:var(--adm-navy); font-size:0.95rem;">No Pending Candidate Applications</div>
+                <div style="font-size:0.82rem; color:#64748B; max-width:480px; line-height:1.4;">
+                  All ${allApps.length} candidate applications have been reviewed and accredited into the active directory. (0 pending review).
+                </div>
+                <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="window.toggleCandidateAppsView()" style="margin-top:6px;">
+                  View All Submissions History (${allApps.length})
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--adm-muted);">No candidate applications found.</td></tr>';
+      }
       return;
     }
 
     const profiles = getProfiles();
 
-    tbody.innerHTML = apps.map(app => {
+    tbody.innerHTML = displayApps.map(app => {
       const d = app.details || {};
       const isApproved = app.status === 'completed' || app.status === 'accredited';
       const images = Array.isArray(app.images) ? app.images : [];
@@ -329,12 +364,12 @@
 
     const d = req.details || {};
     const name = req.client_name;
-    const phone = req.client_phone || req.client_whatsapp || '08000000000';
+    const phone = req.client_phone || req.client_whatsapp || '';
     const trade = d.trade ? (d.trade.charAt(0).toUpperCase() + d.trade.slice(1)) : 'Certified Artisan';
     const newId = d.artisan_id || ('NJD-' + (d.trade ? d.trade.slice(0, 3).toUpperCase() : 'ART') + '-' + Math.floor(1000 + Math.random() * 9000));
     
-    // Pick the artisan's chosen password or default
-    const assignedPassword = d.password || d.assignedPassword || 'Oluwasegun123';
+    // Pick the artisan's chosen password or clean generated PIN
+    const assignedPassword = d.password || d.assignedPassword || ('NJD' + Math.floor(100000 + Math.random() * 900000));
 
     // Pick chosen avatar
     const chosenAvatar = d.avatar || (req.images && req.images[0]) || 'assets/images/artisans/oluwasegun-balodin.jpg';
