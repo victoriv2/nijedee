@@ -3067,11 +3067,16 @@
            </div>`
         : `<span style="color:#94A3B8; font-size:0.75rem;">None</span>`;
 
+      const isErrand = req.type === 'errand_request';
+      const typeBadge = isErrand
+        ? `<span class="adm-type-tag" style="background:#FEF3C7; color:#92400E; border:1px solid #FCD34D; font-weight:800;">Errand &amp; Delivery</span>`
+        : `<span class="adm-type-tag">${typeLabel}</span>`;
+
       return `
         <tr class="${isNew ? 'is-unread' : ''}" style="cursor:pointer;" onclick="openDetailModal('${req.id}')">
           <td><strong style="color:var(--adm-navy);">${req.ref_code || 'N/A'}</strong></td>
           <td>${statusBadge}</td>
-          <td><span class="adm-type-tag">${typeLabel}</span></td>
+          <td>${typeBadge}</td>
           <td>
             <div style="font-weight:700; color:var(--adm-navy);">${escapeHtml(req.client_name)}</div>
             <div style="font-size:0.78rem; color:var(--adm-muted);">${escapeHtml(req.client_phone || req.client_whatsapp || '-')}</div>
@@ -3090,7 +3095,7 @@
               <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="event.stopPropagation(); openDetailModal('${req.id}')">
                 View
               </button>
-              ${req.type === 'artisan_dispatch' ? `
+              ${(req.type === 'artisan_dispatch' || req.type === 'errand_request') ? `
                 <button type="button" class="adm-btn adm-btn--sm" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; font-weight:700;" onclick="event.stopPropagation(); openDetailModal('${req.id}'); setTimeout(() => document.getElementById('modalDispatchChatSection')?.scrollIntoView({behavior:'smooth'}), 150);">
                   Live Chat
                 </button>
@@ -3197,17 +3202,17 @@
       detailsContainer.innerHTML = html;
     }
 
-    // Render Live Dispatch Chat if artisan dispatch
+    // Render Live Dispatch Chat if artisan dispatch or errand request
     const chatSec = document.getElementById('modalDispatchChatSection');
     if (chatSec) {
-      if (req.type === 'artisan_dispatch') {
+      if (req.type === 'artisan_dispatch' || req.type === 'errand_request') {
         chatSec.style.display = 'block';
         const messages = Array.isArray(details.messages) ? details.messages : [];
         renderAdminChatThread(messages);
 
         if (window.adminChatInterval) clearInterval(window.adminChatInterval);
         window.adminChatInterval = setInterval(async () => {
-          if (!currentActiveRequest || currentActiveRequest.type !== 'artisan_dispatch') {
+          if (!currentActiveRequest || (currentActiveRequest.type !== 'artisan_dispatch' && currentActiveRequest.type !== 'errand_request')) {
             clearInterval(window.adminChatInterval);
             return;
           }
