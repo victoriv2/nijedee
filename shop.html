@@ -416,7 +416,11 @@
     <a href="about.html">About Us</a>
     <a href="contact.html">Contact</a>
   </nav>
-  <a class="tk-btn tk-btn--primary" href="book.html" style="margin-top:24px;width:100%;justify-content:center;">Book a Service</a>
+  <button type="button" class="tk-btn tk-btn--errand" onclick="window.openErrandModal(); document.querySelector('.tk-header__drawer')?.classList.remove('is-open', 'open');" style="margin-top:24px; width:100%; justify-content:center; padding:12px; font-weight:800; font-size:0.92rem;">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:8px;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+    Request an Errand Boy
+  </button>
+  <a class="tk-btn tk-btn--primary" href="book.html" style="margin-top:8px;width:100%;justify-content:center;">Book a Service</a>
 </div>
 <div class="tk-drawer-overlay"></div>
 
@@ -821,6 +825,7 @@
 <script src="assets/js/nigerian-states-lgas.js"></script>
 <script src="assets/js/cart.js"></script>
 <script src="assets/js/user-auth.js"></script>
+<script src="assets/js/errand-service.js"></script>
 <script>
   let cart = window.loadCart ? window.loadCart() : [];
 

@@ -394,6 +394,9 @@ ul, ol {
   font-weight: 600;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   line-height: 1;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .tk-topbar__inner {
@@ -404,6 +407,8 @@ ul, ol {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .tk-topbar__left {
@@ -441,6 +446,7 @@ ul, ol {
   font-size: 0.8rem;
   transition: color 0.2s ease;
   transform: none !important;
+  white-space: nowrap !important;
 }
 
 .tk-topbar__link:hover {
@@ -464,34 +470,63 @@ ul, ol {
   flex-shrink: 0;
 }
 
-@media (max-width: 640px) {
-  .tk-topbar__inner {
-    padding: 7px 14px;
-    justify-content: center;
-  }
+@media (max-width: 850px) {
   .tk-topbar__left {
-    display: none;
+    display: none !important;
+  }
+  .tk-topbar__inner {
+    padding: 7px 12px !important;
+    justify-content: center !important;
   }
   .tk-topbar__right {
-    gap: 14px;
-    width: 100%;
-    justify-content: center;
+    gap: clamp(8px, 2.5vw, 16px) !important;
+    width: 100% !important;
+    justify-content: center !important;
+    flex-wrap: nowrap !important;
   }
   .tk-topbar__link {
-    font-size: 0.76rem;
+    font-size: clamp(0.70rem, 2.7vw, 0.78rem) !important;
+    white-space: nowrap !important;
+    gap: 5px !important;
+  }
+  .tk-topbar__link svg,
+  .tk-topbar__link img {
+    width: 13px !important;
+    height: 13px !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .tk-topbar__inner {
+    padding: 6px 6px !important;
+  }
+  .tk-topbar__right {
+    gap: 6px !important;
+  }
+  .tk-topbar__link {
+    font-size: 0.68rem !important;
+    gap: 3px !important;
+  }
+  .tk-topbar__link svg,
+  .tk-topbar__link img {
+    width: 12px !important;
+    height: 12px !important;
   }
 }
 
 .tk-header__inner,
 .navbar-inner {
   height: 84px;
-  max-width: var(--tk-max);
+  max-width: 1440px;
   padding-inline: var(--tk-gutter);
   margin-inline: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .tk-header__logo,
@@ -514,17 +549,22 @@ ul, ol {
 .navbar-nav {
   display: flex;
   align-items: center;
-  gap: clamp(14px, 1.8vw, 32px);
+  gap: clamp(10px, 1.35vw, 24px);
   margin-left: auto;
+  flex-shrink: 1;
 }
 .tk-header__nav a,
 .navbar-nav a {
-  font-size: var(--tk-body-sm);
+  font-size: clamp(0.82rem, 0.95vw, 0.92rem);
   font-weight: 600;
   color: var(--tk-navy);
   padding: 6px 0;
   position: relative;
   transition: color 0.2s ease;
+  white-space: nowrap !important;
+  display: inline-block;
+  line-height: 1.2;
+  flex-shrink: 0;
 }
 .tk-header__nav a:hover,
 .navbar-nav a:hover {
@@ -545,6 +585,37 @@ ul, ol {
   height: 3px;
   background: var(--tk-primary);
   border-radius: 2px;
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .tk-header__inner,
+  .navbar-inner {
+    gap: 12px;
+    padding-inline: 16px;
+  }
+  .tk-header__logo img,
+  .navbar-logo img {
+    height: 54px;
+    max-height: 54px;
+    max-width: 175px;
+  }
+  .tk-header__nav,
+  .navbar-nav {
+    gap: 10px;
+  }
+  .tk-header__nav a,
+  .navbar-nav a {
+    font-size: 0.81rem;
+  }
+  .tk-header__actions,
+  .navbar-actions {
+    gap: 8px;
+  }
+  .tk-header__actions .tk-btn--sm,
+  .navbar-actions .btn {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+  }
 }
 
 .tk-header__burger,
@@ -2299,17 +2370,20 @@ textarea.form-control {
 @media (max-width: 1024px) {
   .tk-header__nav,
   .navbar-nav {
-    display: none;
+    display: none !important;
   }
   .tk-header__burger,
   .hamburger {
-    display: inline-flex;
+    display: inline-flex !important;
+  }
+  .header-errand-btn {
+    display: none !important;
   }
   .tk-header__actions,
   .navbar-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     margin-left: auto;
     flex-shrink: 0;
   }
@@ -2327,6 +2401,134 @@ textarea.form-control {
   .tk-faq__grid { grid-template-columns: 1fr; }
   .tk-footer__top { grid-template-columns: 1fr; }
   .tk-footer__nav { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+}
+
+@media (max-width: 768px) {
+  /* Header on Mobile Devices: Logo + Cart + Sign In + Burger fit seamlessly without horizontal overflow */
+  .tk-header__inner,
+  .navbar-inner {
+    padding-inline: clamp(10px, 3vw, 16px) !important;
+    height: 64px !important;
+    gap: 8px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .tk-header__logo,
+  .navbar-logo {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+  }
+
+  .tk-header__logo img,
+  .navbar-logo img {
+    height: clamp(38px, 9.5vw, 48px) !important;
+    max-height: 48px !important;
+    max-width: clamp(110px, 34vw, 145px) !important;
+    width: auto !important;
+    object-fit: contain !important;
+  }
+
+  .tk-header__actions,
+  .navbar-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(6px, 1.8vw, 10px) !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Hide redundant full buttons from the header row on mobile; they are prominently in the Hero and inside the Mobile Drawer */
+  .header-errand-btn,
+  .tk-header__actions > a[href*="book.html"],
+  .navbar-actions > a[href*="book.html"] {
+    display: none !important;
+  }
+
+  /* Cart Button on Mobile */
+  .tk-header-cart-btn,
+  .tk-header__actions [data-open-cart] {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+  }
+
+  .tk-header-cart-badge,
+  .cart-badge-count,
+  #cartCountBadge {
+    position: absolute !important;
+    top: 0px !important;
+    right: 0px !important;
+    font-size: 10px !important;
+    min-width: 16px !important;
+    height: 16px !important;
+    line-height: 16px !important;
+    border-radius: 8px !important;
+    padding: 0 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* User Sign In / Account Pill on Mobile */
+  .tk-header-user-wrap {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tk-header-user-wrap .tk-btn {
+    height: 34px !important;
+    padding: 0 10px !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    border-radius: 999px !important;
+    letter-spacing: -0.01em !important;
+    gap: 4px !important;
+  }
+
+  .tk-header-user-wrap .user-account-pill-btn {
+    height: 34px !important;
+    padding: 0 8px !important;
+    font-size: 0.78rem !important;
+    gap: 5px !important;
+    max-width: 120px !important;
+    border-radius: 999px !important;
+  }
+
+  .tk-header-user-wrap .user-account-pill-btn span:nth-child(2) {
+    max-width: 50px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* Hamburger Menu Button - GUARANTEED fully visible and never cut or sliced */
+  .tk-header__burger,
+  .hamburger {
+    display: inline-flex !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    padding: 6px !important;
+    border-radius: 8px !important;
+    margin-left: 2px !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+  }
 }
 
 @media (max-width: 850px) {
@@ -2447,44 +2649,113 @@ textarea.form-control {
     line-height: 1.55 !important;
   }
 
-  /* Header on Mobile: Logo on left, Book a Service + Hamburger grouped at right */
+  /* Header on Mobile: Logo on left, Cart + User/Sign In + Hamburger grouped at right */
   .tk-header__inner,
   .navbar-inner {
-    padding-inline: 16px;
-    height: 64px;
-    gap: 10px;
+    padding-inline: clamp(8px, 2.5vw, 14px) !important;
+    height: 64px !important;
+    gap: 6px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .tk-header__logo img,
   .navbar-logo img {
-    height: 56px !important;
-    max-height: 56px !important;
-    max-width: 190px !important;
+    height: clamp(36px, 9vw, 44px) !important;
+    max-height: 44px !important;
+    max-width: clamp(105px, 32vw, 135px) !important;
     width: auto !important;
+    object-fit: contain !important;
   }
 
   .tk-header__actions,
   .navbar-actions {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: clamp(5px, 1.6vw, 8px) !important;
     margin-left: auto !important;
     flex-shrink: 0 !important;
   }
 
-  .tk-header .tk-btn--sm,
-  .navbar .navbar-cta,
-  .tk-header__actions .tk-btn,
-  .navbar-actions .btn {
+  /* Keep full CTA buttons hidden from sticky header row on mobile devices */
+  .header-errand-btn,
+  .tk-header__actions > a[href*="book.html"],
+  .navbar-actions > a[href*="book.html"] {
+    display: none !important;
+  }
+
+  .tk-header .tk-btn--sm:not(.header-errand-btn):not([href*="book.html"]),
+  .navbar .navbar-cta:not(.header-errand-btn):not([href*="book.html"]),
+  .tk-header__actions .tk-btn:not(.header-errand-btn):not([href*="book.html"]),
+  .navbar-actions .btn:not(.header-errand-btn):not([href*="book.html"]) {
     display: inline-flex !important;
-    height: 35px !important;
-    padding: 0 13px !important;
+    height: 34px !important;
+    padding: 0 10px !important;
     font-size: 0.78rem !important;
     font-weight: 700 !important;
     white-space: nowrap !important;
     border-radius: 999px !important;
     letter-spacing: -0.01em !important;
     min-width: auto !important;
+  }
+
+  .tk-header-user-wrap .user-account-pill-btn {
+    max-width: 110px !important;
+    padding: 0 8px !important;
+  }
+  .tk-header-user-wrap .user-account-pill-btn span:nth-child(2) {
+    max-width: 45px !important;
+  }
+
+  .tk-header__burger,
+  .hamburger {
+    display: inline-flex !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    flex-shrink: 0 !important;
+  }
+
+  @media (max-width: 400px) {
+    .tk-header__inner,
+    .navbar-inner {
+      padding-inline: 8px !important;
+      gap: 4px !important;
+    }
+    .tk-header__logo img,
+    .navbar-logo img {
+      max-width: 105px !important;
+      height: 36px !important;
+    }
+    .tk-header__actions,
+    .navbar-actions {
+      gap: 4px !important;
+    }
+    .tk-header-user-wrap .tk-btn {
+      padding: 0 7px !important;
+      font-size: 0.74rem !important;
+    }
+    .tk-header-user-wrap .user-account-pill-btn {
+      padding: 0 5px !important;
+      max-width: 95px !important;
+    }
+    .tk-header-user-wrap .user-account-pill-btn span:nth-child(2) {
+      max-width: 35px !important;
+    }
+    .tk-header-cart-btn,
+    .tk-header__actions [data-open-cart] {
+      width: 34px !important;
+      height: 34px !important;
+      min-width: 34px !important;
+    }
+    .tk-header__burger,
+    .hamburger {
+      width: 36px !important;
+      height: 36px !important;
+      min-width: 36px !important;
+      max-width: 36px !important;
+    }
   }
 
   /* Trust Badge on Mobile: Guaranteed Single Line */
