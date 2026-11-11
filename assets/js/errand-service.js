@@ -362,7 +362,7 @@
         }
       });
     } else {
-      alert(`Errand request logged! Ref: ${refCode}. Our team is contacting you shortly.`);
+      window.open(waUrl, '_blank');
     }
   }
 
