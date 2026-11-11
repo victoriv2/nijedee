@@ -1495,6 +1495,7 @@
           experience,
           toolStatus,
           areasList,
+          status: 'pending',
           password: pass,
           assignedPassword: pass,
           avatar: selectedAvatarData || '',
@@ -1506,38 +1507,7 @@
       });
     }
 
-    // Save newly created artisan profile to local storage so they can log into the portal immediately
-    try {
-      const storedRaw = localStorage.getItem('nijedee_artisan_profiles');
-      const profilesList = storedRaw ? JSON.parse(storedRaw) : [];
-      const newProfile = {
-        id: ref,
-        name: fullName,
-        phone: phone,
-        alt_phone: whatsapp,
-        whatsapp: whatsapp,
-        password: pass,
-        trade: trade,
-        base: area + ' Axis',
-        corridor: (areasList && areasList.length ? areasList.join(', ') : area),
-        avatar: selectedAvatarData || 'assets/images/artisans/default-artisan.jpg',
-        skills: `${trade} - ${experience} years experience. Tools: ${toolStatus}`,
-        bank: document.getElementById('bank_name')?.value || '',
-        accountNum: document.getElementById('account')?.value || '',
-        accountName: document.getElementById('account_name')?.value || fullName,
-        is_on_duty: true,
-        is_hidden: false
-      };
-      const cleanNew = phone.replace(/\D/g, '');
-      const filtered = profilesList.filter(p => !(p.phone || '').replace(/\D/g, '').endsWith(cleanNew.slice(-10)));
-      filtered.push(newProfile);
-      localStorage.setItem('nijedee_artisan_profiles', JSON.stringify(filtered));
-      localStorage.setItem('nijedee_active_artisan', JSON.stringify(newProfile));
-    } catch (storeErr) {
-      console.warn('Error saving local artisan profile:', storeErr);
-    }
-
-    // Open WhatsApp in new tab
+    // Open WhatsApp in new tab for fast-track onboarding
     window.open(waUrl, '_blank');
   });
 

@@ -1,7 +1,9 @@
 /**
  * NIJEDEE Admin Console - Artisan Management & Dispatch Monitoring
- * Handles artisan accreditation, profile credentials, application reviews,
+ * Handles artisan accreditation, profile credentials, candidate reviews,
  * and supervisor oversight of customer-artisan communication threads.
+ *
+ * STRICT RULE: ZERO Unicode Emojis. Clean SVG icons and accessible markup only.
  */
 
 (function () {
@@ -22,84 +24,66 @@
     corridor: 'Badore, Addo, Langbasa, Ajah Central',
     avatar: 'assets/images/artisans/oluwasegun-balodin.jpg',
     skills: 'Concealed leak detection, burst pipes, PPR/PEX heat fusion, borehole plumbing, booster pumps.',
-    is_on_duty: true
+    is_on_duty: true,
+    is_hidden: false
   };
 
-  function syncProfilesFromRequests(profiles) {
-    if (!Array.isArray(window.allRequests)) return profiles;
-    const accreditedApps = window.allRequests.filter(function(r) {
-      return r.type === 'artisan_application' && (r.status === 'accredited' || r.status === 'completed' || (r.details && r.details.status === 'accredited'));
-    });
-    var changed = false;
-    accreditedApps.forEach(function(app) {
-      var d = app.details || {};
-      var phone = app.client_phone || app.client_whatsapp || '';
-      var cleanPhone = phone.replace(/\D/g, '');
-      var artId = d.artisan_id || ('NJD-ART-' + (app.id ? app.id.slice(0, 4) : 'app'));
-      var existing = profiles.find(function(p) {
-        var pClean = (p.phone || '').replace(/\D/g, '');
-        return (cleanPhone && pClean && pClean.endsWith(cleanPhone.slice(-8))) || p.id === artId || p.id === app.id;
-      });
-
-      if (!existing) {
-        profiles.push({
-          id: artId,
-          name: app.client_name,
-          phone: phone,
-          whatsapp: app.client_whatsapp || phone,
-          password: d.assignedPassword || d.password || '123456',
-          trade: d.trade ? (d.trade.charAt(0).toUpperCase() + d.trade.slice(1)) : 'Certified Artisan',
-          base: app.location || 'Badore Axis - Ajah',
-          corridor: d.areasList || app.location || 'Badore, Ajah, Sangotedo',
-          avatar: d.avatar || (app.images && app.images[0]) || 'assets/images/artisans/oluwasegun-balodin.jpg',
-          skills: d.experience ? (d.experience + ' years practical experience. Equipped: ' + (d.toolStatus || 'Yes')) : 'Accredited trade specialist.',
-          bank: d.bank || '',
-          accountNum: d.account || '',
-          accountName: d.accountName || app.client_name,
-          is_on_duty: true,
-          is_hidden: d.is_hidden === true
-        });
-        changed = true;
-      }
-    });
-
-    if (changed) {
-      saveProfiles(profiles);
-    }
-    return profiles;
-  }
-
-  function getProfiles() {
-    var profiles = [DEFAULT_MASTER];
-    try {
-      var raw = localStorage.getItem(ARTISAN_PROFILE_STORE);
-      if (raw) {
-        var parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) profiles = parsed;
-      }
-    } catch (e) {}
-
-    // Synchronize with live Supabase requests so mobile, tablet and desktop never diverge
-    profiles = syncProfilesFromRequests(profiles);
-
-    return profiles.map(function(p) {
-      delete p.rating;
-      delete p.completed_jobs;
-      delete p.active_jobs;
-      return p;
-    });
-  }
-
-  function saveProfiles(profiles) {
-    localStorage.setItem(ARTISAN_PROFILE_STORE, JSON.stringify(profiles));
-  }
+  let currentReviewingApp = null;
+  let _showAllCandidateApps = false;
 
   function escapeHtml(str) {
     if (!str) return '';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  // Render Accredited Artisans Table
+  /**
+   * Derive accredited artisan profiles strictly from authoritative Supabase requests
+   * plus Master Artisan. Never diverges between PC, tablet, and mobile.
+   */
+  function getProfiles() {
+    const profiles = [{ ...DEFAULT_MASTER }];
+    const allReqs = Array.isArray(window.allRequests) ? window.allRequests : [];
+
+    const accreditedApps = allReqs.filter(r => {
+      const d = r.details || {};
+      return r.type === 'artisan_application' && (r.status === 'accredited' || d.status === 'accredited');
+    });
+
+    accreditedApps.forEach(app => {
+      const d = app.details || {};
+      const phone = app.client_phone || app.client_whatsapp || '';
+      const artId = d.artisan_id || ('NJD-ART-' + (app.id ? app.id.slice(0, 4) : 'tech'));
+
+      // Deduplicate strictly by ID
+      const exists = profiles.some(p => p.id === artId || p.app_id === app.id);
+      if (!exists) {
+        profiles.push({
+          app_id: app.id,
+          id: artId,
+          name: app.client_name || 'Accredited Artisan',
+          phone: phone,
+          whatsapp: app.client_whatsapp || phone,
+          password: d.assignedPassword || d.password || '123456',
+          trade: d.trade ? (d.trade.charAt(0).toUpperCase() + d.trade.slice(1)) : 'Certified Artisan',
+          base: app.location || 'Badore Axis - Ajah',
+          corridor: (Array.isArray(d.areasList) ? d.areasList.join(', ') : d.areasList) || app.location || 'Badore, Ajah, Sangotedo',
+          avatar: d.avatar || (app.images && app.images[0]) || 'assets/images/artisans/oluwasegun-balodin.jpg',
+          skills: d.experience ? `${d.experience} practical experience. Equipped: ${d.toolStatus || 'Yes'}` : 'Accredited trade specialist.',
+          bank: d.bank || '',
+          accountNum: d.account || '',
+          accountName: d.accountName || app.client_name,
+          is_on_duty: true,
+          is_hidden: d.is_hidden === true
+        });
+      }
+    });
+
+    return profiles;
+  }
+
+  /**
+   * Render Accredited Field Artisans Table
+   */
   function renderAccreditedArtisans() {
     const tbody = document.getElementById('accreditedArtisansTableBody');
     if (!tbody) return;
@@ -109,7 +93,7 @@
       const isSegun = art.id === 'NJD-PLM-4561';
       const isHidden = art.is_hidden === true;
 
-      // Compute authentic dispatch metrics from live database requests
+      // Authentic dispatches from live requests
       const artisanReqs = (window.allRequests || []).filter(r => {
         const d = r.details || {};
         return d.artisan_id === art.id ||
@@ -122,7 +106,7 @@
       return `
         <tr>
           <td style="width:60px;">
-            <img src="${art.avatar || 'assets/images/artisans/oluwasegun-balodin.jpg'}" alt="${escapeHtml(art.name)}" style="width:48px; height:52px; border-radius:8px; object-fit:cover; border:1px solid #CBD5E1; cursor:zoom-in;" title="Click to view full photo" onclick="window.openGlobalLightbox ? window.openGlobalLightbox('${escapeHtml(art.avatar || 'assets/images/artisans/oluwasegun-balodin.jpg')}', 0, '${escapeHtml(art.name)}') : null">
+            <img src="${escapeHtml(art.avatar || 'assets/images/artisans/oluwasegun-balodin.jpg')}" alt="${escapeHtml(art.name)}" style="width:48px; height:52px; border-radius:8px; object-fit:cover; border:1px solid #CBD5E1; cursor:zoom-in;" title="Click to view full photo" onclick="window.openGlobalLightbox ? window.openGlobalLightbox('${escapeHtml(art.avatar || 'assets/images/artisans/oluwasegun-balodin.jpg')}', 0, '${escapeHtml(art.name)}') : null">
           </td>
           <td>
             <div style="font-weight:800; color:var(--adm-navy);">${escapeHtml(art.name)}</div>
@@ -150,7 +134,7 @@
           </td>
           <td style="white-space:nowrap;">
             <div style="display:flex; gap:6px; align-items:center;">
-              <button type="button" class="adm-btn adm-btn--sm" style="${isHidden ? 'background:#ECFDF5; color:#059669; border:1px solid #A7F3D0; font-weight:700;' : 'background:#FFF1F2; color:#E11D48; border:1px solid #FECDD3; font-weight:700;'}" onclick="toggleArtisanDirectoryVisibility('${art.id}', ${!isHidden})" title="${isHidden ? 'Show this artisan on public directory' : 'Hide this artisan from public directory'}">
+              <button type="button" class="adm-btn adm-btn--sm" style="${isHidden ? 'background:#ECFDF5; color:#059669; border:1px solid #A7F3D0; font-weight:700;' : 'background:#FFF1F2; color:#E11D48; border:1px solid #FECDD3; font-weight:700;'}" onclick="window.toggleArtisanDirectoryVisibility('${escapeHtml(art.id)}', ${!isHidden})" title="${isHidden ? 'Show this artisan on public directory' : 'Hide this artisan from public directory'}">
                 ${isHidden ? 'Show on Directory' : 'Hide from Directory'}
               </button>
               <a href="artisan-portal.html" target="_blank" class="adm-btn adm-btn--outline adm-btn--sm" title="Log into dashboard as this artisan">
@@ -170,46 +154,24 @@
     if (kpiCountEl) kpiCountEl.textContent = profiles.length;
   }
 
-  // Gallery viewer for candidate documents / pictures
-  window.openCandidateDocsGallery = function(appId, startIdx = 0) {
-    const app = (window.allRequests || []).find(r => String(r.id) === String(appId));
-    if (!app) return;
-    let images = Array.isArray(app.images) ? [...app.images] : [];
-    if (!images.length && app.details && app.details.avatar) {
-      images.push(app.details.avatar);
-    }
-    if (!images.length) return;
-    const items = images.map((img, i) => ({
-      src: img,
-      caption: `${app.client_name || 'Artisan Application'} \u2022 Document ${i + 1} of ${images.length}`
-    }));
-    if (window.openGlobalLightbox) {
-      window.openGlobalLightbox(items, startIdx, app.client_name || 'Artisan Application Documents');
-    } else if (window.openLightbox) {
-      window.openLightbox(items, startIdx, app.client_name || 'Artisan Application Documents');
-    }
-  };
-
-  // Render Pending Applications
-  let _showAllCandidateApps = false;
-  window.toggleCandidateAppsView = function() {
-    _showAllCandidateApps = !_showAllCandidateApps;
-    renderArtisanApplications(window.allRequests || []);
-  };
-
+  /**
+   * Render Candidate Applications Table
+   */
   function renderArtisanApplications(requests) {
     const tbody = document.getElementById('pendingArtisansTableBody');
     if (!tbody) return;
 
     const allApps = (requests || []).filter(r => r.type === 'artisan_application');
-    const pendingApps = allApps.filter(a => a.status !== 'completed' && a.status !== 'accredited');
+    const pendingApps = allApps.filter(a => {
+      const d = a.details || {};
+      return a.status !== 'accredited' && a.status !== 'declined' && d.status !== 'accredited' && d.status !== 'declined';
+    });
+
     const kpiPending = document.getElementById('kpiPendingArtisansCount');
     if (kpiPending) kpiPending.textContent = pendingApps.length;
 
-    // Determine which applications to show
     const displayApps = _showAllCandidateApps ? allApps : pendingApps;
 
-    // Header action button toggle text
     const toggleBtn = document.getElementById('toggleCandidateViewBtn');
     if (toggleBtn) {
       toggleBtn.textContent = _showAllCandidateApps ? `Show Pending Only (${pendingApps.length})` : `View All History (${allApps.length})`;
@@ -224,7 +186,7 @@
                 <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#059669" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                 <div style="font-weight:800; color:var(--adm-navy); font-size:0.95rem;">No Pending Candidate Applications</div>
                 <div style="font-size:0.82rem; color:#64748B; max-width:480px; line-height:1.4;">
-                  All ${allApps.length} candidate applications have been reviewed and accredited into the active directory. (0 pending review).
+                  All ${allApps.length} candidate applications have been reviewed.
                 </div>
                 <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="window.toggleCandidateAppsView()" style="margin-top:6px;">
                   View All Submissions History (${allApps.length})
@@ -239,14 +201,12 @@
       return;
     }
 
-    const profiles = getProfiles();
-
     tbody.innerHTML = displayApps.map(app => {
       const d = app.details || {};
-      const isApproved = app.status === 'completed' || app.status === 'accredited';
+      const isAccredited = app.status === 'accredited' || d.status === 'accredited';
+      const isDeclined = app.status === 'declined' || d.status === 'declined';
       const images = Array.isArray(app.images) ? app.images : [];
-      const matchedProfile = profiles.find(p => p.phone === app.client_phone || p.id === app.id || (p.details && p.details.artisan_id === app.id));
-      const isHidden = matchedProfile ? (matchedProfile.is_hidden === true) : (d.is_hidden === true);
+      const isHidden = d.is_hidden === true;
 
       return `
         <tr>
@@ -270,31 +230,28 @@
           </td>
           <td>
             ${images.length > 0 ? `
-              <div style="display:flex; gap:6px; align-items:center; cursor:pointer;" onclick="openCandidateDocsGallery('${app.id}', 0)" title="Click to view full photo gallery">
+              <div style="display:flex; gap:6px; align-items:center; cursor:pointer;" onclick="window.openCandidateDocsGallery('${app.id}', 0)" title="Click to view full photo gallery">
                 ${images.slice(0, 2).map((img, i) => `
-                  <img src="${escapeHtml(img)}" alt="Doc ${i + 1}" style="width:38px; height:38px; object-fit:cover; border-radius:6px; border:1px solid #CBD5E1; cursor:zoom-in; transition:transform 0.15s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" onclick="event.stopPropagation(); openCandidateDocsGallery('${app.id}', ${i});">
+                  <img src="${escapeHtml(img)}" alt="Doc ${i + 1}" style="width:38px; height:38px; object-fit:cover; border-radius:6px; border:1px solid #CBD5E1; cursor:zoom-in; transition:transform 0.15s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" onclick="event.stopPropagation(); window.openCandidateDocsGallery('${app.id}', ${i});">
                 `).join('')}
                 ${images.length > 2 ? `<span style="font-size:11px; font-weight:700; color:#0B5ED7; background:#EFF6FF; padding:3px 6px; border-radius:4px; border:1px solid #BFDBFE;">+${images.length - 2}</span>` : ''}
               </div>
             ` : '<span style="color:var(--adm-muted); font-size:0.75rem;">None</span>'}
           </td>
           <td>
-            <span style="padding:3px 8px; border-radius:4px; font-size:0.75rem; font-weight:800; ${isApproved ? (isHidden ? 'background:#FEE2E2; color:#B91C1C;' : 'background:#ECFDF5; color:#059669;') : 'background:#FEF3C7; color:#D97706;'}">
-              ${isApproved ? (isHidden ? 'Accredited (Hidden)' : 'Accredited (Active)') : 'Pending Review'}
+            <span style="padding:3px 8px; border-radius:4px; font-size:0.75rem; font-weight:800; ${isAccredited ? (isHidden ? 'background:#FEE2E2; color:#B91C1C;' : 'background:#ECFDF5; color:#059669;') : (isDeclined ? 'background:#FEE2E2; color:#991B1B;' : 'background:#FEF3C7; color:#D97706;')}">
+              ${isAccredited ? (isHidden ? 'Accredited (Hidden)' : 'Accredited (Active)') : (isDeclined ? 'Declined' : 'Pending Review')}
             </span>
           </td>
           <td style="white-space:nowrap;">
             <div style="display:flex; gap:6px; align-items:center;">
-              ${!isApproved ? `
-                <button type="button" class="adm-btn adm-btn--primary adm-btn--sm" style="background:#15803D; border-color:#15803D; font-weight:700;" onclick="approveArtisanApplication('${app.id}')">
-                  &check; Approve &amp; Activate &rarr;
+              ${!isAccredited ? `
+                <button type="button" class="adm-btn adm-btn--primary adm-btn--sm" style="background:#15803D; border-color:#15803D; font-weight:700;" onclick="window.openArtisanAccreditationModal('${app.id}')">
+                  &check; Review &amp; Accredit &rarr;
                 </button>
               ` : `
-                <button type="button" class="adm-btn adm-btn--sm" style="${isHidden ? 'background:#ECFDF5; color:#059669; border:1px solid #A7F3D0; font-weight:700;' : 'background:#FFF1F2; color:#E11D48; border:1px solid #FECDD3; font-weight:700;'}" onclick="toggleArtisanDirectoryVisibility('${matchedProfile ? matchedProfile.id : app.id}', ${!isHidden})" title="${isHidden ? 'Show on public directory' : 'Hide from public directory'}">
-                  ${isHidden ? 'Show on Directory' : 'Hide from Directory'}
-                </button>
-                <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="approveArtisanApplication('${app.id}')" title="Re-sync or re-accredit account profile">
-                  Re-Approve
+                <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="window.openArtisanAccreditationModal('${app.id}')" title="Edit accreditation details or reset credentials">
+                  Edit Credentials
                 </button>
               `}
             </div>
@@ -304,36 +261,275 @@
     }).join('');
   }
 
-  // Toggle hiding / unhiding artisan from public directory
-  window.toggleArtisanDirectoryVisibility = async function(artId, hide) {
-    const profiles = getProfiles();
-    let art = profiles.find(p => p.id === artId || p.phone === artId);
-    if (!art) {
-      const app = (window.allRequests || []).find(r => String(r.id) === String(artId));
-      if (app) {
-        art = profiles.find(p => p.phone === app.client_phone);
+  /**
+   * Open Review & Accreditation Modal
+   */
+  function openArtisanAccreditationModal(appId) {
+    const app = (window.allRequests || []).find(r => String(r.id) === String(appId));
+    if (!app) return;
+    currentReviewingApp = app;
+
+    const modal = document.getElementById('adminArtisanAccreditationModal');
+    if (!modal) return;
+
+    const d = app.details || {};
+    const nameEl = document.getElementById('accreditModalName');
+    const refEl = document.getElementById('accreditModalRef');
+    const phoneEl = document.getElementById('accreditModalPhone');
+    const waEl = document.getElementById('accreditModalWhatsapp');
+    const avatarEl = document.getElementById('accreditModalAvatar');
+    const tradeExpEl = document.getElementById('accreditModalTradeExp');
+    const toolsEl = document.getElementById('accreditModalTools');
+    const covEl = document.getElementById('accreditModalCoverage');
+    const bankEl = document.getElementById('accreditModalBank');
+    const docsList = document.getElementById('accreditModalDocsList');
+
+    if (nameEl) nameEl.textContent = app.client_name || 'Candidate Artisan';
+    if (refEl) refEl.textContent = app.ref_code || 'ART';
+    if (phoneEl) phoneEl.textContent = app.client_phone || 'None';
+    if (waEl) waEl.textContent = app.client_whatsapp || app.client_phone || 'None';
+
+    const chosenAvatar = d.avatar || (app.images && app.images[0]) || 'assets/images/artisans/default-artisan.jpg';
+    if (avatarEl) avatarEl.src = chosenAvatar;
+
+    if (tradeExpEl) tradeExpEl.textContent = `${d.trade || 'Technician'} \u2022 ${d.experience || '3+ years'} exp`;
+    if (toolsEl) toolsEl.textContent = d.toolStatus || 'Equipped';
+    if (covEl) covEl.textContent = (Array.isArray(d.areasList) ? d.areasList.join(', ') : d.areasList) || app.location || 'Badore Axis';
+    if (bankEl) bankEl.textContent = `${d.bank || 'Not provided'} - ${d.account || ''} (${d.accountName || app.client_name || ''})`;
+
+    // Render docs thumbnails
+    if (docsList) {
+      const images = Array.isArray(app.images) ? app.images : [];
+      if (images.length > 0) {
+        docsList.innerHTML = images.map((img, i) => `
+          <div style="text-align:center; cursor:pointer;" onclick="window.openCandidateDocsGallery('${app.id}', ${i})">
+            <img src="${escapeHtml(img)}" alt="Doc ${i + 1}" style="width:68px; height:68px; object-fit:cover; border-radius:8px; border:1px solid #CBD5E1; transition:transform 0.15s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <div style="font-size:10px; color:#475569; font-weight:700; margin-top:3px;">Doc ${i + 1}</div>
+          </div>
+        `).join('');
+      } else {
+        docsList.innerHTML = '<span style="font-size:0.82rem; color:#64748B;">No attached documents submitted.</span>';
       }
     }
-    if (art) {
-      art.is_hidden = hide;
-      saveProfiles(profiles);
+
+    // Input fields prefill
+    const targetIdInput = document.getElementById('accreditTargetAppId');
+    const idInput = document.getElementById('accreditArtisanIdInput');
+    const tradeInput = document.getElementById('accreditArtisanTradeInput');
+    const baseInput = document.getElementById('accreditArtisanBaseInput');
+    const passInput = document.getElementById('accreditArtisanPasswordInput');
+
+    if (targetIdInput) targetIdInput.value = app.id;
+
+    // Generate trade-based ID e.g. NJD-PLM-xxxx or NJD-ART-xxxx
+    let tradeCode = 'ART';
+    if (d.trade) {
+      const t = d.trade.toLowerCase();
+      if (t.includes('plumb')) tradeCode = 'PLM';
+      else if (t.includes('elect')) tradeCode = 'ELE';
+      else if (t.includes('paint')) tradeCode = 'PNT';
+      else if (t.includes('carp')) tradeCode = 'CAR';
+      else if (t.includes('weld')) tradeCode = 'WLD';
+      else if (t.includes('ac') || t.includes('hvac')) tradeCode = 'AC';
+    }
+    const defaultId = d.artisan_id || `NJD-${tradeCode}-${app.id ? app.id.slice(0, 4) : Math.floor(1000 + Math.random() * 9000)}`;
+
+    if (idInput) idInput.value = defaultId;
+    if (tradeInput) tradeInput.value = d.trade ? (d.trade.charAt(0).toUpperCase() + d.trade.slice(1)) : 'Certified Artisan';
+    if (baseInput) baseInput.value = app.location || 'Badore Axis - Ajah';
+    if (passInput) passInput.value = d.assignedPassword || d.password || ('NJD' + Math.floor(100000 + Math.random() * 900000));
+
+    modal.classList.add('open');
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.style.setProperty('opacity', '1', 'important');
+    modal.style.setProperty('visibility', 'visible', 'important');
+    modal.style.setProperty('pointer-events', 'auto', 'important');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeArtisanAccreditationModal() {
+    const modal = document.getElementById('adminArtisanAccreditationModal');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.style.setProperty('display', 'none', 'important');
+      modal.style.setProperty('opacity', '0', 'important');
+      modal.style.setProperty('visibility', 'hidden', 'important');
+      modal.style.setProperty('pointer-events', 'none', 'important');
+    }
+    document.body.style.overflow = '';
+    currentReviewingApp = null;
+  }
+
+  /**
+   * Submit Artisan Accreditation Form
+   */
+  async function submitArtisanAccreditation(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (!currentReviewingApp) return;
+
+    const artisanId = (document.getElementById('accreditArtisanIdInput')?.value || '').trim();
+    const trade = (document.getElementById('accreditArtisanTradeInput')?.value || '').trim();
+    const base = (document.getElementById('accreditArtisanBaseInput')?.value || '').trim();
+    const password = (document.getElementById('accreditArtisanPasswordInput')?.value || '').trim();
+
+    if (!artisanId || !password) {
+      if (window.showCustomAlert) {
+        window.showCustomAlert({ title: 'Fields Required', message: 'Please provide both Artisan ID and Login Password.', type: 'info' });
+      }
+      return;
     }
 
-    // Sync to Supabase
+    const btn = document.getElementById('confirmAccreditArtisanBtn');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Accrediting Technician...';
+    }
+
     const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+    const d = currentReviewingApp.details || {};
+    d.status = 'accredited';
+    d.artisan_id = artisanId;
+    d.trade = trade;
+    d.assignedPassword = password;
+    d.is_hidden = false;
+    d.accredited_at = new Date().toISOString();
+
+    const updatePayload = {
+      status: 'accredited',
+      location: base,
+      details: d,
+      notes: `Approved & accredited by Admin on ${new Date().toLocaleDateString()}. Assigned ID: ${artisanId}.`
+    };
+
     if (sb) {
       try {
-        const { data } = await sb.from('requests').select('*').eq('type', 'artisan_application');
-        if (data) {
-          const match = data.find(r => String(r.id) === String(artId) || (art && r.client_phone === art.phone));
-          if (match) {
-            const d = match.details || {};
-            d.is_hidden = hide;
-            await sb.from('requests').update({ details: d }).eq('id', match.id);
-          }
+        await sb.from('requests').update(updatePayload).eq('id', currentReviewingApp.id);
+      } catch (err) {
+        console.warn('Accreditation Supabase update err:', err);
+      }
+    }
+
+    // Update in-memory allRequests
+    const idx = (window.allRequests || []).findIndex(r => r.id === currentReviewingApp.id);
+    if (idx !== -1) {
+      window.allRequests[idx].status = 'accredited';
+      window.allRequests[idx].location = base;
+      window.allRequests[idx].details = d;
+    }
+
+    renderAccreditedArtisans();
+    renderArtisanApplications(window.allRequests || []);
+
+    const candidateName = currentReviewingApp.client_name || 'Artisan';
+    const candidatePhone = currentReviewingApp.client_phone || '';
+    const cleanPhone = candidatePhone.replace(/\D/g, '');
+
+    closeArtisanAccreditationModal();
+
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Approve & Accredit Artisan';
+    }
+
+    // Prompt to send WhatsApp Notification to candidate
+    const waMsg = encodeURIComponent(
+      `Congratulations ${candidateName}!\n` +
+      `Your NIJEDEE Artisan Network application has been reviewed, ACCREDITED, and ACTIVATED.\n\n` +
+      `Your Assigned Technician ID: ${artisanId}\n` +
+      `Designation: ${trade}\n` +
+      `Operational Base: ${base}\n\n` +
+      `Portal Access Credentials:\n` +
+      `Login URL: https://nijedee.com/artisan-portal.html\n` +
+      `Registered Phone: ${candidatePhone}\n` +
+      `Portal Password: ${password}\n\n` +
+      `You are now active on the NIJEDEE directory and eligible for customer dispatches across Lagos.\n` +
+      `Welcome to the team!`
+    );
+    const waUrl = `https://wa.me/234${cleanPhone.replace(/^0/, '')}?text=${waMsg}`;
+
+    if (window.showCustomConfirm) {
+      const wantSend = await window.showCustomConfirm({
+        title: 'Artisan Successfully Accredited',
+        message: `Technician "${candidateName}" is now fully accredited (ID: ${artisanId}).\n\nWould you like to send their credentials and portal login link directly via WhatsApp?`,
+        confirmText: 'Send WhatsApp Notification',
+        cancelText: 'Done',
+        type: 'success'
+      });
+      if (wantSend) {
+        window.open(waUrl, '_blank');
+      }
+    }
+  }
+
+  /**
+   * Decline Candidate Application
+   */
+  async function declineCandidateApplication() {
+    if (!currentReviewingApp) return;
+
+    let confirmed = false;
+    if (window.showCustomConfirm) {
+      confirmed = await window.showCustomConfirm({
+        title: 'Decline Application?',
+        message: `Are you sure you want to decline the artisan application for ${currentReviewingApp.client_name}?`,
+        confirmText: 'Decline Application',
+        type: 'danger'
+      });
+    }
+
+    if (!confirmed) return;
+
+    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+    const d = currentReviewingApp.details || {};
+    d.status = 'declined';
+
+    if (sb) {
+      try {
+        await sb.from('requests').update({
+          status: 'declined',
+          details: d,
+          notes: `Declined by Admin on ${new Date().toLocaleDateString()}`
+        }).eq('id', currentReviewingApp.id);
+      } catch (err) {
+        console.warn('Decline error:', err);
+      }
+    }
+
+    currentReviewingApp.status = 'declined';
+    currentReviewingApp.details = d;
+
+    renderAccreditedArtisans();
+    renderArtisanApplications(window.allRequests || []);
+    closeArtisanAccreditationModal();
+
+    if (window.showToast) {
+      window.showToast(`Application for ${currentReviewingApp.client_name} declined.`);
+    }
+  }
+
+  /**
+   * Toggle hiding / unhiding artisan from public directory
+   */
+  async function toggleArtisanDirectoryVisibility(artId, hide) {
+    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+    let targetName = 'Artisan';
+
+    // Find in allRequests
+    const match = (window.allRequests || []).find(r => {
+      const d = r.details || {};
+      return d.artisan_id === artId || String(r.id) === String(artId);
+    });
+
+    if (match) {
+      const d = match.details || {};
+      d.is_hidden = hide;
+      targetName = match.client_name || 'Artisan';
+      if (sb) {
+        try {
+          await sb.from('requests').update({ details: d }).eq('id', match.id);
+        } catch (e) {
+          console.warn('Sync hide to Supabase err:', e);
         }
-      } catch (e) {
-        console.warn('Sync hide to Supabase err:', e);
       }
     }
 
@@ -343,143 +539,47 @@
     if (window.showCustomAlert) {
       window.showCustomAlert({
         title: hide ? 'Artisan Hidden' : 'Artisan Visible',
-        message: `${art ? art.name : 'Artisan'} is now ${hide ? 'HIDDEN from' : 'VISIBLE on'} the public directory (artisans.html).`,
+        message: `${targetName} is now ${hide ? 'HIDDEN from' : 'VISIBLE on'} the public directory (artisans.html).`,
         type: hide ? 'warning' : 'success'
-      });
-    }
-  };
-
-  // Approve artisan application and generate account profile
-  async function approveArtisanApplication(appId) {
-    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
-    if (!sb) return;
-
-    const { data: req, error } = await sb.from('requests').select('*').eq('id', appId).single();
-    if (error || !req) {
-      if (window.showCustomAlert) {
-        window.showCustomAlert({ title: 'Application Record Not Found', message: 'Could not find application record.', type: 'danger' });
-      }
-      return;
-    }
-
-    const d = req.details || {};
-    const name = req.client_name;
-    const phone = req.client_phone || req.client_whatsapp || '';
-    const trade = d.trade ? (d.trade.charAt(0).toUpperCase() + d.trade.slice(1)) : 'Certified Artisan';
-    const newId = d.artisan_id || ('NJD-' + (d.trade ? d.trade.slice(0, 3).toUpperCase() : 'ART') + '-' + Math.floor(1000 + Math.random() * 9000));
-    
-    // Pick the artisan's chosen password or clean generated PIN
-    const assignedPassword = d.password || d.assignedPassword || ('NJD' + Math.floor(100000 + Math.random() * 900000));
-
-    // Pick chosen avatar
-    const chosenAvatar = d.avatar || (req.images && req.images[0]) || 'assets/images/artisans/oluwasegun-balodin.jpg';
-
-    // 1. Update request status to accredited in Supabase
-    d.artisan_id = newId;
-    d.status = 'accredited';
-    d.assignedPassword = assignedPassword;
-    d.is_hidden = false;
-
-    await sb.from('requests').update({
-      status: 'accredited',
-      details: d,
-      notes: `Approved & accredited by Admin on ${new Date().toLocaleDateString()}. ID: ${newId}. Chosen password configured.`
-    }).eq('id', appId);
-
-    // 2. Add or update profile in local storage
-    const profiles = getProfiles();
-    const existingIdx = profiles.findIndex(p => p.phone === phone || p.id === newId);
-    const newProfile = {
-      id: newId,
-      name: name,
-      phone: phone,
-      whatsapp: req.client_whatsapp || phone,
-      password: assignedPassword,
-      trade: trade,
-      base: req.location || 'Badore Axis • Ajah',
-      corridor: d.areasList || req.location || 'Badore, Ajah, Sangotedo',
-      avatar: chosenAvatar,
-      skills: d.experience ? `${d.experience} years practical experience. Equipped: ${d.toolStatus || 'Yes'}` : 'Accredited trade specialist.',
-      bank: d.bank || '',
-      accountNum: d.account || '',
-      accountName: d.accountName || name,
-      is_on_duty: true,
-      is_hidden: false
-    };
-
-    if (existingIdx !== -1) {
-      profiles[existingIdx] = Object.assign(profiles[existingIdx], newProfile);
-    } else {
-      profiles.push(newProfile);
-    }
-    saveProfiles(profiles);
-
-    renderAccreditedArtisans();
-    if (typeof window.fetchRequests === 'function') {
-      window.fetchRequests();
-    }
-
-    if (window.showCustomAlert) {
-      await window.showCustomAlert({
-        title: 'Artisan Accredited & Activated',
-        message: `Artisan "${name}" is now approved and active on NIJEDEE!\n\n• Login Phone: ${phone}\n• Login Password: ${assignedPassword}\n• Artisan ID: ${newId}\n• Directory Status: Visible on artisans.html\n\nThe artisan can now log in to the Artisan Portal (artisan-portal.html) with their phone number and chosen password.`,
-        type: 'success'
       });
     }
   }
 
-  // Supervisor Dispatch Chat Handler in Admin Detail Modal
-  async function handleAdminSendDispatchMessage(e) {
-    e.preventDefault();
-    const input = document.getElementById('adminDispatchChatInput');
-    if (!input || !input.value.trim() || !window.currentActiveRequest) return;
-
-    const text = input.value.trim();
-    input.value = '';
-
-    const req = window.currentActiveRequest;
-    if (!req.details) req.details = {};
-    if (!Array.isArray(req.details.messages)) req.details.messages = [];
-
-    const newMsg = {
-      sender: 'admin',
-      sender_name: 'NIJEDEE Ops Supervisor',
-      text: text,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-
-    req.details.messages.push(newMsg);
-
-    // Update DOM
-    const list = document.getElementById('modalDispatchChatMessages');
-    if (list) {
-      const bubble = document.createElement('div');
-      bubble.style.cssText = 'align-self:center; background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; padding:8px 12px; border-radius:10px; font-size:0.82rem; max-width:88%; text-align:center;';
-      bubble.innerHTML = `
-        <div style="font-weight:800; font-size:0.72rem; text-transform:uppercase; margin-bottom:2px;">${escapeHtml(newMsg.sender_name)}</div>
-        <div>${escapeHtml(newMsg.text)}</div>
-        <div style="font-size:0.68rem; opacity:0.75; margin-top:3px;">${escapeHtml(newMsg.timestamp)}</div>
-      `;
-      list.appendChild(bubble);
-      list.scrollTop = list.scrollHeight;
+  // Gallery viewer for candidate documents / pictures
+  function openCandidateDocsGallery(appId, startIdx = 0) {
+    const app = (window.allRequests || []).find(r => String(r.id) === String(appId));
+    if (!app) return;
+    let images = Array.isArray(app.images) ? [...app.images] : [];
+    if (!images.length && app.details && app.details.avatar) {
+      images.push(app.details.avatar);
     }
-
-    // Persist to Supabase
-    const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
-    if (sb) {
-      try {
-        await sb.from('requests').update({ details: req.details }).eq('id', req.id);
-      } catch (err) {
-        console.warn('Sync admin supervisor message err:', err);
-      }
+    if (!images.length) return;
+    const items = images.map((img, i) => ({
+      src: img,
+      caption: `${app.client_name || 'Artisan Application'} \u2022 Document ${i + 1} of ${images.length}`
+    }));
+    if (window.openGlobalLightbox) {
+      window.openGlobalLightbox(items, startIdx, app.client_name || 'Artisan Application Documents');
+    } else if (window.openLightbox) {
+      window.openLightbox(items, startIdx, app.client_name || 'Artisan Application Documents');
     }
+  }
+
+  function toggleCandidateAppsView() {
+    _showAllCandidateApps = !_showAllCandidateApps;
+    renderArtisanApplications(window.allRequests || []);
   }
 
   // Exports
   window.renderAccreditedArtisans = renderAccreditedArtisans;
   window.renderArtisanApplications = renderArtisanApplications;
-  window.approveArtisanApplication = approveArtisanApplication;
-  window.handleAdminSendDispatchMessage = handleAdminSendDispatchMessage;
+  window.openArtisanAccreditationModal = openArtisanAccreditationModal;
+  window.closeArtisanAccreditationModal = closeArtisanAccreditationModal;
+  window.submitArtisanAccreditation = submitArtisanAccreditation;
+  window.declineCandidateApplication = declineCandidateApplication;
+  window.toggleArtisanDirectoryVisibility = toggleArtisanDirectoryVisibility;
+  window.openCandidateDocsGallery = openCandidateDocsGallery;
+  window.toggleCandidateAppsView = toggleCandidateAppsView;
 
   document.addEventListener('DOMContentLoaded', () => {
     renderAccreditedArtisans();

@@ -3056,24 +3056,26 @@
     try {
       const { data } = await sb.from('requests').select('*').eq('type', 'artisan_application');
       if (data && Array.isArray(data)) {
-        const accredited = data.filter(r => r.status === 'accredited' || r.status === 'completed' || r.details?.status === 'accredited');
+        const accredited = data.filter(r => r.status === 'accredited' || r.details?.status === 'accredited');
         if (accredited.length > 0) {
           let profiles = getActiveArtisans();
           let changed = false;
           accredited.forEach(r => {
             const d = r.details || {};
             const phone = r.client_phone || r.client_whatsapp;
-            const exists = profiles.some(p => p.phone === phone || p.id === d.artisan_id || p.id === r.id);
+            const artId = d.artisan_id || ('NJD-ART-' + r.id.slice(0, 4));
+            const exists = profiles.some(p => p.id === artId || p.app_id === r.id);
             if (!exists) {
               profiles.push({
-                id: d.artisan_id || ('NJD-ART-' + r.id.slice(0, 4)),
+                app_id: r.id,
+                id: artId,
                 name: r.client_name,
                 phone: phone,
                 trade: d.trade || 'Certified Technician',
-                base: r.location || 'Badore Axis • Ajah',
-                corridor: (d.work_areas && Array.isArray(d.work_areas)) ? d.work_areas.join(', ') : (r.location || 'Badore • Ajah'),
+                base: r.location || 'Badore Axis - Ajah',
+                corridor: (d.areasList && Array.isArray(d.areasList)) ? d.areasList.join(', ') : (d.areasList || r.location || 'Badore, Ajah'),
                 avatar: d.avatar || (r.images && r.images[0]) || 'assets/images/artisans/oluwasegun-balodin.jpg',
-                skills: d.experience ? `Experience: ${d.experience}. Tools equipped: ${d.tools || 'Yes'}.` : 'Certified field technician.',
+                skills: d.experience ? `Experience: ${d.experience}. Tools equipped: ${d.toolStatus || 'Yes'}.` : 'Certified field technician.',
                 is_on_duty: true,
                 is_hidden: d.is_hidden === true
               });

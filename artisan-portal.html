@@ -939,115 +939,143 @@
       const passInput = (document.getElementById('artLoginPassword')?.value || '').trim();
       const submitBtn = document.getElementById('artisanLoginSubmitBtn') || (e && e.target && e.target.querySelector ? e.target.querySelector('button[type="submit"]') : null);
 
+      if (!phoneInput || !passInput) {
+        if (window.showCustomAlert) {
+          window.showCustomAlert({
+            title: 'Credentials Required',
+            message: 'Please enter both your registered phone number and password to log in.',
+            type: 'info'
+          });
+        }
+        return;
+      }
+
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Opening Workspace...';
+        submitBtn.textContent = 'Verifying Credentials...';
       }
 
-      const profiles = getStoredProfiles();
       const cleanInput = phoneInput.replace(/\D/g, '');
 
-      // 1. Check local storage profiles
-      let matched = profiles.find(p => {
-        const p1 = (p.phone || '').replace(/\D/g, '');
-        const p2 = (p.alt_phone || '').replace(/\D/g, '');
-        return p1.endsWith(cleanInput.slice(-10)) || p2.endsWith(cleanInput.slice(-10)) || p.phone === phoneInput;
-      });
-
-      // 2. Fallback check for Master Account if not in profiles list or default
-      if (!matched && (!cleanInput || cleanInput.endsWith('7085329909'))) {
-        matched = { ...DEFAULT_MASTER_ARTISAN };
-        profiles.push(matched);
-        saveStoredProfiles(profiles);
-      }
-
-      if (matched) {
-        currentArtisan = matched;
+      // 1. Check Master Account (Oluwasegun David Balodin)
+      if (cleanInput.endsWith('7085329909') && passInput === 'Oluwasegun123') {
+        currentArtisan = { ...DEFAULT_MASTER_ARTISAN };
         try { localStorage.setItem(ARTISAN_STORAGE_KEY, JSON.stringify(currentArtisan)); } catch(e) {}
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Log In to Artisan Dashboard \u2192';
+        }
         initDashboardView();
         return;
       }
 
-      // 3. Fallback check: Search Supabase artisan_application records (fast 1.5s timeout)
-      if (!matched && cleanInput) {
-        try {
-          const sb = typeof getNijedeeSupabase === 'function' ? getNijedeeSupabase() : null;
-          if (sb) {
-            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 1500));
-            const queryPromise = sb.from('requests')
-              .select('*')
-              .eq('type', 'artisan_application')
-              .order('created_at', { ascending: false });
+      // 2. Query Supabase requests for artisan_application
+      try {
+        const sb = typeof getNijedeeSupabase === 'function' ? getNijedeeSupabase() : null;
+        if (sb) {
+          const { data, error } = await sb
+            .from('requests')
+            .select('*')
+            .eq('type', 'artisan_application')
+            .order('created_at', { ascending: false });
 
-            const res = await Promise.race([queryPromise, timeoutPromise]);
-            const data = res?.data;
+          if (!error && Array.isArray(data)) {
+            const found = data.find(req => {
+              const p1 = (req.client_phone || '').replace(/\D/g, '');
+              const p2 = (req.client_whatsapp || '').replace(/\D/g, '');
+              const last8 = cleanInput.slice(-8);
+              return (p1 && p1.endsWith(last8)) || (p2 && p2.endsWith(last8));
+            });
 
-            if (data && data.length) {
-              const found = data.find(req => {
-                const p1 = (req.client_phone || '').replace(/\D/g, '');
-                const p2 = (req.client_whatsapp || '').replace(/\D/g, '');
-                return p1.endsWith(cleanInput.slice(-10)) || p2.endsWith(cleanInput.slice(-10));
-              });
+            if (found) {
+              const d = found.details || {};
+              const isAccredited = found.status === 'accredited' || d.status === 'accredited';
 
-              if (found) {
-                matched = {
-                  id: found.ref_code || ('ART-' + found.id),
-                  name: found.client_name,
-                  phone: found.client_phone,
-                  alt_phone: found.client_whatsapp,
-                  whatsapp: found.client_whatsapp,
-                  password: passInput || '123456',
-                  trade: found.details?.trade || 'Verified Artisan',
-                  base: (found.location || 'Ajah') + ' Axis',
-                  corridor: (found.details?.areasList || []).join(', ') || found.location || 'Lagos',
-                  avatar: found.details?.avatar || (found.media_urls && found.media_urls[0]) || 'assets/images/artisans/default-artisan.jpg',
-                  skills: `${found.details?.trade || 'Artisan'} - ${found.details?.experience || '3+'} experience. Status: Verified`,
-                  bank: found.details?.bank || 'Bank Account',
-                  accountNum: found.details?.account || '',
-                  accountName: found.details?.accountName || found.client_name,
-                  is_on_duty: true
-                };
-                profiles.push(matched);
-                saveStoredProfiles(profiles);
+              // If candidate is still pending review
+              if (!isAccredited) {
+                if (submitBtn) {
+                  submitBtn.disabled = false;
+                  submitBtn.textContent = 'Log In to Artisan Dashboard \u2192';
+                }
+                if (window.showCustomAlert) {
+                  window.showCustomAlert({
+                    title: 'Application Pending Accreditation',
+                    message: `Hello ${found.client_name || 'Artisan'}, your candidate application (${found.ref_code || ''}) is currently pending accreditation review by NIJEDEE Operations.\n\nOur team is reviewing your uploaded documents and credentials. Once approved and accredited, your portal login will be activated and you will receive a notification via WhatsApp.`,
+                    type: 'info'
+                  });
+                }
+                return;
               }
+
+              // Verify Password
+              const expectedPassword = d.assignedPassword || d.password || '';
+              if (passInput !== expectedPassword) {
+                if (submitBtn) {
+                  submitBtn.disabled = false;
+                  submitBtn.textContent = 'Log In to Artisan Dashboard \u2192';
+                }
+                if (window.showCustomAlert) {
+                  window.showCustomAlert({
+                    title: 'Incorrect Password',
+                    message: 'The password you entered is incorrect. Please check your assigned credentials or contact the NIJEDEE Onboarding Desk.',
+                    type: 'danger'
+                  });
+                }
+                return;
+              }
+
+              // Successfully Authenticated Accredited Artisan
+              const artId = d.artisan_id || ('NJD-ART-' + (found.id ? found.id.slice(0, 4) : 'app'));
+              currentArtisan = {
+                id: artId,
+                name: found.client_name,
+                phone: found.client_phone,
+                alt_phone: found.client_whatsapp || found.client_phone,
+                whatsapp: found.client_whatsapp || found.client_phone,
+                password: expectedPassword,
+                trade: d.trade ? (d.trade.charAt(0).toUpperCase() + d.trade.slice(1)) : 'Certified Artisan',
+                base: found.location || 'Badore Axis \u2022 Ajah',
+                corridor: (Array.isArray(d.areasList) ? d.areasList.join(', ') : d.areasList) || found.location || 'Badore, Ajah, Sangotedo',
+                avatar: d.avatar || (found.images && found.images[0]) || 'assets/images/artisans/default-artisan.jpg',
+                skills: d.experience ? `${d.experience} years practical experience. Equipped: ${d.toolStatus || 'Yes'}` : 'Accredited trade specialist.',
+                bank: d.bank || 'Bank Account',
+                accountNum: d.account || '',
+                accountName: d.accountName || found.client_name,
+                is_on_duty: true
+              };
+
+              try {
+                localStorage.setItem(ARTISAN_STORAGE_KEY, JSON.stringify(currentArtisan));
+              } catch(e) {}
+
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Log In to Artisan Dashboard \u2192';
+              }
+
+              initDashboardView();
+              return;
             }
           }
-        } catch (sbErr) {
-          console.warn('Supabase cloud profile check note:', sbErr);
         }
+      } catch (sbErr) {
+        console.warn('Supabase authentication error:', sbErr);
       }
 
-      // 4. Fallback: Auto-generate an active session for any phone number entered so the artisan is NEVER blocked
-      if (!matched) {
-        matched = {
-          id: 'NJD-ART-' + (cleanInput.slice(-4) || '4561'),
-          name: phoneInput ? `Verified Artisan (${phoneInput})` : 'Oluwasegun David Balodin',
-          phone: phoneInput || '07085329909',
-          alt_phone: phoneInput || '07085329909',
-          whatsapp: phoneInput || '07085329909',
-          password: passInput || '123456',
-          trade: 'Master Plumber & Pipefitter',
-          base: 'Badore Axis \u2022 Ajah',
-          corridor: 'Badore, Addo, Langbasa, Ajah Central',
-          avatar: 'assets/images/artisans/oluwasegun-balodin.jpg',
-          skills: 'Concealed leak detection, burst pipes, PPR/PEX heat fusion, borehole plumbing, overhead tank hookups, booster pumps, water heaters.',
-          bank: 'OPay Digital Services',
-          accountNum: '9083242306',
-          accountName: 'Verified Artisan',
-          is_on_duty: true
-        };
-        profiles.push(matched);
-        saveStoredProfiles(profiles);
-      }
-
+      // No matching account found
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Log In to Artisan Dashboard \u2192';
       }
 
-      currentArtisan = matched;
-      try {
-        localStorage.setItem(ARTISAN_STORAGE_KEY, JSON.stringify(currentArtisan));
+      if (window.showCustomAlert) {
+        window.showCustomAlert({
+          title: 'Artisan Account Not Found',
+          message: `No accredited technician profile was found for phone number "${phoneInput}".\n\nIf you have not registered yet, please submit your application on the Become an Artisan page.`,
+          type: 'warning'
+        });
+      }
+    }
       } catch(e) {}
       initDashboardView();
     }

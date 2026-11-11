@@ -1305,6 +1305,11 @@
       <span>All Requests</span>
       <span id="mobileSidebarNewCount" class="adm-nav__badge" style="display:none;">0</span>
     </a>
+    <a class="adm-nav__link" onclick="switchTab('errands'); toggleMobileMenu(false);">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <span>Errand Services</span>
+      <span id="mobileSidebarErrandsCount" class="adm-nav__badge" style="background:#D97706; display:none;">0</span>
+    </a>
     <a class="adm-nav__link" onclick="switchTab('products'); toggleMobileMenu(false);">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
       <span>Shop Products</span>
@@ -1364,6 +1369,11 @@
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         <span>All Requests</span>
         <span id="sidebarNewCount" class="adm-nav__badge" style="display:none;">0</span>
+      </a>
+      <a class="adm-nav__link" onclick="switchTab('errands')">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <span>Errand Services</span>
+        <span id="sidebarErrandsCount" class="adm-nav__badge" style="background:#D97706; display:none;">0</span>
       </a>
       <a class="adm-nav__link" onclick="switchTab('products')">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -1578,6 +1588,118 @@
             <tbody id="requestsTableBody">
               <tr>
                 <td colspan="9" style="text-align:center; padding:40px; color:var(--adm-muted);">Loading live requests...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CONTENT: ERRAND SERVICES TAB -->
+    <section id="tabErrands" class="adm-content" style="display:none;">
+
+      <!-- KPI Metrics Bar -->
+      <div class="adm-stats">
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>Total Errand Bookings</h4>
+            <div id="kpiErrandsTotal" class="adm-stat-number" style="color:#D97706;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#FEF3C7; color:#B45309;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>New / Unassigned</h4>
+            <div id="kpiErrandsNew" class="adm-stat-number" style="color:#E11D48;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#FFE4E6; color:#BE123C;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>In Transit / Active</h4>
+            <div id="kpiErrandsInTransit" class="adm-stat-number" style="color:#2563EB;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#DBEAFE; color:#1D4ED8;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-stat-card">
+          <div class="adm-stat-info">
+            <h4>Delivered / Completed</h4>
+            <div id="kpiErrandsCompleted" class="adm-stat-number" style="color:#16A34A;">0</div>
+          </div>
+          <div class="adm-stat-icon" style="background:#DCFCE7; color:#15803D;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Action Bar -->
+      <div class="adm-filter-bar">
+        <div class="adm-search-wrap">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="errandSearchInput" class="adm-search-input" placeholder="Search ref code, customer, pickup, delivery, runner..." oninput="window.renderErrandsDesk(allRequests)">
+        </div>
+
+        <!-- Filter by Errand Category -->
+        <select id="errandCategoryFilter" class="adm-filter-select" onchange="window.renderErrandsDesk(allRequests)">
+          <option value="">All Errand Categories</option>
+          <option value="pickup">Pickup &amp; Delivery</option>
+          <option value="grocery">Grocery Shopping</option>
+          <option value="food">Food Delivery</option>
+          <option value="laundry">Laundry Services</option>
+          <option value="school">School Runs</option>
+          <option value="fuel">Fuel &amp; Cooking Gas</option>
+          <option value="materials">Building Materials</option>
+          <option value="home">Home &amp; Office Errands</option>
+        </select>
+
+        <!-- Filter by Corridor -->
+        <select id="errandCorridorFilter" class="adm-filter-select" onchange="window.renderErrandsDesk(allRequests)">
+          <option value="">All Operational Corridors</option>
+          <option value="Badore">Badore Axis</option>
+          <option value="Ajah">Ajah Central</option>
+          <option value="Sangotedo">Sangotedo</option>
+          <option value="Lekki">Lekki Corridor</option>
+        </select>
+
+        <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="fetchRequests(true)" style="margin-left:auto;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          <span>Refresh Errands</span>
+        </button>
+      </div>
+
+      <!-- Errand Bookings Table -->
+      <div class="adm-table-wrap">
+        <div class="adm-table-header">
+          <h3>Errand &amp; Delivery Bookings</h3>
+          <span style="font-size:0.8rem; color:var(--adm-muted);">Manage runners, assign motorbikes/vehicles, and track delivery progress</span>
+        </div>
+        <div class="adm-table-scroll">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Ref &amp; Date</th>
+                <th>Service Category</th>
+                <th>Customer &amp; Phone</th>
+                <th>Corridor &amp; Pickup</th>
+                <th>Delivery Address</th>
+                <th>Assigned Runner</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminErrandsTableBody">
+              <tr>
+                <td colspan="8" style="text-align:center; padding:40px; color:var(--adm-muted);">Loading live errand bookings...</td>
               </tr>
             </tbody>
           </table>
@@ -2639,7 +2761,9 @@
 </div>
 
 <style>
-  #adminUserChatModal.open {
+  #adminUserChatModal.open,
+  #assignErrandBoyModal.open,
+  #adminArtisanAccreditationModal.open {
     display: flex !important;
     opacity: 1 !important;
     visibility: visible !important;
@@ -2688,6 +2812,175 @@
   </div>
 </div>
 
+<!-- ASSIGN ERRAND RUNNER MODAL -->
+<div id="assignErrandBoyModal" class="modal-backdrop" onclick="if(event.target === this) window.closeAssignErrandModal()" style="display:none; position:fixed; inset:0; background:rgba(7,34,79,0.7); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+  <div style="background:#FFFFFF; border-radius:18px; width:100%; max-width:540px; box-shadow:0 20px 50px rgba(7,34,79,0.3); border:1px solid #E2E8F0; overflow:hidden;">
+    <div style="background:var(--adm-navy, #07224F); color:#FFFFFF; padding:18px 22px; display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FFB703" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <div>
+          <h3 style="font-size:1.02rem; font-weight:800; margin:0; color:#FFFFFF;">Assign Errand Runner / Courier</h3>
+          <p style="font-size:0.75rem; color:#BAE6FD; margin:2px 0 0 0;">Dispatch field personnel to execute customer delivery</p>
+        </div>
+      </div>
+      <button type="button" onclick="window.closeAssignErrandModal()" style="background:rgba(255,255,255,0.15); border:none; color:#FFFFFF; width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center; line-height:1;">&times;</button>
+    </div>
+
+    <!-- Summary Box -->
+    <div style="padding:16px 22px; background:#F8FAFC; border-bottom:1px solid #E2E8F0;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <span id="assignErrandRefCode" style="font-family:monospace; font-weight:800; color:#0B5ED7; background:#EFF6FF; padding:2px 8px; border-radius:4px; font-size:0.84rem;">ERD-00000</span>
+        <span id="assignErrandCategory" style="font-size:0.8rem; font-weight:700; color:#475569;">Errand Category</span>
+      </div>
+      <div style="font-weight:700; color:#0F172A; font-size:0.92rem;" id="assignErrandCustomer">Customer Name (Phone)</div>
+      <div style="font-size:0.8rem; color:#64748B; margin-top:4px;" id="assignErrandRoute">Route</div>
+    </div>
+
+    <!-- Form -->
+    <form onsubmit="window.submitAssignErrandForm(event); return false;" style="padding:22px;">
+      <div style="margin-bottom:14px;">
+        <label style="display:block; font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:5px;">Errand Runner Name *</label>
+        <input type="text" id="errandRunnerName" placeholder="e.g. Babatunde Alabi" required style="width:100%; padding:10px 14px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.9rem; outline:none; box-sizing:border-box;">
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:5px;">Runner Phone Number *</label>
+          <input type="tel" id="errandRunnerPhone" placeholder="e.g. 08123456789" required style="width:100%; padding:10px 14px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.9rem; outline:none; box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:5px;">Vehicle / Transport</label>
+          <select id="errandRunnerVehicle" style="width:100%; padding:10px 14px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.9rem; outline:none; box-sizing:border-box; background:#FFFFFF;">
+            <option value="Motorcycle">Motorcycle (Dispatch Bike)</option>
+            <option value="Bicycle">Bicycle</option>
+            <option value="Vehicle / Minivan">Vehicle / Minivan</option>
+            <option value="On Foot">On Foot (Close Corridor)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <label style="display:block; font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:5px;">Dispatch Notes / Instructions</label>
+        <input type="text" id="errandDispatchNotes" placeholder="e.g. Verify items at pickup before handover" style="width:100%; padding:10px 14px; border:1.5px solid #CBD5E1; border-radius:8px; font-size:0.9rem; outline:none; box-sizing:border-box;">
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button type="button" class="adm-btn adm-btn--outline" onclick="window.closeAssignErrandModal()">Cancel</button>
+        <button type="submit" id="confirmAssignErrandBtn" class="adm-btn adm-btn--primary" style="background:#15803D; border-color:#15803D; font-weight:800;">
+          Confirm &amp; Dispatch Runner
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ARTISAN REVIEW & ACCREDITATION MODAL -->
+<div id="adminArtisanAccreditationModal" class="modal-backdrop" onclick="if(event.target === this) window.closeArtisanAccreditationModal()" style="display:none; position:fixed; inset:0; background:rgba(7,34,79,0.7); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+  <div style="background:#FFFFFF; border-radius:18px; width:100%; max-width:680px; max-height:90vh; display:flex; flex-direction:column; box-shadow:0 20px 50px rgba(7,34,79,0.3); border:1px solid #E2E8F0; overflow:hidden;">
+    <div style="background:var(--adm-navy, #07224F); color:#FFFFFF; padding:18px 22px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#22C55E" stroke-width="2.2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        <div>
+          <h3 style="font-size:1.02rem; font-weight:800; margin:0; color:#FFFFFF;">Review &amp; Accredit Candidate Artisan</h3>
+          <p style="font-size:0.75rem; color:#BAE6FD; margin:2px 0 0 0;">Verify credentials, assign technician ID, and grant portal access</p>
+        </div>
+      </div>
+      <button type="button" onclick="window.closeArtisanAccreditationModal()" style="background:rgba(255,255,255,0.15); border:none; color:#FFFFFF; width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center; line-height:1;">&times;</button>
+    </div>
+
+    <!-- Candidate Overview & Verification Details (Scrollable) -->
+    <div style="flex:1; overflow-y:auto; padding:20px 24px; background:#F8FAFC;">
+      <!-- Profile Card -->
+      <div style="display:flex; gap:16px; align-items:center; background:#FFFFFF; padding:16px; border-radius:12px; border:1px solid #E2E8F0; margin-bottom:16px;">
+        <img id="accreditModalAvatar" src="assets/images/artisans/default-artisan.jpg" alt="Artisan Photo" style="width:64px; height:64px; border-radius:10px; object-fit:cover; border:2px solid #0B5ED7; flex-shrink:0;">
+        <div style="flex:1;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <h4 id="accreditModalName" style="font-size:1.05rem; font-weight:800; color:#0F172A; margin:0 0 4px;">Candidate Name</h4>
+            <span id="accreditModalRef" style="font-family:monospace; font-size:0.75rem; background:#EFF6FF; color:#0B5ED7; padding:2px 8px; border-radius:4px; font-weight:700;">ART-REF</span>
+          </div>
+          <div style="font-size:0.84rem; color:#475569; display:flex; gap:12px; flex-wrap:wrap;">
+            <span>Phone: <strong id="accreditModalPhone" style="color:#0B5ED7;">-</strong></span>
+            <span>WhatsApp: <strong id="accreditModalWhatsapp" style="color:#16A34A;">-</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Grid -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+        <div style="background:#FFFFFF; padding:12px; border-radius:8px; border:1px solid #E2E8F0;">
+          <div style="font-size:0.75rem; text-transform:uppercase; color:#64748B; font-weight:700;">Trade &amp; Experience</div>
+          <div id="accreditModalTradeExp" style="font-weight:700; color:#0F172A; font-size:0.88rem; margin-top:2px;">Plumbing &bull; 3-5 years</div>
+        </div>
+        <div style="background:#FFFFFF; padding:12px; border-radius:8px; border:1px solid #E2E8F0;">
+          <div style="font-size:0.75rem; text-transform:uppercase; color:#64748B; font-weight:700;">Tooling &amp; Equipment</div>
+          <div id="accreditModalTools" style="font-weight:700; color:#0F172A; font-size:0.88rem; margin-top:2px;">Yes, fully equipped</div>
+        </div>
+        <div style="background:#FFFFFF; padding:12px; border-radius:8px; border:1px solid #E2E8F0;">
+          <div style="font-size:0.75rem; text-transform:uppercase; color:#64748B; font-weight:700;">Base &amp; Corridors</div>
+          <div id="accreditModalCoverage" style="font-weight:700; color:#0F172A; font-size:0.88rem; margin-top:2px;">Badore Axis, Ajah, Sangotedo</div>
+        </div>
+        <div style="background:#FFFFFF; padding:12px; border-radius:8px; border:1px solid #E2E8F0;">
+          <div style="font-size:0.75rem; text-transform:uppercase; color:#64748B; font-weight:700;">Bank Payout Details</div>
+          <div id="accreditModalBank" style="font-weight:700; color:#0F172A; font-size:0.88rem; margin-top:2px;">OPay - 9083242306</div>
+        </div>
+      </div>
+
+      <!-- Uploaded Verification Documents Gallery -->
+      <div style="background:#FFFFFF; padding:14px; border-radius:10px; border:1px solid #E2E8F0; margin-bottom:16px;">
+        <div style="font-size:0.78rem; text-transform:uppercase; color:#475569; font-weight:800; margin-bottom:8px;">Identity &amp; Credential Documents</div>
+        <div id="accreditModalDocsList" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <span style="font-size:0.82rem; color:#64748B;">No attached documents.</span>
+        </div>
+      </div>
+
+      <!-- Accreditation Configuration Form -->
+      <div style="background:#FFFFFF; padding:16px; border-radius:10px; border:1.5px solid #BFDBFE;">
+        <div style="font-size:0.85rem; font-weight:800; color:#1E40AF; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Accreditation &amp; Portal Credentials</span>
+        </div>
+
+        <form id="artisanAccreditForm" onsubmit="window.submitArtisanAccreditation(event); return false;">
+          <input type="hidden" id="accreditTargetAppId" value="">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#334155; margin-bottom:4px;">Assigned Artisan ID *</label>
+              <input type="text" id="accreditArtisanIdInput" required style="width:100%; padding:9px 12px; border:1.5px solid #CBD5E1; border-radius:6px; font-size:0.88rem; font-family:monospace; font-weight:700; box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#334155; margin-bottom:4px;">Trade Title *</label>
+              <input type="text" id="accreditArtisanTradeInput" required style="width:100%; padding:9px 12px; border:1.5px solid #CBD5E1; border-radius:6px; font-size:0.88rem; box-sizing:border-box;">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#334155; margin-bottom:4px;">Operational Base *</label>
+              <input type="text" id="accreditArtisanBaseInput" required style="width:100%; padding:9px 12px; border:1.5px solid #CBD5E1; border-radius:6px; font-size:0.88rem; box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#334155; margin-bottom:4px;">Portal Login Password *</label>
+              <input type="text" id="accreditArtisanPasswordInput" required style="width:100%; padding:9px 12px; border:1.5px solid #CBD5E1; border-radius:6px; font-size:0.88rem; box-sizing:border-box;">
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:14px; border-top:1px solid #E2E8F0;">
+            <button type="button" class="adm-btn adm-btn--danger adm-btn--sm" onclick="window.declineCandidateApplication()">
+              Decline Application
+            </button>
+            <div style="display:flex; gap:10px;">
+              <button type="button" class="adm-btn adm-btn--outline" onclick="window.closeArtisanAccreditationModal()">Cancel</button>
+              <button type="submit" id="confirmAccreditArtisanBtn" class="adm-btn adm-btn--primary" style="background:#15803D; border-color:#15803D; font-weight:800;">
+                Approve &amp; Accredit Artisan
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- FULL IMAGE LIGHTBOX (Under-photo close button) -->
 <div id="admLightbox" class="adm-lightbox" onclick="closeLightbox()">
   <div class="adm-lightbox-content" onclick="event.stopPropagation()">
@@ -2714,6 +3007,7 @@
 <script src="assets/js/custom-dialog.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/admin-errands.js"></script>
 <script src="assets/js/admin-catalog.js"></script>
 <script src="assets/js/admin-artisans.js"></script>
 <script src="assets/js/admin-vendors.js"></script>
@@ -2991,6 +3285,7 @@
     document.querySelectorAll('.adm-nav__link').forEach(link => link.classList.remove('active'));
 
     const tabReq = document.getElementById('tabRequests');
+    const tabErrands = document.getElementById('tabErrands');
     const tabProd = document.getElementById('tabProducts');
     const tabVendors = document.getElementById('tabVendors');
     const tabProp = document.getElementById('tabProperties');
@@ -3001,6 +3296,7 @@
     const subtitle = document.getElementById('topbarSubtitle');
 
     if (tabReq) tabReq.style.display = 'none';
+    if (tabErrands) tabErrands.style.display = 'none';
     if (tabProd) tabProd.style.display = 'none';
     if (tabVendors) tabVendors.style.display = 'none';
     if (tabProp) tabProp.style.display = 'none';
@@ -3015,6 +3311,14 @@
       document.querySelectorAll('.adm-nav__link').forEach(l => {
         if (l.textContent.includes('All Requests')) l.classList.add('active');
       });
+    } else if (tab === 'errands') {
+      if (tabErrands) tabErrands.style.display = 'block';
+      title.textContent = 'Errand Boy & Delivery Services Desk';
+      if (subtitle) subtitle.textContent = 'Track errand bookings, assign active runners, and monitor live deliveries';
+      document.querySelectorAll('.adm-nav__link').forEach(l => {
+        if (l.textContent.includes('Errand Services')) l.classList.add('active');
+      });
+      if (typeof window.renderErrandsDesk === 'function') window.renderErrandsDesk(allRequests);
     } else if (tab === 'products') {
       if (tabProd) tabProd.style.display = 'block';
       title.textContent = 'Shop Products & Materials Inventory';
@@ -3086,6 +3390,12 @@
     window.allRequests = allRequests;
     renderRequests();
     updateKPIs();
+    if (typeof window.updateErrandsKPIs === 'function') {
+      window.updateErrandsKPIs(allRequests);
+    }
+    if (activeTabName === 'errands' && typeof window.renderErrandsDesk === 'function') {
+      window.renderErrandsDesk(allRequests);
+    }
     if (typeof window.renderAccreditedArtisans === 'function') {
       window.renderAccreditedArtisans();
     }
@@ -3118,6 +3428,10 @@
     document.getElementById('kpiInProgress').textContent = inProg;
     document.getElementById('kpiCompleted').textContent = completed;
     document.getElementById('tableRecordCount').textContent = total;
+
+    if (typeof window.updateErrandsKPIs === 'function') {
+      window.updateErrandsKPIs(allRequests);
+    }
 
     // Sidebar badge & topbar notification dot
     const sbBadge = document.getElementById('sidebarNewCount');
