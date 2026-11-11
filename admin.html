@@ -1508,6 +1508,7 @@
         <!-- Filter by Category/Type -->
         <select id="filterType" class="adm-filter-select" onchange="renderRequests()">
           <option value="all">All Channels / Types</option>
+          <option value="customer_support">Customer Live Support Chats</option>
           <option value="errand_request">Errand &amp; Delivery Services</option>
           <option value="service_booking">Service Booking (book.html)</option>
           <option value="artisan_dispatch">Artisan Dispatch (artisans.html)</option>
@@ -3208,9 +3209,12 @@
         : `<span style="color:#94A3B8; font-size:0.75rem;">None</span>`;
 
       const isErrand = req.type === 'errand_request';
+      const isSupportChat = req.type === 'customer_support';
       const typeBadge = isErrand
         ? `<span class="adm-type-tag" style="background:#FEF3C7; color:#92400E; border:1px solid #FCD34D; font-weight:800;">Errand &amp; Delivery</span>`
-        : `<span class="adm-type-tag">${typeLabel}</span>`;
+        : (isSupportChat
+          ? `<span class="adm-type-tag" style="background:#EEF2FF; color:#4338CA; border:1px solid #C7D2FE; font-weight:800;">Live Support Chat</span>`
+          : `<span class="adm-type-tag">${typeLabel}</span>`);
 
       return `
         <tr class="${isNew ? 'is-unread' : ''}" style="cursor:pointer;" onclick="openDetailModal('${req.id}')">
@@ -3238,6 +3242,11 @@
               ${(req.type === 'artisan_dispatch' || req.type === 'errand_request') ? `
                 <button type="button" class="adm-btn adm-btn--sm" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; font-weight:700;" onclick="event.stopPropagation(); openDetailModal('${req.id}'); setTimeout(() => document.getElementById('modalDispatchChatSection')?.scrollIntoView({behavior:'smooth'}), 150);">
                   Live Chat
+                </button>
+              ` : ''}
+              ${req.type === 'customer_support' ? `
+                <button type="button" class="adm-btn adm-btn--sm" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; font-weight:700;" onclick="event.stopPropagation(); window.openAdminUserChat ? window.openAdminUserChat('${(req.details && req.details.user_id) || req.id}') : openDetailModal('${req.id}')">
+                  Support Chat
                 </button>
               ` : ''}
             </div>
@@ -3342,17 +3351,17 @@
       detailsContainer.innerHTML = html;
     }
 
-    // Render Live Dispatch Chat if artisan dispatch or errand request
+    // Render Live Dispatch Chat if artisan dispatch, errand request, or customer support chat
     const chatSec = document.getElementById('modalDispatchChatSection');
     if (chatSec) {
-      if (req.type === 'artisan_dispatch' || req.type === 'errand_request') {
+      if (req.type === 'artisan_dispatch' || req.type === 'errand_request' || req.type === 'customer_support') {
         chatSec.style.display = 'block';
         const messages = Array.isArray(details.messages) ? details.messages : [];
         renderAdminChatThread(messages);
 
         if (window.adminChatInterval) clearInterval(window.adminChatInterval);
         window.adminChatInterval = setInterval(async () => {
-          if (!currentActiveRequest || (currentActiveRequest.type !== 'artisan_dispatch' && currentActiveRequest.type !== 'errand_request')) {
+          if (!currentActiveRequest || (currentActiveRequest.type !== 'artisan_dispatch' && currentActiveRequest.type !== 'errand_request' && currentActiveRequest.type !== 'customer_support')) {
             clearInterval(window.adminChatInterval);
             return;
           }
@@ -3820,6 +3829,7 @@
 
   function getTypeLabel(type) {
     switch (type) {
+      case 'customer_support': return 'Live Support Chat';
       case 'errand_request': return 'Errand & Delivery';
       case 'service_booking': return 'Service Booking';
       case 'artisan_dispatch': return 'Artisan Dispatch';
