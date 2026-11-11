@@ -1310,6 +1310,11 @@
       <span>Shop Products</span>
       <span id="mobileSidebarProductsCount" class="adm-nav__badge" style="background:#2563EB;">0</span>
     </a>
+    <a class="adm-nav__link" onclick="switchTab('vendors'); toggleMobileMenu(false);">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>Shop Vendors</span>
+      <span id="mobileSidebarVendorsCount" class="adm-nav__badge" style="background:#0284C7; display:none;">0</span>
+    </a>
     <a class="adm-nav__link" onclick="switchTab('properties'); toggleMobileMenu(false);">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span>Properties</span>
@@ -1364,6 +1369,11 @@
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         <span>Shop Products</span>
         <span id="sidebarProductsCount" class="adm-nav__badge" style="background:#2563EB;">0</span>
+      </a>
+      <a class="adm-nav__link" onclick="switchTab('vendors')">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span>Shop Vendors</span>
+        <span id="sidebarVendorsCount" class="adm-nav__badge" style="background:#0284C7; display:none;">0</span>
       </a>
       <a class="adm-nav__link" onclick="switchTab('properties')">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -1502,6 +1512,7 @@
           <option value="service_booking">Service Booking (book.html)</option>
           <option value="artisan_dispatch">Artisan Dispatch (artisans.html)</option>
           <option value="artisan_application">Artisan Network Application</option>
+          <option value="vendor_application">Shop Vendor Application (become-vendor.html)</option>
           <option value="academy_enrollment">Academy Enrollment</option>
           <option value="materials_order">Materials Mart Orders</option>
           <option value="property_inquiry">Property Inspection Inquiry</option>
@@ -1789,6 +1800,109 @@
               <tr>
                 <td colspan="8" style="text-align:center; padding:40px; color:var(--adm-muted);">Loading real estate listings...</td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB: SHOP VENDORS & MERCHANTS -->
+    <section id="tabVendors" class="adm-content" style="display:none;">
+
+      <!-- Vendors KPI Overview -->
+      <div class="adm-kpis-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 24px;">
+        <div class="adm-kpi-card">
+          <div class="adm-kpi-info">
+            <span class="adm-kpi-title">Accredited Merchants</span>
+            <span class="adm-kpi-value" id="kpiAccreditedVendorsCount">0</span>
+          </div>
+          <div class="adm-kpi-icon" style="background:#ECFDF5; color:#10B981;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-kpi-card">
+          <div class="adm-kpi-info">
+            <span class="adm-kpi-title">Pending Applications</span>
+            <span class="adm-kpi-value" id="kpiPendingVendorsCount">0</span>
+          </div>
+          <div class="adm-kpi-icon" style="background:#FEF3C7; color:#D97706;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+        </div>
+
+        <div class="adm-kpi-card">
+          <div class="adm-kpi-info">
+            <span class="adm-kpi-title">Marketplace Scope</span>
+            <span class="adm-kpi-value" style="font-size:1.15rem; color:#0B5ED7;">Badore &middot; Ajah &middot; Lekki</span>
+          </div>
+          <div class="adm-kpi-icon" style="background:#EFF6FF; color:#1D4ED8;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 1: Accredited Shop Vendors -->
+      <div class="adm-table-card" style="margin-bottom: 28px;">
+        <div class="adm-table-card__header">
+          <div>
+            <h3 class="adm-table-card__title">Accredited Shop Merchants</h3>
+            <span style="font-size:0.82rem; color:var(--adm-muted);">Verified store partners with product listing and inventory privileges</span>
+          </div>
+          <a href="vendor-portal.html" target="_blank" class="adm-btn adm-btn--outline adm-btn--sm" style="display:inline-flex; align-items:center; gap:6px;">
+            <span>Open Vendor Portal</span>
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <div class="adm-table-wrap">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Store</th>
+                <th>Business Name &amp; ID</th>
+                <th>Owner &amp; Corridor</th>
+                <th>Login Phone</th>
+                <th>Products Listed</th>
+                <th>Live Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="accreditedVendorsTableBody">
+              <!-- Rendered by admin-vendors.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 2: Candidate Shop Vendor Applications -->
+      <div class="adm-table-card">
+        <div class="adm-table-card__header">
+          <div>
+            <h3 class="adm-table-card__title">Candidate Shop Applications</h3>
+            <span style="font-size:0.82rem; color:var(--adm-muted);">Review incoming store registration submissions from become-vendor.html</span>
+          </div>
+          <button type="button" class="adm-btn adm-btn--outline adm-btn--sm" onclick="if(window.renderVendorApplications) window.renderVendorApplications(allRequests)">
+            <span>Refresh Candidates</span>
+          </button>
+        </div>
+
+        <div class="adm-table-wrap">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>Store &amp; Applicant</th>
+                <th>Goods &amp; Corridor</th>
+                <th>Phone &amp; Address</th>
+                <th>Business Reg / CAC</th>
+                <th>Photos / Docs</th>
+                <th>Status</th>
+                <th style="text-align:right;">Accreditation Action</th>
+              </tr>
+            </thead>
+            <tbody id="candidateVendorsTableBody">
+              <!-- Rendered by admin-vendors.js -->
             </tbody>
           </table>
         </div>
@@ -2593,6 +2707,7 @@
 <script src="assets/js/supabase-client.js"></script>
 <script src="assets/js/admin-catalog.js"></script>
 <script src="assets/js/admin-artisans.js"></script>
+<script src="assets/js/admin-vendors.js"></script>
 <script src="assets/js/custom-picker.js"></script>
 <script src="assets/js/nigerian-states-lgas.js"></script>
 <script src="assets/js/admin-users.js"></script>
@@ -2868,6 +2983,7 @@
 
     const tabReq = document.getElementById('tabRequests');
     const tabProd = document.getElementById('tabProducts');
+    const tabVendors = document.getElementById('tabVendors');
     const tabProp = document.getElementById('tabProperties');
     const tabArt = document.getElementById('tabArtisans');
     const tabUsers = document.getElementById('tabUsers');
@@ -2877,6 +2993,7 @@
 
     if (tabReq) tabReq.style.display = 'none';
     if (tabProd) tabProd.style.display = 'none';
+    if (tabVendors) tabVendors.style.display = 'none';
     if (tabProp) tabProp.style.display = 'none';
     if (tabArt) tabArt.style.display = 'none';
     if (tabUsers) tabUsers.style.display = 'none';
@@ -2897,6 +3014,15 @@
         if (l.textContent.includes('Shop Products')) l.classList.add('active');
       });
       if (typeof fetchProducts === 'function') fetchProducts();
+    } else if (tab === 'vendors') {
+      if (tabVendors) tabVendors.style.display = 'block';
+      title.textContent = 'Shop Vendors & Merchant Accreditation Desk';
+      if (subtitle) subtitle.textContent = 'Manage registered store merchants, approve candidate applications, and oversee catalog';
+      document.querySelectorAll('.adm-nav__link').forEach(l => {
+        if (l.textContent.includes('Shop Vendors')) l.classList.add('active');
+      });
+      if (typeof window.renderAccreditedVendors === 'function') window.renderAccreditedVendors();
+      if (typeof window.renderVendorApplications === 'function') window.renderVendorApplications(allRequests);
     } else if (tab === 'properties') {
       if (tabProp) tabProp.style.display = 'block';
       title.textContent = 'Properties & Real Estate Listings';
@@ -2956,6 +3082,12 @@
     }
     if (typeof window.renderArtisanApplications === 'function') {
       window.renderArtisanApplications(allRequests);
+    }
+    if (typeof window.renderAccreditedVendors === 'function') {
+      window.renderAccreditedVendors();
+    }
+    if (typeof window.renderVendorApplications === 'function') {
+      window.renderVendorApplications(allRequests);
     }
     if (typeof window.fetchAdminUsers === 'function') {
       window.fetchAdminUsers();
@@ -3684,6 +3816,7 @@
       case 'service_booking': return 'Service Booking';
       case 'artisan_dispatch': return 'Artisan Dispatch';
       case 'artisan_application': return 'Artisan Application';
+      case 'vendor_application': return 'Vendor Application';
       case 'academy_enrollment': return 'Academy Enrollment';
       case 'materials_order': return 'Materials Mart';
       case 'property_inquiry': return 'Property Inquiry';

@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open a Shop &middot; Sell on NIJEDEE Marketplace | NIJEDEE</title>
+  <meta name="description" content="Register your building materials store, paint depot, electrical shop or hardware store on NIJEDEE Marketplace. Reach thousands of property owners and contractors across Lagos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/custom-dialog.js"></script>
+  <style>
+    /* ===== BECOME VENDOR PAGE STYLES ===== */
+    .vendor-hero {
+      background: linear-gradient(135deg, #0a2342 0%, #1a4a8a 60%, #2563eb 100%);
+      padding: 90px 0 75px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .vendor-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .vendor-hero .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #93c5fd;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 50px;
+      margin-bottom: 22px;
+    }
+    .vendor-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 18px;
+      line-height: 1.15;
+    }
+    .vendor-hero p {
+      font-size: 1.12rem;
+      color: rgba(255,255,255,0.88);
+      max-width: 660px;
+      margin: 0 auto 28px;
+    }
+    .vendor-hero__actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* Benefits */
+    .benefits-section {
+      padding: 50px 0 32px;
+      background: #f8fafc;
+    }
+    .benefits-section .section-label {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #2563eb;
+      margin-bottom: 10px;
+    }
+    .benefits-section .section-title {
+      text-align: center;
+      font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+      font-weight: 800;
+      color: #0a2342;
+      margin-bottom: 40px;
+    }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .benefit-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 26px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .benefit-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(10,35,66,0.08);
+    }
+    .benefit-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #eff6ff;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .benefit-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0a2342;
+      margin-bottom: 8px;
+    }
+    .benefit-card p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* Form Container */
+    .vendor-form-section {
+      padding: 60px 0 90px;
+      background: #fff;
+    }
+    .vendor-form-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 40px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .vendor-form-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-card {
+      background: #fff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 36px;
+      box-shadow: 0 4px 20px rgba(10,35,66,0.06);
+    }
+    @media (max-width: 600px) {
+      .form-card {
+        padding: 22px 18px;
+      }
+    }
+
+    /* Steps Progress Bar */
+    .steps-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 34px;
+      position: relative;
+    }
+    .steps-indicator::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+    .step-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .step-bubble {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      color: #64748b;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+    .step-item.active .step-bubble {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.2);
+    }
+    .step-item.completed .step-bubble {
+      background: #10b981;
+      border-color: #10b981;
+      color: #fff;
+    }
+    .step-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .step-item.active .step-title {
+      color: #0a2342;
+      font-weight: 700;
+    }
+
+    /* Form Fields */
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
+    }
+    .step-heading {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0a2342;
+      margin-bottom: 6px;
+    }
+    .step-desc {
+      font-size: 0.92rem;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 600px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 7px;
+    }
+    .form-group label .required {
+      color: #dc2626;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #1e293b;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+    .form-hint {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 5px;
+    }
+
+    /* Category Checkboxes */
+    .cat-checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .cat-check-label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .cat-check-label:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+    .cat-check-label input {
+      accent-color: #2563eb;
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Policy Notice Box */
+    .vendor-policy-notice {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+    }
+    .vendor-policy-notice h4 {
+      margin: 0 0 6px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .vendor-policy-notice p {
+      margin: 0;
+      font-size: 0.86rem;
+      color: #15803d;
+      line-height: 1.55;
+    }
+
+    /* Review Panel */
+    .review-panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+    .review-panel h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0a2342;
+      margin: 0 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .review-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 13px;
+    }
+    .review-row span:first-child { color: #64748b; }
+    .review-row span:last-child { font-weight: 600; color: #1e293b; text-align: right; }
+
+    /* Buttons */
+    .form-btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .btn-next, .btn-submit-vendor {
+      padding: 13px 32px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-next:hover, .btn-submit-vendor:hover { background: #1d4ed8; }
+    .btn-prev {
+      padding: 13px 26px;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-prev:hover { background: #e2e8f0; }
+    .btn-next { margin-left: auto; }
+
+    /* Success Box */
+    .vendor-success-box {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .success-icon-badge {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #dcfce7;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .vendor-ref-pill {
+      display: inline-block;
+      background: #eff6ff;
+      border: 1.5px dashed #3b82f6;
+      color: #1d4ed8;
+      font-family: monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 8px 24px;
+      border-radius: 8px;
+      margin: 16px 0 20px;
+    }
+
+    /* Sidebar */
+    .sidebar-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(10,35,66,0.05);
+    }
+    .sidebar-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0a2342;
+      margin: 0 0 14px;
+    }
+    .sidebar-stat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .sidebar-stat-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .stat-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #eff6ff;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .stat-text h5 {
+      margin: 0 0 2px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0a2342;
+    }
+    .stat-text p {
+      margin: 0;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="tk-header">
+    <div class="tk-topbar">
+      <div class="tk-topbar__inner">
+        <div class="tk-topbar__left">
+          <span class="tk-topbar__badge">Verified Merchants</span>
+          <span>Coverage: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo</span>
+        </div>
+        <div class="tk-topbar__right">
+          <a href="tel:08167469581" class="tk-topbar__link" title="Call NIJEDEE Direct">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Call: <strong>08167469581</strong></span>
+          </a>
+          <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE,%20I%20want%20to%20register%20as%20a%20shop%20merchant" target="_blank" rel="noopener" class="tk-topbar__link tk-topbar__link--wa" title="Chat on WhatsApp">
+            <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="14" height="14">
+            <span>WhatsApp: <strong>07085329909</strong></span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="tk-header__inner">
+      <a class="tk-header__logo" href="index.html" aria-label="NIJEDEE Home">
+        <img src="assets/images/logo.png" alt="NIJEDEE Corporate Logo" style="height:72px; max-height:72px; max-width:240px; width:auto; object-fit:contain;">
+      </a>
+      <nav class="tk-header__nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="shop.html" class="active">Shop</a>
+        <a href="properties.html">Properties</a>
+        <a href="artisans.html">Artisans</a>
+        <a href="academy.html">Academy</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="tk-header__actions">
+        <a class="tk-btn tk-btn--outline tk-btn--sm" href="vendor-portal.html">Merchant Portal</a>
+        <a class="tk-btn tk-btn--primary tk-btn--sm" href="shop.html">Browse Shop</a>
+        <button type="button" class="tk-header__burger" aria-label="Open menu" aria-expanded="false">
+          <svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M5 9h22M5 16h22M5 23h22"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="tk-header__drawer">
+    <button class="tk-drawer__close" aria-label="Close menu">&times;</button>
+    <nav class="tk-drawer__nav" aria-label="Mobile">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="shop.html">Shop</a>
+      <a href="properties.html">Properties</a>
+      <a href="artisans.html">Artisans</a>
+      <a href="academy.html">Academy</a>
+      <a href="vendor-portal.html">Merchant Portal</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="tk-btn tk-btn--primary" href="vendor-portal.html" style="margin-top:24px;width:100%;justify-content:center;">Merchant Login</a>
+  </div>
+  <div class="tk-drawer-overlay"></div>
+
+  <!-- HERO SECTION -->
+  <section class="vendor-hero">
+    <div class="tk-container">
+      <span class="hero-label">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span>NIJEDEE Verified Merchant Program</span>
+      </span>
+      <h1>Open a Store &middot; Sell on NIJEDEE</h1>
+      <p>List your building materials, paints, plumbing, electricals, and hardware on the official NIJEDEE Marketplace. Reach thousands of contractors, homeowners, and artisans across Lagos.</p>
+      <div class="vendor-hero__actions">
+        <a href="#vendorForm" class="tk-btn tk-btn--primary" style="background:#fff; color:#0a2342; font-weight:700;">Start Merchant Registration</a>
+        <a href="vendor-portal.html" class="tk-btn tk-btn--outline" style="border-color:rgba(255,255,255,0.4); color:#fff;">Already Accredited? Sign In</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS SECTION -->
+  <section class="benefits-section">
+    <div class="tk-container">
+      <div class="section-label">Why Partner With Us</div>
+      <h2 class="section-title">Grow Your Store With Guaranteed Site Buyers</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon-box">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3>Direct Contractor Demand</h3>
+          <p>Your products are shown directly to NIJEDEE's active network of accredited field technicians, builders, and project supervisors.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon-box">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3>Zero Hassle Settlement</h3>
+          <p>NIJEDEE Admin handles customer checkout, payment verification, and site dispatch agreements. You focus purely on inventory and product stock.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon-box">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h3>Dedicated Merchant Portal</h3>
+          <p>Easily create, update, price, and manage your products anytime from your phone or PC with live stock indicators.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon-box">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Verified Store Badge</h3>
+          <p>Gain buyer confidence with the official NIJEDEE Verified Merchant seal displayed on your product listings in the shop.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTRATION FORM SECTION -->
+  <section class="vendor-form-section" id="vendorForm">
+    <div class="tk-container">
+      <div class="vendor-form-layout">
+
+        <!-- Form Card -->
+        <div class="form-card" id="vendorFormCard">
+
+          <!-- Steps Bar -->
+          <div class="steps-indicator">
+            <div class="step-item active" id="stepBubble1">
+              <div class="step-bubble">1</div>
+              <span class="step-title">Store Details</span>
+            </div>
+            <div class="step-item" id="stepBubble2">
+              <div class="step-bubble">2</div>
+              <span class="step-title">Goods &amp; Area</span>
+            </div>
+            <div class="step-item" id="stepBubble3">
+              <div class="step-bubble">3</div>
+              <span class="step-title">Credentials</span>
+            </div>
+            <div class="step-item" id="stepBubble4">
+              <div class="step-bubble">4</div>
+              <span class="step-title">Review</span>
+            </div>
+          </div>
+
+          <!-- SUCCESS VIEW (Hidden until submitted) -->
+          <div id="vendorSuccessView" class="vendor-success-box" style="display:none;">
+            <div class="success-icon-badge">
+              <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 style="font-size:1.6rem; color:#0a2342; font-weight:800; margin:0 0 10px;">Store Application Submitted!</h3>
+            <p style="color:#64748b; font-size:0.95rem; max-width:480px; margin:0 auto;">Your shop partner application has been recorded. Our marketplace desk will verify your details and activate your merchant product portal.</p>
+            <div class="vendor-ref-pill" id="vendorSuccessRef">VND-2026-XXXXX</div>
+            
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin:20px 0; text-align:left; font-size:0.88rem; color:#475569;">
+              <p style="margin:0 0 8px; font-weight:700; color:#0a2342;">Next Step &middot; Instant Verification via WhatsApp:</p>
+              <p style="margin:0;">Notify our admin desk with your store photos and location pin to fast-track your merchant accreditation within 2 hours.</p>
+            </div>
+
+            <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px;">
+              <a id="vendorWaLink" href="https://wa.me/2347085329909" target="_blank" rel="noopener" class="tk-btn tk-btn--wa" style="display:inline-flex; align-items:center; gap:8px;">
+                <img src="assets/images/whatsapp.svg" alt="WhatsApp" width="18" height="18">
+                <span>Notify Admin on WhatsApp</span>
+              </a>
+              <a href="vendor-portal.html" class="tk-btn tk-btn--primary">
+                <span>Go to Merchant Portal &rarr;</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- ACTUAL MULTI-STEP FORM -->
+          <form id="merchantOnboardingForm" onsubmit="event.preventDefault(); handleVendorSubmit(event);">
+
+            <!-- STEP 1: Store & Contact Details -->
+            <div class="form-step active" id="formStep1">
+              <h3 class="step-heading">Store &amp; Contact Information</h3>
+              <p class="step-desc">Provide your registered business name and active contact lines for merchant orders.</p>
+
+              <div class="form-group">
+                <label for="vStoreName">Store / Business Name <span class="required">*</span></label>
+                <input type="text" id="vStoreName" class="form-input" placeholder="e.g. Ade &amp; Sons Building Materials Ltd" required>
+                <span class="form-hint">This name will be displayed on all your products in the main website shop.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="vOwnerName">Store Owner / Contact Person Name <span class="required">*</span></label>
+                <input type="text" id="vOwnerName" class="form-input" placeholder="e.g. Adebayo Emmanuel" required>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="vPhone">Primary Phone Number <span class="required">*</span></label>
+                  <input type="tel" id="vPhone" class="form-input" placeholder="e.g. 08012345678" required>
+                  <span class="form-hint">This phone number serves as your Merchant Portal Login ID.</span>
+                </div>
+                <div class="form-group">
+                  <label for="vWhatsApp">WhatsApp Number <span class="required">*</span></label>
+                  <input type="tel" id="vWhatsApp" class="form-input" placeholder="e.g. 08012345678" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="vEmail">Store Email Address (Optional)</label>
+                <input type="email" id="vEmail" class="form-input" placeholder="e.g. sales@adeandsons.com">
+              </div>
+
+              <div class="form-btn-row">
+                <button type="button" class="btn-next" onclick="goToStep(2)">Continue to Goods &amp; Location &rarr;</button>
+              </div>
+            </div>
+
+            <!-- STEP 2: Location & Goods Portfolio -->
+            <div class="form-step" id="formStep2">
+              <h3 class="step-heading">Store Location &amp; Goods Sold</h3>
+              <p class="step-desc">Specify where your store or warehouse is situated and what product categories you stock.</p>
+
+              <div class="form-group">
+                <label for="vAddress">Full Store / Warehouse Address <span class="required">*</span></label>
+                <textarea id="vAddress" class="form-textarea" rows="2" placeholder="e.g. Shop 4, Badore Modern Market, Addo Road, Ajah, Lagos" required></textarea>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="vCorridor">Market Corridor / Area <span class="required">*</span></label>
+                  <select id="vCorridor" class="form-select" required>
+                    <option value="Badore Axis">Badore Axis</option>
+                    <option value="Ajah Central &middot; Ilaje &middot; Addo">Ajah Central &middot; Ilaje &middot; Addo</option>
+                    <option value="Sangotedo &middot; Abijo Axis">Sangotedo &middot; Abijo Axis</option>
+                    <option value="Lekki Phase 1 &middot; 2">Lekki Phase 1 &middot; 2</option>
+                    <option value="Awoyaya &middot; Lakowe Corridor">Awoyaya &middot; Lakowe Corridor</option>
+                    <option value="Other Lagos Axis">Other Lagos Axis</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="vYearsActive">Years Operating Store</label>
+                  <select id="vYearsActive" class="form-select">
+                    <option value="1 - 3 years">1 - 3 years</option>
+                    <option value="3 - 5 years" selected>3 - 5 years</option>
+                    <option value="5 - 10 years">5 - 10 years</option>
+                    <option value="10+ years">10+ years</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Product Categories Sold (Select all that apply) <span class="required">*</span></label>
+                <div class="cat-checkbox-grid">
+                  <label class="cat-check-label">
+                    <input type="checkbox" name="vCategories" value="paints" checked>
+                    <span>Paints &amp; Primers</span>
+                  </label>
+                  <label class="cat-check-label">
+                    <input type="checkbox" name="vCategories" value="materials" checked>
+                    <span>Building Materials &amp; Cement</span>
+                  </label>
+                  <label class="cat-check-label">
+                    <input type="checkbox" name="vCategories" value="lighting">
+                    <span>Electrical &amp; Lighting</span>
+                  </label>
+                  <label class="cat-check-label">
+                    <input type="checkbox" name="vCategories" value="plumbing">
+                    <span>Plumbing &amp; Sanitary Ware</span>
+                  </label>
+                  <label class="cat-check-label">
+                    <input type="checkbox" name="vCategories" value="hvac">
+                    <span>HVAC, AC &amp; Cooling</span>
+                  </label>
+                  <label class="cat-check-label">
+                    <input type="checkbox" name="vCategories" value="tools">
+                    <span>Tools &amp; Equipment</span>
+                  </label>
+                  <label class="cat-check-label">
+                    <input type="checkbox" name="vCategories" value="solar">
+                    <span>Solar &amp; Power Inverters</span>
+                  </label>
+                  <label class="cat-check-label">
+                    <input type="checkbox" name="vCategories" value="roofing">
+                    <span>Roofing, POP &amp; Timber</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="vDesc">Store Overview / Specialization</label>
+                <textarea id="vDesc" class="form-textarea" rows="2" placeholder="Briefly describe what your store specializes in, major brands stocked (e.g. Berger, Dulux, Dangote, Coleman, Schneider)"></textarea>
+              </div>
+
+              <div class="form-btn-row">
+                <button type="button" class="btn-prev" onclick="goToStep(1)">&larr; Back</button>
+                <button type="button" class="btn-next" onclick="goToStep(3)">Continue to Credentials &rarr;</button>
+              </div>
+            </div>
+
+            <!-- STEP 3: Security & Credentials -->
+            <div class="form-step" id="formStep3">
+              <h3 class="step-heading">Set Merchant Portal Credentials</h3>
+              <p class="step-desc">Create a secure password to access your dedicated Merchant Product Management Portal.</p>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="vPassword">Portal Password <span class="required">*</span></label>
+                  <div style="position:relative; display:flex; align-items:center;">
+                    <input type="password" id="vPassword" class="form-input" placeholder="Minimum 6 characters" required minlength="6" style="padding-right:44px;">
+                    <button type="button" onclick="togglePassVisibility('vPassword', this)" style="position:absolute; right:8px; background:none; border:none; color:#64748b; cursor:pointer; padding:6px; display:flex; align-items:center;" aria-label="Toggle password">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                  </div>
+                  <span class="form-hint">Must be at least 6 characters.</span>
+                </div>
+                <div class="form-group">
+                  <label for="vConfirmPass">Confirm Password <span class="required">*</span></label>
+                  <div style="position:relative; display:flex; align-items:center;">
+                    <input type="password" id="vConfirmPass" class="form-input" placeholder="Re-enter password" required minlength="6" style="padding-right:44px;">
+                    <button type="button" onclick="togglePassVisibility('vConfirmPass', this)" style="position:absolute; right:8px; background:none; border:none; color:#64748b; cursor:pointer; padding:6px; display:flex; align-items:center;" aria-label="Toggle password">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="vCAC">CAC Business Registration Number (Optional)</label>
+                <input type="text" id="vCAC" class="form-input" placeholder="e.g. RC 1234567 or BN 890123">
+              </div>
+
+              <div class="form-group">
+                <label for="vStorePhoto">Storefront Photo or Store Logo (Optional)</label>
+                <input type="file" id="vStorePhoto" class="form-input" accept="image/*" onchange="handleStorePhotoPicked(event)">
+                <span class="form-hint" id="storePhotoStatus">Upload a clear photo of your store signpost or warehouse. Automatically compressed to under 100KB.</span>
+              </div>
+
+              <div class="form-btn-row">
+                <button type="button" class="btn-prev" onclick="goToStep(2)">&larr; Back</button>
+                <button type="button" class="btn-next" onclick="goToStep(4)">Review Application &rarr;</button>
+              </div>
+            </div>
+
+            <!-- STEP 4: Review & Agreement -->
+            <div class="form-step" id="formStep4">
+              <h3 class="step-heading">Review &amp; Confirm Merchant Terms</h3>
+              <p class="step-desc">Please review your store registration details before submitting for admin accreditation.</p>
+
+              <!-- Policy Box -->
+              <div class="vendor-policy-notice">
+                <h4>
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>Centralized Payment &amp; Settlement Policy</span>
+                </h4>
+                <p>All customer orders, cart checkouts, and customer payments are handled centrally by the <strong>NIJEDEE Admin Desk</strong>. As an accredited shop merchant partner, your role is solely to create, update, price, and manage your products and inventory on the main website.</p>
+              </div>
+
+              <div class="review-panel">
+                <h4>Registration Summary</h4>
+                <div class="review-row">
+                  <span>Store Name:</span>
+                  <span id="revStoreName">-</span>
+                </div>
+                <div class="review-row">
+                  <span>Owner / Contact:</span>
+                  <span id="revOwnerName">-</span>
+                </div>
+                <div class="review-row">
+                  <span>Login Phone Number:</span>
+                  <span id="revPhone">-</span>
+                </div>
+                <div class="review-row">
+                  <span>WhatsApp:</span>
+                  <span id="revWhatsApp">-</span>
+                </div>
+                <div class="review-row">
+                  <span>Market Corridor:</span>
+                  <span id="revCorridor">-</span>
+                </div>
+                <div class="review-row">
+                  <span>Store Address:</span>
+                  <span id="revAddress">-</span>
+                </div>
+                <div class="review-row">
+                  <span>Categories Selected:</span>
+                  <span id="revCategories">-</span>
+                </div>
+              </div>
+
+              <div style="margin-bottom:24px;">
+                <label style="display:flex; align-items:flex-start; gap:10px; font-size:13px; color:#475569; cursor:pointer;">
+                  <input type="checkbox" id="vTermsAgree" required style="margin-top:3px; accent-color:#2563eb; width:17px; height:17px;">
+                  <span>I agree to the NIJEDEE Marketplace Merchant Partner terms. I understand that all customer payments and delivery settlements are managed centrally by NIJEDEE Admin, and my portal access is for product and inventory management.</span>
+                </label>
+              </div>
+
+              <div class="form-btn-row">
+                <button type="button" class="btn-prev" onclick="goToStep(3)">&larr; Back</button>
+                <button type="submit" id="vendorSubmitBtn" class="btn-submit-vendor">Submit Merchant Application</button>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+
+        <!-- Sidebar Info -->
+        <aside class="vendor-sidebar">
+          <div class="sidebar-card">
+            <h4>Merchant Accreditation Steps</h4>
+            <div class="sidebar-stat-list">
+              <div class="sidebar-stat-item">
+                <div class="stat-icon">1</div>
+                <div class="stat-text">
+                  <h5>Submit Store Profile</h5>
+                  <p>Register your store name, corridor location, goods categories and portal password.</p>
+                </div>
+              </div>
+              <div class="sidebar-stat-item">
+                <div class="stat-icon">2</div>
+                <div class="stat-text">
+                  <h5>Admin Review &amp; Activation</h5>
+                  <p>NIJEDEE Ops verifies your location and activates your merchant partner account.</p>
+                </div>
+              </div>
+              <div class="sidebar-stat-item">
+                <div class="stat-icon">3</div>
+                <div class="stat-text">
+                  <h5>Post Products to Main Shop</h5>
+                  <p>Log in to your Vendor Portal to create, edit, price and manage products in the live catalogue.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-card" style="background:#f8fafc;">
+            <h4>Need Quick Assistance?</h4>
+            <p style="font-size:13px; color:#64748b; margin:0 0 16px; line-height:1.5;">Contact our Merchant Onboarding Supervisor directly on phone or WhatsApp.</p>
+            <a href="https://wa.me/2347085329909?text=Hello%20NIJEDEE,%20I%20have%20an%20inquiry%20about%20opening%20a%20shop%20store" target="_blank" rel="noopener" class="tk-btn tk-btn--outline" style="width:100%; justify-content:center; padding:10px; font-size:13px;">
+              <span>Chat with Supervisor</span>
+            </a>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="tk-footer">
+    <div class="tk-footer__panel" style="margin-inline:0; border-radius:0;">
+      <div class="tk-footer__top">
+        <div class="tk-footer__brand">
+          <a href="index.html" aria-label="NIJEDEE Home">
+            <img src="assets/images/logo.png" alt="NIJEDEE Group Logo" style="height:48px; max-height:48px; max-width:160px; width:auto; object-fit:contain;">
+          </a>
+          <p class="tk-footer__tagline">NIJEDEE GROUP &middot; Property Maintenance, Repairs, Cleaning &amp; Marketplace. Registered in Nigeria (CAC RC 1403323).</p>
+          <p class="tk-footer__address">Coverage Corridor: Lekki &middot; Ajah &middot; Badore &middot; Sangotedo, Lagos State.</p>
+          <p class="tk-footer__address" style="color:var(--tk-navy-light); font-weight:700;">
+            Call: 08167469581 &middot; WhatsApp: 07085329909<br>
+            Website: NIJEDEE.com
+          </p>
+        </div>
+        <nav class="tk-footer__nav" aria-label="Footer links">
+          <div class="tk-footer__col">
+            <h3>NIJEDEE</h3>
+            <ul>
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="services.html">Our Services</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+              <li><a href="become-artisan.html">Become an Artisan</a></li>
+              <li><a href="become-vendor.html">Open a Merchant Shop</a></li>
+            </ul>
+          </div>
+          <div class="tk-footer__col">
+            <h3>Marketplace</h3>
+            <ul>
+              <li><a href="shop.html">NIJEDEE Shop</a></li>
+              <li><a href="vendor-portal.html">Merchant Product Portal</a></li>
+              <li><a href="artisans.html">Find an Artisan</a></li>
+              <li><a href="properties.html">Properties &amp; Shortlets</a></li>
+            </ul>
+          </div>
+          <div class="tk-footer__col">
+            <h3>Customer</h3>
+            <ul>
+              <li><a href="book.html">Book a Service</a></li>
+              <li><a href="contact.html">Customer Dashboard</a></li>
+              <li><a href="contact.html">Help &amp; Support</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="tk-footer__bottom">
+        <p>&copy; 2026 NIJEDEE GROUP (RC 1403323). All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/custom-dialog.js"></script>
+  <script src="assets/js/supabase-client.js"></script>
+  <script>
+    let currentStep = 1;
+    let uploadedStorePhoto = null;
+
+    function togglePassVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+      } else {
+        input.type = 'password';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+      }
+    }
+
+    async function handleStorePhotoPicked(e) {
+      const file = e.target.files && e.target.files[0];
+      const statusEl = document.getElementById('storePhotoStatus');
+      if (!file) {
+        uploadedStorePhoto = null;
+        return;
+      }
+      if (statusEl) statusEl.textContent = 'Optimizing image under 100KB...';
+      try {
+        if (window.compressImageTo100KB) {
+          uploadedStorePhoto = await window.compressImageTo100KB(file, 100 * 1024);
+        } else {
+          uploadedStorePhoto = file;
+        }
+        if (statusEl) {
+          statusEl.textContent = 'Photo ready: ' + file.name + ' (' + Math.round(uploadedStorePhoto.size / 1024) + ' KB)';
+          statusEl.style.color = '#15803d';
+        }
+      } catch (err) {
+        uploadedStorePhoto = file;
+        if (statusEl) statusEl.textContent = 'Photo selected: ' + file.name;
+      }
+    }
+
+    function goToStep(step) {
+      // Validate current step before advancing
+      if (step > currentStep) {
+        if (currentStep === 1) {
+          const storeName = (document.getElementById('vStoreName')?.value || '').trim();
+          const ownerName = (document.getElementById('vOwnerName')?.value || '').trim();
+          const phone = (document.getElementById('vPhone')?.value || '').trim();
+          const whatsapp = (document.getElementById('vWhatsApp')?.value || '').trim();
+          if (!storeName || !ownerName || !phone || !whatsapp) {
+            if (window.showCustomAlert) {
+              window.showCustomAlert({ title: 'Missing Information', message: 'Please provide store name, contact person, phone and WhatsApp number.', type: 'info' });
+            }
+            return;
+          }
+          if (phone.replace(/\D/g, '').length < 10) {
+            if (window.showCustomAlert) {
+              window.showCustomAlert({ title: 'Invalid Phone Number', message: 'Please enter a valid Nigerian phone number.', type: 'info' });
+            }
+            return;
+          }
+        } else if (currentStep === 2) {
+          const address = (document.getElementById('vAddress')?.value || '').trim();
+          const categoriesChecked = document.querySelectorAll('input[name="vCategories"]:checked');
+          if (!address) {
+            if (window.showCustomAlert) {
+              window.showCustomAlert({ title: 'Address Required', message: 'Please enter your store or warehouse address.', type: 'info' });
+            }
+            return;
+          }
+          if (categoriesChecked.length === 0) {
+            if (window.showCustomAlert) {
+              window.showCustomAlert({ title: 'Category Required', message: 'Please select at least one product category that you sell.', type: 'info' });
+            }
+            return;
+          }
+        } else if (currentStep === 3) {
+          const pass = (document.getElementById('vPassword')?.value || '').trim();
+          const confirmPass = (document.getElementById('vConfirmPass')?.value || '').trim();
+          if (!pass || pass.length < 6) {
+            if (window.showCustomAlert) {
+              window.showCustomAlert({ title: 'Password Too Short', message: 'Portal password must be at least 6 characters.', type: 'info' });
+            }
+            return;
+          }
+          if (pass !== confirmPass) {
+            if (window.showCustomAlert) {
+              window.showCustomAlert({ title: 'Password Mismatch', message: 'Passwords do not match. Please re-enter carefully.', type: 'info' });
+            }
+            return;
+          }
+        }
+      }
+
+      currentStep = step;
+      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+      const targetStep = document.getElementById('formStep' + step);
+      if (targetStep) targetStep.classList.add('active');
+
+      // Update progress bubbles
+      for (let i = 1; i <= 4; i++) {
+        const bubble = document.getElementById('stepBubble' + i);
+        if (!bubble) continue;
+        bubble.classList.remove('active', 'completed');
+        if (i === step) bubble.classList.add('active');
+        else if (i < step) bubble.classList.add('completed');
+      }
+
+      // Populate review summary if step 4
+      if (step === 4) {
+        document.getElementById('revStoreName').textContent = document.getElementById('vStoreName')?.value || '-';
+        document.getElementById('revOwnerName').textContent = document.getElementById('vOwnerName')?.value || '-';
+        document.getElementById('revPhone').textContent = document.getElementById('vPhone')?.value || '-';
+        document.getElementById('revWhatsApp').textContent = document.getElementById('vWhatsApp')?.value || '-';
+        document.getElementById('revCorridor').textContent = document.getElementById('vCorridor')?.value || '-';
+        document.getElementById('revAddress').textContent = document.getElementById('vAddress')?.value || '-';
+
+        const cats = Array.from(document.querySelectorAll('input[name="vCategories"]:checked')).map(c => {
+          return c.parentElement.textContent.trim();
+        });
+        document.getElementById('revCategories').textContent = cats.join(', ') || 'General Hardware';
+      }
+
+      window.scrollTo({ top: document.getElementById('vendorFormCard').offsetTop - 90, behavior: 'smooth' });
+    }
+
+    async function handleVendorSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      const terms = document.getElementById('vTermsAgree');
+      if (!terms || !terms.checked) {
+        if (window.showCustomAlert) {
+          window.showCustomAlert({ title: 'Terms Agreement Required', message: 'Please accept the NIJEDEE Marketplace merchant terms to proceed.', type: 'info' });
+        }
+        return;
+      }
+
+      const storeName = (document.getElementById('vStoreName')?.value || '').trim();
+      const ownerName = (document.getElementById('vOwnerName')?.value || '').trim();
+      const phone = (document.getElementById('vPhone')?.value || '').trim();
+      const whatsapp = (document.getElementById('vWhatsApp')?.value || phone).trim();
+      const email = (document.getElementById('vEmail')?.value || '').trim();
+      const address = (document.getElementById('vAddress')?.value || '').trim();
+      const corridor = document.getElementById('vCorridor')?.value || 'Badore Axis';
+      const yearsActive = document.getElementById('vYearsActive')?.value || '3 - 5 years';
+      const desc = (document.getElementById('vDesc')?.value || '').trim();
+      const pass = (document.getElementById('vPassword')?.value || '').trim();
+      const cac = (document.getElementById('vCAC')?.value || '').trim();
+
+      const cats = Array.from(document.querySelectorAll('input[name="vCategories"]:checked')).map(c => {
+        return c.value;
+      });
+
+      const submitBtn = document.getElementById('vendorSubmitBtn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Recording Application...';
+      }
+
+      const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+      const refCode = 'VND-2026-' + randomSuffix;
+
+      const vendorProfile = {
+        id: 'NJD-VND-' + randomSuffix,
+        ref_code: refCode,
+        store_name: storeName,
+        name: storeName,
+        owner_name: ownerName,
+        phone: phone,
+        whatsapp: whatsapp,
+        email: email,
+        address: address,
+        corridor: corridor,
+        years_active: yearsActive,
+        categories: cats,
+        description: desc,
+        password: pass,
+        cac_number: cac,
+        status: 'pending',
+        is_accredited: false,
+        created_at: new Date().toISOString()
+      };
+
+      // Save locally to vendor profiles store
+      try {
+        const storedRaw = localStorage.getItem('nijedee_vendor_profiles');
+        const profilesList = storedRaw ? JSON.parse(storedRaw) : [];
+        const cleanPhone = phone.replace(/\D/g, '');
+        const filtered = profilesList.filter(p => !(p.phone || '').replace(/\D/g, '').endsWith(cleanPhone.slice(-10)));
+        filtered.push(vendorProfile);
+        localStorage.setItem('nijedee_vendor_profiles', JSON.stringify(filtered));
+        localStorage.setItem('nijedee_active_vendor', JSON.stringify(vendorProfile));
+      } catch (err) {
+        console.warn('Local store vendor profile error:', err);
+      }
+
+      // Submit to Supabase requests table
+      try {
+        if (window.submitNijedeeRequest) {
+          const files = [];
+          if (uploadedStorePhoto) files.push(uploadedStorePhoto);
+
+          await window.submitNijedeeRequest({
+            ref_code: refCode,
+            type: 'vendor_application',
+            title: `Shop Vendor Application - ${storeName} (${ownerName})`,
+            client_name: `${storeName} (${ownerName})`,
+            client_phone: phone,
+            client_whatsapp: whatsapp,
+            client_email: email || null,
+            location: corridor,
+            address: address,
+            files: files.length ? files : null,
+            details: vendorProfile
+          });
+        }
+      } catch (sbErr) {
+        console.warn('Supabase vendor submission note:', sbErr);
+      }
+
+      // Configure WhatsApp notification
+      const waText = 
+        `*NIJEDEE SHOP MERCHANT APPLICATION*\n` +
+        `-----------------------------------------\n` +
+        `*Application Ref:* ${refCode}\n` +
+        `*Store Name:* ${storeName}\n` +
+        `*Contact Person:* ${ownerName}\n` +
+        `*Phone:* ${phone}\n` +
+        `*Corridor:* ${corridor}\n` +
+        `*Address:* ${address}\n` +
+        `*Categories:* ${cats.join(', ')}\n` +
+        `-----------------------------------------\n` +
+        `Hello Admin, I have submitted my shop store registration on NIJEDEE. Kindly review and activate my Merchant Product Portal.`;
+
+      const waUrl = `https://wa.me/2347085329909?text=${encodeURIComponent(waText)}`;
+      const waLink = document.getElementById('vendorWaLink');
+      if (waLink) waLink.href = waUrl;
+
+      // Switch to success view
+      document.getElementById('merchantOnboardingForm').style.display = 'none';
+      document.getElementById('vendorSuccessRef').textContent = refCode;
+      document.getElementById('vendorSuccessView').style.display = 'block';
+
+      if (window.showCustomToast) {
+        window.showCustomToast('Store application submitted successfully!');
+      }
+
+      window.scrollTo({ top: document.getElementById('vendorFormCard').offsetTop - 90, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

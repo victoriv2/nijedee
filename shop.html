@@ -433,6 +433,16 @@
       <input type="text" id="shopSearchInput" placeholder="Search paint, cement, tiles, pipes, inverter, tools..." onkeyup="filterShopProducts()">
       <button type="button" onclick="filterShopProducts()">Search</button>
     </div>
+
+    <div style="display:flex; justify-content:center; gap:12px; margin-top:16px; flex-wrap:wrap;">
+      <a href="become-vendor.html" class="tk-btn tk-btn--sm" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:#fff; font-size:12px; font-weight:600; padding:6px 14px; border-radius:50px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:4px;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span>Sell on NIJEDEE (Register Shop)</span>
+      </a>
+      <a href="vendor-portal.html" class="tk-btn tk-btn--sm" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#93c5fd; font-size:12px; font-weight:600; padding:6px 14px; border-radius:50px;">
+        <span>Merchant Portal Login &rarr;</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -469,6 +479,35 @@
             <span>HVAC &amp; AC Supplies</span>
             <span class="cat-count">5</span>
           </button>
+        </div>
+
+        <!-- Filter by Store / Merchant (Dynamic Store Selector) -->
+        <div style="margin-top:24px; padding-top:16px; border-top:1.5px solid var(--tk-neutral-200);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h3 style="font-size:0.95rem; font-weight:800; color:var(--tk-navy); margin:0;">Filter by Store</h3>
+            <span id="activeStoreBadge" style="font-size:11px; font-weight:700; color:#2563eb; background:#eff6ff; padding:2px 8px; border-radius:50px;">All Stores</span>
+          </div>
+          <div class="cat-filter-list" id="storeFilterContainer">
+            <button type="button" class="cat-filter-btn active" data-store-val="all" onclick="setStoreFilter('all', this)">
+              <span>All Stores</span>
+              <span class="cat-count" id="countStoreAll">25</span>
+            </button>
+            <button type="button" class="cat-filter-btn" data-store-val="nijedee" onclick="setStoreFilter('nijedee', this)">
+              <span>NIJEDEE Official</span>
+              <span class="cat-count" id="countStoreNijedee">25</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Open a Store CTA Card -->
+        <div style="margin-top:20px; background:linear-gradient(135deg, #0a2342 0%, #1e5eff 100%); color:#fff; border-radius:var(--tk-radius-sm); padding:16px; box-shadow:0 4px 14px rgba(10,35,66,0.12);">
+          <span style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#93c5fd; display:block; margin-bottom:4px;">Merchant Network</span>
+          <h4 style="font-size:0.95rem; font-weight:800; color:#fff; margin:0 0 6px;">Sell on NIJEDEE</h4>
+          <p style="font-size:0.8rem; color:rgba(255,255,255,0.85); margin:0 0 12px; line-height:1.4;">Own a building materials, paint or electrical shop? List your products and reach site contractors across Lagos.</p>
+          <div style="display:flex; gap:8px;">
+            <a href="become-vendor.html" class="tk-btn tk-btn--sm" style="flex:1; justify-content:center; background:#fff; color:#0a2342; font-weight:700; font-size:12px; padding:6px 10px;">Open Store</a>
+            <a href="vendor-portal.html" class="tk-btn tk-btn--outline tk-btn--sm" style="flex:1; justify-content:center; border-color:rgba(255,255,255,0.4); color:#fff; font-size:12px; padding:6px 10px;">Login</a>
+          </div>
         </div>
 
         <div style="margin-top:24px;background:var(--tk-primary-lightest);border:1px solid var(--tk-navy-light);border-radius:var(--tk-radius-sm);padding:16px;">
@@ -672,6 +711,8 @@
           <h3>Marketplace</h3>
           <ul>
             <li><a href="shop.html">NIJEDEE Shop</a></li>
+            <li><a href="become-vendor.html">Sell on NIJEDEE (Open Store)</a></li>
+            <li><a href="vendor-portal.html">Merchant Product Portal</a></li>
             <li><a href="artisans.html">Find an Artisan</a></li>
             <li><a href="properties.html">Properties &amp; Shortlets</a></li>
             <li><a href="properties.html#list-property">List Your Property</a></li>
@@ -1160,6 +1201,65 @@
     });
   }
 
+  // Extract vendor metadata
+  function getProductVendor(p) {
+    if (p.vendor_name) {
+      return { id: p.vendor_id || '', name: p.vendor_name, isOfficial: false };
+    }
+    const kw = (p.keywords || '');
+    const matchName = kw.match(/vendor_name:([^\s]+)/i);
+    const matchId = kw.match(/vendor:([^\s]+)/i);
+    if (matchName) {
+      return { id: matchId ? matchId[1] : '', name: matchName[1].replace(/_/g, ' '), isOfficial: false };
+    }
+    const b = (p.brand || '').trim();
+    if (b && !b.toLowerCase().includes('nijedee') && !b.toLowerCase().includes('materials') && !b.toLowerCase().includes('paints') && !b.toLowerCase().includes('lighting') && !b.toLowerCase().includes('plumbing')) {
+      return { id: '', name: b, isOfficial: false };
+    }
+    return { id: 'nijedee', name: 'NIJEDEE Official', isOfficial: true };
+  }
+
+  function updateStoreFilterList(prods) {
+    const container = document.getElementById('storeFilterContainer');
+    if (!container) return;
+
+    const storeMap = {};
+    let officialCount = 0;
+
+    prods.forEach(p => {
+      const v = getProductVendor(p);
+      if (v.isOfficial) {
+        officialCount++;
+      } else {
+        const key = v.name;
+        storeMap[key] = (storeMap[key] || 0) + 1;
+      }
+    });
+
+    let html = `
+      <button type="button" class="cat-filter-btn ${activeStoreFilter === 'all' ? 'active' : ''}" onclick="setStoreFilter('all', this)">
+        <span>All Stores</span>
+        <span class="cat-count">${prods.length}</span>
+      </button>
+      <button type="button" class="cat-filter-btn ${activeStoreFilter === 'nijedee' ? 'active' : ''}" onclick="setStoreFilter('nijedee', this)">
+        <span>NIJEDEE Official</span>
+        <span class="cat-count">${officialCount}</span>
+      </button>
+    `;
+
+    for (const [storeName, count] of Object.entries(storeMap)) {
+      const isAct = activeStoreFilter.toLowerCase() === storeName.toLowerCase();
+      html += `
+        <button type="button" class="cat-filter-btn ${isAct ? 'active' : ''}" onclick="setStoreFilter('${escapeHtml(storeName)}', this)">
+          <span>${escapeHtml(storeName)}</span>
+          <span class="cat-count">${count}</span>
+        </button>
+      `;
+    }
+
+    container.innerHTML = html;
+  }
+
   function renderDynamicShopProducts(prods) {
     window._loadedShopProducts = prods;
     const container = document.getElementById('productsDynamicContainer');
@@ -1171,6 +1271,7 @@
       const variants = Array.isArray(p.variants) ? p.variants : [];
       const catClasses = `${p.category || ''} ${(p.brand || '').toLowerCase()}`;
       const kw = (p.keywords || `${p.name} ${p.brand || ''} ${p.category || ''} ${p.badge || ''} ${p.price}`).toLowerCase();
+      const vInfo = getProductVendor(p);
 
       let variantsSelectHtml = '';
       if (variants.length > 0) {
@@ -1193,9 +1294,10 @@
         }
       }
 
+      const storeTag = vInfo.isOfficial ? 'NIJEDEE Official' : `Store: ${vInfo.name}`;
       const waInitialText = variants.length > 0
-        ? `I want to order ${variants[0].label} (NGN ${(variants[0].price || p.price || 0).toLocaleString()})`
-        : `I want to order ${p.name} (${priceText})`;
+        ? `I want to order [${storeTag}] ${variants[0].label} (NGN ${(variants[0].price || p.price || 0).toLocaleString()})`
+        : `I want to order [${storeTag}] ${p.name} (${priceText})`;
 
       let galleryStripHtml = '';
       if (images.length > 1) {
@@ -1209,14 +1311,19 @@
       }
 
       return `
-        <div class="product-card-item" data-prod-id="${p.id}" data-category="${escapeHtml(catClasses)}" data-keywords="${escapeHtml(kw)}">
+        <div class="product-card-item" data-prod-id="${p.id}" data-category="${escapeHtml(catClasses)}" data-keywords="${escapeHtml(kw)}" data-store-name="${escapeHtml(vInfo.name.toLowerCase())}" data-store-id="${escapeHtml(vInfo.id || 'nijedee')}">
           <div class="product-img-box">
             ${p.badge ? `<span class="product-badge-tag">${escapeHtml(p.badge)}</span>` : ''}
             <img id="prodMainImg_${p.id}" src="${escapeHtml(mainImg)}" alt="${escapeHtml(p.name)}" style="cursor:zoom-in;" title="Click to view full photo" onclick="openProductGallery('${p.id}', 0)">
           </div>
           ${galleryStripHtml}
           <div class="product-details-body">
-            <span class="product-cat-name">${escapeHtml(p.brand || p.category)}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:4px;">
+              <span class="product-cat-name" style="margin:0;">${escapeHtml(p.brand || p.category)}</span>
+              <span style="font-size:10px; font-weight:700; color:${vInfo.isOfficial ? '#1e5eff' : '#15803d'}; background:${vInfo.isOfficial ? '#eff6ff' : '#ecfdf5'}; padding:2px 7px; border-radius:4px; border:1px solid ${vInfo.isOfficial ? '#dbeafe' : '#bbf7d0'};">
+                ${escapeHtml(vInfo.isOfficial ? 'NIJEDEE Official' : 'Store: ' + vInfo.name)}
+              </span>
+            </div>
             <h4 class="product-title-text">${escapeHtml(p.name)}</h4>
             <p class="product-desc-text">${escapeHtml(p.description || '')}</p>
             ${variantsSelectHtml}
@@ -1234,6 +1341,7 @@
     if (countEl) countEl.textContent = `Showing ${prods.length} authentic products`;
 
     updateCategoryBadges(prods);
+    updateStoreFilterList(prods);
   }
 
   async function loadShopProductsFromSupabase(retries = 15) {
@@ -1273,32 +1381,76 @@
     loadShopProductsFromSupabase();
   }
 
-  function setCategoryFilter(category, btn) {
-    document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+  // State for Combined Category + Store Filtering
+  let activeCategoryFilter = 'all';
+  let activeStoreFilter = 'all';
 
+  function setCategoryFilter(category, btn) {
+    document.querySelectorAll('.category-sidebar > .cat-filter-list .cat-filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    activeCategoryFilter = category;
+    applyShopFilters();
+  }
+
+  function setStoreFilter(store, btn) {
+    const cont = document.getElementById('storeFilterContainer');
+    if (cont) cont.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    activeStoreFilter = store;
+
+    const badge = document.getElementById('activeStoreBadge');
+    if (badge) {
+      badge.textContent = store === 'all' ? 'All Stores' : (store === 'nijedee' ? 'NIJEDEE Official' : store);
+    }
+    applyShopFilters();
+  }
+
+  function filterShopProducts() {
+    applyShopFilters();
+  }
+
+  function applyShopFilters() {
+    const q = (document.getElementById('shopSearchInput')?.value || '').toLowerCase().trim();
     const cards = document.querySelectorAll('.product-card-item');
     let visibleCount = 0;
+
     cards.forEach(card => {
-      const cats = (card.dataset.category || '').split(' ');
-      if (category === 'all' || cats.includes(category)) {
+      // 1. Category match
+      const cats = (card.dataset.category || '').toLowerCase().split(' ');
+      const matchCat = (activeCategoryFilter === 'all' || cats.includes(activeCategoryFilter));
+
+      // 2. Store match
+      const cardStoreName = (card.dataset.storeName || '').toLowerCase();
+      const cardStoreId = (card.dataset.storeId || '').toLowerCase();
+      let matchStore = true;
+      if (activeStoreFilter === 'nijedee') {
+        matchStore = cardStoreId === 'nijedee' || cardStoreName.includes('nijedee');
+      } else if (activeStoreFilter !== 'all') {
+        matchStore = cardStoreName === activeStoreFilter.toLowerCase() || cardStoreId === activeStoreFilter.toLowerCase();
+      }
+
+      // 3. Keyword Search match
+      const kw = (card.dataset.keywords || '') + ' ' + (card.innerText || '').toLowerCase();
+      const matchSearch = (!q || kw.includes(q));
+
+      if (matchCat && matchStore && matchSearch) {
         card.style.display = '';
         visibleCount++;
       } else {
         card.style.display = 'none';
       }
     });
-    const countEl = document.getElementById('productsCountText');
-    if (countEl) countEl.textContent = `Showing ${visibleCount} authentic products`;
-  }
 
-  function filterShopProducts() {
-    const q = (document.getElementById('shopSearchInput').value || '').toLowerCase().trim();
-    const cards = document.querySelectorAll('.product-card-item');
-    let visibleCount = 0;
-    cards.forEach(card => {
-      const kw = (card.dataset.keywords || '') + ' ' + (card.innerText || '').toLowerCase();
-      if (!q || kw.includes(q)) {
+    const countEl = document.getElementById('productsCountText');
+    if (countEl) {
+      if (activeStoreFilter !== 'all') {
+        const storeLabel = activeStoreFilter === 'nijedee' ? 'NIJEDEE Official Store' : activeStoreFilter;
+        countEl.textContent = `Showing ${visibleCount} products from ${storeLabel}`;
+      } else {
+        countEl.textContent = `Showing ${visibleCount} authentic products`;
+      }
+    }
+  }
         card.style.display = '';
         visibleCount++;
       } else {

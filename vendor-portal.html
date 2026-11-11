@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merchant Product Portal | NIJEDEE Marketplace</title>
+  <meta name="description" content="Accredited Merchant Portal for NIJEDEE Marketplace partners. Manage your building materials, paints, electrical and hardware inventory.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/custom-dialog.js"></script>
+  <style>
+    :root {
+      --vnd-primary: #1e5eff;
+      --vnd-primary-dark: #003cd6;
+      --vnd-primary-light: #eff4ff;
+      --vnd-navy: #071e42;
+      --vnd-navy-dark: #04142f;
+      --vnd-bg: #f4f6fa;
+      --vnd-card: #ffffff;
+      --vnd-border: #e2e8f0;
+      --vnd-muted: #64748b;
+      --vnd-success: #10b981;
+      --vnd-warning: #f59e0b;
+      --vnd-danger: #ef4444;
+      --vnd-radius: 12px;
+    }
+
+    body {
+      background: var(--vnd-bg);
+      font-family: 'Inter', sans-serif;
+      color: #1e293b;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .vnd-header {
+      background: #0a2342;
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .vnd-header__left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .vnd-header__logo img {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+    .vnd-badge-tag {
+      background: rgba(30, 94, 255, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(147, 197, 253, 0.3);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 50px;
+    }
+    .vnd-header__right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .vnd-user-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.08);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+    }
+    .vnd-avatar-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    /* Main Container */
+    .vnd-main {
+      flex: 1;
+      padding: 30px 20px 60px;
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    /* Auth View */
+    .vnd-auth-card {
+      max-width: 440px;
+      margin: 40px auto;
+      background: #fff;
+      border: 1px solid var(--vnd-border);
+      border-radius: 16px;
+      padding: 36px 30px;
+      box-shadow: 0 10px 30px rgba(10,35,66,0.08);
+    }
+    .vnd-auth-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0a2342;
+      margin: 0 0 8px;
+    }
+    .vnd-auth-desc {
+      font-size: 0.9rem;
+      color: var(--vnd-muted);
+      margin: 0 0 24px;
+      line-height: 1.5;
+    }
+    .vnd-form-group {
+      margin-bottom: 18px;
+    }
+    .vnd-form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+    .vnd-form-input, .vnd-form-select, .vnd-form-textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      box-sizing: border-box;
+      background: #fff;
+      transition: all 0.2s;
+    }
+    .vnd-form-input:focus, .vnd-form-select:focus, .vnd-form-textarea:focus {
+      outline: none;
+      border-color: var(--vnd-primary);
+      box-shadow: 0 0 0 3px rgba(30, 94, 255, 0.15);
+    }
+    .vnd-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      text-decoration: none;
+    }
+    .vnd-btn--primary {
+      background: var(--vnd-primary);
+      color: #fff;
+    }
+    .vnd-btn--primary:hover {
+      background: var(--vnd-primary-dark);
+    }
+    .vnd-btn--outline {
+      background: transparent;
+      border: 1.5px solid var(--vnd-border);
+      color: #334155;
+    }
+    .vnd-btn--outline:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    .vnd-btn--danger {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+    .vnd-btn--danger:hover {
+      background: #fecaca;
+    }
+    .vnd-btn--sm {
+      padding: 7px 14px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+    .vnd-btn--full {
+      width: 100%;
+    }
+
+    /* Policy Notice Banner */
+    .vnd-policy-banner {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .vnd-policy-icon {
+      color: #16a34a;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .vnd-policy-text h4 {
+      margin: 0 0 4px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #166534;
+    }
+    .vnd-policy-text p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: #15803d;
+      line-height: 1.5;
+    }
+
+    /* KPI Summary Row */
+    .vnd-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .vnd-kpi-card {
+      background: #fff;
+      border: 1px solid var(--vnd-border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(10,35,66,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .vnd-kpi-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--vnd-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .vnd-kpi-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0a2342;
+    }
+    .vnd-kpi-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Workspace Toolbar */
+    .vnd-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: #fff;
+      border: 1px solid var(--vnd-border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+    .vnd-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 280px;
+    }
+    .vnd-search-wrap {
+      position: relative;
+      flex: 1;
+    }
+    .vnd-search-wrap svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+    }
+    .vnd-search-input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      box-sizing: border-box;
+    }
+    .vnd-toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Products Table Card */
+    .vnd-table-card {
+      background: #fff;
+      border: 1px solid var(--vnd-border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(10,35,66,0.04);
+    }
+    .vnd-table-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--vnd-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .vnd-table-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0a2342;
+    }
+    .vnd-table-wrap {
+      overflow-x: auto;
+      width: 100%;
+    }
+    .vnd-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+    .vnd-table th {
+      background: #f8fafc;
+      padding: 12px 16px;
+      font-weight: 700;
+      color: #475569;
+      border-bottom: 1px solid var(--vnd-border);
+      white-space: nowrap;
+    }
+    .vnd-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    .vnd-table tr:hover td {
+      background: #fafcff;
+    }
+    .vnd-prod-thumb {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+    .vnd-stock-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .vnd-stock-badge--in {
+      background: #dcfce7;
+      color: #15803d;
+    }
+    .vnd-stock-badge--out {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Modal */
+    .vnd-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 20, 47, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .vnd-modal-backdrop.open {
+      display: flex;
+    }
+    .vnd-modal-box {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      box-sizing: border-box;
+      padding: 28px;
+      position: relative;
+    }
+    .vnd-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #f1f5f9;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+    }
+    .vnd-modal-close:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    /* Variant Row */
+    .vnd-variant-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 600px) {
+      .vnd-variant-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        background: #f8fafc;
+        padding: 10px;
+        border-radius: 8px;
+      }
+    }
+
+    /* Staging Thumbnails */
+    .vnd-staging-strip {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .vnd-staging-thumb-wrap {
+      position: relative;
+      width: 68px;
+      height: 68px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1.5px solid #cbd5e1;
+    }
+    .vnd-staging-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .vnd-staging-remove-btn {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="vnd-header">
+    <div class="vnd-header__left">
+      <a class="vnd-header__logo" href="index.html">
+        <img src="assets/images/logo.png" alt="NIJEDEE Logo">
+      </a>
+      <span class="vnd-badge-tag">Merchant Portal</span>
+    </div>
+    <div class="vnd-header__right">
+      <a href="shop.html" target="_blank" class="vnd-btn vnd-btn--outline vnd-btn--sm" style="color:#fff; border-color:rgba(255,255,255,0.25);">
+        <span>Preview Live Shop</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+      <div id="vendorAuthPill" class="vnd-user-pill" style="display:none;">
+        <div class="vnd-avatar-circle" id="vndAvatarInitial">S</div>
+        <span id="vndStorePillName" style="font-weight:600;">Store Name</span>
+        <button type="button" onclick="handleVendorSignOut()" class="vnd-btn vnd-btn--outline vnd-btn--sm" style="padding:4px 8px; font-size:11px; margin-left:6px; color:#fca5a5; border-color:rgba(252,165,165,0.4);">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="vnd-main">
+
+    <!-- VIEW 1: SIGN IN / AUTH (Shown when not authenticated) -->
+    <div id="vendorLoginView">
+      <div class="vnd-auth-card">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+          <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#10b981; letter-spacing:0.5px;">Accredited Merchant Portal</span>
+        </div>
+        <h2 class="vnd-auth-title">Merchant Sign In</h2>
+        <p class="vnd-auth-desc">Log in with your registered phone number and portal password to create and manage products on the main website shop.</p>
+
+        <form onsubmit="event.preventDefault(); handleVendorLogin(event);">
+          <div class="vnd-form-group">
+            <label for="vLogPhone">Registered Phone Number</label>
+            <input type="tel" id="vLogPhone" class="vnd-form-input" placeholder="e.g. 08012345678" required>
+          </div>
+
+          <div class="vnd-form-group">
+            <label for="vLogPass">Portal Password</label>
+            <div style="position:relative; display:flex; align-items:center;">
+              <input type="password" id="vLogPass" class="vnd-form-input" placeholder="Enter password" required style="padding-right:44px;">
+              <button type="button" onclick="togglePass('vLogPass', this)" style="position:absolute; right:8px; background:none; border:none; color:#64748b; cursor:pointer; padding:6px; display:flex; align-items:center;" aria-label="Toggle password">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" id="vLoginSubmitBtn" class="vnd-btn vnd-btn--primary vnd-btn--full" style="padding:13px; font-size:15px;">
+            Log In to Merchant Dashboard &rarr;
+          </button>
+        </form>
+
+        <div style="margin-top:24px; padding-top:18px; border-top:1px solid #e2e8f0; text-align:center; font-size:0.86rem; color:#64748b;">
+          <span>Do not have a registered shop?</span><br>
+          <a href="become-vendor.html" style="color:#2563eb; font-weight:700; text-decoration:none; display:inline-block; margin-top:6px;">Register Your Store on NIJEDEE &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: AUTHENTICATED MERCHANT WORKSPACE -->
+    <div id="vendorWorkspaceView" style="display:none;">
+
+      <!-- Policy Clarification Banner -->
+      <div class="vnd-policy-banner">
+        <div class="vnd-policy-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="vnd-policy-text">
+          <h4>Merchant Product Management Desk</h4>
+          <p>Any product you create, edit, or delete here will be displayed dynamically in the <strong>NIJEDEE Main Website Shop</strong> with your store name. <strong>Important:</strong> All customer order checkouts, payments, and delivery haulage agreements are settled centrally by the <strong>NIJEDEE Admin Desk</strong>.</p>
+        </div>
+      </div>
+
+      <!-- Store Overview Bar -->
+      <div style="background:#fff; border:1px solid var(--vnd-border); border-radius:14px; padding:20px 24px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+        <div>
+          <span style="font-size:12px; font-weight:700; color:#2563eb; text-transform:uppercase; letter-spacing:0.5px;">Accredited NIJEDEE Merchant Partner</span>
+          <h2 id="dashStoreTitle" style="margin:4px 0 2px; font-size:1.5rem; color:#0a2342; font-weight:800;">Ade &amp; Sons Building Materials</h2>
+          <span id="dashStoreMeta" style="font-size:0.86rem; color:#64748b;">Corridor: Badore Axis &middot; Owner: Emmanuel Adebayo &middot; Phone: 08012345678</span>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="vnd-btn vnd-btn--primary" onclick="openProductModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>+ Add New Product</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Metrics -->
+      <div class="vnd-kpi-grid">
+        <div class="vnd-kpi-card">
+          <div>
+            <span class="vnd-kpi-label">Store Products</span>
+            <span class="vnd-kpi-val" id="kpiStoreTotal">0</span>
+          </div>
+          <div class="vnd-kpi-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+        </div>
+
+        <div class="vnd-kpi-card">
+          <div>
+            <span class="vnd-kpi-label">In-Stock Items</span>
+            <span class="vnd-kpi-val" id="kpiStoreInStock" style="color:#16a34a;">0</span>
+          </div>
+          <div class="vnd-kpi-icon" style="background:#dcfce7; color:#15803d;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+        </div>
+
+        <div class="vnd-kpi-card">
+          <div>
+            <span class="vnd-kpi-label">Out of Stock</span>
+            <span class="vnd-kpi-val" id="kpiStoreOutStock" style="color:#dc2626;">0</span>
+          </div>
+          <div class="vnd-kpi-icon" style="background:#fee2e2; color:#b91c1c;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          </div>
+        </div>
+
+        <div class="vnd-kpi-card">
+          <div>
+            <span class="vnd-kpi-label">Live on Main Shop</span>
+            <span class="vnd-kpi-val" id="kpiStoreActive" style="color:#2563eb;">0</span>
+          </div>
+          <div class="vnd-kpi-icon" style="background:#eff6ff; color:#2563eb;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workspace Toolbar -->
+      <div class="vnd-toolbar">
+        <div class="vnd-toolbar-left">
+          <div class="vnd-search-wrap">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="storeSearchInput" class="vnd-search-input" placeholder="Search your products by title, category, brand..." oninput="renderMerchantProducts()">
+          </div>
+          <select id="storeCatFilter" class="vnd-form-select" style="width:auto; padding:9px 12px; font-size:13px;" onchange="renderMerchantProducts()">
+            <option value="all">All Categories</option>
+            <option value="paints">Paints &amp; Primers</option>
+            <option value="materials">Building Materials &amp; Hardware</option>
+            <option value="lighting">Electrical &amp; Lighting</option>
+            <option value="plumbing">Plumbing &amp; Sanitary</option>
+            <option value="hvac">HVAC &amp; AC Supplies</option>
+            <option value="tools">Tools &amp; Equipment</option>
+            <option value="solar">Solar &amp; Power Inverters</option>
+            <option value="roofing">Roofing &amp; Timber</option>
+          </select>
+        </div>
+        <div class="vnd-toolbar-right">
+          <button type="button" class="vnd-btn vnd-btn--outline vnd-btn--sm" onclick="fetchMerchantProducts(true)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            <span>Refresh</span>
+          </button>
+          <button type="button" class="vnd-btn vnd-btn--primary vnd-btn--sm" onclick="openProductModal()">
+            <span>+ Add Product</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Products Table Card -->
+      <div class="vnd-table-card">
+        <div class="vnd-table-header">
+          <h3>Your Store Products on Live Shop</h3>
+          <span style="font-size:0.82rem; color:var(--vnd-muted);">Visible to customers across Lagos on shop.html</span>
+        </div>
+        <div class="vnd-table-wrap">
+          <table class="vnd-table">
+            <thead>
+              <tr>
+                <th style="width:60px;">Photo</th>
+                <th>Product Title &amp; Brand</th>
+                <th>Category</th>
+                <th>Display Price</th>
+                <th>Stock</th>
+                <th>Shop Visibility</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="merchantProductsTbody">
+              <tr>
+                <td colspan="7" style="text-align:center; padding:40px; color:var(--vnd-muted);">Loading your products catalogue...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ADD / EDIT PRODUCT MODAL -->
+  <div class="vnd-modal-backdrop" id="productCrudModal">
+    <div class="vnd-modal-box">
+      <button type="button" class="vnd-modal-close" onclick="closeProductModal()">&times;</button>
+      <h3 id="prodModalTitle" style="margin:0 0 6px; font-size:1.3rem; color:#0a2342; font-weight:800;">Add Product to Store</h3>
+      <p style="margin:0 0 20px; font-size:0.86rem; color:#64748b;">This product will appear on the main website shop under your store name.</p>
+
+      <form id="productCrudForm" onsubmit="event.preventDefault(); saveMerchantProduct(event);">
+        <input type="hidden" id="modalProdId">
+
+        <div class="vnd-form-group">
+          <label for="mProdName">Product Title / Name <span style="color:#dc2626;">*</span></label>
+          <input type="text" id="mProdName" class="vnd-form-input" placeholder="e.g. Berger Rufhide Emulsion Paint (20L)" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="vnd-form-group">
+            <label for="mProdCategory">Category <span style="color:#dc2626;">*</span></label>
+            <select id="mProdCategory" class="vnd-form-select" required>
+              <option value="paints">NIJEDEE &amp; Partner Paints</option>
+              <option value="materials">Building Materials &amp; Hardware</option>
+              <option value="lighting">Electrical &amp; Lighting</option>
+              <option value="plumbing">Plumbing &amp; Sanitary</option>
+              <option value="hvac">HVAC &amp; AC Supplies</option>
+              <option value="tools">Tools &amp; Equipment</option>
+              <option value="solar">Solar &amp; Power Inverters</option>
+              <option value="roofing">Roofing &amp; Timber</option>
+            </select>
+          </div>
+
+          <div class="vnd-form-group">
+            <label for="mProdBrand">Manufacturer / Brand</label>
+            <input type="text" id="mProdBrand" class="vnd-form-input" placeholder="e.g. Berger, Dangote, Coleman, Schneider">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="vnd-form-group">
+            <label for="mProdPrice">Base Price (NGN) <span style="color:#dc2626;">*</span></label>
+            <input type="number" id="mProdPrice" class="vnd-form-input" placeholder="e.g. 45000" required oninput="autoSyncPriceDisplay()">
+          </div>
+          <div class="vnd-form-group">
+            <label for="mProdPriceMax">Max / Slash Price (Optional)</label>
+            <input type="number" id="mProdPriceMax" class="vnd-form-input" placeholder="e.g. 48000" oninput="autoSyncPriceDisplay()">
+          </div>
+        </div>
+
+        <div class="vnd-form-group">
+          <label for="mProdPriceDisplay">Price Display Format</label>
+          <input type="text" id="mProdPriceDisplay" class="vnd-form-input" placeholder="e.g. &#8358;45,000">
+        </div>
+
+        <!-- Variants Section -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <label style="margin:0; font-size:13px; font-weight:700; color:#0a2342;">Product Variants / Sizes (Optional)</label>
+            <button type="button" class="vnd-btn vnd-btn--outline vnd-btn--sm" onclick="addVariantRow()">+ Add Variant</button>
+          </div>
+          <p style="font-size:12px; color:#64748b; margin:0 0 10px;">E.g. Size 4L (&#8358;12,000), 20L (&#8358;55,000) or Wattage 6W, 12W, 18W.</p>
+          <div id="modalVariantsContainer"></div>
+        </div>
+
+        <!-- Images Section -->
+        <div class="vnd-form-group">
+          <label>Product Photos (Up to 5 images)</label>
+          <input type="file" id="mProdPhotoInput" class="vnd-form-input" accept="image/*" multiple onchange="handleProductPhotosUpload(event)">
+          <div id="mPhotoUploadStatus" style="font-size:12px; color:#2563eb; margin-top:6px;"></div>
+          <div class="vnd-staging-strip" id="mProdStagingStrip"></div>
+        </div>
+
+        <div class="vnd-form-group">
+          <label for="mProdDesc">Description &amp; Key Specifications</label>
+          <textarea id="mProdDesc" class="vnd-form-textarea" rows="3" placeholder="Provide details like coverage, warranty, technical specifications, and recommended applications."></textarea>
+        </div>
+
+        <div style="display:flex; gap:20px; align-items:center; margin-bottom:24px; padding:12px 16px; background:#f8fafc; border-radius:10px; border:1px solid #e2e8f0;">
+          <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; cursor:pointer;">
+            <input type="checkbox" id="mProdInStock" checked style="accent-color:#16a34a; width:16px; height:16px;">
+            <span>In Stock</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; cursor:pointer;">
+            <input type="checkbox" id="mProdIsActive" checked style="accent-color:#2563eb; width:16px; height:16px;">
+            <span>Visible on Live Shop</span>
+          </label>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="vnd-btn vnd-btn--outline" onclick="closeProductModal()">Cancel</button>
+          <button type="submit" id="mProdSaveBtn" class="vnd-btn vnd-btn--primary">Save &amp; Publish to Shop</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/custom-dialog.js"></script>
+  <script src="assets/js/supabase-client.js"></script>
+  <script>
+    // State
+    let currentVendor = null;
+    let vendorProducts = [];
+    let stagingPhotos = [];
+    let editingProductId = null;
+
+    const ACTIVE_VENDOR_KEY = 'nijedee_active_vendor';
+    const VENDOR_PROFILES_KEY = 'nijedee_vendor_profiles';
+
+    function togglePass(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+      } else {
+        input.type = 'password';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+      }
+    }
+
+    // Auto Login Check
+    function checkAutoLogin() {
+      try {
+        const stored = localStorage.getItem(ACTIVE_VENDOR_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && (parsed.id || parsed.phone)) {
+            currentVendor = parsed;
+            initWorkspaceView();
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Auto login check error:', e);
+      }
+    }
+
+    // Vendor Login
+    async function handleVendorLogin(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      const phone = (document.getElementById('vLogPhone')?.value || '').trim();
+      const pass = (document.getElementById('vLogPass')?.value || '').trim();
+
+      if (!phone || !pass) {
+        if (window.showCustomAlert) {
+          window.showCustomAlert({ title: 'Input Required', message: 'Please enter your registered phone number and password.', type: 'info' });
+        }
+        return;
+      }
+
+      const submitBtn = document.getElementById('vLoginSubmitBtn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Verifying Account...';
+      }
+
+      const cleanPhone = phone.replace(/\D/g, '');
+
+      // 1. Check local profiles first
+      let matchedVendor = null;
+      try {
+        const raw = localStorage.getItem(VENDOR_PROFILES_KEY);
+        if (raw) {
+          const list = JSON.parse(raw);
+          matchedVendor = list.find(v => {
+            const vp = (v.phone || '').replace(/\D/g, '');
+            return (vp && vp.endsWith(cleanPhone.slice(-10))) && (v.password === pass);
+          });
+        }
+      } catch (err) {}
+
+      // 2. Check Supabase requests table for approved vendor application
+      if (!matchedVendor) {
+        const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+        if (sb) {
+          try {
+            const { data: apps, error } = await sb
+              .from('requests')
+              .select('*')
+              .eq('type', 'vendor_application')
+              .order('created_at', { ascending: false });
+
+            if (!error && Array.isArray(apps)) {
+              for (const app of apps) {
+                const appPhone = (app.client_phone || app.client_whatsapp || '').replace(/\D/g, '');
+                if (appPhone && appPhone.endsWith(cleanPhone.slice(-10))) {
+                  const d = app.details || {};
+                  const appPass = d.password || d.assignedPassword;
+                  if (appPass === pass) {
+                    matchedVendor = {
+                      id: d.vendor_id || d.id || ('NJD-VND-' + app.id.slice(0, 5)),
+                      ref_code: app.ref_code,
+                      store_name: d.store_name || app.client_name,
+                      name: d.store_name || app.client_name,
+                      owner_name: d.owner_name || 'Store Merchant',
+                      phone: app.client_phone || phone,
+                      whatsapp: app.client_whatsapp || phone,
+                      address: app.address || app.location,
+                      corridor: app.location || 'Badore Axis',
+                      password: pass,
+                      status: app.status || 'accredited',
+                      is_accredited: app.status === 'accredited' || app.status === 'completed' || d.status === 'accredited'
+                    };
+                    break;
+                  }
+                }
+              }
+            }
+          } catch (sbErr) {
+            console.warn('Supabase auth check note:', sbErr);
+          }
+        }
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Log In to Merchant Dashboard ->';
+      }
+
+      if (!matchedVendor) {
+        if (window.showCustomAlert) {
+          window.showCustomAlert({
+            title: 'Authentication Failed',
+            message: 'No accredited merchant account matches that phone number and password. If you recently applied, your application may still be pending admin review.',
+            type: 'danger'
+          });
+        }
+        return;
+      }
+
+      // Check if still pending
+      if (matchedVendor.status === 'pending' && !matchedVendor.is_accredited) {
+        if (window.showCustomAlert) {
+          window.showCustomAlert({
+            title: 'Application Under Review',
+            message: `Your store application (${matchedVendor.ref_code || 'VND-2026'}) is currently pending admin accreditation. You will be activated once our desk verifies your store.`,
+            type: 'info'
+          });
+        }
+        return;
+      }
+
+      // Successful Login
+      currentVendor = matchedVendor;
+      try {
+        localStorage.setItem(ACTIVE_VENDOR_KEY, JSON.stringify(currentVendor));
+      } catch (e) {}
+
+      initWorkspaceView();
+      if (window.showCustomToast) {
+        window.showCustomToast(`Welcome back, ${currentVendor.store_name || currentVendor.name}!`);
+      }
+    }
+
+    // Switch to Workspace
+    function initWorkspaceView() {
+      document.getElementById('vendorLoginView').style.display = 'none';
+      document.getElementById('vendorWorkspaceView').style.display = 'block';
+
+      // Header Pill
+      const pill = document.getElementById('vendorAuthPill');
+      if (pill) pill.style.display = 'flex';
+      const storeName = currentVendor.store_name || currentVendor.name || 'Store Merchant';
+      document.getElementById('vndStorePillName').textContent = storeName;
+      document.getElementById('vndAvatarInitial').textContent = storeName.charAt(0).toUpperCase();
+
+      // Dashboard Header
+      document.getElementById('dashStoreTitle').textContent = storeName;
+      document.getElementById('dashStoreMeta').textContent = 
+        `Corridor: ${currentVendor.corridor || 'Badore Axis'} · Owner: ${currentVendor.owner_name || 'Manager'} · Phone: ${currentVendor.phone || ''}`;
+
+      fetchMerchantProducts();
+    }
+
+    // Sign Out
+    function handleVendorSignOut() {
+      try {
+        localStorage.removeItem(ACTIVE_VENDOR_KEY);
+      } catch (e) {}
+      currentVendor = null;
+      document.getElementById('vendorAuthPill').style.display = 'none';
+      document.getElementById('vendorWorkspaceView').style.display = 'none';
+      document.getElementById('vendorLoginView').style.display = 'block';
+      if (window.showCustomToast) {
+        window.showCustomToast('Signed out of Merchant Portal');
+      }
+    }
+
+    // Fetch Products belonging strictly to this merchant
+    async function fetchMerchantProducts(notify = false) {
+      if (!currentVendor) return;
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      const tbody = document.getElementById('merchantProductsTbody');
+
+      if (!sb) {
+        if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--vnd-muted);">Database connection unavailable.</td></tr>';
+        return;
+      }
+
+      try {
+        const { data, error } = await sb
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        const allProds = data || [];
+        const cleanVendorPhone = (currentVendor.phone || '').replace(/\D/g, '');
+        const vendorId = currentVendor.id || '';
+        const vendorStoreName = (currentVendor.store_name || currentVendor.name || '').toLowerCase().trim();
+
+        // Filter products created by this vendor
+        vendorProducts = allProds.filter(p => {
+          // Direct vendor_id or vendor_phone check
+          if (p.vendor_id && p.vendor_id === vendorId) return true;
+          if (p.vendor_phone && cleanVendorPhone && p.vendor_phone.replace(/\D/g, '').endsWith(cleanVendorPhone.slice(-8))) return true;
+          if (p.vendor_name && p.vendor_name.toLowerCase().trim() === vendorStoreName) return true;
+
+          // Check keywords metadata
+          const kw = (p.keywords || '').toLowerCase();
+          if (vendorId && kw.includes(vendorId.toLowerCase())) return true;
+          if (cleanVendorPhone && kw.includes(cleanVendorPhone.slice(-8))) return true;
+
+          // Check brand
+          if (p.brand && p.brand.toLowerCase().trim() === vendorStoreName) return true;
+
+          return false;
+        });
+
+        renderMerchantProducts();
+        updateMerchantKPIs();
+        if (notify && window.showCustomToast) {
+          window.showCustomToast('Store inventory refreshed');
+        }
+      } catch (err) {
+        console.error('Fetch merchant products error:', err);
+        if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#b91c1c;">Failed to load products: ${err.message}</td></tr>`;
+      }
+    }
+
+    function updateMerchantKPIs() {
+      const total = vendorProducts.length;
+      const inStock = vendorProducts.filter(p => p.in_stock !== false).length;
+      const outStock = vendorProducts.filter(p => p.in_stock === false).length;
+      const active = vendorProducts.filter(p => p.is_active !== false).length;
+
+      document.getElementById('kpiStoreTotal').textContent = total;
+      document.getElementById('kpiStoreInStock').textContent = inStock;
+      document.getElementById('kpiStoreOutStock').textContent = outStock;
+      document.getElementById('kpiStoreActive').textContent = active;
+    }
+
+    function renderMerchantProducts() {
+      const tbody = document.getElementById('merchantProductsTbody');
+      if (!tbody) return;
+
+      const q = (document.getElementById('storeSearchInput')?.value || '').toLowerCase().trim();
+      const cat = document.getElementById('storeCatFilter')?.value || 'all';
+
+      const filtered = vendorProducts.filter(p => {
+        if (cat !== 'all' && p.category !== cat) return false;
+        if (q) {
+          const combined = `${p.name || ''} ${p.category || ''} ${p.brand || ''} ${p.price_display || ''} ${p.description || ''}`.toLowerCase();
+          if (!combined.includes(q)) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center; padding:40px 20px; color:var(--vnd-muted);">
+              ${vendorProducts.length === 0 ? 'You have not added any products yet. Click "+ Add New Product" to start selling!' : 'No products match your search or filter.'}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => {
+        const images = Array.isArray(p.images) && p.images.length ? p.images : (p.image_url ? [p.image_url] : []);
+        const thumb = images[0] || 'assets/images/logo.png';
+        const price = p.price_display || ('₦' + (p.price || 0).toLocaleString());
+        const isInStock = p.in_stock !== false;
+        const isActive = p.is_active !== false;
+
+        return `
+          <tr>
+            <td>
+              <img src="${thumb}" alt="${escapeHtml(p.name)}" class="vnd-prod-thumb" onerror="this.src='assets/images/logo.png'">
+            </td>
+            <td>
+              <div style="font-weight:700; color:#0a2342; font-size:14px;">${escapeHtml(p.name)}</div>
+              <div style="font-size:12px; color:var(--vnd-muted); margin-top:2px;">Brand: ${escapeHtml(p.brand || 'Store Brand')}</div>
+            </td>
+            <td>
+              <span style="background:#eff6ff; color:#1e5eff; font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; text-transform:uppercase;">
+                ${escapeHtml(p.category || 'General')}
+              </span>
+            </td>
+            <td>
+              <div style="font-weight:700; color:#0a2342; font-size:14px;">${escapeHtml(price)}</div>
+            </td>
+            <td>
+              <button type="button" onclick="toggleProductStock('${p.id}', ${!isInStock})" class="vnd-stock-badge ${isInStock ? 'vnd-stock-badge--in' : 'vnd-stock-badge--out'}" style="border:none; cursor:pointer;" title="Click to toggle stock status">
+                ${isInStock ? 'In Stock' : 'Out of Stock'}
+              </button>
+            </td>
+            <td>
+              <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; font-weight:600; color:${isActive ? '#15803d' : '#94a3b8'};">
+                <input type="checkbox" ${isActive ? 'checked' : ''} onchange="toggleProductVisibility('${p.id}', this.checked)" style="accent-color:#2563eb; width:15px; height:15px;">
+                <span>${isActive ? 'Visible on Shop' : 'Hidden'}</span>
+              </label>
+            </td>
+            <td style="text-align:right; white-space:nowrap;">
+              <button type="button" class="vnd-btn vnd-btn--outline vnd-btn--sm" onclick="openProductModal('${p.id}')" style="margin-right:6px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <span>Edit</span>
+              </button>
+              <button type="button" class="vnd-btn vnd-btn--danger vnd-btn--sm" onclick="deleteMerchantProduct('${p.id}')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span>Delete</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Toggle stock
+    async function toggleProductStock(id, newInStock) {
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (!sb) return;
+
+      try {
+        const { error } = await sb.from('products').update({ in_stock: newInStock, updated_at: new Date().toISOString() }).eq('id', id);
+        if (error) throw error;
+
+        const p = vendorProducts.find(item => item.id === id);
+        if (p) p.in_stock = newInStock;
+        renderMerchantProducts();
+        updateMerchantKPIs();
+        if (window.showCustomToast) {
+          window.showCustomToast(newInStock ? 'Marked as In Stock' : 'Marked as Out of Stock');
+        }
+      } catch (err) {
+        alert('Could not update stock: ' + err.message);
+      }
+    }
+
+    // Toggle visibility
+    async function toggleProductVisibility(id, newActive) {
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (!sb) return;
+
+      try {
+        const { error } = await sb.from('products').update({ is_active: newActive, updated_at: new Date().toISOString() }).eq('id', id);
+        if (error) throw error;
+
+        const p = vendorProducts.find(item => item.id === id);
+        if (p) p.is_active = newActive;
+        renderMerchantProducts();
+        updateMerchantKPIs();
+        if (window.showCustomToast) {
+          window.showCustomToast(newActive ? 'Product is now live on main website shop' : 'Product hidden from main shop');
+        }
+      } catch (err) {
+        alert('Could not update visibility: ' + err.message);
+      }
+    }
+
+    // Delete Product
+    async function deleteMerchantProduct(id) {
+      const p = vendorProducts.find(item => item.id === id);
+      const name = p ? p.name : 'this product';
+
+      const confirmed = confirm(`Are you sure you want to delete "${name}" from your store catalogue? This will remove it from the live website shop.`);
+      if (!confirmed) return;
+
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (!sb) return;
+
+      try {
+        const { error } = await sb.from('products').delete().eq('id', id);
+        if (error) throw error;
+
+        vendorProducts = vendorProducts.filter(item => item.id !== id);
+        renderMerchantProducts();
+        updateMerchantKPIs();
+        if (window.showCustomToast) {
+          window.showCustomToast('Product deleted from store catalogue');
+        }
+      } catch (err) {
+        alert('Failed to delete product: ' + err.message);
+      }
+    }
+
+    // Modal Operations
+    function openProductModal(id = null) {
+      editingProductId = id;
+      const modal = document.getElementById('productCrudModal');
+      const form = document.getElementById('productCrudForm');
+      const title = document.getElementById('prodModalTitle');
+      const container = document.getElementById('modalVariantsContainer');
+
+      form.reset();
+      stagingPhotos = [];
+      if (container) container.innerHTML = '';
+
+      if (id) {
+        const p = vendorProducts.find(item => item.id === id);
+        if (!p) return;
+
+        title.textContent = 'Edit Product: ' + p.name;
+        document.getElementById('modalProdId').value = p.id;
+        document.getElementById('mProdName').value = p.name || '';
+        document.getElementById('mProdCategory').value = p.category || 'materials';
+        document.getElementById('mProdBrand').value = p.brand || '';
+        document.getElementById('mProdPrice').value = p.price || '';
+        document.getElementById('mProdPriceMax').value = p.price_max || '';
+        document.getElementById('mProdPriceDisplay').value = p.price_display || '';
+        document.getElementById('mProdDesc').value = p.description || '';
+        document.getElementById('mProdInStock').checked = p.in_stock !== false;
+        document.getElementById('mProdIsActive').checked = p.is_active !== false;
+
+        if (Array.isArray(p.images) && p.images.length) {
+          stagingPhotos = [...p.images];
+        } else if (p.image_url) {
+          stagingPhotos = [p.image_url];
+        }
+
+        if (Array.isArray(p.variants) && p.variants.length) {
+          p.variants.forEach(v => addVariantRow(v));
+        }
+      } else {
+        title.textContent = 'Add Product to Store';
+        document.getElementById('modalProdId').value = '';
+        document.getElementById('mProdBrand').value = currentVendor ? (currentVendor.store_name || currentVendor.name) : '';
+        document.getElementById('mProdInStock').checked = true;
+        document.getElementById('mProdIsActive').checked = true;
+      }
+
+      renderStagingPhotos();
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeProductModal() {
+      const modal = document.getElementById('productCrudModal');
+      if (modal) modal.classList.remove('open');
+      editingProductId = null;
+      stagingPhotos = [];
+    }
+
+    function autoSyncPriceDisplay() {
+      const priceInput = document.getElementById('mProdPrice');
+      const priceMaxInput = document.getElementById('mProdPriceMax');
+      const displayInput = document.getElementById('mProdPriceDisplay');
+      if (!displayInput) return;
+
+      const p = parseFloat(priceInput?.value);
+      const pMax = parseFloat(priceMaxInput?.value);
+
+      if (!isNaN(p)) {
+        if (!isNaN(pMax) && pMax > p) {
+          displayInput.value = `₦${p.toLocaleString()} – ₦${pMax.toLocaleString()}`;
+        } else {
+          displayInput.value = `₦${p.toLocaleString()}`;
+        }
+      }
+    }
+
+    function addVariantRow(v = null) {
+      const container = document.getElementById('modalVariantsContainer');
+      if (!container) return;
+
+      const row = document.createElement('div');
+      row.className = 'vnd-variant-row';
+      row.innerHTML = `
+        <input type="text" class="vnd-form-input var-label" placeholder="e.g. 20 Litres Drum" value="${escapeHtml(v?.label || '')}" required>
+        <input type="number" class="vnd-form-input var-price" placeholder="Price (₦)" value="${escapeHtml(v?.price || '')}" required>
+        <input type="text" class="vnd-form-input var-display" placeholder="Display format" value="${escapeHtml(v?.display || '')}">
+        <button type="button" class="vnd-btn vnd-btn--danger vnd-btn--sm" onclick="this.closest('.vnd-variant-row').remove()" style="padding:6px 10px;">&times;</button>
+      `;
+      container.appendChild(row);
+    }
+
+    async function handleProductPhotosUpload(e) {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+
+      const statusEl = document.getElementById('mPhotoUploadStatus');
+      const remainingSlots = 5 - stagingPhotos.length;
+      if (remainingSlots <= 0) {
+        alert('Maximum 5 photos allowed per product.');
+        return;
+      }
+
+      const toUpload = files.slice(0, remainingSlots);
+      if (statusEl) statusEl.textContent = 'Optimizing & uploading images under 100KB...';
+
+      try {
+        if (window.uploadRequestFiles) {
+          const urls = await window.uploadRequestFiles(toUpload, 'products');
+          stagingPhotos.push(...urls);
+        } else {
+          for (const f of toUpload) {
+            const url = URL.createObjectURL(f);
+            stagingPhotos.push(url);
+          }
+        }
+        renderStagingPhotos();
+        if (statusEl) statusEl.textContent = `${stagingPhotos.length} photo(s) attached.`;
+      } catch (err) {
+        alert('Photo upload error: ' + err.message);
+        if (statusEl) statusEl.textContent = '';
+      }
+    }
+
+    function renderStagingPhotos() {
+      const strip = document.getElementById('mProdStagingStrip');
+      if (!strip) return;
+
+      strip.innerHTML = stagingPhotos.map((url, i) => `
+        <div class="vnd-staging-thumb-wrap">
+          <img src="${url}" alt="Photo ${i + 1}">
+          <button type="button" class="vnd-staging-remove-btn" onclick="removeStagingPhoto(${i})" title="Remove photo">&times;</button>
+        </div>
+      `).join('');
+    }
+
+    function removeStagingPhoto(idx) {
+      stagingPhotos.splice(idx, 1);
+      renderStagingPhotos();
+      const statusEl = document.getElementById('mPhotoUploadStatus');
+      if (statusEl) statusEl.textContent = `${stagingPhotos.length} photo(s) attached.`;
+    }
+
+    // Save Product
+    async function saveMerchantProduct(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      if (!currentVendor) return;
+
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (!sb) {
+        alert('Supabase client unavailable');
+        return;
+      }
+
+      const saveBtn = document.getElementById('mProdSaveBtn');
+      const id = document.getElementById('modalProdId')?.value || null;
+
+      const name = (document.getElementById('mProdName')?.value || '').trim();
+      const category = document.getElementById('mProdCategory')?.value || 'materials';
+      const brand = (document.getElementById('mProdBrand')?.value || '').trim() || (currentVendor.store_name || currentVendor.name);
+      const price = parseFloat(document.getElementById('mProdPrice')?.value);
+      const priceMaxVal = document.getElementById('mProdPriceMax')?.value;
+      const price_max = priceMaxVal ? parseFloat(priceMaxVal) : null;
+      let price_display = (document.getElementById('mProdPriceDisplay')?.value || '').trim();
+
+      if (!price_display) {
+        price_display = price_max ? `₦${price.toLocaleString()} – ₦${price_max.toLocaleString()}` : `₦${price.toLocaleString()}`;
+      }
+
+      const description = (document.getElementById('mProdDesc')?.value || '').trim();
+      const in_stock = document.getElementById('mProdInStock').checked;
+      const is_active = document.getElementById('mProdIsActive').checked;
+
+      // Variants
+      const variantRows = document.querySelectorAll('#modalVariantsContainer .vnd-variant-row');
+      const variants = [];
+      variantRows.forEach(row => {
+        const vLabel = row.querySelector('.var-label')?.value.trim();
+        const vPrice = parseFloat(row.querySelector('.var-price')?.value);
+        let vDisplay = row.querySelector('.var-display')?.value.trim();
+        if (!vDisplay && vLabel && !isNaN(vPrice)) {
+          vDisplay = `${vLabel} — ₦${vPrice.toLocaleString()}`;
+        }
+        if (vLabel && !isNaN(vPrice)) {
+          variants.push({ label: vLabel, price: vPrice, display: vDisplay });
+        }
+      });
+
+      const storeName = currentVendor.store_name || currentVendor.name || 'Merchant Partner';
+      const vendorId = currentVendor.id || '';
+      const vendorPhone = currentVendor.phone || '';
+
+      const keywords = `${name} ${category} ${brand} ${price} ${storeName} vendor:${vendorId} vendor_name:${storeName.replace(/\s+/g, '_')} vendor_phone:${vendorPhone}`.toLowerCase();
+
+      const payload = {
+        name,
+        category,
+        brand,
+        badge: storeName,
+        price,
+        price_max,
+        price_display,
+        description,
+        keywords,
+        variants,
+        images: stagingPhotos,
+        image_url: stagingPhotos[0] || 'assets/images/logo.png',
+        in_stock,
+        is_active,
+        updated_at: new Date().toISOString()
+      };
+
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Publishing Product...';
+      }
+
+      try {
+        let resError = null;
+        if (id) {
+          // Update existing product
+          const { error } = await sb.from('products').update(payload).eq('id', id);
+          resError = error;
+        } else {
+          // Insert new product
+          payload.created_at = new Date().toISOString();
+          payload.display_order = 999;
+          const { error } = await sb.from('products').insert([payload]);
+          resError = error;
+        }
+
+        if (resError) throw resError;
+
+        closeProductModal();
+        await fetchMerchantProducts();
+
+        if (window.showCustomToast) {
+          window.showCustomToast(id ? 'Product updated successfully' : 'New product published to main website shop!');
+        }
+      } catch (err) {
+        console.error('Error saving product:', err);
+        alert('Failed to save product: ' + err.message);
+      } finally {
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.textContent = 'Save & Publish to Shop';
+        }
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Auto login initialization
+    if (document.readyState !== 'loading') {
+      checkAutoLogin();
+    } else {
+      document.addEventListener('DOMContentLoaded', checkAutoLogin);
+    }
+  </script>
+</body>
+</html>
