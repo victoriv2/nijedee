@@ -65,6 +65,25 @@
       }
     } catch (e) {}
 
+    // Strict Filter: Remove any deleted, test, dummy, or all-null accounts
+    users = users.filter(u => {
+      if (!u || !u.id) return false;
+      if (u.role === 'deleted') return false;
+      if (String(u.id).startsWith('00000000')) return false;
+      const em = (u.email || '').toLowerCase();
+      const fn = (u.full_name || '').toLowerCase();
+      if (em.includes('testuser') || em.includes('dummy') || em.includes('fake')) return false;
+      if (fn.includes('testuser') || fn === 'test' || fn.includes('dummy')) return false;
+      // Must have at least a valid phone, email, or full name
+      if (!u.email && !u.phone && !u.full_name) return false;
+      return true;
+    });
+
+    // Clean up local storage cache to purge stale fake accounts
+    try {
+      localStorage.setItem('nijedee_registered_profiles', JSON.stringify(users));
+    } catch (e) {}
+
     allUsers = users;
     updateUsersKPIs();
     renderUsersTable();
@@ -121,6 +140,18 @@
 
       return matchesSearch && matchesState;
     });
+
+    if (!allUsers.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align:center; padding:45px 20px; color:var(--adm-muted);">
+            <div style="font-weight:700; color:var(--adm-navy); margin-bottom:4px; font-size:0.95rem;">No registered customer accounts yet</div>
+            <p style="font-size:0.84rem; margin:0; color:#64748B;">When customers create an account on the main website, their profile, phone number, Nigerian state/LGA, and delivery address will appear here.</p>
+          </td>
+        </tr>
+      `;
+      return;
+    }
 
     if (!filtered.length) {
       tbody.innerHTML = `
@@ -218,24 +249,45 @@
    * Open Admin Live Chat with Customer
    */
   async function openAdminUserChat(userId) {
-    const user = allUsers.find(u => u.id === userId);
-    if (!user) return;
+    let user = allUsers.find(u => u.id === userId);
+    if (!user) {
+      // Fallback: check in requests for customer support thread or application details
+      const req = (window.allRequests || []).find(r => r.ref_code === 'SUP-USR-' + (userId || '').slice(0, 8) || (r.details && r.details.user_id === userId));
+      if (req) {
+        user = {
+          id: userId,
+          full_name: req.client_name || 'Customer',
+          phone: req.client_phone || req.client_whatsapp || '',
+          email: req.client_email || '',
+          state: req.location || 'Nigeria'
+        };
+      } else {
+        user = { id: userId, full_name: 'Customer', phone: '', email: '', state: 'Nigeria' };
+      }
+    }
     activeChatUser = user;
 
     const modal = document.getElementById('adminUserChatModal');
     if (!modal) return;
 
-    document.getElementById('chatModalUserName').textContent = user.full_name || 'Customer';
-    document.getElementById('chatModalUserMeta').textContent = `${user.phone || ''} \u2022 ${user.state || 'Nigeria'} \u2022 ${user.email || ''}`;
+    const nameEl = document.getElementById('chatModalUserName');
+    const metaEl = document.getElementById('chatModalUserMeta');
+    if (nameEl) nameEl.textContent = user.full_name || 'Customer';
+    if (metaEl) metaEl.textContent = `${user.phone || 'Phone not set'} \u2022 ${user.state || 'Nigeria'} \u2022 ${user.email || ''}`;
 
-    modal.style.display = 'flex';
+    // Ensure modal is fully visible and interactive across all CSS rules
+    modal.classList.add('open');
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.style.setProperty('opacity', '1', 'important');
+    modal.style.setProperty('visibility', 'visible', 'important');
+    modal.style.setProperty('pointer-events', 'auto', 'important');
     document.body.style.overflow = 'hidden';
 
     fetchAdminUserChatFeed(true);
 
     clearInterval(adminChatPollTimer);
     adminChatPollTimer = setInterval(() => {
-      if (document.getElementById('adminUserChatModal')?.style.display === 'flex') {
+      if (modal.classList.contains('open') || modal.style.display === 'flex') {
         fetchAdminUserChatFeed(false);
       }
     }, 3000);
@@ -243,7 +295,13 @@
 
   function closeAdminUserChat() {
     const modal = document.getElementById('adminUserChatModal');
-    if (modal) modal.style.display = 'none';
+    if (modal) {
+      modal.classList.remove('open');
+      modal.style.setProperty('display', 'none', 'important');
+      modal.style.setProperty('opacity', '0', 'important');
+      modal.style.setProperty('visibility', 'hidden', 'important');
+      modal.style.setProperty('pointer-events', 'none', 'important');
+    }
     document.body.style.overflow = '';
     clearInterval(adminChatPollTimer);
     activeChatUser = null;

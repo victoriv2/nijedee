@@ -2637,8 +2637,16 @@
   </div>
 </div>
 
+<style>
+  #adminUserChatModal.open {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+</style>
 <!-- LIVE SUPPORT CHAT WITH CUSTOMER MODAL -->
-<div id="adminUserChatModal" class="modal-backdrop" style="display:none; position:fixed; inset:0; background:rgba(7,34,79,0.7); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+<div id="adminUserChatModal" class="modal-backdrop" onclick="if(event.target === this) window.closeAdminUserChat()" style="display:none; position:fixed; inset:0; background:rgba(7,34,79,0.7); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
   <div style="background:#FFFFFF; border-radius:18px; width:100%; max-width:640px; height:85vh; max-height:720px; display:flex; flex-direction:column; box-shadow:0 20px 50px rgba(7,34,79,0.3); border:1px solid #E2E8F0; overflow:hidden;">
     
     <!-- Header -->

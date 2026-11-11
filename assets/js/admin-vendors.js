@@ -10,32 +10,27 @@
   const VENDOR_STORAGE_KEY = 'nijedee_active_vendor';
   const VENDOR_PROFILE_STORE = 'nijedee_vendor_profiles';
 
-  // Default demo / reference vendor
-  const DEFAULT_MERCHANT = {
-    id: 'NJD-VND-1001',
-    ref_code: 'VND-2026-1001',
-    name: 'Ade & Sons Building Materials',
-    store_name: 'Ade & Sons Building Materials',
-    owner_name: 'Emmanuel Adebayo',
-    phone: '08012345678',
-    whatsapp: '08012345678',
-    password: 'MerchantPass123',
-    corridor: 'Badore Axis',
-    address: 'Shop 4, Badore Modern Market, Addo Road, Ajah',
-    categories: ['materials', 'paints', 'plumbing'],
-    status: 'accredited',
-    is_accredited: true,
-    is_active: true
-  };
-
   function getVendorProfiles() {
-    var profiles = [DEFAULT_MERCHANT];
+    var profiles = [];
     try {
       var raw = localStorage.getItem(VENDOR_PROFILE_STORE);
       if (raw) {
         var parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) profiles = parsed;
       }
+    } catch (e) {}
+
+    // Purge any legacy test/dummy vendors from memory and localStorage
+    profiles = profiles.filter(function(p) {
+      if (!p) return false;
+      if (p.id === 'NJD-VND-1001' || p.ref_code === 'VND-2026-1001') return false;
+      if ((p.name || '').includes('Ade & Sons') || (p.store_name || '').includes('Ade & Sons')) return false;
+      if (p.phone === '08012345678') return false;
+      return true;
+    });
+
+    try {
+      localStorage.setItem(VENDOR_PROFILE_STORE, JSON.stringify(profiles));
     } catch (e) {}
 
     // Synchronize with allRequests from Supabase if available
@@ -110,7 +105,7 @@
     if (kpiAccredited) kpiAccredited.textContent = accredited.length;
 
     if (accredited.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--adm-muted);">No accredited shop vendors found.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:45px 20px; color:var(--adm-muted);"><div style="font-weight:700; color:var(--adm-navy); margin-bottom:4px; font-size:0.95rem;">No accredited shop vendors found yet</div><p style="font-size:0.84rem; margin:0; color:#64748B;">Registered store applications submitted through become-vendor.html will appear under \'Candidate Applications\' below for admin accreditation.</p></td></tr>';
       return;
     }
 

@@ -937,13 +937,41 @@
   window.submitUserLoginForm = submitUserLoginForm;
   window.submitUserRegisterForm = submitUserRegisterForm;
 
+  /**
+   * Mount persistent Customer Live Support Chat button across all public pages
+   */
+  function initFloatingSupportChat() {
+    const path = (window.location.pathname || '').toLowerCase();
+    if (path.includes('admin.html') || path.includes('account.html')) return;
+    if (document.querySelector('.tk-support-chat-float')) return;
+
+    const btn = document.createElement('a');
+    btn.className = 'tk-support-chat-float';
+    btn.href = 'account.html?tab=chat';
+    btn.setAttribute('aria-label', 'Live Support Chat with NIJEDEE Admin');
+    btn.setAttribute('title', 'Live Support Chat with NIJEDEE Admin');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
+    
+    btn.onclick = function (e) {
+      const user = getCurrentUser();
+      if (!user) {
+        e.preventDefault();
+        openUserAuthModal('signin');
+      }
+    };
+
+    document.body.appendChild(btn);
+  }
+
   // Initialize on load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       updateHeaderAuthUI();
+      initFloatingSupportChat();
     });
   } else {
     updateHeaderAuthUI();
+    initFloatingSupportChat();
   }
 
 })();
