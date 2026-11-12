@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/catalog-cache.js"></script>
   <style>
     .properties-hero {
       background: linear-gradient(135deg, #07224F 0%, #0B5ED7 100%);
@@ -725,8 +726,8 @@
       </div>
 
       <div id="propertiesListingsContainer" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:24px;">
-        <div id="propertiesLoadingPlaceholder" style="grid-column:1 / -1;text-align:center;padding:60px 20px;color:var(--tk-offwhite-dark);font-size:0.95rem;font-weight:600;">
-          Loading verified property listings from live database...
+        <div id="propertiesLoadingPlaceholder" style="grid-column:1 / -1;text-align:center;padding:40px 20px;color:var(--tk-offwhite-dark);font-size:0.92rem;font-weight:600;">
+          Loading verified property listings...
         </div>
       </div>
     </div>
@@ -1610,42 +1611,59 @@
     }).join('');
   }
 
-  async function loadPropertiesFromSupabase(retries = 15) {
-    const sb = getNijedeeSupabase();
-    if (!sb) {
-      if (retries > 0) {
-        setTimeout(() => loadPropertiesFromSupabase(retries - 1), 150);
-      }
-      return;
+  // 1. Instant First Paint: Render verified properties immediately (0ms latency, zero waiting)
+  function initProperties() {
+    let props = [];
+    if (window.NijedeeCatalog && typeof window.NijedeeCatalog.getStoredProperties === 'function') {
+      props = window.NijedeeCatalog.getStoredProperties();
     }
+    if (props && props.length > 0) {
+      window._loadedProperties = props;
+      renderDynamicProperties(props);
+    }
+    // 2. Background live revalidation (silent, non-blocking)
+    revalidateProperties();
+  }
 
+  // Background Live Sync: queries Supabase silently without blocking the UI
+  async function revalidateProperties() {
     try {
-      const { data: props, error } = await sb
-        .from('properties')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true })
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.warn('Could not load properties from Supabase:', error);
-        return;
+      // Fast path: direct REST query (avoids heavy client load time)
+      if (window.NijedeeCatalog && typeof window.NijedeeCatalog.fetchLivePropertiesDirect === 'function') {
+        const fresh = await window.NijedeeCatalog.fetchLivePropertiesDirect(6000);
+        if (fresh && fresh.length > 0) {
+          window._loadedProperties = fresh;
+          renderDynamicProperties(fresh);
+          return;
+        }
       }
 
-      if (props && props.length > 0) {
-        window._loadedProperties = props;
-        renderDynamicProperties(props);
+      // Fallback: Supabase JS SDK client
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (sb) {
+        const { data: props, error } = await sb
+          .from('properties')
+          .select('*')
+          .eq('is_active', true)
+          .order('display_order', { ascending: true })
+          .order('created_at', { ascending: false });
+
+        if (!error && props && props.length > 0) {
+          if (window.NijedeeCatalog) window.NijedeeCatalog.saveStoredProperties(props);
+          window._loadedProperties = props;
+          renderDynamicProperties(props);
+        }
       }
     } catch (err) {
-      console.warn('Failed to fetch properties:', err);
+      console.warn('Background properties revalidation notice:', err.message);
     }
   }
 
-  // Load properties dynamically on startup (checks both DOM ready and interactive state)
+  // Execute instant paint immediately
   if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', () => loadPropertiesFromSupabase());
+    window.addEventListener('DOMContentLoaded', initProperties);
   } else {
-    loadPropertiesFromSupabase();
+    initProperties();
   }
 </script>
 </body>

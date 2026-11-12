@@ -7,6 +7,7 @@
   <meta name="description" content="Shop genuine Nijedee Paints (Emulsion, Matt, Higher Satin), building materials, cement, tiles, tools, and solar supplies with site delivery across Lekki, Ajah, Badore, Sangotedo.">
   <link rel="icon" type="image/png" href="assets/images/logo.png">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/catalog-cache.js"></script>
   <style>
     .shop-header-banner {
       background: linear-gradient(135deg, var(--tk-navy) 0%, var(--tk-primary) 100%);
@@ -530,14 +531,14 @@
       <!-- Products Grid -->
       <div>
         <div class="shop-status-bar">
-          <span style="font-size:0.9rem;color:var(--tk-offwhite-dark);" id="productsCountText">Showing 25 authentic products</span>
+          <span style="font-size:0.9rem;color:var(--tk-offwhite-dark);" id="productsCountText">Showing 28 authentic products</span>
           <span style="font-size:0.85rem;color:var(--tk-primary);font-weight:700;">Factory Direct &middot; Free Delivery Badore &amp; Ajah</span>
         </div>
 
         <div class="product-grid-view" id="productsGrid">
           <div id="productsDynamicContainer" style="display:contents;">
-            <div id="productsLoadingPlaceholder" style="grid-column:1 / -1;text-align:center;padding:60px 20px;color:var(--tk-offwhite-dark);font-size:0.95rem;font-weight:600;">
-              Loading authentic products catalogue from live database...
+            <div id="productsLoadingPlaceholder" style="grid-column:1 / -1;text-align:center;padding:40px 20px;color:var(--tk-offwhite-dark);font-size:0.92rem;font-weight:600;">
+              Loading verified products catalogue...
             </div>
           </div>
 
@@ -1349,41 +1350,56 @@
     updateStoreFilterList(prods);
   }
 
-  async function loadShopProductsFromSupabase(retries = 15) {
-    const sb = getNijedeeSupabase();
-    if (!sb) {
-      if (retries > 0) {
-        setTimeout(() => loadShopProductsFromSupabase(retries - 1), 150);
-      }
-      return;
+  // 1. Instant First Paint: Render products immediately (0ms latency, zero waiting)
+  function initShopProducts() {
+    let prods = [];
+    if (window.NijedeeCatalog && typeof window.NijedeeCatalog.getStoredProducts === 'function') {
+      prods = window.NijedeeCatalog.getStoredProducts();
     }
+    if (prods && prods.length > 0) {
+      renderDynamicShopProducts(prods);
+    }
+    // 2. Background live revalidation (silent, non-blocking)
+    revalidateShopProducts();
+  }
 
+  // Background Live Sync: queries Supabase silently without blocking the UI
+  async function revalidateShopProducts() {
     try {
-      const { data: prods, error } = await sb
-        .from('products')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true })
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.warn('Could not load products from Supabase:', error);
-        return;
+      // Fast path: direct REST query (avoids heavy client load time)
+      if (window.NijedeeCatalog && typeof window.NijedeeCatalog.fetchLiveProductsDirect === 'function') {
+        const fresh = await window.NijedeeCatalog.fetchLiveProductsDirect(6000);
+        if (fresh && fresh.length > 0) {
+          renderDynamicShopProducts(fresh);
+          return;
+        }
       }
 
-      if (prods && prods.length > 0) {
-        renderDynamicShopProducts(prods);
+      // Fallback: Supabase JS SDK client
+      const sb = window.getNijedeeSupabase ? window.getNijedeeSupabase() : null;
+      if (sb) {
+        const { data: prods, error } = await sb
+          .from('products')
+          .select('*')
+          .eq('is_active', true)
+          .order('display_order', { ascending: true })
+          .order('created_at', { ascending: false });
+
+        if (!error && prods && prods.length > 0) {
+          if (window.NijedeeCatalog) window.NijedeeCatalog.saveStoredProducts(prods);
+          renderDynamicShopProducts(prods);
+        }
       }
     } catch (err) {
-      console.warn('Failed to fetch shop products:', err);
+      console.warn('Background catalogue revalidation notice:', err.message);
     }
   }
 
-  // Load products dynamically on startup (checks both DOM ready and interactive state)
+  // Execute instant paint immediately
   if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', () => loadShopProductsFromSupabase());
+    window.addEventListener('DOMContentLoaded', initShopProducts);
   } else {
-    loadShopProductsFromSupabase();
+    initShopProducts();
   }
 
   // State for Combined Category + Store Filtering
