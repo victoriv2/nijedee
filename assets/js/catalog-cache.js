@@ -644,9 +644,9 @@
 
                      ],
         "images":  [
-                       "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056046348_5mbj6_image.jpg"
+                       "assets/images/shop/nijedee-wall-plaster-fillers.jpg", "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056046348_5mbj6_image.jpg"
                    ],
-        "image_url":  "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056046348_5mbj6_image.jpg",
+        "image_url":  "assets/images/shop/nijedee-wall-plaster-fillers.jpg",
         "keywords":  "Pop fillers",
         "in_stock":  true,
         "is_active":  true,
@@ -668,9 +668,9 @@
 
                      ],
         "images":  [
-                       "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056526322_zswsx_image.jpg"
+                       "assets/images/shop/led-color-bulb.jpg", "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056526322_zswsx_image.jpg"
                    ],
-        "image_url":  "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056526322_zswsx_image.jpg",
+        "image_url":  "assets/images/shop/led-color-bulb.jpg",
         "keywords":  "Bulb",
         "in_stock":  true,
         "is_active":  true,
@@ -692,10 +692,10 @@
 
                      ],
         "images":  [
-                       "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056710908_kkpfk_IMG_8324.jpg",
+                       "assets/images/shop/float-switch-1.jpg", "assets/images/shop/float-switch-2.jpg", "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056710908_kkpfk_IMG_8324.jpg",
                        "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056712131_6945o_IMG_8325.jpg"
                    ],
-        "image_url":  "https://xgdwxuraupeztihfugxb.supabase.co/storage/v1/object/public/request-attachments/products/1794056710908_kkpfk_IMG_8324.jpg",
+        "image_url":  "assets/images/shop/float-switch-1.jpg",
         "keywords":  "",
         "in_stock":  true,
         "is_active":  true,
